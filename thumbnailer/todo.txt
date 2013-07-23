@@ -1,0 +1,3 @@
+Right now thumbnailer.py doesn't know how to handle generic files.
+
+It's ugly and terrible and probably full of bugs. Refactoring may be required

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 5.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> JSC3D - Test </TITLE>
+  <META NAME="Author" CONTENT="JSC3D">
+ </HEAD>
+
+ <BODY>
+        <div id="main_frame" style="width:window.innerWidth; margin:auto; position:relative; font-size: 9pt; color: #777777;">
+                <canvas id="cv" style="border: 1px solid;" width="600" height="368" ></canvas>
+                <div id="control_panel" style="display:block; color:#000000; padding:5px; position:absolute; left:10px; top:325px; background-color:#ffffff; height:22px; width:128px; border-radius:5px; border:1px solid #777777; font-family:Arial,sans-serif; opacity:0.6;">
+                        <input type="radio" name="operate" value="rotate" onclick="viewer.setMouseUsage('rotate');" checked="true">Rotate</input>
+                        <input type="radio" name="operate" value="zoom" onclick="viewer.setMouseUsage('zoom');">Zoom</input>
+                </div>
+                <div style="float:left;">
+                <select id="model_list" style="display: none;">
+                <option><?php print $_REQUEST['objname']; ?></option>
+                </select>
+                <!-- <button id="load" onclick="loadModel();">Load</button> -->
+                </div>
+                <div style="float:right;">
+                <select id="render_mode_list">
+                <option>render as points</option>
+                <option>render as wireframe</option>
+                <option>render as flat</option>
+                <option>render as smooth</option>
+                </select>
+                <button id="change" onclick="setRenderMode();">Change</button>
+                </div>
+        </div>
+        <script type="text/javascript" src="/static/jsc3d.min.js"></script>
+        <script type="text/javascript" src="/static/jsc3d.console.js"></script>
+        <script type="text/javascript">
+        JSC3D.console.setup('main_frame', '120px');
+
+        var canvas = document.getElementById('cv');
+	canvas.width  = (window.innerWidth-4);
+	canvas.height = (window.innerHeight-161);
+        var viewer = new JSC3D.Viewer(canvas);
+        var logoTimerID = 0;
+        viewer.setParameter('SceneUrl', '/{{ path }}');
+        viewer.setParameter('InitRotationX', 30);
+        viewer.setParameter('InitRotationY', 30);
+        viewer.setParameter('InitRotationZ', 0);
+        viewer.setParameter('ModelColor', '#AA0000');
+        viewer.setParameter('BackgroundColor1', '#FFFFFF');
+        viewer.setParameter('BackgroundColor2', '#707070');
+        viewer.setParameter('RenderMode', 'flat');
+        viewer.init();
+        viewer.update();
+
+        viewer.enableDefaultInputHandler(false);
+        logoTimerID = setInterval( function() {
+                viewer.rotate(0, 0, 0);
+                viewer.update();
+        }, 0);
+        setTimeout( function() {
+                viewer.enableDefaultInputHandler(true);
+                if(logoTimerID > 0)
+                        loadModel();
+        }, 0);
+
+        var ctx = canvas.getContext('2d');
+        ctx.font = '12px Courier New';
+        ctx.fillStyle = '#FF0000';
+        viewer.afterupdate = function() {
+                if(logoTimerID > 0)
+                        return;
+
+                var scene = viewer.getScene();
+                if(scene != null && scene.getChildren().length > 0) {
+                        var objects = scene.getChildren();
+                        var totalFaceCount = 0;
+                        var totalVertexCount = 0
+                        for(var i=0; i<objects.length; i++) {
+                                totalFaceCount += objects[i].faceCount;
+                                totalVertexCount += objects[i].vertexBuffer.length / 3;
+                        }
+                        ctx.fillText(totalVertexCount.toString() + ' vertices', 10, 20);
+                        ctx.fillText(totalFaceCount.toString() + ' faces', 10, 35);
+                }
+        };
+
+        function loadModel() {
+                if(logoTimerID > 0) {
+                        clearInterval(logoTimerID);
+                        logoTimerID = 0;
+                        viewer.enableDefaultInputHandler(true);
+                }
+		viewer.enableDefaultInputHandler(true);
+                viewer.update();
+        }
+
+        function setRenderMode() {
+                if(logoTimerID > 0)
+                        return;
+                var modes = document.getElementById('render_mode_list');
+                switch(modes.selectedIndex) {
+                case 0:
+                        viewer.setRenderMode('point');
+                        JSC3D.console.logInfo('Set to point mode.');
+                        break;
+                case 1:
+                        viewer.setRenderMode('wireframe');
+                        JSC3D.console.logInfo('Set to wireframe mode.');
+                        break;
+                case 2:
+                        viewer.setRenderMode('flat');
+                        JSC3D.console.logInfo('Set to flat mode.');
+                        break;
+                case 3:
+                        viewer.setRenderMode('smooth');
+                        JSC3D.console.logInfo('Set to smooth mode.');
+                        break;
+                default:
+                        viewer.setRenderMode('flat');
+                        break;
+                }
+                viewer.update();
+        }
+  </script>
+ </BODY>
+</HTML>
