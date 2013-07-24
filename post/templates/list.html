@@ -1,0 +1,35 @@
+    <div class="main">
+
+        <!-- Posts  -->
+        {% for post in posts.object_list %}
+                <div class="title"><h1><a href="/blog/{{ post.title }}">{{ post.title }}</a></h1></div>
+                    <div class="time">{{ post.created }}</div>
+                    <div class="author"><a href="/profile/{{ post.author }}">{{ post.author }}</div></a>
+                    <div class="body">{{ post.body_rendered|safe }}</div>
+                 <span class="tags">
+                 {% for tag in post.tags.all %} 
+                 <a href="/tag/{{tag}}">{{tag}}</a>
+                 {% endfor %} 
+
+        {% endfor %}
+       
+        <!-- Next/Prev page links  -->
+        {% if posts.object_list and posts.paginator.num_pages > 1 %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if posts.has_previous %}
+                    <a href= "?page={{ posts.previous_page_number }}">newer entries &lt;&lt; </a>
+                {% endif %}
+
+                <span class="current">
+                    &nbsp;Page {{ posts.number }} of {{ posts.paginator.num_pages }}
+                </span>
+
+                {% if posts.has_next %}
+                    <a href="?page={{ posts.next_page_number }}"> &gt;&gt; older entries</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+
+    </div>

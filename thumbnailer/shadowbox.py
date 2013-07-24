@@ -22,7 +22,7 @@ def outputstuff(imagelist, gallerynum, title):
 
     images = []
     for image in imagelist:
-	if os.path.isfile(settings.MEDIA_ROOT+"uploads/" + title +"/"+ image):
+        if os.path.isfile(settings.MEDIA_ROOT+"uploads/" + title +"/"+ image):
             images.append(thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + title +"/"+ image,(64,64)))
         else:
             for i in os.walk(settings.MEDIA_ROOT+"uploads/" + title +"/"+ image , topdown=True, onerror=None, followlinks=False):
