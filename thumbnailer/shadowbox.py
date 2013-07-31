@@ -12,7 +12,7 @@ from markdown.postprocessors import Postprocessor
 import re
 import os
 from django.conf import settings
-import thumbnailer
+import thumbnailer.thumbnailer as thumbnailer
 
 regexp1 = re.compile(r'[\[](.*?)[\]]')
 regexp2 = re.compile(r'[\[,\s\]]*')

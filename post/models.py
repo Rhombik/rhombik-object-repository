@@ -27,6 +27,7 @@ class Post(models.Model):
     def save(self):
         #created the folder for that post if it doesn't exist
         directory = settings.MEDIA_ROOT+"uploads/" + self.title
+        print("the path I'm sending is: "+directory)
         if not os.path.exists(directory):
             os.makedirs(directory)
         import markdown
