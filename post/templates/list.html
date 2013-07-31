@@ -1,10 +1,13 @@
+{% include "includes.html" %}
+
 <div>Username is root, password is root. Got to <a href="/admin">/admin<a> to add content<div>
 
     <div class="main">
 
         <!-- Posts  -->
         {% for post in posts.object_list %}
-                <div class="title"><h1><a href="/blog/{{ post.title }}">{{ post.title }}</a></h1></div>
+                <div class="title"><h1><a href="/post/{{ post.title }}">{{ post.title }}</a></h1></div>
+                    <img src="{{ post.thumbnailpath }}" class="thumbnail">
                     <div class="time">{{ post.created }}</div>
                     <div class="author"><a href="/profile/{{ post.author }}">{{ post.author }}</div></a>
                     <div class="body">{{ post.body_rendered|safe }}</div>

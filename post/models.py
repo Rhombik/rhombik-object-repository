@@ -15,6 +15,7 @@ class Post(models.Model):
 
     title = models.CharField(max_length=60,unique=True)
     thumbnail = models.CharField(max_length=60, blank=True, null=True)
+    thumbnailpath = models.CharField(max_length=256, blank=True, null=True)
     body = models.TextField()
     created = models.DateTimeField(default=time)
     author = models.ForeignKey(User, related_name='author',default=User) 
@@ -31,8 +32,8 @@ class Post(models.Model):
         if not os.path.exists(directory):
             os.makedirs(directory)
         #Generates the thumbnail
-            #I hate names.
-        thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + self.title + self.thumbnail,(64,64))
+                        #I hate names.
+        self.thumbnailpath = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + self.title + self.thumbnail,(256,256))[0]
 
         import markdown
         #Markdownifies the post body, striping out any raw html
