@@ -1,0 +1,3 @@
+[submodule "thumbnailer/phantomjs"]
+	path = thumbnailer/phantomjs
+	url = https://github.com/ariya/phantomjs.git
