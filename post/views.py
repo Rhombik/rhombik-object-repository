@@ -20,7 +20,7 @@ def post(request, title,):
 def list(request):
     """Main listing."""
     posts = Post.objects.all().order_by("-created")
-    paginator = Paginator(posts, 2)
+    paginator = Paginator(posts, 15)
 
 
     try: page = int(request.GET.get("page", '1'))

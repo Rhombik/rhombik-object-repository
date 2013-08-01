@@ -32,8 +32,11 @@ class Post(models.Model):
         if not os.path.exists(directory):
             os.makedirs(directory)
         #Generates the thumbnail
-                        #I hate names.
-        self.thumbnailpath = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + self.title + self.thumbnail,(256,256))[0]
+        try:        
+                #I hate names.
+            self.thumbnailpath = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + self.title + self.thumbnail,(200,200))[0]
+        except:
+            print("thumbnail failed")        
 
         import markdown
         #Markdownifies the post body, striping out any raw html
@@ -47,8 +50,7 @@ class Post(models.Model):
             self.body_rendered = thumbnailer.shadowbox.run(renderedtext, self.title)
             super(Post, self).save() # Call the "real" save() method.
 
-
 class PostAdmin(admin.ModelAdmin):
-    search_fields = ['title','author']
-    date_hierarchy = 'created'
+    search_fields = ["title"]
+
 admin.site.register(Post, PostAdmin)
