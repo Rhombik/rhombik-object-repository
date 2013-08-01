@@ -1,11 +1,11 @@
+{% include "includes.html" %}
+
     <div class="main">
 
         <!-- Posts  -->
                 <div class="title"><h1>{{ post.title }}</h1></div>
                     <div class="time">{{ post.created }}</div>
                     <div class="author"><a href="/profile/{{ post.author }}">{{ post.author }}</div></a>
-        <!-- gallery  -->
-{% include "gallery.html" %}
         <!-- Posts  -->
 
 
@@ -16,7 +16,6 @@
                   {% endfor %} 
               
                 <h2>Comments for {{ post.title }}:</h2>
-                {% include "comments/viewall.html" %}              
 
 
 

@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from datetime import datetime
 import thumbnailer.shadowbox
+import thumbnailer.thumbnailer
 import os
 from django.conf import settings
 
@@ -14,6 +15,7 @@ class Post(models.Model):
 
     title = models.CharField(max_length=60,unique=True)
     thumbnail = models.CharField(max_length=60, blank=True, null=True)
+    thumbnailpath = models.CharField(max_length=256, blank=True, null=True)
     body = models.TextField()
     created = models.DateTimeField(default=time)
     author = models.ForeignKey(User, related_name='author',default=User) 
@@ -27,9 +29,15 @@ class Post(models.Model):
     def save(self):
         #created the folder for that post if it doesn't exist
         directory = settings.MEDIA_ROOT+"uploads/" + self.title
-        print("the path I'm sending is: "+directory)
         if not os.path.exists(directory):
             os.makedirs(directory)
+        #Generates the thumbnail
+        try:        
+                #I hate names.
+            self.thumbnailpath = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + self.title + self.thumbnail,(200,200))[0]
+        except:
+            print("thumbnail failed")        
+
         import markdown
         #Markdownifies the post body, striping out any raw html
         if self.allow_html == False:
@@ -43,6 +51,6 @@ class Post(models.Model):
             super(Post, self).save() # Call the "real" save() method.
 
 class PostAdmin(admin.ModelAdmin):
-    search_fields = ['title','author']
-    date_hierarchy = 'created'
+    search_fields = ["title"]
+
 admin.site.register(Post, PostAdmin)

@@ -5,8 +5,11 @@ from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from django.views.decorators.csrf import ensure_csrf_cookie
 
+import thumbnailer.thumbnailer as thumbnailer 
+
 
 from post.models import *
+
 
 def post(request, title,):
 
@@ -17,7 +20,8 @@ def post(request, title,):
 def list(request):
     """Main listing."""
     posts = Post.objects.all().order_by("-created")
-    paginator = Paginator(posts, 2)
+    paginator = Paginator(posts, 15)
+
 
     try: page = int(request.GET.get("page", '1'))
     except ValueError: page = 1

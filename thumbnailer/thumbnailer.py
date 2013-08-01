@@ -12,6 +12,41 @@ import subprocess
 #Relative path to whatever I sent you. So fielpath, but relative to the web server. We're going to do this multi-threaded, so I can't gurantee I get data back in the order I put it in.
 #What to render it with. We don't have all the renderes and what files to use sorted out yet, but for stuff that can just be rendered in the browser, like images, "browser" is the rendered. Other file types will have custom javascript renderers.
 
+<<<<<<< HEAD
+=======
+def thumbnail(filepath,size):
+	extension = os.path.splitext(filepath)[1]
+	str_thumbnail_size = "-"+str(size[0])+"X"+str(size[1])
+
+	URL="http://testing.monastery0.org"
+
+	if extension == ".stl" or extension == ".obj" or extension ==  ".STL" or extension ==  ".OBJ":
+		#checks to see ig the thumbnail already exists
+		if os.path.exists(settings.MEDIA_ROOT+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)+str_thumbnail_size+".png"):
+			return(settings.MEDIA_URL+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"jsc3d")
+		else:		
+			builddir(settings.MEDIA_ROOT+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH))
+			#Uses phantomjs to create thumbnails.
+			subprocess.call(os.path.realpath(os.path.dirname(__file__)) + "/phantom/bin/phantomjs" +" "+
+				str(os.path.realpath(os.path.dirname(__file__)) + "/phantom/rastersize.js"+" "+
+				"\""+URL+"/thumbs/stl/"+os.path.relpath(filepath,settings.PROJECT_PATH))+"\""+" "+
+				"\""+settings.MEDIA_ROOT+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)+str_thumbnail_size+".png"+"\""+" "+
+				str(size[0])+ " " + str(size[1])
+				, shell=True
+			)
+			return(settings.MEDIA_URL+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"jsc3d")
+
+	elif extension == ".png" or extension == ".jpg" or extension == ".gif":
+		 #checks to see ig the thumbnail already exists
+		if os.path.exists(settings.MEDIA_ROOT+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)+str_thumbnail_size+".png"):
+			return(settings.MEDIA_URL+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"browser")
+		else:
+			img = Image.open(filepath)
+			img.thumbnail(size)
+			builddir(settings.MEDIA_ROOT+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH))
+			img.save(settings.MEDIA_ROOT+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)+str_thumbnail_size+".png", "PNG")
+			return(settings.MEDIA_URL+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"browser")
+>>>>>>> 2f5d2ac518d5478ed6d7e0e19caef7e5a3c8043b
 
 def jsc3d_render(filepath,size):
 
