@@ -43,7 +43,11 @@ LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
+#Sets the url that phantomJS should use for all of its rendering. Must be an instance of the site.
 URL = 'localhost:8000'
+#the path to the phantomjs binary, properly escaped.
+PHANTOMJSPATH = "stuff"
+
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.

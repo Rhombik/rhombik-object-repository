@@ -11,6 +11,7 @@ import subprocess
 
 ###import the url from the django settings
 URL=settings.URL
+PHANTOMJSPATH=settings.PHANTOMJSPATH
 
 ###javascript thumbnail render (untested)
 def jsc3d_render(filepath,size):
@@ -19,7 +20,7 @@ def jsc3d_render(filepath,size):
 
         media_root_path = settings.MEDIA_ROOT+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)
         media_url_path = settings.MEDIA_URL+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)
-
+	
 
         #checks to see ig the thumbnail already exists
         if os.path.exists(media_root_path+str_thumbnail_size+".png"):
@@ -27,18 +28,24 @@ def jsc3d_render(filepath,size):
         else:
                 builddir(media_root_path)
                 #Uses phantomjs to create thumbnails.
-                subprocess.call(os.path.realpath(os.path.dirname(__file__)) + "/phantom/bin/phantomjs" +" "+
+                subprocess.call(
+			#The path to the phantomjs binary
+			PHANTOMJSPATH +" "+
+			#What settings to use. PhantomJS can do a lot of stuff, rastersize lets you specfy a URL, an output path and a size. In reture it gives you a screenshot
                         str(os.path.realpath(os.path.dirname(__file__)) + "/phantom/rastersize.js"+" "+
+			#phantomJS takes a screenshot of a webpage. This is that webpage.
                         "\""+URL+"/thumbs/stl/"+os.path.relpath(filepath,settings.PROJECT_PATH))+"\""+" "+
+			#Where to save it to
                         "\""+media_root_path+str_thumbnail_size+".png"+"\""+" "+
-                        str(size[0])+ " " + str(size[1])
+			#what size to save it as.
+                        str(size[0])+" "+str(size[1])
+
                         , shell=True
                 )
                 return(media_url_path+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"jsc3d")
 
 ###PIL thumbnail render.
 def browser_render(filepath,size):
-
         str_thumbnail_size = "-"+str(size[0])+"X"+str(size[1])
 
         media_root_path = settings.MEDIA_ROOT+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)
@@ -49,11 +56,14 @@ def browser_render(filepath,size):
         if os.path.exists(media_root_path+str_thumbnail_size+".png"):
                 return(media_url_path+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"browser")
         else:
-                img = Image.open(filepath)
-                img.thumbnail(size)
-                builddir(media_root_path)
-                img.save(media_root_path+str_thumbnail_size+".png", "PNG")
-                return(media_url_path+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"browser")
+                try:
+                        img = Image.open(filepath)
+                        img.thumbnail(size)
+                        builddir(media_root_path)
+                        img.save(media_root_path+str_thumbnail_size+".png", "PNG")
+                        return(media_url_path+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"browser")
+                except:
+                        return(genericthumb(filepath,size))
 
 ###make directory if it doesn't exist.
 def builddir(outpath):
