@@ -35,7 +35,7 @@ def multiuploader_delete(request, pk):
         return HttpResponseBadRequest('Only POST accepted')
 
 @csrf_exempt
-def multiuploader(request):
+def multiuploader(request,title):
     """
     Main Multiuploader module.
     Parses data from jQuery plugin and makes database changes.
@@ -51,6 +51,9 @@ def multiuploader(request):
         filename = wrapped_file.name
         file_size = wrapped_file.file.size
         log.info ('Got file: "%s"' % str(filename))
+        filepath = MEDIA_ROOT+"/uploads/"+tile+"/"+filename
+        print("filepath: "+filepath)
+        filepath.write(file)
 
         #writing file manually into model
         #because we don't need form of any type.
