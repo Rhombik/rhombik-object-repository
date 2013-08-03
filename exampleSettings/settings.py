@@ -44,9 +44,9 @@ LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
 
 #Sets the url that phantomJS should use for all of its rendering. Must be an instance of the site.
-URL = 'localhost:8000'
+URL = 'http://localhost:8000'
 #the path to the phantomjs binary, properly escaped.
-PHANTOMJSPATH = "stuff"
+PHANTOMJSPATH = "phantomjs"
 
 
 # If you set this to False, Django will make some optimizations so as not
@@ -134,6 +134,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'thumbnailer',
     'post',
+    'multiuploader',
+    'exampleTheme',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -169,5 +171,9 @@ LOGGING = {
     }
 }
 
+
+MULTI_FILE_DELETE_URL = 'multi_delete'
+MULTI_IMAGE_URL = 'multi_image'
+MULTI_IMAGES_FOLDER = 'multiuploader_images'
 
 

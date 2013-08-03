@@ -21,7 +21,6 @@ def jsc3d_render(filepath,size):
         media_root_path = settings.MEDIA_ROOT+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)
         media_url_path = settings.MEDIA_URL+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)
 	
-
         #checks to see ig the thumbnail already exists
         if os.path.exists(media_root_path+str_thumbnail_size+".png"):
                 return(media_url_path+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"jsc3d")
@@ -29,10 +28,11 @@ def jsc3d_render(filepath,size):
                 builddir(media_root_path)
                 #Uses phantomjs to create thumbnails.
                 subprocess.call(
+               
 			#The path to the phantomjs binary
 			PHANTOMJSPATH +" "+
-			#What settings to use. PhantomJS can do a lot of stuff, rastersize lets you specfy a URL, an output path and a size. In reture it gives you a screenshot
-                        str(os.path.realpath(os.path.dirname(__file__)) + "/phantom/rastersize.js"+" "+
+			#What settings to use. PhantomJS can do a lot of stuff, rastersize lets you specfy a URL, an output path and a size. In reture it gives you a screenshot. If you're changing it you're probably rewriting the whole thing
+                        str(os.path.realpath(os.path.dirname(__file__)) + "/rastersize.js"+" "+
 			#phantomJS takes a screenshot of a webpage. This is that webpage.
                         "\""+URL+"/thumbs/stl/"+os.path.relpath(filepath,settings.PROJECT_PATH))+"\""+" "+
 			#Where to save it to
@@ -103,5 +103,6 @@ def thumbnail(filepath,size):
 
         elif extension in browser_pic:
                 return(browser_render(filepath,size))
-
+#        else:
+#                return(genericthumb(filepath,size))
 

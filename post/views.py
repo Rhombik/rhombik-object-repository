@@ -9,6 +9,7 @@ import thumbnailer.thumbnailer as thumbnailer
 
 
 from post.models import *
+from multiuploader.models import *
 
 
 def post(request, title,):
@@ -32,3 +33,10 @@ def list(request):
         posts = paginator.page(paginator.num_pages)
 
     return render_to_response("list.html", dict(posts=posts, user=request.user))
+
+def edit(request, title,):
+    items = MultiuploaderImage.objects.all()
+    post=Post.objects.filter(title=title)[0:1].get()
+    return render_to_response('edit.html', dict(items=items, posts=post, user=request.user))
+
+

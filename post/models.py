@@ -50,7 +50,3 @@ class Post(models.Model):
             self.body_rendered = thumbnailer.shadowbox.run(renderedtext, self.title)
             super(Post, self).save() # Call the "real" save() method.
 
-class PostAdmin(admin.ModelAdmin):
-    search_fields = ["title"]
-
-admin.site.register(Post, PostAdmin)
