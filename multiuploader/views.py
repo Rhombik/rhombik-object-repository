@@ -11,7 +11,7 @@ from django.utils import simplejson
 #sorl-thumbnails must be installed and properly configured
 #from sorl.thumbnail import get_thumbnail
 
-
+from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
 import logging
@@ -51,9 +51,8 @@ def multiuploader(request,title):
         filename = wrapped_file.name
         file_size = wrapped_file.file.size
         log.info ('Got file: "%s"' % str(filename))
-        filepath = MEDIA_ROOT+"/uploads/"+tile+"/"+filename
+        filepath = settings.MEDIA_ROOT+"uploads/"+title+"/"+filename
         print("filepath: "+filepath)
-        filepath.write(file)
 
         #writing file manually into model
         #because we don't need form of any type.

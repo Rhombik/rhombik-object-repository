@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/base/jquery-ui.css" id="theme">
 <link rel="stylesheet" href="/static/multiuploader/styles/jquery.fileupload-ui.css">
 <div id="fileupload">
-    <form action="{% url 'multiuploader.views.multiuploader' %}" method="POST" enctype="multipart/form-data">
+    <form action="{% url 'multiuploader.views.multiuploader' post.title %}" method="POST" enctype="multipart/form-data">
         <div class="fileupload-buttonbar">
             <label class="fileinput-button">
                 <span>Add files...</span>

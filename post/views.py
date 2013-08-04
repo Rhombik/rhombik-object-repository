@@ -34,9 +34,8 @@ def list(request):
 
     return render_to_response("list.html", dict(posts=posts, user=request.user))
 
-def edit(request, title,):
-    post=Post.objects.filter(title=title)[0:1].get()
+def edit(request, title):
 
-    return render_to_response('edit.html', dict(post=post, user=request.user))
+    return render_to_response('edit.html', dict(post=Post.objects.filter(title=title)[0:1].get(), user=request.user))
 
 
