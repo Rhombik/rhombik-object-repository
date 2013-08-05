@@ -14,6 +14,10 @@ from django.utils import simplejson
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+
+
 import logging
 log = logging
 
@@ -53,6 +57,7 @@ def multiuploader(request,title):
         log.info ('Got file: "%s"' % str(filename))
         filepath = settings.MEDIA_ROOT+"uploads/"+title+"/"+filename
         print("filepath: "+filepath)
+        path = default_storage.save(filepath, ContentFile(file.read())) 
 
         #writing file manually into model
         #because we don't need form of any type.
