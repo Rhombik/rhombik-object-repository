@@ -9,7 +9,6 @@ import thumbnailer.thumbnailer as thumbnailer
 
 
 from post.models import *
-from multiuploader.models import *
 
 
 def post(request, title,):
