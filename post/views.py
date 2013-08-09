@@ -11,6 +11,10 @@ import thumbnailer.thumbnailer as thumbnailer
 from post.models import *
 from post.forms import PostForm
 from django import forms
+##obviously ignoring csrf is a bad thing. Get this fixed.
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseRedirect
+
 
 def post(request, title,):
 
@@ -34,17 +38,18 @@ def list(request):
 
     return render_to_response("list.html", dict(posts=posts, user=request.user))
 
-
-
+@csrf_exempt
 def edit(request, title):
     post=Post.objects.filter(title=title)[0:1].get()
     if request.method == 'POST':
         form = PostForm(request.POST)
+        #Check to make sure the form is valid and the user matches the post author
         if form.is_valid() and str(post.author) == str(request.user):
-            print ("form!")
-            post.body = form.body
-            post.thumbnail = form.thumbnail
+            #save thr form
+            post.body = form.cleaned_data["body"]
+            post.thumbnail = form.cleaned_data["thumbnail"]
             post.save()
+            return HttpResponseRedirect('/post/'+title)
     elif str(post.author) == str(request.user):
         form = PostForm({'body': post.body, 'thumbnail': post.thumbnail})
         return render_to_response('edit.html', dict(post=post, user=request.user, form=form))
