@@ -40,11 +40,12 @@ def edit(request, title):
     post=Post.objects.filter(title=title)[0:1].get()
     if request.method == 'POST':
         form = PostForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() and str(post.author) == str(request.user):
             print ("form!")
-    else:
+    elif str(post.author) == str(request.user):
         form = PostForm()
-    print (request.user)
-    return render_to_response('edit.html', dict(post=post, user=request.user, form=form))
+        return render_to_response('edit.html', dict(post=post, user=request.user, form=form))
+    else:
+        return HttpResponse(status=403)
 
 
