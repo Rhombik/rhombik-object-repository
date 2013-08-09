@@ -42,8 +42,11 @@ def edit(request, title):
         form = PostForm(request.POST)
         if form.is_valid() and str(post.author) == str(request.user):
             print ("form!")
+            post.body = form.body
+            post.thumbnail = form.thumbnail
+            post.save()
     elif str(post.author) == str(request.user):
-        form = PostForm()
+        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail})
         return render_to_response('edit.html', dict(post=post, user=request.user, form=form))
     else:
         return HttpResponse(status=403)
