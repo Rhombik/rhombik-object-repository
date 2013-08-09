@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, render_to_response
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseBadRequest
-from multiuploader.models import MultiuploaderImage
+
+##from multiuploader.models import MultiuploaderImage
 from django.core.files.uploadedfile import UploadedFile
 
 #importing json parser to generate jQuery plugin friendly json response
@@ -11,15 +12,18 @@ from django.utils import simplejson
 #sorl-thumbnails must be installed and properly configured
 #from sorl.thumbnail import get_thumbnail
 
-from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 
+import thumbnailer.thumbnailer as thumbnailer
 
 import logging
 log = logging
+
+from multiuploader.forms import MultiuploaderImage
+
 
 @csrf_exempt
 def multiuploader_delete(request, pk):
@@ -55,38 +59,32 @@ def multiuploader(request,title):
         filename = wrapped_file.name
         file_size = wrapped_file.file.size
         log.info ('Got file: "%s"' % str(filename))
+
+
+        #Writing file to disk
         filepath = settings.MEDIA_ROOT+"uploads/"+title+"/"+filename
         print("filepath: "+filepath)
         path = default_storage.save(filepath, ContentFile(file.read())) 
 
-        #writing file manually into model
-        #because we don't need form of any type.
-        image = MultiuploaderImage()
-        image.filename=str(filename)
-        image.image=file
-        image.key_data = image.key_generate
-        image.save()
-        log.info('File saving done')
 
         #getting thumbnail url using sorl-thumbnail
-#        im = get_thumbnail(image, "80x80", quality=50)
-#        thumb_url = im.url
-        thumb_url = "null"
+        thumbnailstring = thumbnailer.thumbnail(filepath, (64,64))
+        thumb_url = thumbnailstring[0]
         #settings imports
         try:
             file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
-            file_url = settings.MULTI_IMAGE_URL+'/'+image.key_data+'/'
+            file_url = path
         except AttributeError:
             file_delete_url = 'multi_delete/'
-            file_url = 'multi_image/'+image.key_data+'/'
+            file_url = path
 
         #generating json response array
         result = []
         result.append({"name":filename, 
                        "size":file_size, 
-                       "url":file_url, 
+                       "url":"/preview/stl"+thumb_url, 
                        "thumbnail_url":thumb_url,
-                       "delete_url":file_delete_url+str(image.pk)+'/', 
+                       "delete_url":file_delete_url+str(path), 
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
         

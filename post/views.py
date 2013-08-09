@@ -9,8 +9,8 @@ import thumbnailer.thumbnailer as thumbnailer
 
 
 from post.models import *
-from multiuploader.models import *
-
+from post.forms import PostForm
+from django import forms
 
 def post(request, title,):
 
@@ -34,8 +34,18 @@ def list(request):
 
     return render_to_response("list.html", dict(posts=posts, user=request.user))
 
-def edit(request, title):
 
-    return render_to_response('edit.html', dict(post=Post.objects.filter(title=title)[0:1].get(), user=request.user))
+
+def edit(request, title):
+    post=Post.objects.filter(title=title)[0:1].get()
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid() and str(post.author) == str(request.user):
+            print ("form!")
+    elif str(post.author) == str(request.user):
+        form = PostForm()
+        return render_to_response('edit.html', dict(post=post, user=request.user, form=form))
+    else:
+        return HttpResponse(status=403)
 
 
