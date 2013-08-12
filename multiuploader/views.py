@@ -23,6 +23,7 @@ import logging
 log = logging
 
 from multiuploader.forms import MultiuploaderImage
+from post.models import *
 
 
 @csrf_exempt
@@ -68,7 +69,7 @@ def multiuploader(request,title):
 
 
         #getting thumbnail url using sorl-thumbnail
-        thumbnailstring = thumbnailer.thumbnail(filepath, (64,64))
+        thumbnailstring = thumbnailer.thumbnailer.thumbnail(filepath, (64,64))
         thumb_url = thumbnailstring[0]
         #settings imports
         try:
@@ -98,9 +99,10 @@ def multiuploader(request,title):
     else: #GET
         return HttpResponse('Only POST accepted')
 
-def multi_show_uploaded(request, key):
+def multi_show_uploaded(request, title):
     """Simple file view helper.
     Used to show uploaded file directly"""
+    post=Post.objects.filter(title=title)[0:1].get()
     image = get_object_or_404(MultiuploaderImage, key_data=key)
     url = settings.MEDIA_URL+image.image.name
     return render_to_response('multiuploader/one_image.html', {"multi_single_url":url,})

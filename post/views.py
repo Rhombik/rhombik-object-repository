@@ -13,7 +13,7 @@ from post.forms import PostForm
 from django import forms
 ##obviously ignoring csrf is a bad thing. Get this fixed.
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 
 
 def post(request, title,):
@@ -40,7 +40,10 @@ def list(request):
 
 @csrf_exempt
 def edit(request, title):
-    post=Post.objects.filter(title=title)[0:1].get()
+    try:
+        post=Post.objects.filter(title=title)[0:1].get()
+    except:
+        return HttpResponse(status=404)
     if request.method == 'POST':
         form = PostForm(request.POST)
         #Check to make sure the form is valid and the user matches the post author
@@ -50,6 +53,9 @@ def edit(request, title):
             post.thumbnail = form.cleaned_data["thumbnail"]
             post.save()
             return HttpResponseRedirect('/post/'+title)
+        else:
+            return HttpResponse(status=403)
+
     elif str(post.author) == str(request.user):
         form = PostForm({'body': post.body, 'thumbnail': post.thumbnail})
         return render_to_response('edit.html', dict(post=post, user=request.user, form=form))
