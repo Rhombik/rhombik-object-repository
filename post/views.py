@@ -38,8 +38,12 @@ def list(request):
 
     return render_to_response("list.html", dict(posts=posts, user=request.user))
 
+from django.utils import simplejson
+
 @csrf_exempt
 def edit(request, title):
+
+##The form-----------------------------
     try:
         post=Post.objects.filter(title=title)[0:1].get()
     except:
@@ -55,10 +59,34 @@ def edit(request, title):
             return HttpResponseRedirect('/post/'+title)
         else:
             return HttpResponse(status=403)
+#--------------------------
+#Set up the actual view.
+
 
     elif str(post.author) == str(request.user):
         form = PostForm({'body': post.body, 'thumbnail': post.thumbnail})
-        return render_to_response('edit.html', dict(post=post, user=request.user, form=form))
+        images = []
+        #get a list of al the files in the folder
+        for i in os.walk(settings.MEDIA_ROOT+"uploads/" + title +"/", topdown=True, onerror=None, followlinks=False):
+            for z in i[2]:##If anyone doesn't know, the [2] is because 0 is dir, 1 is folders, and 2 is files.
+                filename = i[0]+z
+                print (filename)
+                images.append(thumbnailer.thumbnailer.thumbnail(filename,(64,64)))
+        file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
+        result = [] 
+        for image in images:
+            thumb_url = image[0]
+            file_url = image[1]
+            ##json stuff
+            result.append({"name":"name",
+                       "size":"size",
+                       "url":file_url,
+                       "thumbnail_url":thumb_url,
+                       "delete_url":file_delete_url+str(file_url)+'/',
+                       "delete_type":"POST",})
+            response_data = simplejson.dumps(result)
+
+        return render_to_response('edit.html', dict(post=post, user=request.user, form=form, json_files=response_data))
     else:
         return HttpResponse(status=403)
 

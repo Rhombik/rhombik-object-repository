@@ -24,12 +24,8 @@ def builddir(outpath):
 #Path from /media to the image/file sent.
 #File type for render options 
 def genericthumb(filepath,size):
-        str_thumbnail_size = "-"+str(size[0])+"X"+str(size[1])
 
-        img = Image.open(settings.MEDIA_ROOT+"images/genericthumb.png")
-        img.thumbnail(size)
-        img.save(settings.MEDIA_ROOT+"thumbnails/genericthumb"+str_thumbnail_size+".png")
-        return(settings.MEDIA_URL+"thumbnails/genericthumb"+str_thumbnail_size+".png",filepath,"norender")
+        return("null","null","norender")
         logger.warning('not a supported filetype: ' + "\"" + filepath + "\"")
 
 
