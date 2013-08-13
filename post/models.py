@@ -8,16 +8,13 @@ import os
 from django.conf import settings
 
 class Post(models.Model):
-    try:
-        self.time
-    except NameError:
-        time = datetime.now()
 
     title = models.CharField(max_length=60,unique=True)
     thumbnail = models.CharField(max_length=60, blank=True, null=True)
     thumbnailpath = models.CharField(max_length=256, blank=True, null=True)
     body = models.TextField()
-    created = models.DateTimeField(default=time)
+    created = models.DateTimeField(auto_now_add = True)
+    updated = models.DateTimeField(auto_now = True)
     author = models.ForeignKey(User, related_name='author',default=User) 
     allow_html = models.BooleanField(default=False)
     ##only used internally, don't set
