@@ -69,8 +69,9 @@ def multiuploader(request,title):
 
 
         #getting thumbnail url using sorl-thumbnail
-        thumbnailstring = thumbnailer.thumbnailer.thumbnail(filepath, (64,64))
+        thumbnailstring = thumbnailer.thumbnailer.thumbnail(filepath, (64,64), forceupdate=True)
         thumb_url = thumbnailstring[0]
+        file_url = thumbnailstring[1]
         #settings imports
         try:
             file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
@@ -83,7 +84,7 @@ def multiuploader(request,title):
         result = []
         result.append({"name":filename, 
                        "size":file_size, 
-                       "url":"/preview/stl"+thumb_url, 
+                       "url":file_url, 
                        "thumbnail_url":thumb_url,
                        "delete_url":file_delete_url+str(path), 
                        "delete_type":"POST",})
@@ -103,6 +104,7 @@ def multi_show_uploaded(request, title):
     """Simple file view helper.
     Used to show uploaded file directly"""
     post=Post.objects.filter(title=title)[0:1].get()
-    image = get_object_or_404(MultiuploaderImage, key_data=key)
-    url = settings.MEDIA_URL+image.image.name
+    thumbnailstring = thumbnailer.thumbnailer.thumbnail(filepath, (64,64))
+    url = thumbnailstring[0]
+    print("adding \""+url+"\" to url string")
     return render_to_response('multiuploader/one_image.html', {"multi_single_url":url,})
