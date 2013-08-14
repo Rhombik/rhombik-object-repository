@@ -22,11 +22,13 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     (r'^edit/(.*)/$', 'post.views.edit'),
+    (r'^create/$', 'post.views.create'),
+
     #captcha urls
     url(r'^captcha/', include('captcha.urls')),
 
     (r'^register/$', 'basiclogin.views.register'),
-
+    (r'^login/$', 'basiclogin.views.login_user'),
 
     #preview pages for the STL files.
     (r'^thumbs/stl/(.*)', 'thumbnailer.views.stlthumb'),

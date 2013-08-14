@@ -9,7 +9,7 @@ import thumbnailer.thumbnailer as thumbnailer
 
 
 from post.models import *
-from post.forms import PostForm
+from post.forms import PostForm, createForm
 from django import forms
 ##obviously ignoring csrf is a bad thing. Get this fixed.
 from django.views.decorators.csrf import csrf_exempt
@@ -91,4 +91,27 @@ def edit(request, title):
     else:
         return HttpResponse(status=403)
 
+@csrf_exempt
+def create(request):
 
+##The form-----------------------------
+    if request.method == 'POST':
+        form = createForm(request.POST)
+        #Check to make sure the form is valid and the user matches the post author
+        if form.is_valid() and request.user.is_authenticated():
+            post = Post()
+            #save thr form
+            post.title = form.cleaned_data["title"]
+            post.body = form.cleaned_data["body"]
+            post.thumbnail = form.cleaned_data["thumbnail"]
+            post.save()
+            return HttpResponseRedirect('/post/'+post.title)
+        else:
+            return HttpResponse(status=403)
+#--------------------------
+#Set up the actual view.
+    elif request.user.is_authenticated():
+        form = createForm()
+        return render_to_response('edit.html', dict(user=request.user, form=form ))
+    else:
+        return HttpResponse(status=403)
