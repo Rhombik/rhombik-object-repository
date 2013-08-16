@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'post',
     'multiuploader',
     'exampleTheme',
+    'userProfile',
     'captcha',
     'basiclogin',
     # Uncomment the next line to enable the admin:
@@ -178,4 +179,5 @@ MULTI_FILE_DELETE_URL = 'multi_delete'
 MULTI_IMAGE_URL = 'multi_image'
 MULTI_IMAGES_FOLDER = 'multiuploader_images'
 
-
+###  autorize the use of user profile I guess.... (spike, take a letter:   user profile . user profile . user profile         . user profile)
+AUTH_PROFILE_MODULE = "userProfile.userProfile"
