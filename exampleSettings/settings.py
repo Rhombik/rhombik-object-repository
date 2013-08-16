@@ -128,14 +128,11 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'thumbnailer',
+    'django.contrib.sessions', 'django.contrib.sites', 'django.contrib.messages', 'django.contrib.staticfiles', 'thumbnailer',
     'post',
     'multiuploader',
     'exampleTheme',
+    'userProfile',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -176,4 +173,5 @@ MULTI_FILE_DELETE_URL = 'multi_delete'
 MULTI_IMAGE_URL = 'multi_image'
 MULTI_IMAGES_FOLDER = 'multiuploader_images'
 
-
+###  autorize the use of user profile I guess.... (spike, take a letter:   user profile . user profile . user profile         . user profile)
+AUTH_PROFILE_MODULE = "userProfile.userProfile"
