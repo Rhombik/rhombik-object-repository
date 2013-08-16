@@ -24,6 +24,9 @@ urlpatterns = patterns('',
     (r'^edit/(.*)/$', 'post.views.edit'),
     (r'^create/$', 'post.views.create'),
 
+    (r'^editorg/(.*)/$', 'organization.views.orgedit'),
+
+
     #captcha urls
     url(r'^captcha/', include('captcha.urls')),
 

@@ -16,7 +16,7 @@ class userProfile(models.Model):
     created = models.DateTimeField(auto_now_add = True)
 
     #username = models.CharField(max_length=30, blank=True, null=True)
-    profilePic = models.CharField(max_length=64)
+    profilePic = models.CharField(max_length=64, default="/")
     profilePicPath = models.CharField(max_length=256, blank=True, null=True)
     bio = models.CharField(max_length=256)
     
@@ -37,3 +37,5 @@ class userProfile(models.Model):
             print("thumbnail failed")
 
         super(userProfile, self).save()
+
+User.profile = property(lambda u: userProfile.objects.get_or_create(user=u)[0])
