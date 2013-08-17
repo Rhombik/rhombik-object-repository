@@ -32,7 +32,7 @@ class userProfile(models.Model):
         try:
                 #I hate names.
             print(str(settings.MEDIA_ROOT + "userPics" + self.profilePic))
-            self.profilePicPath = thumbnailer.thumbnailer.thumbnail(str(settings.MEDIA_ROOT + "userPics" + self.profilePic), (200,200))[0]
+            self.profilePicPath = thumbnailer.thumbnailer.thumbnail(str(settings.MEDIA_ROOT + "userPics" + self.profilePic), (250,250))[0]
         except:
             print("thumbnail failed")
 
