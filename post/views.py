@@ -84,7 +84,7 @@ def edit(request, title):
                        "thumbnail_url":thumb_url,
                        "delete_url":file_delete_url+str(file_url)+'/',
                        "delete_type":"POST",})
-            response_data = simplejson.dumps(result)
+        response_data = simplejson.dumps(result)
 
         return render_to_response('edit.html', dict(post=post, user=request.user, form=form, json_files=response_data))
         #return HttpResponse(response_data, mimetype="application/json")
