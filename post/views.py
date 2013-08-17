@@ -101,6 +101,7 @@ def create(request):
         if form.is_valid() and request.user.is_authenticated():
             post = Post()
             #save thr form
+            post.author = request.user
             post.title = form.cleaned_data["title"]
             post.body = form.cleaned_data["body"]
             post.thumbnail = form.cleaned_data["thumbnail"]
@@ -112,6 +113,6 @@ def create(request):
 #Set up the actual view.
     elif request.user.is_authenticated():
         form = createForm()
-        return render_to_response('edit.html', dict(user=request.user, form=form ))
+        return render_to_response('create.html', dict(user=request.user, msg="lah la la la lah la lah", form=form ))
     else:
         return HttpResponse(status=403)

@@ -13,10 +13,10 @@ def index(request, user):
     userdata=User.objects.filter(username=user).get()
     #help(Post.objects.filter)
     #print(user)
-    userposts=Post.objects.all()#filter(author=user).get() '''~this needs to get the users posts.... not just you know, all the posts....'''
+    userposts=Post.objects.filter(author=userdata) #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!'''
     #help(userposts)
     '''the correct answer was "print(userdata.get_profile().profilePicPath)"   '''
-    c = RequestContext(request, dict(userPic=userdata.get_profile().profilePicPath, user=user, bio=userdata.get_profile().bio, userposts = userposts))
+    c = RequestContext(request, dict(userPic=userdata.profile.profilePicPath, usersname=user, bio=userdata.profile.bio, userposts = userposts))
     return render(request, "userProfile/index.html", c)
 
 
