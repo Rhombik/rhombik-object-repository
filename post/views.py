@@ -7,7 +7,6 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 import thumbnailer.thumbnailer as thumbnailer 
 
-
 from post.models import *
 from post.forms import PostForm, createForm
 from django import forms
@@ -65,8 +64,12 @@ def edit(request, title):
 
 
     elif str(post.author) == str(request.user):
-        taglist = "null"
-        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail, 'tags' : taglist})
+        taglist = []
+        for i in post.tags.names():
+           taglist.append(i)
+        taglist = ",".join(taglist)
+        print ("tags= "+str(taglist))
+        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail, 'tags' : str(taglist)})
         return render_to_response('edit.html', dict(post=post, user=request.user, form=form,))
         #return HttpResponse(response_data, mimetype="application/json")
     else:
@@ -99,3 +102,18 @@ def create(request):
         return render_to_response('create.html', dict(user=request.user, form=form ))
     else:
         return HttpResponse(status=403)
+
+def tag(request,tag):
+    posts = Post.objects.filter(tags__name__in=[tag]).order_by("-created")
+    paginator = Paginator(posts, 15)
+
+    try: page = int(request.GET.get("page", '1'))
+    except ValueError: page = 1
+
+    try:
+        posts = paginator.page(page)
+    except (InvalidPage, EmptyPage):
+        posts = paginator.page(paginator.num_pages)
+
+    return render_to_response("list.html", dict(posts=posts, user=request.user))
+
