@@ -98,7 +98,32 @@ def multiuploader(request,title):
             mimetype = 'text/plain'
         return HttpResponse(response_data, mimetype=mimetype)
     else: #GET
-        return HttpResponse('Only POST accepted')
+        images = []
+        for i in os.walk(settings.MEDIA_ROOT+"uploads/" + title +"/", topdown=True, onerror=None, followlinks=False):
+            for z in i[2]:##If anyone doesn't know, the [2] is because 0 is dir, 1 is folders, and 2 is files.
+                filename = i[0]+z
+                print (filename)
+                images.append(thumbnailer.thumbnailer.thumbnail(filename,(64,64)))
+        file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
+        result = []
+        for image in images:
+            thumb_url = image[0]
+            file_url = image[1]
+            ##json stuff
+            result.append({"name":"name",
+                       "size":"size",
+                       "url":file_url,
+                       "thumbnail_url":thumb_url,
+                       "delete_url":file_delete_url+str(file_url)+'/',
+                       "delete_type":"POST",})
+        response_data = simplejson.dumps(result)
+
+        if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
+            mimetype = 'application/json'
+        else:
+            mimetype = 'text/plain'
+        return HttpResponse(response_data, mimetype=mimetype)
+
 
 def multi_show_uploaded(request, title):
     """Simple file view helper.
