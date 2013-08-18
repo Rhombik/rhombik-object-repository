@@ -23,8 +23,9 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     (r'^edit/(.*)/$', 'post.views.edit'),
     (r'^create/$', 'post.views.create'),
-    (r'^tag/(.*)/$', 'post.views.tag'),
 
+    (r'^tag/(.*)/$', 'post.views.tag'),
+    (r'^tagcloud/$', 'post.views.tagcloud' ),
 
     (r'^editorg/(.*)/$', 'organization.views.orgedit'),
 

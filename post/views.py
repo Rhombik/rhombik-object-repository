@@ -117,3 +117,6 @@ def tag(request,tag):
 
     return render_to_response("list.html", dict(posts=posts, user=request.user))
 
+def tagcloud(request):
+    return render(request, "tagcloud.html")
+

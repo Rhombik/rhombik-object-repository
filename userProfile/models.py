@@ -34,7 +34,10 @@ class userProfile(models.Model):
             print(str(settings.MEDIA_ROOT + "userPics" + self.profilePic))
             self.profilePicPath = thumbnailer.thumbnailer.thumbnail(str(settings.MEDIA_ROOT + "userPics" + self.profilePic), (250,250))[0]
         except:
-            print("thumbnail failed")
+           def clean(self):
+                from django.core.exceptions import ValidationError
+                raise ValidationError('No valid thumbnail')
+
 
         super(userProfile, self).save()
 
