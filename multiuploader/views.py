@@ -101,17 +101,16 @@ def multiuploader(request,title):
         images = []
         for i in os.walk(settings.MEDIA_ROOT+"uploads/" + title +"/", topdown=True, onerror=None, followlinks=False):
             for z in i[2]:##If anyone doesn't know, the [2] is because 0 is dir, 1 is folders, and 2 is files.
-                filename = i[0]+z
-                print (filename)
-                images.append(thumbnailer.thumbnailer.thumbnail(filename,(64,64)))
+                filepath = i[0]+z
+                images.append((thumbnailer.thumbnailer.thumbnail(filepath,(64,64)), z, os.path.getsize(filepath)))
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []
         for image in images:
-            thumb_url = image[0]
-            file_url = image[1]
+            thumb_url = image[0][0]
+            file_url = image[0][1]
             ##json stuff
-            result.append({"name":"name",
-                       "size":"size",
+            result.append({"name":image[1],
+                       "size":image[2],
                        "url":file_url,
                        "thumbnail_url":thumb_url,
                        "delete_url":file_delete_url+str(file_url)+'/',
@@ -125,11 +124,3 @@ def multiuploader(request,title):
         return HttpResponse(response_data, mimetype=mimetype)
 
 
-def multi_show_uploaded(request, title):
-    """Simple file view helper.
-    Used to show uploaded file directly"""
-    post=Post.objects.filter(title=title)[0:1].get()
-    thumbnailstring = thumbnailer.thumbnailer.thumbnail(filepath, (64,64))
-    url = thumbnailstring[0]
-    print("adding \""+url+"\" to url string")
-    return render_to_response('multiuploader/one_image.html', {"multi_single_url":url,})

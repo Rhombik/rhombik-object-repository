@@ -33,7 +33,11 @@ class Post(models.Model):
                 #I hate names.
             self.thumbnailpath = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + self.title + self.thumbnail,(200,200))[0]
         except:
-            print("thumbnail failed")        
+            def clean(self):
+                from django.core.exceptions import ValidationError
+                raise ValidationError('No valid thumbnail')
+
+
 
         import markdown
         #Markdownifies the post body, striping out any raw html
