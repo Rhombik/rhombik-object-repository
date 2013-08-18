@@ -55,6 +55,7 @@ def edit(request, title):
             #save thr form
             post.body = form.cleaned_data["body"]
             post.thumbnail = form.cleaned_data["thumbnail"]
+            post.tags = form.cleaned_data["tags"]
             post.save()
             return HttpResponseRedirect('/post/'+title)
         else:
@@ -86,7 +87,7 @@ def edit(request, title):
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
 
-        return render_to_response('edit.html', dict(post=post, user=request.user, form=form))
+        return render_to_response('edit.html', dict(post=post, user=request.user, form=form, json_files = response_data))
         #return HttpResponse(response_data, mimetype="application/json")
     else:
         return HttpResponse(status=403)
@@ -115,10 +116,6 @@ def create(request):
 #Set up the actual view.
     elif request.user.is_authenticated():
         form = createForm()
-<<<<<<< HEAD
         return render_to_response('create.html', dict(user=request.user, form=form ))
-=======
-        return render_to_response('create.html', dict(user=request.user, msg="lah la la la lah la lah", form=form ))
->>>>>>> ad368b42bb83aa43cb949971e83ca73009b451a2
     else:
         return HttpResponse(status=403)
