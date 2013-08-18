@@ -6,9 +6,9 @@ from django.forms import ModelForm
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ["thumbnail", "body",]
+        fields = ["thumbnail", "body","tags",]
 
 class createForm(ModelForm):
     class Meta:
         model = Post
-        fields = ["title","thumbnail", "body",]
+        fields = ["title","thumbnail", "body", "tags",]

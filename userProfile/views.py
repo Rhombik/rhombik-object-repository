@@ -9,8 +9,8 @@ from userProfile.models import userProfile
 def index(request, user):
 
     """bleh blebh bhel bleh, IM GOING INSANE.... I mean; user profile display stuff."""
+    #I hate this vampire head ~alex
     userdata=User.objects.filter(username=user).get()
-    help(userdata.userProfile.profilePicPath)
     c = RequestContext(request, dict(userPic=userdata.userProfile.profilePicPath, user=request.user, bio=userProfile.bio))
     return render(request, "article.html", c)
 

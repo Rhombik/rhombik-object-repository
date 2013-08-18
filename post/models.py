@@ -5,6 +5,7 @@ import thumbnailer.shadowbox
 import thumbnailer.thumbnailer
 import os
 from django.conf import settings
+from taggit.managers import TaggableManager
 
 class Post(models.Model):
 
@@ -18,7 +19,7 @@ class Post(models.Model):
     allow_html = models.BooleanField(default=False)
     ##only used internally, don't set
     body_rendered = models.TextField('Entry body as HTML', blank=True, null=True)
-
+    tags = TaggableManager()
 
     def __unicode__(self):
         return self.title

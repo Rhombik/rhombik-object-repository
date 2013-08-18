@@ -1,1 +1,1 @@
-markdown django-simple-captcha
+markdown django-simple-captcha django-taggit django-taggit-templatetags

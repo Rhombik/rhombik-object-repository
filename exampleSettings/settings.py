@@ -140,6 +140,8 @@ INSTALLED_APPS = (
     'captcha',
     'basiclogin',
     'organization',
+    'taggit',
+    'taggit_autosuggest',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

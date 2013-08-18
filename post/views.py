@@ -64,7 +64,7 @@ def edit(request, title):
 
 
     elif str(post.author) == str(request.user):
-        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail})
+        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail, 'tags' : str(post.tags.distinct())})
         images = []
         #get a list of al the files in the folder
         for i in os.walk(settings.MEDIA_ROOT+"uploads/" + title +"/", topdown=True, onerror=None, followlinks=False):
@@ -86,7 +86,7 @@ def edit(request, title):
                        "delete_type":"POST",})
             response_data = simplejson.dumps(result)
 
-        return render_to_response('edit.html', dict(post=post, user=request.user, form=form, json_files=response_data))
+        return render_to_response('edit.html', dict(post=post, user=request.user, form=form))
         #return HttpResponse(response_data, mimetype="application/json")
     else:
         return HttpResponse(status=403)
@@ -103,15 +103,17 @@ def create(request):
             #save thr form
             post.title = form.cleaned_data["title"]
             post.body = form.cleaned_data["body"]
+            post.author = request.user
             post.thumbnail = form.cleaned_data["thumbnail"]
+            post.tags = form.cleaned_data["tags"]
             post.save()
-            return HttpResponseRedirect('/post/'+post.title)
+            return HttpResponseRedirect('/post/'+form.cleaned_data["title"])
         else:
             return HttpResponse(status=403)
 #--------------------------
 #Set up the actual view.
     elif request.user.is_authenticated():
         form = createForm()
-        return render_to_response('edit.html', dict(user=request.user, form=form ))
+        return render_to_response('create.html', dict(user=request.user, form=form ))
     else:
         return HttpResponse(status=403)

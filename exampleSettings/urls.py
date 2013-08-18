@@ -37,7 +37,7 @@ urlpatterns = patterns('',
     (r'^thumbs/stl/(.*)', 'thumbnailer.views.stlthumb'),
     (r'^preview/stl/(.*)', 'thumbnailer.views.stlview'),
     url(r'', include('multiuploader.urls')),
-
+    (r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
     #user profile pages
     url(r'^userProfile/', include('userProfile.urls')),
 
