@@ -11,8 +11,9 @@ def index(request, user):
     
     """bleh blebh bhel bleh, IM GOING INSANE.... I mean; user profile display stuff."""
     #I hate this vampire head ~alex
-#    userdata=User.objects.filter(username=user).get()
-#    c = RequestContext(request, dict(userPic=userdata.userProfile.profilePicPath, user=request.user, bio=userProfile.bio))
+    userdata=User.objects.filter(username=user).get()
+#<<<<<<< HEAD
+#    c = RequestContext(request, dict(userPic=userdata.profile.profilePicPath, user=request.user, bio=userdata.profile.bio))
 #    return render(request, "article.html", c)
     #help(Post.objects.filter)
     #print(user)
