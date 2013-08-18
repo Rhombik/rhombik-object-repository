@@ -63,6 +63,8 @@ def edit(request, title):
 #--------------------------
 #Set up the actual view.
 
+
+    elif str(post.author) == str(request.user):
         return render_to_response('edit.html', dict(post=post, user=request.user, form=form, ))
         #return HttpResponse(response_data, mimetype="application/json")
     else:
