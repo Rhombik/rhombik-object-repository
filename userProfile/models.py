@@ -18,7 +18,7 @@ class userProfile(models.Model):
     #username = models.CharField(max_length=30, blank=True, null=True)
     profilePic = models.CharField(max_length=64, default="/")
     profilePicPath = models.CharField(max_length=256, blank=True, null=True)
-    bio = models.CharField(max_length=256)
+    bio = models.CharField(max_length=256, blank=True,  default="I didn't really care to tell you about myself, so the developers wrote this.")
     
 
 #    def __unicode__(self):
