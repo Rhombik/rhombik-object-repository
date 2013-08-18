@@ -15,7 +15,6 @@ def index(request, user):
 #<<<<<<< HEAD
 #    c = RequestContext(request, dict(userPic=userdata.profile.profilePicPath, user=request.user, bio=userdata.profile.bio))
 #    return render(request, "article.html", c)
-#=======
     #help(Post.objects.filter)
     #print(user)
     userposts=Post.objects.filter(author=userdata) #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!'''
@@ -23,6 +22,5 @@ def index(request, user):
     '''the correct answer was "print(userdata.get_profile().profilePicPath)"   '''
     c = RequestContext(request, dict(userPic=userdata.profile.profilePicPath, usersname=user, bio=userdata.profile.bio, userposts = userposts))
     return render(request, "userProfile/index.html", c)
-#>>>>>>> ad368b42bb83aa43cb949971e83ca73009b451a2
 
 
