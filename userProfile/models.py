@@ -23,7 +23,7 @@ class userProfile(models.Model):
 
 #    def __unicode__(self):
     
-    def save(self):
+    def save(self, force_insert=False, force_update=False, using=None):##def save(self):
         #created the folder for that post if it doesn't exist
         directory = settings.MEDIA_ROOT+"userPics/" ##+ self.profilePic
         if not os.path.exists(directory):
@@ -32,10 +32,14 @@ class userProfile(models.Model):
         try:
                 #I hate names.
             print(str(settings.MEDIA_ROOT + "userPics" + self.profilePic))
-            self.profilePicPath = thumbnailer.thumbnailer.thumbnail(str(settings.MEDIA_ROOT + "userPics" + self.profilePic), (200,200))[0]
+            self.profilePicPath = thumbnailer.thumbnailer.thumbnail(str(settings.MEDIA_ROOT + "userPics" + self.profilePic), (250,250))[0]
         except:
             print("thumbnail failed")
 
         super(userProfile, self).save()
 
 User.profile = property(lambda u: userProfile.objects.get_or_create(user=u)[0])
+<<<<<<< HEAD
+=======
+
+>>>>>>> ad368b42bb83aa43cb949971e83ca73009b451a2
