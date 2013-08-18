@@ -65,7 +65,8 @@ def edit(request, title):
 
 
     elif str(post.author) == str(request.user):
-        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail, 'tags' : str(post.tags.distinct())})
+        taglist = "null"
+        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail, 'tags' : taglist})
         return render_to_response('edit.html', dict(post=post, user=request.user, form=form,))
         #return HttpResponse(response_data, mimetype="application/json")
     else:
