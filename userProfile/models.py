@@ -39,7 +39,7 @@ class userProfile(models.Model):
         super(userProfile, self).save()
 
 User.profile = property(lambda u: userProfile.objects.get_or_create(user=u)[0])
-<<<<<<< HEAD
-=======
+#<<<<<<< HEAD
+#=======
 
->>>>>>> ad368b42bb83aa43cb949971e83ca73009b451a2
+#>>>>>>> ad368b42bb83aa43cb949971e83ca73009b451a2
