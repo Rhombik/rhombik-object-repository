@@ -54,7 +54,8 @@ def edit(request, title):
             #save thr form
             post.body = form.cleaned_data["body"]
             post.thumbnail = form.cleaned_data["thumbnail"]
-            post.tags = form.cleaned_data["tags"]
+            list_to_tags(form.cleaned_data["tags"], post.tags)
+            print(form.cleaned_data["tags"])
             post.save()
             return HttpResponseRedirect('/post/'+title)
         else:
@@ -90,11 +91,12 @@ def create(request):
             post.body = form.cleaned_data["body"]
             post.author = request.user
             post.thumbnail = form.cleaned_data["thumbnail"]
-            post.tags = form.cleaned_data["tags"]
+            list_to_tags(form.cleaned_data["tags"], post.tags)
+            #post.tags = form.cleaned_data["tags"]
             post.save()
             return HttpResponseRedirect('/post/'+form.cleaned_data["title"])
         else:
-            return HttpResponse(status=403)
+            return render_to_response('create.html', dict(user=request.user,  form=form))
 #--------------------------
 #Set up the actual view.
     elif request.user.is_authenticated():
@@ -121,3 +123,7 @@ def tag(request,tag):
 def tagcloud(request):
     return render(request, "tagcloud.html")
 
+def list_to_tags(list, tags):
+            tags.clear()
+            for tag in list:
+                tags.add(tag)
