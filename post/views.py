@@ -8,7 +8,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 import thumbnailer.thumbnailer as thumbnailer 
 
 from post.models import *
-from post.forms import PostForm, createForm
+from post.forms import PostForm, createForm, defaulttag
 from django import forms
 ##obviously ignoring csrf is a bad thing. Get this fixed.
 from django.views.decorators.csrf import csrf_exempt
@@ -99,7 +99,8 @@ def create(request):
 #Set up the actual view.
     elif request.user.is_authenticated():
         form = createForm()
-        return render_to_response('create.html', dict(user=request.user, form=form ))
+        form2 = defaulttag()
+        return render_to_response('create.html', dict(user=request.user, form=form, form2=form2))
     else:
         return HttpResponse(status=403)
 
