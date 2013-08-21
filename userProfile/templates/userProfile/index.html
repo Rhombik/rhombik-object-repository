@@ -14,14 +14,10 @@
                     <div class="body">{{ post.body_rendered|safe }}</div>
                  <div class="tags">   -->
                 <p><br>These are all my pretty posts!<br><p><!--<--------this will be changed.-.-->
-                  {% for post in userposts %}
-                   <!-- <div class="tagrank=({{tag.num_times}})"> <a href="/tag/{{tag}}">{{tag}}</a>-->
-                   <a href="/post/{{post.title}}">{{post.title}}</a><p>
-                  {% endfor %}
 <!--
                 <h2>Comments for {{ post.title }}:</h2>
 -->
 
-
+{% include "list.html" %}
     </div>
 <!--~my beautiful well thought out html template-->

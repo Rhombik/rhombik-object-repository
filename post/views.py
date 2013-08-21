@@ -91,6 +91,7 @@ def create(request):
             post.body = form.cleaned_data["body"]
             post.author = request.user
             post.thumbnail = form.cleaned_data["thumbnail"]
+            post.save()
             list_to_tags(form.cleaned_data["tags"], post.tags)
             #post.tags = form.cleaned_data["tags"]
             post.save()

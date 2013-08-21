@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from django.shortcuts import render
 from django.template import RequestContext, loader
@@ -42,16 +43,27 @@ def index(request, user):
     
     """bleh blebh bhel bleh, IM GOING INSANE.... I mean; user profile display stuff."""
     #I hate this vampire head ~alex
+    """THE VAMPIRE HEAD FIXES ALL OF YOUR BROKEN CODE!!!, that is to say, as long as you never look at this code, it could be anything. We guarantee that whatever you imaging is better written then what actually is written."""
     userdata=User.objects.filter(username=user).get()
-#<<<<<<< HEAD
-#    c = RequestContext(request, dict(userPic=userdata.profile.profilePicPath, user=request.user, bio=userdata.profile.bio))
-#    return render(request, "article.html", c)
-    #help(Post.objects.filter)
-    #print(user)
-    userposts=Post.objects.filter(author=userdata) #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!'''
+    
+    posts=Post.objects.filter(author=userdata) #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!'''
+
+    #posts = Post.objects.all().order_by("-created")
+    paginator = Paginator(posts, 3*3)
+
+
+    try: page = int(request.GET.get("page", '1'))
+    except ValueError: page = 1
+
+    try:
+        posts = paginator.page(page)
+    except (InvalidPage, EmptyPage):
+        posts = paginator.page(paginator.num_pages)
+
+
     #help(userposts)
     '''the correct answer was "print(userdata.get_profile().profilePicPath)"   '''
-    c = RequestContext(request, dict(userPic=userdata.profile.profilePicPath, usersname=user, bio=userdata.profile.bio, posts = userposts))
+    c = RequestContext(request, dict(userPic=userdata.profile.profilePicPath, usersname=user, bio=userdata.profile.bio, posts = posts))
     return render(request, "userProfile/index.html", c)
 
 
