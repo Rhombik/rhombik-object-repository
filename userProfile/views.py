@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from userProfile.models import userProfile
 
 #this obviously doesn't work... But it's a good base to work from.
-@csrf_exempt
+#@csrf_exempt
 def register(request):
     form = registerForm()
     if request.method == 'POST':
@@ -51,7 +51,7 @@ def index(request, user):
     userposts=Post.objects.filter(author=userdata) #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!'''
     #help(userposts)
     '''the correct answer was "print(userdata.get_profile().profilePicPath)"   '''
-    c = RequestContext(request, dict(userPic=userdata.profile.profilePicPath, usersname=user, bio=userdata.profile.bio, userposts = userposts))
+    c = RequestContext(request, dict(userPic=userdata.profile.profilePicPath, usersname=user, bio=userdata.profile.bio, posts = userposts))
     return render(request, "userProfile/index.html", c)
 
 
