@@ -179,6 +179,11 @@ LOGGING = {
 }
 
 
+if DEBUG:
+    # make all loggers use the console.
+    for logger in LOGGING['loggers']:
+        LOGGING['loggers'][logger]['handlers'] = ['console']
+
 MULTI_FILE_DELETE_URL = 'multi_delete'
 MULTI_IMAGE_URL = 'multi_image'
 MULTI_IMAGES_FOLDER = 'multiuploader_images'

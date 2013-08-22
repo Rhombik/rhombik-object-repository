@@ -6,11 +6,12 @@ from django.template import RequestContext, loader
 from post.models import Post
 from django.contrib.auth.models import User
 from userProfile.models import userProfile
+from django.views.decorators.csrf import csrf_exempt
+
 
 #this obviously doesn't work... But it's a good base to work from.
-#@csrf_exempt
-def register(request):
-    form = registerForm()
+@csrf_exempt
+def edit(request):
     if request.method == 'POST':
         form = registerForm(request.POST)
         profileform = UserProfileForm(request.POST)
@@ -27,7 +28,6 @@ def register(request):
             profile.save
             return render_to_response('register.html', dict( user=request.user, msg="success"))
         else:
-            print(request.POST)
             return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform))#registerForm(request.POST)))#form, msg=form.errors))
     else:
         form = registerForm()
