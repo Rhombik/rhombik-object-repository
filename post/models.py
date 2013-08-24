@@ -19,7 +19,7 @@ class Post(models.Model):
     allow_html = models.BooleanField(default=False)
     ##only used internally, don't set
     body_rendered = models.TextField('Entry body as HTML', blank=True, null=True)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     def __unicode__(self):
         return self.title

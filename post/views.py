@@ -82,8 +82,9 @@ def create(request):
 ##The form-----------------------------
     if request.method == 'POST':
         form = createForm(request.POST)
+        form2 = defaulttag(request.POST)
         #Check to make sure the form is valid and the user matches the post author
-        if form.is_valid() and request.user.is_authenticated():
+        if form.is_valid() and form2.is_valid() and request.user.is_authenticated():
             post = Post()
             #save thr form
             post.author = request.user
@@ -93,11 +94,11 @@ def create(request):
             post.thumbnail = form.cleaned_data["thumbnail"]
             post.save()
             list_to_tags(form.cleaned_data["tags"], post.tags)
-            #post.tags = form.cleaned_data["tags"]
+            list_to_tags(form2.cleaned_data["catagories"], post.tags, False)
             post.save()
             return HttpResponseRedirect('/post/'+form.cleaned_data["title"])
         else:
-            return render_to_response('create.html', dict(user=request.user,  form=form))
+            return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2))
 #--------------------------
 #Set up the actual view.
     elif request.user.is_authenticated():
@@ -124,7 +125,8 @@ def tag(request,tag):
 def tagcloud(request):
     return render(request, "tagcloud.html")
 
-def list_to_tags(list, tags):
-            tags.clear()
+def list_to_tags(list, tags, clear=True):
+            if clear:
+                tags.clear()
             for tag in list:
                 tags.add(tag)
