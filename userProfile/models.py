@@ -19,7 +19,7 @@ class userProfile(models.Model):
     profilePic = models.CharField(max_length=64, default="/")
     profilePicPath = models.CharField(max_length=256, blank=True, null=True)
     bio = models.CharField(max_length=256, blank=True,  default="I didn't really care to tell you about myself, so the developers wrote this.")
-    
+    filename = models.FileField(upload_to="/userpics/")    
 
 #    def __unicode__(self):
     
@@ -29,14 +29,14 @@ class userProfile(models.Model):
         if not os.path.exists(directory):
             os.makedirs(directory)
         #Generates the thumbnail
-        try:
-                #I hate names.
-            print(str(settings.MEDIA_ROOT + "userPics" + self.profilePic))
-            self.profilePicPath = thumbnailer.thumbnailer.thumbnail(str(settings.MEDIA_ROOT + "userPics" + self.profilePic), (250,250))[0]
-        except:
-           def clean(self):
-                from django.core.exceptions import ValidationError
-                raise ValidationError('No valid thumbnail')
+       #try:
+       #        #I hate names.
+       #    print(str(settings.MEDIA_ROOT + "userPics" + self.profilePic))
+       #    self.profilePicPath = thumbnailer.thumbnailer.thumbnail(str(settings.MEDIA_ROOT + "userPics" + self.profilePic), (250,250))[0]
+       #except:
+       #   def clean(self):
+       #        from django.core.exceptions import ValidationError
+       #        raise ValidationError('No valid thumbnail')
 
 
         super(userProfile, self).save()

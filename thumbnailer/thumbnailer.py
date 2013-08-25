@@ -35,6 +35,8 @@ def genericthumb(filepath,size):
 #What to render it with. We don't have all the renderes and what files to use sorted out yet, but for stuff that can just be rendered in the browser, like images, "browser" is the rendered. Other file types will have custom javascript renderers.
 def thumbnail(filepath, size, forceupdate=False):
         
+        print(filepath)
+        filepath = str(filepath)
         extension = os.path.splitext(filepath)[1]
         str_thumbnail_size = "-"+str(size[0])+"X"+str(size[1])
 

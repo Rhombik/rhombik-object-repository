@@ -94,7 +94,7 @@ def create(request):
             post.thumbnail = form.cleaned_data["thumbnail"]
             post.save()
             list_to_tags(form.cleaned_data["tags"], post.tags)
-            list_to_tags(form2.cleaned_data["catagories"], post.tags, False)
+            list_to_tags(form2.cleaned_data["categories"], post.tags, False)
             post.save()
             return HttpResponseRedirect('/post/'+form.cleaned_data["title"])
         else:

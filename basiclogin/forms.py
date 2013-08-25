@@ -8,5 +8,6 @@ class registerForm(ModelForm):
     class Meta:
         model = User
         fields = ["username","password"]
-#    captcha = CaptchaField()
+        
+#    captcha = CaptchaField()###No no, it does work, but Its fucking annoying for testing.
 
