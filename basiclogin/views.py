@@ -1,4 +1,3 @@
-# Create your views here.
 from basiclogin.forms import *
 from django.shortcuts import render_to_response, render
 from django.contrib.auth.models import User
@@ -12,48 +11,51 @@ from django.shortcuts import redirect
 
 from filemanager.models import filename
 
+### This Is the view for the registration page.
 @csrf_exempt
 def register(request):
-    form = registerForm()
+    
+    ## If loop true when user clicks the register button.
     if request.method == 'POST':
+        #get data from the forms
         form = registerForm(request.POST)
         profileform = UserProfileForm(request.POST)
         pictureform = UserPictureForm(request.POST, request.FILES)
-        if form.is_valid() and profileform.is_valid():
-            #Creat the user
+        ## puts the users stuff in the database if its valid.
+        if form.is_valid() and profileform.is_valid() and pictureform.is_valid():
+            ###Create the user
             data = User();
             data.username = form.cleaned_data["username"]
-            #data.password = form.cleaned_data["password"]###this is NOT how you set a password!
+            #data.password = form.cleaned_data["password"]###this is NOT how you set a password! Passwords are hashed.
             data.set_password(form.cleaned_data["password"])
             data.save()
-            #Create users profile
+            ###Create user's profile
             profile = userProfile()
             profile.user = data
-            profile.save()
-           #profile.profilepic = "/"
             profile.bio = profileform.cleaned_data["bio"]
+            #Create users picture.
             newuserpic = filename(filename = request.FILES["filename"])##take a letter...
             newuserpic.save()
             profile.profilePicPath = newuserpic.thumbnailpath
-            print("thumbnailpath:"+profile.profilePicPath)
-            #profile.filename.filename.save
-            #profile.filename = newuserpic
             profile.save()
-           #print(profile.filename.filename.path)
             return render_to_response('register.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
+        #returns form with error messages.
         else:
-            print(request.FILES)
-            return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform, form3=pictureform))#registerForm(request.POST)))#form, msg=form.errors))
+            return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform, form3=pictureform))
+    
+    ## Initializes the page with the forms.
     else:
         form = registerForm()
         profileform = UserProfileForm()
         pictureform = UserPictureForm()
         return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform, form3=pictureform))
 
+### simple logout view, redirects users to the login page.
 def logout_user(request):
     logout(request)
     return redirect("/login")
 
+### Login page.
 @csrf_exempt
 def login_user(request):
     state = "Please log in below..."
