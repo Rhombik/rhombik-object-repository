@@ -20,20 +20,26 @@ def register(request):
         profileform = UserProfileForm(request.POST)
         pictureform = UserPictureForm(request.POST, request.FILES)
         if form.is_valid() and profileform.is_valid():
+            #Creat the user
             data = User();
             data.username = form.cleaned_data["username"]
-            #data.password = form.cleaned_data["password"]
+            #data.password = form.cleaned_data["password"]###this is NOT how you set a password!
             data.set_password(form.cleaned_data["password"])
             data.save()
+            #Create users profile
             profile = userProfile()
             profile.user = data
-            profile.profilepic = "/"
+            profile.save()
+           #profile.profilepic = "/"
             profile.bio = profileform.cleaned_data["bio"]
-            profile.filename = filename(filename = request.FILES["filename"])##take a letter...
+            newuserpic = filename(filename = request.FILES["filename"])##take a letter...
+            newuserpic.save()
+            profile.profilePicPath = newuserpic.thumbnailpath
+            print("thumbnailpath:"+profile.profilePicPath)
             #profile.filename.filename.save
             #profile.filename = newuserpic
-            profile.save
-            print(profile.filename.filename)
+            profile.save()
+           #print(profile.filename.filename.path)
             return render_to_response('register.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
         else:
             print(request.FILES)

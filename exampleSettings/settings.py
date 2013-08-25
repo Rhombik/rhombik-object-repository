@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'exampleTheme',
     'userProfile',
     'captcha',
+    'filemanager',
     'basiclogin',
     'organization',
     'taggit',

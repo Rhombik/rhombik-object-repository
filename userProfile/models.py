@@ -29,14 +29,14 @@ class userProfile(models.Model):
         if not os.path.exists(directory):
             os.makedirs(directory)
         #Generates the thumbnail
-        try:
-                #I hate names.
-            print(str(settings.MEDIA_ROOT + "userPics" + self.profilePic))
-            self.profilePicPath = thumbnailer.thumbnailer.thumbnail(str(settings.MEDIA_ROOT + "userPics" + self.profilePic), (250,250))[0]
-        except:
-           def clean(self):
-                from django.core.exceptions import ValidationError
-                raise ValidationError('No valid thumbnail')
+       #try:
+       #        #I hate names.
+       #    print(str(settings.MEDIA_ROOT + "userPics" + self.profilePic))
+       #    self.profilePicPath = thumbnailer.thumbnailer.thumbnail(str(settings.MEDIA_ROOT + "userPics" + self.profilePic), (250,250))[0]
+       #except:
+       #   def clean(self):
+       #        from django.core.exceptions import ValidationError
+       #        raise ValidationError('No valid thumbnail')
 
 
         super(userProfile, self).save()
