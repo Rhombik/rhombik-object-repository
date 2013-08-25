@@ -10,12 +10,15 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
+from filemanager.models import filename
+
 @csrf_exempt
 def register(request):
     form = registerForm()
     if request.method == 'POST':
         form = registerForm(request.POST)
         profileform = UserProfileForm(request.POST)
+        pictureform = UserPictureForm(request.POST, request.FILES)
         if form.is_valid() and profileform.is_valid():
             data = User();
             data.username = form.cleaned_data["username"]
@@ -26,15 +29,20 @@ def register(request):
             profile.user = data
             profile.profilepic = "/"
             profile.bio = profileform.cleaned_data["bio"]
+            profile.filename = filename(filename = request.FILES["filename"])##take a letter...
+            #profile.filename.filename.save
+            #profile.filename = newuserpic
             profile.save
-            return render_to_response('register.html', dict( user=request.user, msg="success"))
+            print(profile.filename.filename)
+            return render_to_response('register.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
         else:
-            print(request.POST)
-            return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform))#registerForm(request.POST)))#form, msg=form.errors))
+            print(request.FILES)
+            return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform, form3=pictureform))#registerForm(request.POST)))#form, msg=form.errors))
     else:
         form = registerForm()
         profileform = UserProfileForm()
-        return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform))
+        pictureform = UserPictureForm()
+        return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform, form3=pictureform))
 
 def logout_user(request):
     logout(request)

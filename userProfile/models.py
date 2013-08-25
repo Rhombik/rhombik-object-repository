@@ -19,7 +19,7 @@ class userProfile(models.Model):
     profilePic = models.CharField(max_length=64, default="/")
     profilePicPath = models.CharField(max_length=256, blank=True, null=True)
     bio = models.CharField(max_length=256, blank=True,  default="I didn't really care to tell you about myself, so the developers wrote this.")
-    
+    filename = models.FileField(upload_to="/userpics/")    
 
 #    def __unicode__(self):
     

@@ -5,8 +5,7 @@ import thumbnailer.thumbnailer
 
 class filename(models.Model):
 
-    post = models.ForeignKey(Post,)
-    filename = models.FileField(upload_to="uploads/"+post.title)
+    filename = models.FileField(upload_to="userPics/")
     thumbnailpath = models.CharField(max_length=256, blank=True, null=True)
     filetype = models.CharField(max_length=60, blank=True, null=True)
     def save(self):

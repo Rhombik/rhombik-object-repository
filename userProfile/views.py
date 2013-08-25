@@ -25,6 +25,7 @@ def edit(request):
             profile.user = data
             profile.profilepic = "/"
             profile.bio = profileform.cleaned_data["bio"]
+            profile.filename = profileform.cleaned_data["filename"]
             profile.save
             return render_to_response('register.html', dict( user=request.user, msg="success"))
         else:
