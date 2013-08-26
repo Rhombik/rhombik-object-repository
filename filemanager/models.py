@@ -6,7 +6,7 @@ from post.models import Post
 class fileobject(models.Model):
 
     def uploadpath(instance, filename):
-        return 'uploads/%s/%s/%s' % (instance.post_id, instance.subfolder, filename)
+        return ("uploads/"+instance.post.title+instance.subfolder+filename)
 
 
     post = models.ForeignKey(Post)
