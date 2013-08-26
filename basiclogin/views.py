@@ -9,7 +9,7 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
-from filemanager.models import filename
+from filemanager.models import fileobject
 
 ### This Is the view for the registration page.
 @csrf_exempt
@@ -34,7 +34,7 @@ def register(request):
             profile.user = data
             profile.bio = profileform.cleaned_data["bio"]
             #Create users picture.
-            newuserpic = filename(filename = request.FILES["filename"])##take a letter...
+            newuserpic = fileobject(filename = request.FILES["filename"])##take a letter...
             newuserpic.save()
             profile.profilePicPath = newuserpic.thumbnailpath
             profile.save()
