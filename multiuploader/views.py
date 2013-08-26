@@ -24,7 +24,7 @@ log = logging
 
 from multiuploader.forms import MultiuploaderImage
 from post.models import *
-from filemanage.models import fileobject
+from filemanager.models import fileobject
 
 
 @csrf_exempt
