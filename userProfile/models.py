@@ -25,15 +25,13 @@ class userProfile(models.Model):
 #    def __unicode__(self):
     
     def save(self, force_insert=False, force_update=False, using=None):##def save(self):
-
+        super(userProfile, self).save()
        #self.filename = fileishness#request.FILES["filename"]
        #self.filename.save(str(self.user.username)+"Pic.png", fileishness)
         thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(200,200), forceupdate=True)
         self.profilePicType=thumbnaildata[2]
         self.profilePicPath=thumbnaildata[1]
         self.profilePicThumb=thumbnaildata[0]
-        for i in thumbnaildata:
-            print("thumbnail data ="+i)
         super(userProfile, self).save()
 
 
