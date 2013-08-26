@@ -45,7 +45,6 @@ def index(request, user):
     """bleh blebh bhel bleh, IM GOING INSANE.... I mean; user profile display stuff."""
     #I hate this vampire head ~alex
     """THE VAMPIRE HEAD FIXES ALL OF YOUR BROKEN CODE!!!, that is to say, as long as you never look at this code, it could be anything. We guarantee that whatever you imaging is better written then what actually is written."""
-    print("The user value:"+user)
     userdata=User.objects.filter(username=user).get()
     
     posts=Post.objects.filter(author=userdata) #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!'''
@@ -62,10 +61,10 @@ def index(request, user):
     except (InvalidPage, EmptyPage):
         posts = paginator.page(paginator.num_pages)
 
-    print(userdata.profile)
     #help(userposts)
     '''the correct answer was "print(userdata.get_profile().profilePicPath)"   '''
-    c = RequestContext(request, dict(userPic=userdata.profile.profilePicPath, usersname=user, bio=userdata.profile.bio, posts = posts))
+    print(userdata.profile.profilePicType)
+    c = RequestContext(request, dict(userPic=userdata.profile.profilePicPath, userPicThumb=userdata.profile.profilePicThumb, renderer=userdata.profile.profilePicType, usersname=user, bio=userdata.profile.bio, posts = posts))
     return render(request, "userProfile/index.html", c)
 
 

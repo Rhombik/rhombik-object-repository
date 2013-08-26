@@ -35,7 +35,7 @@ def genericthumb(filepath,size):
 #What to render it with. We don't have all the renderes and what files to use sorted out yet, but for stuff that can just be rendered in the browser, like images, "browser" is the rendered. Other file types will have custom javascript renderers.
 def thumbnail(filepath, size, forceupdate=False):
         
-        print(filepath)
+        print("thumbnail says:"+filepath)
         filepath = str(filepath)
         extension = os.path.splitext(filepath)[1]
         str_thumbnail_size = "-"+str(size[0])+"X"+str(size[1])
@@ -50,6 +50,7 @@ def thumbnail(filepath, size, forceupdate=False):
 
         if extension in jsc3d_pic:
         #checks to see ig the thumbnail already exists
+	        print("its a jsc3d pic.")
 	        if forceupdate==False and os.path.exists(media_root_path+str_thumbnail_size+".png"):
 	                return(media_url_path+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"jsc3d")
 	        else:

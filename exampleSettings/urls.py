@@ -42,8 +42,10 @@ urlpatterns = patterns('',
     (r'^preview/stl/(.*)', 'thumbnailer.views.stlview'),
     url(r'', include('multiuploader.urls')),
     (r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
+
     #user profile pages
     url(r'^userProfile/', include('userProfile.urls')),
+    (r'^editUser/', 'userProfile.views.edit'),
 
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

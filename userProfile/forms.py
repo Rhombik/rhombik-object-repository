@@ -8,8 +8,6 @@ class UserProfileForm(ModelForm):
         fields = ["bio"]
 
 class UserPictureForm(forms.Form):
-        #model = userProfile
-        #fields = ["bio"]
         filename = forms.FileField(
             label='Select a file',
             help_text='max. 42 megabytes'
