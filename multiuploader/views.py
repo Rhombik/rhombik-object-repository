@@ -80,7 +80,7 @@ def multiuploader(request,title):
  
         #generating json response array
         result = []
-        result.append({"name":os.path.split(postfiles.filename.name)[1], 
+        result.append({"name":postfiles.subfolder+os.path.split(postfiles.filename.name)[1], 
                        "size":postfiles.filename.size, 
                        "url":postfiles.filename.url, 
                        "thumbnail_url":postfiles.thumbnailpath,
@@ -102,7 +102,7 @@ def multiuploader(request,title):
         result = []
         for image in postfiles:
             ##json stuff
-            result.append({"name":os.path.split(image.filename.name)[1],
+            result.append({"name":image.subfolder+os.path.split(image.filename.name)[1],
                        "size":image.filename.size,
                        "url":image.filename.url,
                        "thumbnail_url":image.thumbnailpath,
