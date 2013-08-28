@@ -7,6 +7,7 @@ import os
 from django.conf import settings
 from taggit.managers import TaggableManager
 
+
 class Post(models.Model):
 
     title = models.CharField(max_length=60,unique=True)
@@ -32,10 +33,13 @@ class Post(models.Model):
         try:        
                 #I hate names.
             self.thumbnailpath = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + self.title + self.thumbnail,(200,200))[0]
+        # if thumbnail fails tell an adult.
         except:
-            def clean(self):
-                from django.core.exceptions import ValidationError
-                raise ValidationError('No valid thumbnail')
+            print("thumbnail failed in post")
+            self.thumbnailpath = "invalid"
+            #def clean():
+            #from django.core.exceptions import ValidationError
+            #raise ValidationError('No valid thumbnail')
 
 
 

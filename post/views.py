@@ -96,6 +96,12 @@ def create(request):
             list_to_tags(form.cleaned_data["tags"], post.tags)
             list_to_tags(form2.cleaned_data["categories"], post.tags, False)
             post.save()
+            #add error if thumbnail is invalid
+            if post.thumbnailpath == "invalid":
+                from django.forms.util import ErrorList
+                errors = form._errors.setdefault("thumbnail", ErrorList())
+                errors.append(u"No valid thumbnail file uploaded")
+                return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2))
             return HttpResponseRedirect('/post/'+form.cleaned_data["title"])
         else:
             return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2))
