@@ -32,8 +32,9 @@ class Post(models.Model):
         if self.thumbnail:
             try:
                 #I hate names.
-                thumbnail = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + str(self.pk) + self.thumbnail,(200,200))
+                thumbnail = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + str(self.pk) + self.thumbnail,(128,128))
                 thumbnail[2] != "norender"
+                self.thumbnailpath = thumbnail[0]
             except:
                 def clean(self):
                     from django.core.exceptions import ValidationError
