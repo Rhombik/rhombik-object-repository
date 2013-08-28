@@ -22,6 +22,7 @@ import thumbnailer.thumbnailer as thumbnailer
 import logging
 log = logging
 
+import os.path
 from multiuploader.forms import MultiuploaderImage
 from post.models import *
 from filemanager.models import fileobject
@@ -36,7 +37,7 @@ def multiuploader_delete(request, pk):
     """
     if request.method == 'POST':
         log.info('Called delete image. image id='+str(pk))
-        image = get_object_or_404(MultiuploaderImage, pk=pk)
+        image = get_object_or_404(fileobject, pk=pk)
         image.delete()
         log.info('DONE. Deleted photo id='+str(pk))
         return HttpResponse(str(pk))
@@ -46,6 +47,8 @@ def multiuploader_delete(request, pk):
 
 @csrf_exempt
 def multiuploader(request,title):
+
+    post=Post.objects.filter(title=title)[0]
     """
     Main Multiuploader module.
     Parses data from jQuery plugin and makes database changes.
@@ -56,38 +59,29 @@ def multiuploader(request,title):
             return HttpResponseBadRequest('Must have files attached!')
 
         #getting file data for farther manipulations
-        file = request.FILES[u'files[]']
-        wrapped_file = UploadedFile(file)
-        filename = wrapped_file.name
-        file_size = wrapped_file.file.size
-        log.info ('Got file: "%s"' % str(filename))
+        postfiles = fileobject()
+        postfiles.post = post
+        postfiles.filename = request.FILES[u'files[]']
+        postfiles.save()
+        print (postfiles)
+        log.info ('Got file: "%s"' % str(postfiles.filename.name))
+
+        thumbnailer.thumbnailer.thumbnail(postfiles.filename.path,(128,128), forceupdate=True)
 
 
-        #Writing file to disk
-        filepath = settings.MEDIA_ROOT+"uploads/"+title+"/"+filename
-        print("filepath: "+filepath)
-        path = default_storage.save(filepath, ContentFile(file.read())) 
-
-
-        #getting thumbnail url using sorl-thumbnail
-        thumbnailstring = thumbnailer.thumbnailer.thumbnail(filepath, (64,64), forceupdate=True)
-        thumb_url = thumbnailstring[0]
-        file_url = thumbnailstring[1]
         #settings imports
         try:
             file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
-            file_url = path
         except AttributeError:
             file_delete_url = 'multi_delete/'
-            file_url = path
 
         #generating json response array
         result = []
-        result.append({"name":filename, 
-                       "size":file_size, 
-                       "url":file_url, 
-                       "thumbnail_url":thumb_url,
-                       "delete_url":file_delete_url+str(path), 
+        result.append({"name":os.path.split(postfiles.filename.name)[1], 
+                       "size":postfiles.filename.size, 
+                       "url":postfiles.filename.url, 
+                       "thumbnail_url":postfiles.thumbnailpath,
+                       "delete_url":"/multi_delete/"+str(postfiles.pk)+"/", 
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
         
@@ -99,22 +93,17 @@ def multiuploader(request,title):
             mimetype = 'text/plain'
         return HttpResponse(response_data, mimetype=mimetype)
     else: #GET
-        images = []
-        for i in os.walk(settings.MEDIA_ROOT+"uploads/" + title +"/", topdown=True, onerror=None, followlinks=False):
-            for z in i[2]:##If anyone doesn't know, the [2] is because 0 is dir, 1 is folders, and 2 is files.
-                filepath = i[0]+z
-                images.append((thumbnailer.thumbnailer.thumbnail(filepath,(64,64)), z, os.path.getsize(filepath)))
+        postfiles = fileobject.objects.filter(post=post)
+  
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []
-        for image in images:
-            thumb_url = image[0][0]
-            file_url = image[0][1]
+        for image in postfiles:
             ##json stuff
-            result.append({"name":image[1],
-                       "size":image[2],
-                       "url":file_url,
-                       "thumbnail_url":thumb_url,
-                       "delete_url":file_delete_url+str(file_url)+'/',
+            result.append({"name":os.path.split(image.filename.name)[1],
+                       "size":image.filename.size,
+                       "url":image.filename.url,
+                       "thumbnail_url":image.thumbnailpath,
+                       "delete_url":"/multi_delete/"+str(image.pk)+"/",
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
 
