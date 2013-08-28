@@ -35,9 +35,10 @@ class Post(models.Model):
                 thumbnail = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + str(self.pk) + self.thumbnail,(200,200))
                 thumbnail[2] != "norender"
             except:
-                def clean(self):
-                    from django.core.exceptions import ValidationError
-                    raise ValidationError('No valid thumbnail')
+                self.thumbnailpath = "invalid"
+                #def clean(self):
+                #    from django.core.exceptions import ValidationError
+                #    raise ValidationError('No valid thumbnail')
         else:
             #If no thumbnail is selected, pick one randomly and generate a thumb
             postfiles = filemanager.models.fileobject.objects.filter(post=self).exclude(filetype="norender")[0]
