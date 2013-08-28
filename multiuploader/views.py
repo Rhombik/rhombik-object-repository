@@ -66,8 +66,6 @@ def multiuploader(request,title):
         print (postfiles)
         log.info ('Got file: "%s"' % str(postfiles.filename.name))
 
-        thumbnailer.thumbnailer.thumbnail(postfiles.filename.path,(128,128), forceupdate=True)
-
 
         #settings imports
         try:
@@ -75,6 +73,11 @@ def multiuploader(request,title):
         except AttributeError:
             file_delete_url = 'multi_delete/'
 
+        try:
+            thumburl = postfiles.thumbnailpath
+        except:
+            thumburl = ""
+ 
         #generating json response array
         result = []
         result.append({"name":os.path.split(postfiles.filename.name)[1], 

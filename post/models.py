@@ -6,6 +6,8 @@ import thumbnailer.thumbnailer
 import os
 from django.conf import settings
 from taggit.managers import TaggableManager
+import filemanager.models  
+
 
 class Post(models.Model):
 
@@ -24,21 +26,21 @@ class Post(models.Model):
     def __unicode__(self):
         return self.title
     def save(self):
-        #created the folder for that post if it doesn't exist
-        directory = settings.MEDIA_ROOT+"uploads/" + self.title
-        if not os.path.exists(directory):
-            os.makedirs(directory)
         #Generates the thumbnail
-        try:        
+        ##make certain the selected thumbnail is valid, and generate
+        if self.thumbnail:
+            try:
                 #I hate names.
-            self.thumbnailpath = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + self.title + self.thumbnail,(200,200))[0]
-        except:
-            def clean(self):
-                from django.core.exceptions import ValidationError
-                raise ValidationError('No valid thumbnail')
-
-
-
+                thumbnail = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + str(self.pk) + self.thumbnail,(200,200))
+                thumbnail[2] != "norender"
+            except:
+                def clean(self):
+                    from django.core.exceptions import ValidationError
+                    raise ValidationError('No valid thumbnail')
+        else:
+            #If no thumbnail is selected, pick one randomly and generate a thumb
+            postfiles = filemanager.models.fileobject.objects.filter(post=self).exclude(filetype="norender")[0]
+            self.thumbnailpath = thumbnailer.thumbnailer.thumbnail(postfiles.filename.path,(128,128))[0]
         import markdown
         #Markdownifies the post body, striping out any raw html
         if self.allow_html == False:

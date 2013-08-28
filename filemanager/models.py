@@ -19,10 +19,12 @@ class fileobject(models.Model):
 
     def save(self):
         super(fileobject, self).save()
-
-        thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
-        self.thumbnailpath = thumbnaildata[0]
-        self.previewurl = thumbnaildata[1]
-        self.filetype = thumbnaildata[2]
+        try:
+            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
+            self.thumbnailpath = thumbnaildata[0]
+            self.previewurl = thumbnaildata[1]
+            self.filetype = thumbnaildata[2]
+        except:
+            self.filetype = "norender"
         super(fileobject, self).save()
 
