@@ -26,6 +26,7 @@ class Post(models.Model):
     def __unicode__(self):
         return self.title
     def save(self):
+
         #Generates the thumbnail
         ##make certain the selected thumbnail is valid, and generate
         if self.thumbnail:
