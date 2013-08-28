@@ -15,12 +15,11 @@ class userProfile(models.Model):
     created = models.DateTimeField(auto_now_add = True)
 
     #username = models.CharField(max_length=30, blank=True, null=True)
-    profilePic = models.CharField(max_length=64, default="/")
     profilePicPath = models.CharField(max_length=256, blank=True, null=True)
     profilePicThumb = models.CharField(max_length=256, blank=True, null=True)
     profilePicType = models.CharField(max_length=64, blank=True, null=True)
     bio = models.CharField(max_length=256, blank=True,  default="I didn't really care to tell you about myself, so the developers wrote this.")
-    filename = models.FileField(upload_to="userPics/")    
+    filename = models.FileField(upload_to="userPics/", null=True)    
 
 #    def __unicode__(self):
     
@@ -28,10 +27,11 @@ class userProfile(models.Model):
         super(userProfile, self).save()
        #self.filename = fileishness#request.FILES["filename"]
        #self.filename.save(str(self.user.username)+"Pic.png", fileishness)
-        thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(200,200), forceupdate=True)
-        self.profilePicType=thumbnaildata[2]
-        self.profilePicPath=thumbnaildata[1]
-        self.profilePicThumb=thumbnaildata[0]
+        if not self.filename=="stoopid":
+            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(200,200), forceupdate=True)
+            self.profilePicType=thumbnaildata[2]
+            self.profilePicPath=thumbnaildata[1]
+            self.profilePicThumb=thumbnaildata[0]
         super(userProfile, self).save()
 
 

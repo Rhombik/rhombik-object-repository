@@ -139,7 +139,6 @@ INSTALLED_APPS = (
     'userProfile',
     'captcha',
     'filemanager',
-    'basiclogin',
     'organization',
     'taggit',
     'taggit_autosuggest',
