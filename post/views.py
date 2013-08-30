@@ -48,18 +48,22 @@ def edit(request, title):
     except:
         return HttpResponse(status=404)
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, post.pk)
+        print("view's post.pk = "+str(post.pk))
         #Check to make sure the form is valid and the user matches the post author
         if form.is_valid() and str(post.author) == str(request.user):
             #save thr form
             post.body = form.cleaned_data["body"]
             post.thumbnail = form.cleaned_data["thumbnail"]
             list_to_tags(form.cleaned_data["tags"], post.tags)
-            print(form.cleaned_data["tags"])
             post.save()
             return HttpResponseRedirect('/post/'+title)
         else:
-            return HttpResponse(status=403)
+            if str(post.author) == str(request.user):
+                return render_to_response('edit.html', dict(post=post, user=request.user, form=form,))
+            else:
+                return HttpResponse(status=403)
+
 #--------------------------
 #Set up the actual view.
 
