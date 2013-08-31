@@ -83,11 +83,11 @@ def register(request):
         profileform = UserProfileForm(request.POST)
         pictureform = UserPictureForm(request.POST, request.FILES)
         ## puts the users stuff in the database if its valid.
-        if form.is_valid() and profileform.is_valid():# and pictureform.is_valid():
+        if form.is_valid() and profileform.is_valid() and pictureform.is_valid():
             ###Create the user
             data = User();
             data.username = form.cleaned_data["username"]
-            #data.password = form.cleaned_data["password"]###this is NOT how you set a password! Passwords are hashed.
+            data.password = form.cleaned_data["password"]###this is NOT how you set a password! Passwords are hashed.
             data.set_password(form.cleaned_data["password"])
             data.save()
             ###Create user's profile
@@ -95,15 +95,7 @@ def register(request):
             profile.user = data
             profile.bio = profileform.cleaned_data["bio"]
             #Create users picture.
-            try:
-               profile.filename=request.FILES["filename"]
-            except:
-               profile.profilePicThumb=settings.URL+"/static/noUserPic.png"
-               profile.profilePicPath=settings.URL+"/static/noUserPic.png"
-               profile.profilePicType="browser"
-               profile.filename="stoopid"
-          # profile.filename.save(str(data.username)+"Pic-"+str(request.FILES["filename"]), request.FILES["filename"])
-            print("profile.filename.path="+profile.filename.path)
+            profile.filename=request.FILES["filename"]
             profile.save()
             return render_to_response('register.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
         #returns form with error messages.
