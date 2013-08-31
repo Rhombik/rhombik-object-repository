@@ -33,9 +33,9 @@ urlpatterns = patterns('',
     #captcha urls
     url(r'^captcha/', include('captcha.urls')),
 
-    (r'^register/$', 'basiclogin.views.register'),
-    (r'^login/$', 'basiclogin.views.login_user'),
-    (r'^logout/$', 'basiclogin.views.logout_user'),
+    (r'^register/$', 'userProfile.views.register'),
+    (r'^login/$', 'userProfile.views.login_user'),
+    (r'^logout/$', 'userProfile.views.logout_user'),
 
     #preview pages for the STL files.
     (r'^thumbs/stl/(.*)', 'thumbnailer.views.stlthumb'),
