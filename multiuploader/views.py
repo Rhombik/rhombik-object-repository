@@ -46,9 +46,9 @@ def multiuploader_delete(request, pk):
         return HttpResponseBadRequest('Only POST accepted')
 
 @csrf_exempt
-def multiuploader(request,title):
+def multiuploader(request,pk):
 
-    post=Post.objects.filter(title=title)[0]
+    post=Post.objects.filter(pk=pk)[0]
     """
     Main Multiuploader module.
     Parses data from jQuery plugin and makes database changes.
