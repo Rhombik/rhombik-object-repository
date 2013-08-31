@@ -11,7 +11,7 @@ import filemanager.models
 
 class Post(models.Model):
 
-    title = models.CharField(max_length=60,blank=True, null=True)
+    title = models.CharField(max_length=60,blank=True, null=True, unique=True)
     thumbnail = models.CharField(max_length=60, blank=True, null=True)
     thumbnailpath = models.CharField(max_length=256, blank=True, null=True)
     body = models.TextField(blank=True, null=True)

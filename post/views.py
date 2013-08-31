@@ -86,6 +86,7 @@ def create(request):
         post=Post.objects.filter(author=request.user).filter(draft=True)[0]
     except:
         post = Post()
+        post.title = None
         post.draft=True
         post.author = request.user
         post.save()
