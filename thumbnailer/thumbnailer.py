@@ -28,11 +28,17 @@ def genericthumb(filepath,size):
         return("null","null","norender")
         logger.warning('not a supported filetype: ' + "\"" + filepath + "\"")
 
+############### info on using thumbnailer.thumbnailer.thumbnail() #############
+#This function takes:
+#       filepath;        an absolute path to a file to be thumbnailed
+#       size;            the dimensions of the thumbnail to be made in an array of two values
+#       forceupdate;     (optional) True forces the thumbnail to be regenerated.
+#                         Used for when images are changed or whatnot
 
-#This function needs to take a filepath and a size, and it needs to return a 
-#Relative path to a thumbnail of the right size. So "/static/thumbnails/something/subdir/thumbnail" instead of "/home/user/djangosite/mysite/thumbnailser/static/thumbnail[...]".
-#Relative path to whatever I sent you. So fielpath, but relative to the web server. We're going to do this multi-threaded, so I can't gurantee I get data back in the order I put it in.
-#What to render it with. We don't have all the renderes and what files to use sorted out yet, but for stuff that can just be rendered in the browser, like images, "browser" is the rendered. Other file types will have custom javascript renderers.
+#And it returns:
+#       [0]     Relative path to a thumbnail of the right size. So "/static/thumbnails/something/subdir/thumbnail" instead of "/home/user/djangosite/mysite/thumbnailser/static/thumbnail[...]".
+#       [1]     Relative path to whatever I sent you. So fielpath, but relative to the web server. We're going to do this multi-threaded, so I can't gurantee I get data back in the order I put it in.
+#       [2]     What to render it with. We don't have all the renderes and what files to use sorted out yet, but for stuff that can just be rendered in the browser, like images, "browser" is the rendered. Other file types will have custom javascript renderers.
 def thumbnail(filepath, size, forceupdate=False):
         
         print("thumbnail says:"+filepath)
@@ -88,7 +94,6 @@ def thumbnail(filepath, size, forceupdate=False):
 	                        return(media_url_path+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"browser")
 	                except:
 	                        return(genericthumb(filepath,size))
-
 #        else:
 #                return(genericthumb(filepath,size))
 

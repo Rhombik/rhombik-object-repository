@@ -19,26 +19,13 @@ class PostForm(ModelForm):
 
         print("form says pk is "+str(self.pk))
         cleaned_data = super(PostForm, self).clean()
-        #post=Post.objects.filter(title=)[0:1].get()
 
-        ##make certain the selected thumbnail is valid, and generate
-        if cleaned_data["thumbnail"]:
-            try:
-                import thumbnailer.thumbnailer
-                ##I hate names.
-                thumbnail = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + str(self.pk) + cleaned_data["thumbnail"],(128,128))
-                #thumbnail[2] != "norender"
-                #cleaned_data["thumbnail"] = str(thumbnail[0])
-            except:
-                clened_data["thumbnail"] = "invalid"
-                #from django.core.exceptions import ValidationError
-                #raise ValidationError('No valid thumbnail')
-        else:
-            ##If no thumbnail is selected, pick one randomly and generate a thumb
-            import filemanager.models
-            postfiles = filemanager.models.fileobject.objects.filter(post=self.pk).exclude(filetype="norender")[0]
-            cleaned_data["thumbnail"]=str(postfiles.filename)#thumbnail=thumbnailpath = thumbnailer.thumbnailer.thumbnail(postfiles.filename.path,(128,128))[0]
-        #super().clean(self) 
+        ##make certain the selected thumbnail is valid
+        import os
+        if cleaned_data["thumbnail"] and not os.path.exists(settings.MEDIA_ROOT+"uploads/" + str(self.pk) + cleaned_data["thumbnail"]):
+            raise ValidationError("The thumbnail you selected is not an uploaded image.")
+        elif not os.path.splitext(cleaned_data["thumbnail"])[1] in [".stl",".obj",".STL",".OBJ", ".png",".jpg",".gif"]:
+            raise ValidationError("The thumbnail you selected is not a valid image type.")
         return cleaned_data
 
 
