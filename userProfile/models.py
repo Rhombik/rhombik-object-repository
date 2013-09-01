@@ -37,6 +37,7 @@ class userProfile(models.Model):
                 self.profilePicThumb=settings.URL+"/static/noUserPic.png"
                 self.profilePicPath=settings.URL+"/static/noUserPic.png"
                 self.profilePicType="browser"
+                self.filename="stoopid"
         super(userProfile, self).save()
 
 
