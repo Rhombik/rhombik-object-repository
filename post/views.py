@@ -18,12 +18,12 @@ from django.http import HttpResponseRedirect, HttpResponse
 def post(request, title,):
 
     """Single post with comments and a comment form."""
-    c = RequestContext(request, dict(post=Post.objects.filter(title=title)[0:1].get(), user=request.user))
+    c = RequestContext(request, dict(post=Post.objects.filter(title=title).exclude(draft=True)[0:1].get(), user=request.user))
     return render(request, "article.html", c)
 
 def list(request):
     """Main listing."""
-    posts = Post.objects.all().order_by("-created")
+    posts = Post.objects.exclude(draft=True).order_by("-created")
     paginator = Paginator(posts, 15)
 
 
@@ -82,20 +82,28 @@ def edit(request, title):
 
 @csrf_exempt
 def create(request):
-
+    try:
+        post=Post.objects.filter(author=request.user).filter(draft=True)[0]
+    except:
+        post = Post()
+        post.title = None
+        post.draft=True
+        post.author = request.user
+        post.save()
+    print("-----------"+str(post.pk))
 ##The form-----------------------------
     if request.method == 'POST':
         form = createForm(request.POST)
         form2 = defaulttag(request.POST)
         #Check to make sure the form is valid and the user matches the post author
         if form.is_valid() and form2.is_valid() and request.user.is_authenticated():
-            post = Post()
             #save thr form
             post.author = request.user
             post.title = form.cleaned_data["title"]
             post.body = form.cleaned_data["body"]
             post.author = request.user
             post.thumbnail = form.cleaned_data["thumbnail"]
+            post.draft=False
             post.save()
             list_to_tags(form.cleaned_data["tags"], post.tags)
             list_to_tags(form2.cleaned_data["categories"], post.tags, False)
@@ -105,16 +113,17 @@ def create(request):
                 from django.forms.util import ErrorList
                 errors = form._errors.setdefault("thumbnail", ErrorList())
                 errors.append(u"No valid thumbnail file uploaded")
-                return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2))
+                return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2,post=post))
             return HttpResponseRedirect('/post/'+form.cleaned_data["title"])
         else:
-            return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2))
+            return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2,post=post))
 #--------------------------
 #Set up the actual view.
     elif request.user.is_authenticated():
         form = createForm()
         form2 = defaulttag()
-        return render_to_response('create.html', dict(user=request.user, form=form, form2=form2))
+
+        return render_to_response('create.html', dict(user=request.user, form=form, form2=form2,post=post))
     else:
         return HttpResponse(status=403)
 
