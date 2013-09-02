@@ -20,7 +20,7 @@ from django.conf import settings
 import thumbnailer.thumbnailer as thumbnailer
 
 ##regular expressions...
-findSquareBrackets = re.compile(r'[\[](.*?)[\]]')
+findSquareBrackets = re.compile(r'.*\[(.*?)[\]]')
 findEachImage = re.compile(r'[\[,\s\]]*')
 findNewLine = re.compile(r'(\n)')
 
