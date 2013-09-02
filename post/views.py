@@ -74,7 +74,7 @@ def edit(request, title):
            taglist.append(i)
         taglist = ",".join(taglist)
         print ("tags= "+str(taglist))
-        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail, 'tags' : str(taglist)})
+        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail, 'tags' : str(taglist)}, post.pk)
         return render_to_response('edit.html', dict(post=post, user=request.user, form=form,))
         #return HttpResponse(response_data, mimetype="application/json")
     else:
@@ -90,7 +90,6 @@ def create(request):
         post.draft=True
         post.author = request.user
         post.save()
-    print("-----------"+str(post.pk))
 ##The form-----------------------------
     if request.method == 'POST':
         form = createForm(request.POST)

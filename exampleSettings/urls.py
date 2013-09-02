@@ -29,7 +29,8 @@ urlpatterns = patterns('',
 
     (r'^editorg/(.*)/$', 'organization.views.orgedit'),
 
-
+    #Search urls
+    (r'^search/', include('haystack.urls')),
     #captcha urls
     url(r'^captcha/', include('captcha.urls')),
 
