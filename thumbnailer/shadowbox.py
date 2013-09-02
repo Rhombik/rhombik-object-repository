@@ -20,7 +20,7 @@ from django.conf import settings
 import thumbnailer.thumbnailer as thumbnailer
 
 ##regular expressions...
-findSquareBrackets = re.compile(r'.*\[(.*?)[\]]')
+findSquareBrackets = re.compile(r'\[([^\[|\]*]+)\]')
 findEachImage = re.compile(r'[\[,\s\]]*')
 findNewLine = re.compile(r'(\n)')
 
@@ -72,16 +72,20 @@ def run(text,pk):
     gallerynum = 0
     for line in findNewLine.split(text):
         m = findSquareBrackets.findall(line)
+        print("m is "+str(m))
         ###checks if regular expression found square brackets on this line. (please note, an empty array ([]) is not square brackets...)
         if m != []:
             ###copy line for editing
             linecopy = line
             ###this loop formats the line with shadowbox code into the html
             for gallery in m:
-                images = (findEachImage.split(gallery))
-                cut = re.compile(r'\[\s*'+gallery+r'\s*\]')
+                images = (findEachImage.split(gallery))### regex gets list of galleries on line
+                cut = re.compile(r'\[\s*'+gallery+r'\s*\]')### 
                 output += cut.split(linecopy)[0]
-                linecopy = cut.split(linecopy)[1]
+                print(cut.split(linecopy))
+                print("linecopy was "+linecopy)
+                if linecopy:
+                    linecopy = cut.split(linecopy)[1]
                 output += outputstuff(images, gallerynum, pk)
                 gallerynum += 1
             output += linecopy
