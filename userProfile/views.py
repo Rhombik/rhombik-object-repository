@@ -11,33 +11,53 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 from userProfile.models import userProfile
 from userProfile.forms import *
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 #this obviously doesn't work... But it's a good base to work from.
+### This Is the view for the user edit page.
 @csrf_exempt
 def edit(request):
+    
+    data = request.user
+    profile = userProfile.objects.filter(user=data)[0]
+    print(profile.bio)
+    ## If loop true when user clicks the register button.
     if request.method == 'POST':
-        form = registerForm(request.POST)
+        #get data from the forms
+        #form = PasswordChangeForm(data, request.POST)
         profileform = UserProfileForm(request.POST)
-        if form.is_valid() and profileform.is_valid():
-            data = User();
-            data.username = form.cleaned_data["username"]
-            #data.password = form.cleaned_data["password"]
-            data.set_password(form.cleaned_data["password"])
-            data.save()
-            profile = userProfile()
-            profile.user = data
-            profile.profilepic = "/"
+        pictureform = UserPictureForm(request.POST, request.FILES)
+        #form.cleaned_data["user"]=data
+        ## puts the users stuff in the database if its valid.
+        if profileform.is_valid() and pictureform.is_valid():
+            ###Create the user
+            #data.username = form.cleaned_data["username"]
+            #if form.cleaned_data["password"]:
+                #data.password = form.cleaned_data["password"]###this is NOT how you set a password! Passwords are hashed.
+            #    data.set_password(form.cleaned_data["password"])
+            #    data.save()
+            ###Create user's profile
             profile.bio = profileform.cleaned_data["bio"]
-            profile.filename = profileform.cleaned_data["filename"]
-            profile.save
-            return render_to_response('register.html', dict( user=request.user, msg="success"))
+            #Create users picture.
+            if pictureform.cleaned_data["filename"]:
+                profile.filename=request.FILES["filename"]
+            profile.save()
+            if profile.filename=="stoopid":
+                return render_to_response('editProfile.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
+            return render_to_response('editProfile.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
+        #returns form with error messages.
         else:
-            return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform))#registerForm(request.POST)))#form, msg=form.errors))
+            return render_to_response('editProfile.html', dict( user=request.user, form2=profileform, form3=pictureform))
+    
+    ## Initializes the page with the forms.
     else:
-        form = registerForm()
-        profileform = UserProfileForm()
-        return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform))
+        #form = PasswordChangeForm(data)
+        profileform = UserProfileForm({'bio':profile.bio})
+        pictureform = UserPictureForm({"filename":profile.filename})
+        return render_to_response('editProfile.html', dict( user=request.user, form2=profileform, form3=pictureform))
+
+
 
 def logout_user(request):
     logout(request)
@@ -83,11 +103,11 @@ def register(request):
         profileform = UserProfileForm(request.POST)
         pictureform = UserPictureForm(request.POST, request.FILES)
         ## puts the users stuff in the database if its valid.
-        if form.is_valid() and profileform.is_valid():# and pictureform.is_valid():
+        if form.is_valid() and profileform.is_valid() and pictureform.is_valid():
             ###Create the user
             data = User();
             data.username = form.cleaned_data["username"]
-            #data.password = form.cleaned_data["password"]###this is NOT how you set a password! Passwords are hashed.
+            data.password = form.cleaned_data["password"]###this is NOT how you set a password! Passwords are hashed.
             data.set_password(form.cleaned_data["password"])
             data.save()
             ###Create user's profile
@@ -95,16 +115,10 @@ def register(request):
             profile.user = data
             profile.bio = profileform.cleaned_data["bio"]
             #Create users picture.
-            try:
-               profile.filename=request.FILES["filename"]
-            except:
-               profile.profilePicThumb=settings.URL+"/static/noUserPic.png"
-               profile.profilePicPath=settings.URL+"/static/noUserPic.png"
-               profile.profilePicType="browser"
-               profile.filename="stoopid"
-          # profile.filename.save(str(data.username)+"Pic-"+str(request.FILES["filename"]), request.FILES["filename"])
-            print("profile.filename.path="+profile.filename.path)
+            profile.filename=request.FILES["filename"]
             profile.save()
+            if profile.filename=="stoopid":
+                return render_to_response('register.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
             return render_to_response('register.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
         #returns form with error messages.
         else:

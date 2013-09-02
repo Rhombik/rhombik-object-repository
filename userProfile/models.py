@@ -28,10 +28,16 @@ class userProfile(models.Model):
        #self.filename = fileishness#request.FILES["filename"]
        #self.filename.save(str(self.user.username)+"Pic.png", fileishness)
         if not self.filename=="stoopid":
-            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(200,200), forceupdate=True)
-            self.profilePicType=thumbnaildata[2]
-            self.profilePicPath=thumbnaildata[1]
-            self.profilePicThumb=thumbnaildata[0]
+            try:
+                thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(200,200), forceupdate=True)
+                self.profilePicType=thumbnaildata[2]
+                self.profilePicPath=thumbnaildata[1]
+                self.profilePicThumb=thumbnaildata[0]
+            except:
+                self.profilePicThumb=settings.URL+"/static/noUserPic.png"
+                self.profilePicPath=settings.URL+"/static/noUserPic.png"
+                self.profilePicType="browser"
+                self.filename="stoopid"
         super(userProfile, self).save()
 
 
