@@ -53,6 +53,7 @@ def thumbnail(filepath, size, forceupdate=False):
 
         media_root_path = settings.MEDIA_ROOT+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)
         media_url_path = settings.MEDIA_URL+"thumbnails/"+os.path.relpath(filepath,settings.PROJECT_PATH)
+        print("thumbpathteststuff: "+filepath,settings.PROJECT_PATH)
 
         if extension in jsc3d_pic:
         #checks to see ig the thumbnail already exists
@@ -86,8 +87,9 @@ def thumbnail(filepath, size, forceupdate=False):
 	        if forceupdate==False and os.path.exists(media_root_path+str_thumbnail_size+".png"):
 	                return(media_url_path+str_thumbnail_size+".png","/"+os.path.relpath(filepath,settings.PROJECT_PATH),"browser")
 	        else:
+	                print("well, it is gettign here."+filepath)
 	                try:
-	                        img = Image.open(filepath)
+	                        img = Image.open("/"+filepath)
 	                        img.thumbnail(size)
 	                        builddir(media_root_path)
 	                        img.save(media_root_path+str_thumbnail_size+".png", "PNG")
