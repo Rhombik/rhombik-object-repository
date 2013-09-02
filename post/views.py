@@ -21,6 +21,14 @@ def post(request, title,):
     c = RequestContext(request, dict(post=Post.objects.filter(title=title).exclude(draft=True)[0:1].get(), user=request.user))
     return render(request, "article.html", c)
 
+def front(request):
+
+
+
+    return render_to_response('list.html', dict(post=post, user=request.user,))
+
+
+
 def list(request):
     """Main listing."""
     posts = Post.objects.exclude(draft=True).order_by("-created")

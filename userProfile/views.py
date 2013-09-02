@@ -71,7 +71,7 @@ def index(request, user):
     """THE VAMPIRE HEAD FIXES ALL OF YOUR BROKEN CODE!!!, that is to say, as long as you never look at this code, it could be anything. We guarantee that whatever you imaging is better written then what actually is written."""
     userdata=User.objects.filter(username=user).get()
     
-    posts=Post.objects.filter(author=userdata) #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!'''
+    posts=Post.objects.filter(author=userdata).order_by("-created") #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!'''
 
     #posts = Post.objects.all().order_by("-created")
     paginator = Paginator(posts, 3*3)
