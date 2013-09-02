@@ -5,6 +5,8 @@ Ok, not that amazing.
 
 Edit: It IS that amazing.
 
+Edit: It had cross directory vulnerabilities..
+
 """
 ##use this for testing regular expressions.
 testtext = """aegfas\nasegf\n[apples, notapples] other [more, list] text\nefaefva"""
@@ -22,14 +24,16 @@ findSquareBrackets = re.compile(r'[\[](.*?)[\]]')
 findEachImage = re.compile(r'[\[,\s\]]*')
 findNewLine = re.compile(r'(\n)')
 
-### this function gets a list of images, a gallery name (numbers generated in order of gallery per page), and the pages title. and returns an html string formatted to make a gallery
-def outputstuff(imagelist, gallerynum, title):
+### this function gets a list of images, a gallery name (numbers generated in order of gallery per page), and the pages pk. and returns an html string formatted to make a gallery
+def outputstuff(imagelist, gallerynum, pk):
     images = []
     for image in imagelist:
-        if os.path.isfile(settings.MEDIA_ROOT+"uploads/" + title +"/"+ image):
-            images.append(thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + title +"/"+ image,(64,64)))
+        print("shadowimage "+image)
+        print(settings.MEDIA_ROOT+"thumbnails/media/uploads/" + pk + image)
+        if os.path.isfile(settings.MEDIA_ROOT+"thumbnails/media/uploads/" + pk + image):
+            images.append(thumbnailer.thumbnail(settings.MEDIA_ROOT+"thumbnails/media/uploads/" + pk + image,(64,64)))
         else:
-            for i in os.walk(settings.MEDIA_ROOT+"uploads/" + title +"/"+ image , topdown=True, onerror=None, followlinks=False):
+            for i in os.walk(settings.MEDIA_ROOT+"uploads/" + pk +"/"+ image , topdown=True, onerror=None, followlinks=False):
                 for z in i[2]:##If anyone doesn't know, the [2] is because 0 is dir, 1 is folders, and 2 is files.
                     images.append(thumbnailer.thumbnail(i[0]+"/"+z,(64,64)))
 
@@ -38,7 +42,7 @@ def outputstuff(imagelist, gallerynum, title):
 
 
 ### main function that searches through html for image/image gallery markdown code and renders it as html
-def run(text,title):
+def run(text,pk):
     output = ""
     gallerynum = 0
     for line in findNewLine.split(text):
@@ -53,7 +57,7 @@ def run(text,title):
                 cut = re.compile(r'\[\s*'+gallery+r'\s*\]')
                 output += cut.split(linecopy)[0]
                 linecopy = cut.split(linecopy)[1]
-                output += outputstuff(images, gallerynum, title)
+                output += outputstuff(images, gallerynum, pk)
                 gallerynum += 1
             output += linecopy
         ###if theres no gallery to render on this line, just add the line unchanged to the output
