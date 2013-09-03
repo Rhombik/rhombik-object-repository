@@ -74,7 +74,7 @@ def multiuploader(request,pk):
             file_delete_url = 'multi_delete/'
 
         try:
-            thumburl = postfiles.thumbnailpath
+            thumburl = postfiles.thumbname.url
         except:
             thumburl = ""
  
@@ -83,7 +83,7 @@ def multiuploader(request,pk):
         result.append({"name":postfiles.subfolder+os.path.split(postfiles.filename.name)[1], 
                        "size":postfiles.filename.size, 
                        "url":postfiles.filename.url, 
-                       "thumbnail_url":postfiles.thumbnailpath,
+                       "thumbnail_url":thumburl,
                        "delete_url":"/multi_delete/"+str(postfiles.pk)+"/", 
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
@@ -105,7 +105,7 @@ def multiuploader(request,pk):
             result.append({"name":image.subfolder+os.path.split(image.filename.name)[1],
                        "size":image.filename.size,
                        "url":image.filename.url,
-                       "thumbnail_url":image.thumbnailpath,
+                       "thumbnail_url":image.thumbname.url,
                        "delete_url":"/multi_delete/"+str(image.pk)+"/",
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
