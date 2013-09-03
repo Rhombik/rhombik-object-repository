@@ -127,10 +127,10 @@ def create(request):
 #--------------------------
 #Set up the actual view.
     elif request.user.is_authenticated():
-        form = createForm()
+        form = createForm("",post)
         form2 = defaulttag()
 
-        return render_to_response('create.html', dict(user=request.user, form=form, form2=form2,post=post))
+        return render_to_response('create.html', dict(user=request.user, form=form, form2=form2, post=post))
     else:
         return HttpResponse(status=403)
 

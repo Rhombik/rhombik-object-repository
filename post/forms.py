@@ -56,7 +56,10 @@ class createForm(ModelForm):
 
     def __init__(self, request, post):
         self.post = post
-        super(createForm, self).__init__(request)
+        if request:
+            super(createForm, self).__init__(request)
+        else:
+            super(createForm, self).__init__()
 
     class Meta:
         model = Post
