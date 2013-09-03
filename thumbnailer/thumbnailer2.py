@@ -21,6 +21,8 @@
 #       size;            the dimensions of the thumbnail to be made in an array of two values
 
 #And it returns a thumbobject ID.
+from io import StringIO, BytesIO
+
 def thumbnailify(filebit, sizebit):
   from PIL import Image
   from os.path import splitext
@@ -39,6 +41,7 @@ def thumbnailify(filebit, sizebit):
     print(img) 
     # Create a file-like object to write thumb data (thumb data previously created
     # using PIL, and stored in variable 'thumb')
+#    thumb_io = BytesIO()
     thumb_io = BytesIO()
     img.save(thumb_io, format='png')
   
