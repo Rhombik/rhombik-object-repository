@@ -101,11 +101,17 @@ def multiuploader(request,pk):
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []
         for image in postfiles:
+            try:
+                thumburl = image.thumbname.url
+            except:
+                thumburl = ""
+            print (image.filename.name)
+            print (thumburl)
             ##json stuff
             result.append({"name":image.subfolder+os.path.split(image.filename.name)[1],
                        "size":image.filename.size,
                        "url":image.filename.url,
-                       "thumbnail_url":image.thumbname.url,
+                       "thumbnail_url":thumburl,
                        "delete_url":"/multi_delete/"+str(image.pk)+"/",
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
