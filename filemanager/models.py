@@ -1,7 +1,8 @@
 from django.db import models
-import thumbnailer.thumbnailer
+from thumbnailer import thumbnailer2
 from post.models import Post
 from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 # Create your models here.
 
 class fileobject(models.Model):
@@ -18,12 +19,12 @@ class fileobject(models.Model):
 
 
     def save(self):
-        try:
-            thumbnaildata = thumbnail2(self.fileobject.filename ,(128,128))
-            self.filename = thumbnaildata[0]
-            self.filetype = thumbnaildata[1]
-        except:
-            self.filetype = "norender"
+       #try:
+        thumbnaildata = thumbnailer2.thumbnailify(self, (128,128))
+        self.filename.save(ContentFile(thumbnaildata[0]))
+        self.filetype = thumbnaildata[1]
+       #except:
+       #    self.filetype = "norender"
         super(fileobject, self).save()
 
     def delete(self, *args, **kwargs):
@@ -47,14 +48,14 @@ class thumbobject(models.Model):
         unique_together = ('filex', 'filey',)
 
     def save(self):
-        try:
+        #try:
 ##           old thumbnailer
 #            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
-            thumbnaildata = thumbnail2(self.fileobject.filename ,(str(self.filex),str(self.filey)))
-            self.filename = thumbnaildata[0]
-            self.filetype = thumbnaildata[1]
-        except:
-            self.filetype = "norender"
+        thumbnaildata = thumbnailer2.thumbnailify(self.fileobject, (str(self.filex),str(self.filey)))
+        self.filename = thumbnaildata[0]
+        self.filetype = thumbnaildata[1]
+        #except:
+        #    self.filetype = "norender"
         super(thumbobject, self).save()
 
     def delete(self, *args, **kwargs):
