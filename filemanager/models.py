@@ -2,7 +2,8 @@ from django.db import models
 from thumbnailer import thumbnailer2
 from post.models import Post
 from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
+from django.conf import settings
+
 # Create your models here.
 
 class fileobject(models.Model):
@@ -14,14 +15,15 @@ class fileobject(models.Model):
     post = models.ForeignKey(Post)
     subfolder = models.CharField(max_length=256, default="/")
     filename = models.FileField(upload_to=uploadpath)
-    thumbname = models.FileField(upload_to="/thumbs/", blank=True, null=True)
+    thumbname = models.FileField(upload_to=settings.MEDIA_ROOT+"/thumbs/", blank=True, null=True)
     filetype = models.CharField(max_length=60, blank=True, null=True)
 
 
     def save(self):
+        
        #try:
         thumbnaildata = thumbnailer2.thumbnailify(self, (128,128))
-        self.filename.save(ContentFile(thumbnaildata[0]))
+        self.thumbname = thumbnaildata[0]
         self.filetype = thumbnaildata[1]
        #except:
        #    self.filetype = "norender"

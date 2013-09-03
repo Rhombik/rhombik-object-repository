@@ -27,6 +27,7 @@ def thumbnailify(filebit, sizebit):
   from django.http import HttpResponseRedirect, HttpResponse
   from io import BytesIO
   from django.core.files.uploadedfile import InMemoryUploadedFile
+  import sys
  
 
   browser_kind = [  ".png",".jpg",".gif" ]
@@ -38,19 +39,19 @@ def thumbnailify(filebit, sizebit):
     img.thumbnail(sizebit)
     print(img) 
     # Create a file-like object to write thumb data (thumb data previously created
-    # using PIL, and stored in variable 'thumb')
+    # using PIL, and stored in variable 'img')
     thumb_io = BytesIO()
-    img.save(thumb_io, format='png')
+    img.save( thumb_io, format='png')
   
     # Create a new Django file-like object to be used in models as ImageField using
     # InMemoryUploadedFile.  If you look at the source in Django, a
     # SimpleUploadedFile is essentially instantiated similarly to what is shown here
-   # thumb_file = InMemoryUploadedFile(thumb_io, None, 'foo.png', 'image/jpeg',
-   #                                 1001, None)
- 
+    thumb_file = InMemoryUploadedFile(thumb_io, None, 'foo.png', 'image/jpeg',
+                                    1, None)
+   
     # Once you have a Django file-like object, you may assign it to your ImageField
     # and save.
 
   print(response)
   print("it work'd!!!")
-  return(thumb_io, ext) 
+  return(thumb_file, ext) 
