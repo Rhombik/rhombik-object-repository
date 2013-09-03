@@ -26,11 +26,8 @@ def cleanify(self, formName):
             for fl in files:
                 if fl.filetype != 'norender':
                     self.post.thumbnailpath=str(fl.thumbnailpath)
-                    #cleaned_data['thumbnailpath']=settings.MEDIA_ROOT+str(fl.filename)
-                    #print("i don't like you either, says "+str(settings.MEDIA_ROOT+str(fl.thumbnailpath)))
                     break
             
-        #self._errors['thumbnail'] = [u"The thumbnail you selected is not a supported image type."]#raise ValidationError("The thumbnail you selected is not a valid image type.")
     if not cleaned_data['body']:
         self._errors['body'] = [u"Write something about your project! Jeezers."]
 

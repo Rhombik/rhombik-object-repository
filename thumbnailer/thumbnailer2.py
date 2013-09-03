@@ -20,4 +20,12 @@ class renderstl(basefile, size):
 #       size;            the dimensions of the thumbnail to be made in an array of two values
 
 #And it returns a thumbobject ID.
+def thumbnailify(filebit, sizebit):
 
+  browser_kind = [  ".png",".jpg",".gif" ]
+
+  if filebit.filetype in browser_kind:
+
+    img = Image.open(filebit.filename)
+    img.thumbnail(sizebit)
+    print("it work'd!!!)
