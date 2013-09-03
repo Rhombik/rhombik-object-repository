@@ -32,7 +32,34 @@ class fileobject(models.Model):
         super(fileobject, self).delete(*args, **kwargs)
         default_storage.delete(self.filename)
 
-#class thumbobject(models.Model):
-#    fileobject = models.ForeignKey(fileobject)
-
+class thumbobject(models.Model):
+    #A pointer to the file this is a thumbnail of.
+    fileobject = models.ForeignKey(fileobject)
+    #This is the actual thumbnail, stored using django storage, whatever that may be.
+    filename = models.FileField(upload_to="/thumbs/", blank=True, null=True)
+    #What the file type is
+    filetype = models.CharField(max_length=60, blank=True, null=True)
+    #the size of the file.
+    filex = PositiveSmallIntegerField()
+    filey = PositiveSmallIntegerField()
     
+    class Meta:
+        unique_together = ('filex', 'filey',)
+
+    super(fileobject, self).save()
+        try:
+##           old thumbnailer
+#            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
+            thumbnaildata = thumbnail2(self.fileobject.filename.url ,(str(self.filex),str(self.filey)))
+            self.filename = thumbnaildata[0]
+            self.filetype = thumbnaildata[1]
+        except:
+            self.filetype = "norender"
+        super(thumbobject, self).save()
+
+    def delete(self, *args, **kwargs):
+        super(thumbobject, self).delete(*args, **kwargs)
+        default_storage.delete(self.filename)
+
+
+ 
