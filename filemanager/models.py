@@ -40,8 +40,8 @@ class thumbobject(models.Model):
     #What the file type is
     filetype = models.CharField(max_length=60, blank=True, null=True)
     #the size of the file.
-    filex = PositiveSmallIntegerField()
-    filey = PositiveSmallIntegerField()
+    filex = models.PositiveSmallIntegerField()
+    filey = models.PositiveSmallIntegerField()
     
     class Meta:
         unique_together = ('filex', 'filey',)
