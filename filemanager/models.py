@@ -18,7 +18,6 @@ class fileobject(models.Model):
 
 
     def save(self):
-        super(fileobject, self).save()
         try:
             thumbnaildata = thumbnail2(self.fileobject.filename ,(128,128))
             self.filename = thumbnaildata[0]
@@ -47,7 +46,7 @@ class thumbobject(models.Model):
     class Meta:
         unique_together = ('filex', 'filey',)
 
-    super(fileobject, self).save()
+    def save(self):
         try:
 ##           old thumbnailer
 #            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
