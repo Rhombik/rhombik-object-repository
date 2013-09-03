@@ -20,7 +20,7 @@ class fileobject(models.Model):
     def save(self):
         super(fileobject, self).save()
         try:
-            thumbnaildata = thumbnail2(self.fileobject.filename.url ,(128,128))
+            thumbnaildata = thumbnail2(self.fileobject.filename ,(128,128))
             self.filename = thumbnaildata[0]
             self.filetype = thumbnaildata[1]
         except:
@@ -51,7 +51,7 @@ class thumbobject(models.Model):
         try:
 ##           old thumbnailer
 #            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
-            thumbnaildata = thumbnail2(self.fileobject.filename.url ,(str(self.filex),str(self.filey)))
+            thumbnaildata = thumbnail2(self.fileobject.filename ,(str(self.filex),str(self.filey)))
             self.filename = thumbnaildata[0]
             self.filetype = thumbnaildata[1]
         except:
