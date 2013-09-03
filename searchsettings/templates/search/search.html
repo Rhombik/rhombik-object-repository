@@ -1,4 +1,7 @@
+{% include "includes.html" %}
 
+
+<div class="container_12">
 {% block content %}
     <h2>Search</h2>
 
@@ -15,15 +18,22 @@
 
         {% if query %}
             <h3>Results</h3>
-
+            <div class="container_12">
             {% for result in page.object_list %}
+            <div class="grid_3">
+<div class=""><h2><a href="/post/{{ post.title }}"><img src="{{ post.thumbnailpath }}" class="bigthumb"></a></h2></div>
+            </div>
                 <p>
-                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a>
+            <div class="grid_9">
+                    <a href="/post/{{ result.object.title }}">{{ result.object.title }}</a>
+                    {{ result.object.body_rendered|safe|truncatewords_html:20 }}
+            </div>
+
                 </p>
             {% empty %}
                 <p>No results found.</p>
             {% endfor %}
-
+            </div>
             {% if page.has_previous or page.has_next %}
                 <div>
                     {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
@@ -36,3 +46,4 @@
         {% endif %}
     </form>
 {% endblock %}
+</div>
