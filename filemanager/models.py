@@ -18,9 +18,8 @@ class fileobject(models.Model):
 
 
     def save(self):
-        super(fileobject, self).save()
         try:
-            thumbnaildata = thumbnail2(self.fileobject.filename.url ,(128,128))
+            thumbnaildata = thumbnail2(self.fileobject.filename ,(128,128))
             self.filename = thumbnaildata[0]
             self.filetype = thumbnaildata[1]
         except:
@@ -41,17 +40,17 @@ class thumbobject(models.Model):
     #What the file type is
     filetype = models.CharField(max_length=60, blank=True, null=True)
     #the size of the file.
-    filex = PositiveSmallIntegerField()
-    filey = PositiveSmallIntegerField()
+    filex = models.PositiveSmallIntegerField()
+    filey = models.PositiveSmallIntegerField()
     
     class Meta:
         unique_together = ('filex', 'filey',)
 
-    super(fileobject, self).save()
+    def save(self):
         try:
 ##           old thumbnailer
 #            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
-            thumbnaildata = thumbnail2(self.fileobject.filename.url ,(str(self.filex),str(self.filey)))
+            thumbnaildata = thumbnail2(self.fileobject.filename ,(str(self.filex),str(self.filey)))
             self.filename = thumbnaildata[0]
             self.filetype = thumbnaildata[1]
         except:
