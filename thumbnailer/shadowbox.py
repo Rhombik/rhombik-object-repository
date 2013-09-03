@@ -26,7 +26,7 @@ findNewLine = re.compile(r'(\n)')
 
 import posixpath
 
-# ...
+# ...         Yeah, somethime it would be good to get better security. better security is better.
 def goodSecurity(path):
     #path = posixpath.normpath(path)
     newpath = ''

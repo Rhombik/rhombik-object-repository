@@ -56,7 +56,7 @@ def edit(request, title):
     except:
         return HttpResponse(status=404)
     if request.method == 'POST':
-        form = PostForm(request.POST, post.pk)
+        form = PostForm(request.POST, post)
         print("view's post.pk = "+str(post.pk))
         #Check to make sure the form is valid and the user matches the post author
         if form.is_valid() and str(post.author) == str(request.user):
@@ -82,7 +82,7 @@ def edit(request, title):
            taglist.append(i)
         taglist = ",".join(taglist)
         print ("tags= "+str(taglist))
-        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail, 'tags' : str(taglist)}, post.pk)
+        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail, 'tags' : str(taglist)}, post)
         return render_to_response('edit.html', dict(post=post, user=request.user, form=form,))
         #return HttpResponse(response_data, mimetype="application/json")
     else:
@@ -100,7 +100,7 @@ def create(request):
         post.save()
 ##The form-----------------------------
     if request.method == 'POST':
-        form = createForm(request.POST)
+        form = createForm(request.POST, post)
         form2 = defaulttag(request.POST)
         #Check to make sure the form is valid and the user matches the post author
         if form.is_valid() and form2.is_valid() and request.user.is_authenticated():
