@@ -1,6 +1,7 @@
 from django.db import models
 import thumbnailer.thumbnailer
 from post.models import Post
+from django.core.files.storage import default_storage
 # Create your models here.
 
 class fileobject(models.Model):
@@ -27,4 +28,11 @@ class fileobject(models.Model):
         except:
             self.filetype = "norender"
         super(fileobject, self).save()
+    def delete(self, *args, **kwargs):
+        super(fileobject, self).delete(*args, **kwargs)
+        default_storage.delete(self.filename)
 
+#class thumbobject(models.Model):
+#    fileobject = models.ForeignKey(fileobject)
+
+    
