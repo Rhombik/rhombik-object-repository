@@ -2,6 +2,7 @@ from django.db import models
 from thumbnailer import thumbnailer2
 from post.models import Post
 from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 from django.conf import settings
 
 # Create your models here.
@@ -20,7 +21,7 @@ class fileobject(models.Model):
 
 
     def save(self):
-        
+
        #try:
         thumbnaildata = thumbnailer2.thumbnailify(self, (128,128))
         self.thumbname = thumbnaildata[0]
