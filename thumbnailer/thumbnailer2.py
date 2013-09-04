@@ -46,7 +46,7 @@ def thumbnailify(filebit, sizebit):
     # Create a new Django file-like object to be used in models as ImageField using
     # InMemoryUploadedFile.  If you look at the source in Django, a
     # SimpleUploadedFile is essentially instantiated similarly to what is shown here
-    thumb_file = InMemoryUploadedFile(thumb_io, None, 'foo.png', 'image/jpeg',
+    thumb_file = InMemoryUploadedFile(thumb_io, None, str(sizebit)+"-"+str(filebit.filename), 'image/jpeg',
                                     1, None)
    
     # Once you have a Django file-like object, you may assign it to your ImageField

@@ -102,7 +102,7 @@ def multiuploader(request,pk):
         result = []
         for image in postfiles:
             try:
-                thumburl = image.thumbname.url
+                thumburl = image.thumbname#.url
             except:
                 thumburl = ""
             print (image.filename.name)

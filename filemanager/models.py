@@ -15,7 +15,7 @@ class fileobject(models.Model):
     post = models.ForeignKey(Post)
     subfolder = models.CharField(max_length=256, default="/")
     filename = models.FileField(upload_to=uploadpath)
-    thumbname = models.FileField(upload_to=settings.MEDIA_ROOT+"/thumbs/", blank=True, null=True)
+    thumbname = models.FileField(upload_to="thumbs/", blank=True, null=True)
     filetype = models.CharField(max_length=60, blank=True, null=True)
 
 
