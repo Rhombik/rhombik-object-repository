@@ -40,8 +40,8 @@ urlpatterns = patterns('',
     (r'^editProfile/$', 'userProfile.views.edit'),
 
     #preview pages for the STL files.
-    (r'^thumbs/stl/(.*)', 'thumbnailer.views.stlthumb'),
-    (r'^preview/stl/(.*)', 'thumbnailer.views.stlview'),
+    (r'^thumbs/jsc3d/(.*)', 'thumbnailer.views.stlthumb'),
+    (r'^preview/jsc3d/(.*)', 'thumbnailer.views.stlview'),
     url(r'', include('multiuploader.urls')),
     (r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
 

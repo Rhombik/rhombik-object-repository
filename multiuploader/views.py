@@ -82,7 +82,7 @@ def multiuploader(request,pk):
         result = []
         result.append({"name":postfiles.subfolder+os.path.split(postfiles.filename.name)[1], 
                        "size":postfiles.filename.size, 
-                       "url":postfiles.filename.url, 
+                       "url":"/preview/"+postfiles.filetype+image.filename.url,
                        "thumbnail_url":thumburl,
                        "delete_url":"/multi_delete/"+str(postfiles.pk)+"/", 
                        "delete_type":"POST",})
@@ -108,7 +108,7 @@ def multiuploader(request,pk):
             ##json stuff
             result.append({"name":image.subfolder+os.path.split(image.filename.name)[1],
                        "size":image.filename.size,
-                       "url":image.filename.url,
+                       "url":"/preview/"+image.filetype+image.filename.url,
                        "thumbnail_url":thumburl,
                        "delete_url":"/multi_delete/"+str(image.pk)+"/",
                        "delete_type":"POST",})

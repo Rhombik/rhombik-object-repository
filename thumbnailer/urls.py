@@ -7,8 +7,8 @@ urlpatterns = patterns('',
     (r'^post/(.*)/$', 'post.views.post'),
 
     #preview pages for the STL files.
-    (r'^thumbs/stl/(.*)', 'thumbnailer.views.stlthumb'),
-    (r'^preview/stl/(.*)', 'thumbnailer.views.stlview'),
+    (r'^thumbs/jsc3d/(.*)', 'thumbnailer.views.stlthumb'),
+    (r'^preview/jsc3d/(.*)', 'thumbnailer.views.stlview'),
 
     # Examples:
     # url(r'^$', 'exampleSettings.views.home', name='home'),

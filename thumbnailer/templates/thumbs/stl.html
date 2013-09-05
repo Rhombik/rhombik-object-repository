@@ -22,7 +22,7 @@ body, html { height:100%; }
         cv.height = window.innerHeight;
         var canvas = document.getElementById('cv');
         var viewer = new JSC3D.Viewer(canvas);
-        viewer.setParameter('SceneUrl', '/{{ path }}');
+        viewer.setParameter('SceneUrl', '{{ path }}');
         viewer.setParameter('InitRotationX', 20);
         viewer.setParameter('InitRotationY', 20);
         viewer.setParameter('InitRotationZ', 00);
