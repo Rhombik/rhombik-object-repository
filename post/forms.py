@@ -25,7 +25,7 @@ def cleanify(self, formName):
         else:
             for fl in files:
                 if fl.filetype != 'norender':
-                    self.post.thumbnailpath=str(fl.thumbname)
+                    self.post.thumbnailpath=str(fl.thumbname.url)
                     break
             
     if not cleaned_data['body']:
