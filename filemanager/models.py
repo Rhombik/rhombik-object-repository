@@ -21,6 +21,7 @@ class fileobject(models.Model):
 
 
     def save(self):
+        super(fileobject, self).save()
 
         thumbnaildata = thumbnailer2.thumbnailify(self, (128,128))
         if thumbnaildata[0]:
@@ -54,7 +55,7 @@ class thumbobject(models.Model):
         #try:
 ##           old thumbnailer
 #            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
-        thumbnaildata = thumbnailer2.thumbnailify(self.fileobject, (str(self.filex),str(self.filey)))
+        thumbnaildata = thumbnailer2.thumbnailify(self, (str(self.filex),str(self.filey)))
         self.filename = thumbnaildata[0]
         self.filetype = thumbnaildata[1]
         #except:

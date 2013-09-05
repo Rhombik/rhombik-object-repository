@@ -60,7 +60,6 @@ def thumbnailify(filebit, sizebit):
     driver = webdriver.PhantomJS()
     driver.set_window_size(sizebit[0],sizebit[1]) # not optional
     driver.get(settings.URL+"/thumbs/stl"+filebit.filename.url)
-    print(settings.URL+"/thumbs/stl/"+filebit.filename.url+"   ------------------------------")
     imagedata = driver.get_screenshot_as_base64() # save a screenshot as base64 string, the only format phantom supports that isn't disk.
 
     import base64
