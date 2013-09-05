@@ -47,15 +47,31 @@ def thumbnailify(filebit, sizebit):
     # Create a new Django file-like object to be used in models as ImageField using
     # InMemoryUploadedFile.  If you look at the source in Django, a
     # SimpleUploadedFile is essentially instantiated similarly to what is shown here
-    thumb_file = InMemoryUploadedFile(thumb_io, None, str(sizebit)+"-"+str(filebit.filename), 'image/jpeg',
+    thumb_file = InMemoryUploadedFile(thumb_io, None, str(sizebit)+"-"+str(filebit.filename)+".png", 'image/jpeg',
                                     1, None)
    
     # Once you have a Django file-like object, you may assign it to your ImageField
     # and save.
     return(thumb_file, "browser")
   if ext in jsc3d_kind:
-    thumb_file = False
-  return(thumb_file, "jsc3d")
+    from selenium import webdriver
+    from django.conf import settings
+
+    driver = webdriver.PhantomJS()
+    driver.set_window_size(sizebit[0],sizebit[1]) # not optional
+    driver.get(settings.URL+"/thumbs/stl"+filebit.filename.url)
+    print(settings.URL+"/thumbs/stl/"+filebit.filename.url+"   ------------------------------")
+    imagedata = driver.get_screenshot_as_base64() # save a screenshot as base64 string, the only format phantom supports that isn't disk.
+
+    import base64
+    from io import BytesIO
+    #converts the base64 encoded image data into a python file object
+    thumb_io = BytesIO(base64.b64decode(imagedata))
+    thumb_file = InMemoryUploadedFile(thumb_io, None, str(sizebit)+"-"+str(filebit.filename)+".png", 'image/jpeg',
+                                      1, None)
+#    thumb_file = False
+
+    return(thumb_file, "jsc3d")
   return(False, "norender") 
   
   
