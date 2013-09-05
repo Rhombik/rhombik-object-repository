@@ -12,8 +12,9 @@ def gallerfy(value):
     newgallery = []
     print (galleries)
     for picture in galleries:
-        print(picture)
-        picture.clear()
+        print("picture is "+str(picture))
+        picture.insert(0,"pisizicture!")
+        print("picture is "+str(picture))
         newgallery.append(picture)
     print (newgallery)
     html = value #and now the value is html. My work here is done.
