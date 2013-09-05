@@ -82,7 +82,7 @@ def multiuploader(request,pk):
         result = []
         result.append({"name":postfiles.subfolder+os.path.split(postfiles.filename.name)[1], 
                        "size":postfiles.filename.size, 
-                       "url":"/preview/"+postfiles.filetype+post.filename.url,
+                       "url":"/preview/"+postfiles.filetype+postfiles.filename.url,
                        "thumbnail_url":thumburl,
                        "delete_url":"/multi_delete/"+str(postfiles.pk)+"/", 
                        "delete_type":"POST",})
