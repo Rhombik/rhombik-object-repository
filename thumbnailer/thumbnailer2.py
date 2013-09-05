@@ -36,7 +36,7 @@ def thumbnailify(filebit, sizebit):
   ext = str(splitext(str(filebit.filename))[1])
   response = HttpResponse(mimetype="image/png")
   if ext in browser_kind:
-
+ 
     img = Image.open(filebit.filename)
     img.thumbnail(sizebit)
     print(img) 
@@ -55,7 +55,8 @@ def thumbnailify(filebit, sizebit):
    
     # Once you have a Django file-like object, you may assign it to your ImageField
     # and save.
+    return(thumb_file, "browser")
 
-  print(response)
-  print("it work'd!!!")
-  return(thumb_file, ext) 
+  return(False, "norender") 
+  
+  

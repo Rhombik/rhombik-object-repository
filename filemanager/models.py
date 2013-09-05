@@ -22,12 +22,12 @@ class fileobject(models.Model):
 
     def save(self):
 
-       #try:
         thumbnaildata = thumbnailer2.thumbnailify(self, (128,128))
-        self.thumbname = thumbnaildata[0]
-        self.filetype = thumbnaildata[1]
-       #except:
-       #    self.filetype = "norender"
+        if thumbnaildata[0]:
+            self.thumbname = thumbnaildata[0]
+            self.filetype = thumbnaildata[1]
+        else:
+            self.filetype = "norender"
         super(fileobject, self).save()
 
     def delete(self, *args, **kwargs):
@@ -48,7 +48,7 @@ class thumbobject(models.Model):
     filey = models.PositiveSmallIntegerField()
     
     class Meta:
-        unique_together = ('filex', 'filey',)
+        unique_together = ('filex', 'filey', "fileobject")
 
     def save(self):
         #try:

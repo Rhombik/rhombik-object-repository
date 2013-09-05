@@ -105,8 +105,6 @@ def multiuploader(request,pk):
                 thumburl = image.thumbname.url
             except:
                 thumburl = ""
-            print (image.filename.name)
-            print (thumburl)
             ##json stuff
             result.append({"name":image.subfolder+os.path.split(image.filename.name)[1],
                        "size":image.filename.size,
