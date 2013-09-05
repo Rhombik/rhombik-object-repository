@@ -15,12 +15,7 @@
 #  imagedata = Image.open(BytesIO(base64.b64decode(imagedata)))
 #  return(jsc3d, imagedata)
 
-############### info on using thumbnailer.thumbnailer.thumbnail() #############
-#This function takes:
-#       URL;             a url (that it can access) to a file to be thumbnailed
-#       size;            the dimensions of the thumbnail to be made in an array of two values
 
-#And it returns a thumbobject ID.
 from io import StringIO, BytesIO
 
 def thumbnailify(filebit, sizebit):
@@ -33,7 +28,9 @@ def thumbnailify(filebit, sizebit):
  
 
   browser_kind = [  ".png",".jpg",".gif" ]
-  ext = str(splitext(str(filebit.filename))[1])
+  jsc3d_kind = [  ".stl",".obj" ]
+  ##ext os the file extension, forced into lowercase becouse people are insane.
+  ext = str(splitext(str(filebit.filename))[1].lower())
   response = HttpResponse(mimetype="image/png")
   if ext in browser_kind:
  
@@ -56,7 +53,9 @@ def thumbnailify(filebit, sizebit):
     # Once you have a Django file-like object, you may assign it to your ImageField
     # and save.
     return(thumb_file, "browser")
-
+  if ext in jsc3d_kind:
+    thumb_file = False
+  return(thumb_file, "jsc3d")
   return(False, "norender") 
   
   
