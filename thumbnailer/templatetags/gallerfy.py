@@ -1,6 +1,7 @@
 from django import template
 from django.template.defaultfilters import stringfilter
 from bs4 import BeautifulSoup,NavigableString
+from filemanager.models import fileobject
 
 register = template.Library()
 
@@ -10,12 +11,12 @@ def gallerfy(value):
     soup = BeautifulSoup(''.join(value))
     galleries = soup.findAll("fileobject")
     newgallery = []
-    print (galleries)
     for picture in galleries:
-        print("picture is "+str(picture))
-        picture.insert(0,"pisizicture!")
-        print("picture is "+str(picture))
+        objectish = fileobject.objects.filter(id=picture["id"])
+        print(objectish)
+        picture.insert(0,"look at this:  "+str(objectish.filename))
+        print(picture["id"])
         newgallery.append(picture)
-    print (newgallery)
-    html = value #and now the value is html. My work here is done.
+    print (soup)
+    html = soup #and now the value is html. My work here is done.
     return html
