@@ -1,5 +1,3 @@
-<div class="gallery">
-
 {% for thumbnail,fullpath,renderer in images %}
 {% if renderer == "browser" %}
 	<a href="{{ fullpath }}" rel="shadowbox[{{ galleryname }}]"><img src="{{ thumbnail }}" class="thumbnail"></a>
@@ -8,4 +6,3 @@
 	<a href="/preview/stl{{ fullpath }}" rel="shadowbox[{{ galleryname }}]"><img src="{{ thumbnail }}" class="thumbnail"></a>
 {% endif %}
 {% endfor %}
-</div>

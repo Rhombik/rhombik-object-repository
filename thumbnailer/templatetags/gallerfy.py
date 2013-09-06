@@ -2,21 +2,25 @@ from django import template
 from django.template.defaultfilters import stringfilter
 from bs4 import BeautifulSoup,NavigableString
 from filemanager.models import fileobject
+from django.shortcuts import get_object_or_404, render_to_response
+from django.template.loader import render_to_string
+
 
 register = template.Library()
 
 @register.filter
 @stringfilter
 def gallerfy(value):
-    soup = BeautifulSoup(''.join(value))
+    soup = BeautifulSoup(value, "html.parser")
     galleries = soup.findAll("fileobject")
-    newgallery = []
-    for picture in galleries:
-        objectish = fileobject.objects.filter(id=picture["id"])
-        print(objectish)
-        picture.insert(0,"look at this:  "+str(objectish.filename))
-        print(picture["id"])
-        newgallery.append(picture)
-    print (soup)
-    html = soup #and now the value is html. My work here is done.
+    if galleries:
+        for picture in galleries:
+            try:
+                objectish = get_object_or_404(fileobject, pk=picture["id"])
+                picture.insert(0,render_to_string("gallery.html", dict(images=[[objectish.thumbname.url, objectish.filename.url, objectish.filetype]], galleryname=picture["galleryname"])))
+            except:
+                picture.insert(0,"")
+        html = soup #and now the value is html. My work here is done.
+    else:
+        html=value
     return html
