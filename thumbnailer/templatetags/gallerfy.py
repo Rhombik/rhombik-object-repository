@@ -17,7 +17,7 @@ def gallerfy(value):
         for picture in galleries:
             try:
                 objectish = get_object_or_404(fileobject, pk=picture["id"])
-                picture.insert(0,render_to_string("gallery.html", dict(images=[[objectish.thumbname.url, objectish.filename.url, objectish.filetype]], galleryname=picture["galleryname"])))
+                picture.insert(0, BeautifulSoup(render_to_string("gallery.html", dict(images=[[objectish.thumbname.url, objectish.filename.url, objectish.filetype]], galleryname=picture["galleryname"])), "html.parser"))
             except:
                 picture.insert(0,"")
         html = soup #and now the value is html. My work here is done.
