@@ -49,12 +49,12 @@ class Post(models.Model):
         #Markdownifies the post body, striping out any raw html
         if self.allow_html == False and self.body:
             renderedtext = markdown.markdown(self.body, safe_mode=True)
-            #self.body_rendered = thumbnailer.shadowbox.run(renderedtext, str(self.pk))
+            self.body_rendered = thumbnailer.shadowbox.run(renderedtext, str(self.pk))
             super(Post, self).save() # Call the "real" save() method.
         #mardownifies the body of the post, leaving any raw HTML intact.
         elif self.body:
-            self.body_rendered = markdown.markdown(self.body)
-            #self.body_rendered = thumbnailer.shadowbox.run(renderedtext, str(self.pk))
+            renderedtext = markdown.markdown(self.body)
+            self.body_rendered = thumbnailer.shadowbox.run(renderedtext, str(self.pk))
             super(Post, self).save() # Call the "real" save() method.
         else:
             super(Post, self).save()
