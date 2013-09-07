@@ -20,7 +20,7 @@ def gallerfy(value):
                 picture.insert(0, BeautifulSoup(render_to_string("gallery.html", dict(images=[[objectish.thumbname.url, objectish.filename.url, objectish.filetype]], galleryname=picture["galleryname"])), "html.parser"))
             except:
                 picture.insert(0,"")
-        html = soup #and now the value is html. My work here is done.
+        html = soup #and now the value is html. My work here is done. #That made a lot more sense when this tag consisted of nothing but "html=value"
     else:
-        html=value
+        html = soup
     return html

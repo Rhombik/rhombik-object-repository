@@ -11,7 +11,9 @@ from post.models import *
 from post.forms import PostForm, createForm, defaulttag
 from django import forms
 ##obviously ignoring csrf is a bad thing. Get this fixed.
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf_token
+from django.core.context_processors import csrf
+
 from django.http import HttpResponseRedirect, HttpResponse
 
 
@@ -48,6 +50,7 @@ def list(request):
 from django.utils import simplejson
 
 @csrf_exempt
+@requires_csrf_token
 def edit(request, title):
 
 ##The form-----------------------------
@@ -68,7 +71,7 @@ def edit(request, title):
             return HttpResponseRedirect('/post/'+title)
         else:
             if str(post.author) == str(request.user):
-                return render_to_response('edit.html', dict(post=post, user=request.user, form=form,))
+                return render_to_response('edit.html', dict(post=post, user=request.user, form=form, ))
             else:
                 return HttpResponse(status=403)
 
