@@ -35,12 +35,16 @@ def multiuploader_delete(request, pk):
     made from api on:
     https://github.com/blueimp/jQuery-File-Upload
     """
-    if request.method == 'POST':
+    image = get_object_or_404(fileobject, pk=pk)
+    post=Post.objects.filter(fileobject__pk=image.pk)[0]
+    if request.method == 'POST' and str(post.author) == str(request.user):
         log.info('Called delete image. image id='+str(pk))
-        image = get_object_or_404(fileobject, pk=pk)
         image.delete()
         log.info('DONE. Deleted photo id='+str(pk))
         return HttpResponse(str(pk))
+    elif request.method == 'POST' and str(post.author) != str(request.user):
+        log.info("user "+str(request.user)+" tried to delete object "+str(pk)+" which doesn't belong to them")
+        return HttpResponse(status=403)
     else:
         log.info('Received not POST request to delete image view')
         return HttpResponseBadRequest('Only POST accepted')
@@ -53,7 +57,7 @@ def multiuploader(request,pk):
     Main Multiuploader module.
     Parses data from jQuery plugin and makes database changes.
     """
-    if request.method == 'POST':
+    if request.method == 'POST' and str(post.author) == str(request.user):
         log.info('received POST to main multiuploader view')
         if request.FILES == None:
             return HttpResponseBadRequest('Must have files attached!')
