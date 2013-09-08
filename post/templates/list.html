@@ -1,9 +1,8 @@
-{% include "includes.html" %}
+{% extends "includes.html" %}
 
-<div>Username is root, password is root. Got to <a href="/admin">/admin</a> to add content<div>
+{% block content %}
 
-    <div class="main">
-	    <div class="container_12">
+	<div class="container_12">
         <!-- Posts  -->
         {% for post in posts.object_list %}
 		<div class="grid_4">
@@ -12,6 +11,8 @@
 		                <div class="title"><h2><a href="/post/{{ post.title }}" class="title">{{ post.title }}</a></h2></div>
 			</div>
 		</div>
+
+                {% cycle '' '' '<div class="clear"></div>' %}
         {% endfor %}
 	</div>       
         <!-- Next/Prev page links  -->
@@ -34,3 +35,4 @@
         {% endif %}
 
     </div>
+{% endblock content %}
