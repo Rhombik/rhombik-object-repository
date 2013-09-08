@@ -45,7 +45,7 @@ def list(request):
     except (InvalidPage, EmptyPage):
         posts = paginator.page(paginator.num_pages)
 
-    return render_to_response("list.html", dict(posts=posts, user=request.user))
+    return render_to_response("list.html", dict(posts=posts, user=request.user, active="home"))
 
 from django.utils import simplejson
 
