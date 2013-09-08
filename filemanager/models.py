@@ -16,19 +16,25 @@ class fileobject(models.Model):
     post = models.ForeignKey(Post)
     subfolder = models.CharField(max_length=256, default="/")
     filename = models.FileField(upload_to=uploadpath)
-    thumbname = models.FileField(upload_to="thumbs/", blank=True, null=True)
     filetype = models.CharField(max_length=60, blank=True, null=True)
 
 
     def save(self):
         super(fileobject, self).save()
 
-        thumbnaildata = thumbnailer2.thumbnailify(self, (128,128))
-        if thumbnaildata[0]:
-            self.thumbname = thumbnaildata[0]
-            self.filetype = thumbnaildata[1]
-        else:
-            self.filetype = "norender"
+       #self.thumbname = thumbobject() 
+       #self.thumbname.fileobject = self
+       #self.thumbname.filex = 128
+       #self.thumbname.filey = 128
+       #self.thumbname.save()
+
+       #thumbnaildata = thumbnailer2.thumbnailify(self, (128,128))
+       #
+       #if thumbnaildata[0]:
+       #    self.thumbname = thumbnaildata[0]
+       #    self.filetype = thumbnaildata[1]
+       #else:
+       #    self.filetype = "norender"
         super(fileobject, self).save()
 
     def delete(self, *args, **kwargs):
@@ -41,7 +47,7 @@ class thumbobject(models.Model):
     #A pointer to the file this is a thumbnail of.
     fileobject = models.ForeignKey(fileobject)
     #This is the actual thumbnail, stored using django storage, whatever that may be.
-    filename = models.FileField(upload_to="/thumbs/", blank=True, null=True)
+    filename = models.FileField(upload_to="thumbs/", blank=True, null=True)
     #What the file type is
     filetype = models.CharField(max_length=60, blank=True, null=True)
     #the size of the file.
@@ -55,9 +61,7 @@ class thumbobject(models.Model):
         #try:
 ##           old thumbnailer
 #            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
-        thumbnaildata = thumbnailer2.thumbnailify(self, (str(self.filex),str(self.filey)))
-        self.filename = thumbnaildata[0]
-        self.filetype = thumbnaildata[1]
+        self.filename, self.filetype = thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
         #except:
         #    self.filetype = "norender"
         super(thumbobject, self).save()
