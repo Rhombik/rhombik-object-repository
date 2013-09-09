@@ -6,7 +6,7 @@ import thumbnailer.thumbnailer
 import os
 from django.conf import settings
 from taggit.managers import TaggableManager
-import filemanager.models  
+#import filemanager.models  
 
 
 class Post(models.Model):

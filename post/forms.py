@@ -18,15 +18,15 @@ def cleanify(self, formName):
     elif cleaned_data["thumbnail"]:
         thumbnailimage = fileobject.objects.filter(post=self.post, filename="uploads/" + str(self.post.pk) + cleaned_data["thumbnail"])[0]
         self.post.thumbname=thumbnailimage.thumbname
-    else:
-        files=fileobject.objects.filter(post=self.post)
-        if all(['norender' == fltype for fltype in [fl.filetype for fl in files]]):
-            self._errors['thumbnail'] = [u"None of your uploaded file makes a thumbnail!"]
-        else:
-            for fl in files:
-                if fl.filetype != 'norender':
-                    self.post.thumbnailpath=str(fl.thumbname.url)
-                    break
+  # else:
+  #     files=fileobject.objects.filter(post=self.post)
+  #     if all(['norender' == fltype for fltype in [fl.filetype for fl in files]]):
+  #         self._errors['thumbnail'] = [u"None of your uploaded file makes a thumbnail!"]
+  #     else:
+  #         for fl in files:
+  #             if fl.filetype != 'norender':
+  #                 self.post.thumbnailpath=str(fl.thumbname.url)
+  #                 break
             
     if not cleaned_data['body']:
         self._errors['body'] = [u"Write something about your project! Jeezers."]
