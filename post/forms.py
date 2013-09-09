@@ -17,7 +17,7 @@ def cleanify(self, formName):
         raise ValidationError("The thumbnail you selected is not an uploaded image.")
     elif cleaned_data["thumbnail"]:
         thumbnailimage = fileobject.objects.filter(post=self.post, filename="uploads/" + str(self.post.pk) + cleaned_data["thumbnail"])[0]
-        self.post.thumbname=thumbnailimage.thumbname
+        self.post.thumbname=thumbnailimage.filename
   # else:
   #     files=fileobject.objects.filter(post=self.post)
   #     if all(['norender' == fltype for fltype in [fl.filetype for fl in files]]):

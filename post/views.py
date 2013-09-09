@@ -27,12 +27,10 @@ def post(request, title,):
     c = RequestContext(request, dict(post=Post.objects.filter(title=title).exclude(draft=True)[0:1].get(), user=request.user))
     return render(request, "article.html", c)
 
+
 def front(request):
-
-
-
+ 
     return render_to_response('list.html', dict(post=post, user=request.user,))
-
 
 
 def list(request):
@@ -42,20 +40,22 @@ def list(request):
     listdata = []
     for post in posts:
         flobj = fileobject.objects.filter(post = post)[0]
-        thumbnail = thumbobject.objects.get_or_create(fileobject=flobj, filex = 128, filey = 128)#[0]
+        thumbnail = thumbobject.objects.get_or_create(fileobject=flobj, filex = 128, filey = 128)[0]
         print("!!!!!!!!!thumbnail"+str(thumbnail))
-        listdata += [post, thumbnail]
+        listdata += [[post, thumbnail]]
+    print("listdata is "+str(listdata))
  
     paginator = Paginator(listdata, 15)
 
     try: page = int(request.GET.get("page", '1'))
     except ValueError: page = 1
 
-    try:
-        listdata = paginator.page(page)
-    except (InvalidPage, EmptyPage):
-        listdata = paginator.page(paginator.num_pages)
-    
+   #try:
+   #    listdata = paginator.page(page)
+   #except (InvalidPage, EmptyPage):
+   #    listdata = paginator.page(paginator.num_pages)
+    print("listdata.object_list[?][0].title is "+str(listdata[0][0].title))
+    print("listdata.object_list[?][1].filename is "+str(listdata[0][1].filename.url))
     return render_to_response("list.html", dict(listdata=listdata, user=request.user, active="home"))
 
 
