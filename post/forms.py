@@ -13,7 +13,8 @@ def cleanify(self, formName):
 
     ##make certain the selected thumbnail is valid
     import os
-    if cleaned_data["thumbnail"] and not os.path.exists(settings.MEDIA_ROOT+"uploads/" + str(self.post.pk) + cleaned_data["thumbnail"]):
+    thumb = fileobject.objects.filter(filename = "uploads/" + str(self.post.pk) + cleaned_data["thumbnail"])
+    if cleaned_data["thumbnail"] and not thumb:
         raise ValidationError("The thumbnail you selected is not an uploaded image.")
     elif cleaned_data["thumbnail"]:
         thumbnailimage = fileobject.objects.filter(post=self.post, filename="uploads/" + str(self.post.pk) + cleaned_data["thumbnail"])[0]
