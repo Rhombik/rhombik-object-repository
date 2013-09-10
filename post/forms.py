@@ -6,6 +6,8 @@ from filemanager.models import fileobject
 from post.models import Post
 from django.conf import settings
 
+
+###        This function validates the form for submitting projects. Excluding the title, thats only done in the createForm.
 def cleanify(self, formName):
 
     print("form says pk is "+str(self.post.pk))
@@ -13,22 +15,21 @@ def cleanify(self, formName):
 
     ##make certain the selected thumbnail is valid
     import os
-    thumb = fileobject.objects.filter(filename = "uploads/" + str(self.post.pk) + cleaned_data["thumbnail"])
+    thumb = fileobject.objects.filter(post = self.post, filename = "uploads/" + str(self.post.pk) + cleaned_data["thumbnail"])
     if cleaned_data["thumbnail"] and not thumb:
         raise ValidationError("The thumbnail you selected is not an uploaded image.")
-    elif cleaned_data["thumbnail"]:
-        thumbnailimage = fileobject.objects.filter(post=self.post, filename="uploads/" + str(self.post.pk) + cleaned_data["thumbnail"])[0]
-        self.post.thumbname=thumbnailimage.filename
-  # else:
-  #     files=fileobject.objects.filter(post=self.post)
-  #     if all(['norender' == fltype for fltype in [fl.filetype for fl in files]]):
-  #         self._errors['thumbnail'] = [u"None of your uploaded file makes a thumbnail!"]
-  #     else:
-  #         for fl in files:
-  #             if fl.filetype != 'norender':
-  #                 self.post.thumbnailpath=str(fl.thumbname.url)
-  #                 break
-            
+    elif not cleaned_data["thumbnail"]:
+        ##### this next bit is a wee hard to follow, so:
+        files=fileobject.objects.filter(post=self.post)###	This gets a list of files from the post
+        if all(['norender' == fltype for fltype in [fl.filetype for fl in files]]):###	This gets the .filetype value for all files and checks if they are all equal to 'norender'
+            self._errors['thumbnail'] = [u"None of your uploaded file makes a thumbnail!"]##	and an error if they all are.
+        else:
+            for fl in files:
+                if fl.filetype != 'norender':
+                    cleaned_data["thumbnail"]="/"+os.path.split(str(fl.filename))[1]
+                    break
+    
+    ###   make sure user wrote something about thier project.        
     if not cleaned_data['body']:
         self._errors['body'] = [u"Write something about your project! Jeezers."]
 
