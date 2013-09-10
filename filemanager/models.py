@@ -22,25 +22,16 @@ class fileobject(models.Model):
     def save(self):
         super(fileobject, self).save()
 
-       #self.thumbname = thumbobject() 
-       #self.thumbname.fileobject = self
-       #self.thumbname.filex = 128
-       #self.thumbname.filey = 128
-       #self.thumbname.save()
+        thumbnaildata = thumbobject.objects.get_or_create(fileobject = self, filex = 64, filey = 64)[0]
+        
+        self.filetype = thumbnaildata.filetype
 
-        thumbnaildata = thumbobject.objects.get_or_create(fileobject = self, filex = 64, filey = 64)
-       #
-        if thumbnaildata[0]:
-       #    self.thumbname = thumbnaildata[0]
-           self.filetype = thumbnaildata[1]
-       #else:
-       #    self.filetype = "norender"
         super(fileobject, self).save()
 
     def delete(self, *args, **kwargs):
         super(fileobject, self).delete(*args, **kwargs)
         default_storage.delete(self.filename)
-        default_storage.delete(self.thumbname)
+       #default_storage.delete(self.thumbname)
 
 
 class thumbobject(models.Model):

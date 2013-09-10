@@ -107,7 +107,7 @@ def multiuploader(request,pk):
         result = []
         for image in postfiles:
             try:
-                thumburl = image.thumbname.url
+                thumburl =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0].filename.url
             except:
                 thumburl = ""
             ##json stuff

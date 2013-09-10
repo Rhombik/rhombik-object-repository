@@ -39,9 +39,9 @@ def list(request):
 
     listdata = []
     for post in posts:
-        flobj = fileobject.objects.filter(post = post)[0]
+        flobj = fileobject.objects.filter(post = post, filename = "uploads/"+str(post.id)+str(post.thumbnail))[0]
         thumbnail = thumbobject.objects.get_or_create(fileobject=flobj, filex = 128, filey = 128)[0]
-        print("!!!!!!!!!thumbnail"+str(thumbnail))
+        print("!!!!!!!!!thumbnail "+str(thumbnail))
         listdata += [[post, thumbnail]]
     print("listdata is "+str(listdata))
  
