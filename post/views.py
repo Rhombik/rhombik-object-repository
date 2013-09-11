@@ -45,15 +45,15 @@ def list(request):
         listdata += [[post, thumbnail]]
     print("listdata is "+str(listdata))
  
-    paginator = Paginator(listdata, 15)
+    paginator = Paginator(listdata, 8)
 
     try: page = int(request.GET.get("page", '1'))
     except ValueError: page = 1
 
-   #try:
-   #    listdata = paginator.page(page)
-   #except (InvalidPage, EmptyPage):
-   #    listdata = paginator.page(paginator.num_pages)
+    try:
+        listdata = paginator.page(page)
+    except (InvalidPage, EmptyPage):
+        listdata = paginator.page(paginator.num_pages)
     print("listdata.object_list[?][0].title is "+str(listdata[0][0].title))
     print("listdata.object_list[?][1].filename is "+str(listdata[0][1].filename.url))
     return render_to_response("list.html", dict(listdata=listdata, user=request.user, active="home"))
