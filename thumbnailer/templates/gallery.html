@@ -1,8 +1,9 @@
 {% for thumbnail,fullpath,renderer in images %}
 {% if renderer == "browser" %}
-	<a href="{{ fullpath }}" rel="shadowbox[{{ galleryname }}]"><img src="{{ thumbnail }}" class="thumbnail"></a>
+	<a href="{{ fullpath }}" rel="lightbox-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
 {% endif %}
 {% if renderer == "jsc3d" %}
-	<a href="/preview/jsc3d{{ fullpath }}" rel="shadowbox[{{ galleryname }}]"><img src="{{ thumbnail }}" class="thumbnail"></a>
+<!--I hate orettyphoto, but it seems to work and it's gpl. Sorry. -->
+	<a href="/preview/jsc3d{{ fullpath }}" rel="lightboxi-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
 {% endif %}
 {% endfor %}

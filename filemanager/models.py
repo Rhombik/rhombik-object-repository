@@ -4,6 +4,11 @@ from post.models import Post
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
+import zipfile
+from io import BytesIO
+import os.path
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
 
 # Create your models here.
 
@@ -67,4 +72,22 @@ class thumbobject(models.Model):
         default_storage.delete(self.filename)
 
 
- 
+
+
+class zippedobject(models.Model):
+
+    post = models.ForeignKey(Post)
+    filename = models.FileField(upload_to="/projects/", blank=True, null=True)
+    def save(self):
+        s = BytesIO()
+        data = zipfile.ZipFile(s,'w')
+        postfiles = fileobject.objects.filter(post=self.post)
+        for filedata in postfiles:
+            print(filedata.filename.name)
+            filed = BytesIO(filedata.filename.read())
+
+            data.writestr("name", filedata.filename.read())
+        self.filename = data
+        super(zippedobject, self).save()
+
+

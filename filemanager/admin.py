@@ -7,3 +7,9 @@ class fileobjectAdmin(admin.ModelAdmin):
 
 admin.site.register(fileobject,fileobjectAdmin)
 
+class zippedobjectAdmin(admin.ModelAdmin):
+    search_fields = ["post"]
+
+admin.site.register(zippedobject,zippedobjectAdmin)
+
+
