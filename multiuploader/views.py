@@ -25,7 +25,7 @@ log = logging
 import os.path
 from multiuploader.forms import MultiuploaderImage
 from post.models import *
-from filemanager.models import fileobject
+from filemanager.models import fileobject, thumbobject
 
 
 @csrf_exempt
@@ -76,18 +76,19 @@ def multiuploader(request,pk):
             file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         except AttributeError:
             file_delete_url = 'multi_delete/'
-
-        try:
-            thumburl = postfiles.thumbname.url
-        except:
-            thumburl = ""
- 
+        print("postfiles is "+str(postfiles.filename.url))
+       #from thumbnailer import thumbnailer2
+       #try:
+        thumburl = thumbobject.objects.get_or_create( fileobject = postfiles, filex=64, filey=64 )[0]
+       #except:
+       #    thumburl = thumbnailer2.thumbnailify(postfiles, [64,64])[0]
+        print("thumburl is "+str(thumburl)) 
         #generating json response array
         result = []
-        result.append({"name":postfiles.subfolder+os.path.split(postfiles.filename.name)[1], 
+        result.append({"name":postfiles.subfolder+os.path.split(str(postfiles.filename.name))[1], 
                        "size":postfiles.filename.size, 
-                       "url":"/preview/"+postfiles.filetype+postfiles.filename.url,
-                       "thumbnail_url":thumburl,
+                       "url":str(postfiles.filename.url),
+                       "thumbnail_url":"/media/"+str(thumburl.filename),
                        "delete_url":"/multi_delete/"+str(postfiles.pk)+"/", 
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
@@ -106,7 +107,7 @@ def multiuploader(request,pk):
         result = []
         for image in postfiles:
             try:
-                thumburl = image.thumbname.url
+                thumburl =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0].filename.url
             except:
                 thumburl = ""
             ##json stuff

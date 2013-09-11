@@ -4,10 +4,11 @@
  
 <div class="container_12 maincontent">
  <!-- Posts-->
- {% for post in posts.object_list %}
+
+ {% for post, thumb in listdata %}
  <div class="grid_4">
   <div class="vislink">
-   <div class=""><h2><a href="/post/{{ post.title }}"><img src="{{ post.thumbnailpath }}" class="bigthumb"></a></h2></div>
+   <div class=""><h2><a href="/post/{{ post.title }}"><img src="{{ thumb.filename.url }}" class="bigthumb"></a></h2></div>
    <div class="title"><h2><a href="/post/{{ post.title }}" class="title">{{ post.title }}</a></h2></div>
   </div>
  </div>

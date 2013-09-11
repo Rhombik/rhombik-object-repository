@@ -7,6 +7,10 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 import thumbnailer.thumbnailer as thumbnailer 
 
+
+from filemanager.models import thumbobject
+from filemanager.models import fileobject
+
 from post.models import *
 from post.forms import PostForm, createForm, defaulttag
 from django import forms
@@ -23,29 +27,37 @@ def post(request, title,):
     c = RequestContext(request, dict(post=Post.objects.filter(title=title).exclude(draft=True)[0:1].get(), user=request.user))
     return render(request, "article.html", c)
 
+
 def front(request):
-
-
-
+ 
     return render_to_response('list.html', dict(post=post, user=request.user,))
-
 
 
 def list(request):
     """Main listing."""
     posts = Post.objects.exclude(draft=True).order_by("-created")
-    paginator = Paginator(posts, 15)
 
+    listdata = []
+    for post in posts:
+        flobj = fileobject.objects.filter(post = post, filename = "uploads/"+str(post.id)+str(post.thumbnail))[0]
+        thumbnail = thumbobject.objects.get_or_create(fileobject=flobj, filex = 128, filey = 128)[0]
+        print("!!!!!!!!!thumbnail "+str(thumbnail))
+        listdata += [[post, thumbnail]]
+    print("listdata is "+str(listdata))
+ 
+    paginator = Paginator(listdata, 15)
 
     try: page = int(request.GET.get("page", '1'))
     except ValueError: page = 1
 
-    try:
-        posts = paginator.page(page)
-    except (InvalidPage, EmptyPage):
-        posts = paginator.page(paginator.num_pages)
+   #try:
+   #    listdata = paginator.page(page)
+   #except (InvalidPage, EmptyPage):
+   #    listdata = paginator.page(paginator.num_pages)
+    print("listdata.object_list[?][0].title is "+str(listdata[0][0].title))
+    print("listdata.object_list[?][1].filename is "+str(listdata[0][1].filename.url))
+    return render_to_response("list.html", dict(listdata=listdata, user=request.user, active="home"))
 
-    return render_to_response("list.html", dict(posts=posts, user=request.user, active="home"))
 
 from django.utils import simplejson
 

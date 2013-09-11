@@ -32,8 +32,9 @@ def thumbnailify(filebit, sizebit):
   ##ext os the file extension, forced into lowercase becouse people are insane.
   ext = str(splitext(str(filebit.filename))[1].lower())
   response = HttpResponse(mimetype="image/png")
+
   if ext in browser_kind:
- 
+    print("filebit.filename"+str(filebit.filename.name))
     img = Image.open(filebit.filename)
     img.thumbnail(sizebit)
     print(img) 
@@ -53,6 +54,7 @@ def thumbnailify(filebit, sizebit):
     # Once you have a Django file-like object, you may assign it to your ImageField
     # and save.
     return(thumb_file, "browser")
+
   if ext in jsc3d_kind:
     from selenium import webdriver
     from django.conf import settings
