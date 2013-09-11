@@ -81,9 +81,10 @@ class zippedobject(models.Model):
         for filedata in postfiles:
             print(filedata.filename.name)
             filed = BytesIO(filedata.filename.read())
-
-            data.writestr("name", filedata.filename.read())
-        self.filename = data
+            data.writestr("name", filed)
+        data.close()
+        self.filename.write = InMemoryUploadedFile(s, None, self.post.title+".zip", '',
+                                    1, None)
         super(zippedobject, self).save()
 
 
