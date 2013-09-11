@@ -73,17 +73,20 @@ class thumbobject(models.Model):
 class zippedobject(models.Model):
 
     post = models.ForeignKey(Post)
-    filename = models.FileField(upload_to="/projects/", blank=True, null=True)
+    filename = models.FileField(upload_to="projects/", blank=True, null=True)
     def save(self):
         s = BytesIO()
-        data = zipfile.ZipFile(s,'w')
+
+        data = zipfile.ZipFile(s,'a')
         postfiles = fileobject.objects.filter(post=self.post)
         for filedata in postfiles:
             print(filedata.filename.name)
-            filed = BytesIO(filedata.filename.read())
-            data.writestr("name", filed)
+            filed = filedata.filename.read()
+            pathAndName = str(self.post.title)+filedata.subfolder+os.path.split(str(filedata.filename))[1] #### this is where subfolders will be added to inside the zip file.
+            data.writestr(pathAndName, filed)
         data.close()
-        self.filename.write = InMemoryUploadedFile(s, None, self.post.title+".zip", '',
+
+        self.filename = InMemoryUploadedFile(s, None, self.post.title+".zip", '',
                                     1, None)
         super(zippedobject, self).save()
 
