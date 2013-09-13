@@ -1,4 +1,7 @@
-{% include "includes.html" %}
+{% extends "includes.html" %}
+
+{% block content %}
+
 <div class="container_12">
 
 <form action="/edit/{{ post.title}}/" method="post">{% csrf_token %}
@@ -14,3 +17,5 @@
 {% multiupform  %}
 
 </div>
+
+{% endblock content %}

@@ -31,11 +31,11 @@
         <script type="text/javascript" src="/static/jsc3d.min.js"></script>
         <script type="text/javascript" src="/static/jsc3d.console.js"></script>
         <script type="text/javascript">
-        JSC3D.console.setup('main_frame', '120px');
+        JSC3D.console.setup('main_frame', '30px');
 
         var canvas = document.getElementById('cv');
-	canvas.width  = (window.innerWidth-4);
-	canvas.height = (window.innerHeight-161);
+	canvas.width  = (window.innerWidth-30);
+	canvas.height = (window.innerHeight-140);
         var viewer = new JSC3D.Viewer(canvas);
         var logoTimerID = 0;
         viewer.setParameter('SceneUrl', '/{{ path }}');
@@ -43,8 +43,8 @@
         viewer.setParameter('InitRotationY', 30);
         viewer.setParameter('InitRotationZ', 0);
         viewer.setParameter('ModelColor', '#AA0000');
-        viewer.setParameter('BackgroundColor1', '#FFFFFF');
-        viewer.setParameter('BackgroundColor2', '#707070');
+        viewer.setParameter('BackgroundColor1', '#dddddd');
+        viewer.setParameter('BackgroundColor2', '#dddddd');
         viewer.setParameter('RenderMode', 'flat');
         viewer.init();
         viewer.update();

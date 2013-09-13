@@ -1,4 +1,7 @@
-{% include "includes.html" %}
+{% extends "includes.html" %}
+
+{% block content %}
+
 <div class="container_12">
 
 <form action="/create/" method="post">{% csrf_token %}
@@ -10,3 +13,5 @@
 
 {% load multiuploader %}
 {% multiupform  %}
+
+{% endblock content %}
