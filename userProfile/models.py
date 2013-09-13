@@ -22,7 +22,7 @@ class userProfile(models.Model):
     def __unicode__(self):
         return str(self.user)+"Profile"
 
-    def save(self):
+    def save(self, force_insert=False, force_update=False, using=None):
         super(userProfile, self).save()
 
         thumbnaildata = userpicthumb.objects.get_or_create(fileobject = self, filex = 64, filey = 64)[0]
@@ -93,8 +93,6 @@ class userpicthumb(models.Model):
     def delete(self, *args, **kwargs):
         super(thumbobject, self).delete(*args, **kwargs)
         default_storage.delete(self.filename)
-
-
 
 
 

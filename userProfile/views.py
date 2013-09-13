@@ -89,11 +89,20 @@ def index(request, user):
     '''the correct answer was "print(userdata.get_profile().profilePicPath)"   '''  # <-- I have no idea what this means.
     print(userdata.profile.profilePicType)
 
-    from userProfile.models import userpicthumb
+#####		This fine code checks if the user has a renderable profile pic, and maybe gets the default one.
+    if userdata.profile.profilePicType != "norender":
+        from userProfile.models import userpicthumb
+        usrpic = userdata.profile.filename.url
+        thumbpic = userpicthumb.objects.get_or_create(fileobject = userdata.profile, filex = 128, filey = 128)[0]
+        renderer = userdata.profile.profilePicType
+    else:
+        from filemanager.models import fileobject, thumbobject
+        usrpic = fileobject.objects.exclude(filetype = "norender")[0]
+        thumbpic =  thumbobject.objects.get_or_create(fileobject = usrpic, filex = 128, filey = 128)[0]
+        renderer = usrpic.filetype
+        usrpic = usrpic.filename.url
 
-    print("userdata.profile is "+str(userdata.profile))
-    thumbpic = userpicthumb.objects.get_or_create(fileobject = userdata.profile, filex = 64, filey = 64)[0]
-    c = RequestContext(request, dict(userPic=userdata.profile.filename.url, userPicThumb = thumbpic.filename.url, renderer=userdata.profile.profilePicType, usersname=user, bio=userdata.profile.bio, posts = posts))
+    c = RequestContext(request, dict(userPic = usrpic, userPicThumb = thumbpic.filename.url, renderer = renderer, usersname=user, bio=userdata.profile.bio, posts = posts))
     return render(request, "userProfile/index.html", c)
 
 
