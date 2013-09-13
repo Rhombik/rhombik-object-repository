@@ -1,18 +1,11 @@
-{% include "includes.html" %}
+{% extends "includes.html" %}
+
+{% block content %}
+<div class="container_12">
 
     <div class="main">
 
-<!-- this here makes the neat userprofilepic -->
-{% if renderer == "browser" %}
-        <a href="{{ userPic }}" rel="shadowbox[profilePicGal]"><img src="{{ userPicThumb }}" class="thumbnail"></a>
-{% endif %}
-{% if renderer == "jsc3d" %}
-        <a href="/preview/stl{{ userPic }}" rel="shadowbox[profilePicGal]"><img src="{{ userPicThumb }}" class="thumbnail"></a>
-{% endif %}
-
-<!-- The users blerb about themselves.-->
-        {{bio}}
-
+        <img src="{{ userPicThumb }}" class="thumbnail">
 
         <!-- The users name in a nice big font  -->
                 <div class="title"><h1>{{usersname}}</h1></div>
@@ -25,8 +18,9 @@
                 <h2>Comments for {{ post.title }}:</h2>
 -->
 
-<!-- this is trying to load the list of users posts, but instead it loads the front page - posts... 
 		{% include "list.html" %}
-	-->
     </div>
 <!--~my beautiful well thought out html template-->
+</div>
+{% endblock content %}
+
