@@ -15,7 +15,7 @@ class userProfile(models.Model):
     created = models.DateTimeField(auto_now_add = True)
 
     #username = models.CharField(max_length=30, blank=True, null=True)
-    filename = models.FileField(upload_to="userPics/", null=True)    
+    filename = models.FileField(upload_to="userPics/", null=True)
     profilePicType = models.CharField(max_length=64, blank=True, null=True)
     bio = models.CharField(max_length=256, blank=True,  default="I didn't really care to tell you about myself, so the developers wrote this.")
 

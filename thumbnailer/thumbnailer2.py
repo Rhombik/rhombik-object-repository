@@ -29,6 +29,7 @@ def thumbnailify(filebit, sizebit):
 
   browser_kind = [  ".png",".jpg",".gif" ]
   jsc3d_kind = [  ".stl",".obj" ]
+# text_kind = [ ".txt" ]
   ##ext os the file extension, forced into lowercase becouse people are insane.
   ext = str(splitext(str(filebit.filename))[1].lower())
   response = HttpResponse(mimetype="image/png")
@@ -73,6 +74,45 @@ def thumbnailify(filebit, sizebit):
 #    thumb_file = False
 
     return(thumb_file, "jsc3d")
+
+# if ext in text_kind:
+#   print("filebit.filename"+str(filebit.filename.name))
+
+#   from PIL import ImageFont, ImageDraw, Image
+#   from django.conf import settings
+#   from io import StringIO
+
+#   img = Image.new("RGBA", (100,50), (255,255,255))
+#   draw = ImageDraw.Draw(img)
+#  #print(settings.URL+"/static/DejaVuSerif-Bold.ttf")
+#  #font = ImageFont.truetype(settings.URL+"/media/DejaVuSerif-Bold.ttf", 12)
+
+#   f = filebit.filename.file.read(64)
+#   draw.text((10, 0), (f.decode("utf-8")[:16]), (0,0,0) )
+#   draw.text((10, 10), (f.decode("utf-8")[16:32]), (0,0,0) )
+#   draw.text((10, 20), (f.decode("utf-8")[32:48]), (0,0,0) )
+#   draw.text((10, 30), (f.decode("utf-8")[48:64]), (0,0,0) )
+#   draw.text((10, 40), ("\t..."), (0,0,0) )
+#   img_resized = img.resize((sizebit), Image.ANTIALIAS)
+
+#  #img = Image.open(filebit.filename)
+#  #img.thumbnail(sizebit)
+#   print(img) 
+#   # Create a file-like object to write thumb data (thumb data previously created
+#   # using PIL, and stored in variable 'img')
+#   # using PIL, and stored in variable 'thumb')
+#   thumb_io = BytesIO()
+#   img.save( thumb_io, format='png')
+# 
+#   # Create a new Django file-like object to be used in models as ImageField using
+#   # InMemoryUploadedFile.  If you look at the source in Django, a
+#   # SimpleUploadedFile is essentially instantiated similarly to what is shown here
+#   thumb_file = InMemoryUploadedFile(thumb_io, None, str(sizebit)+"-"+str(filebit.filename)+".png", 'image/jpeg',
+#                                   1, None)
+#  
+#   # Once you have a Django file-like object, you may assign it to your ImageField
+#   # and save.
+#   return(thumb_file, "browser")
+
+
   return(False, "norender") 
-  
-  
