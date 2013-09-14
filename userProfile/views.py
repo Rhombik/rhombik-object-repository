@@ -132,18 +132,18 @@ def register(request):
             profile.filename=request.FILES["filename"]
             profile.save()
             if profile.filename=="stoopid":
-                return render_to_response('register.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
-            return render_to_response('register.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
+                return render_to_response('register.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again.", active="register")))
+            return render_to_response('register.html', dict( user=request.user, msg="success. btw, don't click the submit button again.", active="register")))
         #returns form with error messages.
         else:
-            return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform, form3=pictureform))
+            return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform, form3=pictureform, active="register")))
     
     ## Initializes the page with the forms.
     else:
         form = registerForm()
         profileform = UserProfileForm()
         pictureform = UserPictureForm()
-        return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform, form3=pictureform))
+        return render_to_response('register.html', dict( user=request.user, form=form, form2=profileform, form3=pictureform, active="register"))
 
 ### simple logout view, redirects users to the login page.
 def logout_user(request):
