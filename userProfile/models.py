@@ -18,7 +18,6 @@ class userProfile(models.Model):
     filename = models.FileField(upload_to="userPics/", null=True)
     profilePicType = models.CharField(max_length=64, blank=True, null=True)
     bio = models.CharField(max_length=256, blank=True,  default="I didn't really care to tell you about myself, so the developers wrote this.")
-    email = models.EmailField(blank=True, null=True)
 
     def __unicode__(self):
         return str(self.user)+"Profile"

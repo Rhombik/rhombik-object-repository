@@ -1,10 +1,16 @@
-{{ msg }}
+{% extends "includes.html" %}
 
-<form enctype="multipart/form-data" action="/editProfile/" method="post">{% csrf_token %}
-{{ form.as_p }}
-{{ form2.as_p }}
-{{ form3.as_p }}
-<input type="submit" value="Submit" />
-</form>
+{% block content %}
+<div class="container_12">
+    
+    {{ msg }}
 
+    <form enctype="multipart/form-data" action="/editProfile/" method="post">{% csrf_token %}
+    {{ form2.as_p }}
+    {{ form3.as_p }}
+    <input type="submit" value="Submit" />
+    </form>
 
+</div>
+
+{% endblock content %}

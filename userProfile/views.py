@@ -48,7 +48,7 @@ def edit(request):
             profile.save()
             if profile.filename=="stoopid":
                 return render_to_response('editProfile.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
-            return render_to_response('editProfile.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
+            return redirect("/userProfile/"+str(data))
         #returns form with error messages.
         else:
             return render_to_response('editProfile.html', dict( user=request.user, form2=profileform, form3=pictureform))
@@ -123,6 +123,8 @@ def register(request):
             ###Create the user
             data = User();
             data.username = form.cleaned_data["username"]
+            if email.cleaned_data["email"]:
+                data.email = email.cleaned_data["email"]
            #data.password = form.cleaned_data["password"]###this is NOT how you set a password! Passwords are hashed.
             data.set_password(form.cleaned_data["password1"])
             data.save()
@@ -137,6 +139,8 @@ def register(request):
             profile.save()
          #  if profile.filename=="stoopid":
          #      return render_to_response('register.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
+            user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
+            login(request, user)
             return redirect("/editProfile/")
         #returns form with error messages.
         else:
