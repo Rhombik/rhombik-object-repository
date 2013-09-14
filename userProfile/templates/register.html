@@ -1,10 +1,38 @@
+{% extends "includes.html" %}
+
+{% block content %}
+
 {{ msg }}
 
+<div class="container_12 maincontent">
+
+ <div class="grid_6">
+  <div class="vislink">
+
 <form enctype="multipart/form-data" action="/register/" method="post">{% csrf_token %}
-{{ form.as_p }}
-{{ form2.as_p }}
-{{ form3.as_p }}
-<input type="submit" value="Submit" />
+	{{ form.as_p }}
+	<input type="submit" value="Register" />
 </form>
 
+  </div>
+ </div>
 
+ <div class="grid_6">
+  <div class="vislink">
+
+<form action="/login/" method="post">
+	{% if next %}
+	<input type="hidden" name="next" value="{{ next }}" />
+	{% endif %}
+	username:
+	<input type="text" name="username" value="{{ username}}" /><br />
+	password:
+	<input type="password" name="password" value="" /><br />
+
+	<input type="submit" value="Log In" />
+</form>
+
+  </div>
+ </div>
+
+{% endblock content %}
