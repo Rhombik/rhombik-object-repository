@@ -115,7 +115,8 @@ def register(request):
     if request.method == 'POST':
         #get data from the forms
         form = UserCreationForm(request.POST)
-        if form.is_valid():
+        email = UserEmail(request.POST)
+        if form.is_valid() and email.is_valid():
             ###Create the user
             data = User();
             data.username = form.cleaned_data["username"]
@@ -136,12 +137,13 @@ def register(request):
             return render_to_response('register.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
         #returns form with error messages.
         else:
-            return render_to_response('register.html', dict( user=request.user, form=form))
+            return render_to_response('register.html', dict( user=request.user, form=form, email=email))
     
     ## Initializes the page with the forms.
     else:
         form = UserCreationForm()
-        return render_to_response('register.html', dict( user=request.user, form=form))
+        email = UserEmail()
+        return render_to_response('register.html', dict( user=request.user, form=form, email=email))
 
 ### simple logout view, redirects users to the login page.
 def logout_user(request):
