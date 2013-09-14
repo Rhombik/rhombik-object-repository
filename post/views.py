@@ -8,8 +8,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 import thumbnailer.thumbnailer as thumbnailer 
 
 
-from filemanager.models import thumbobject
-from filemanager.models import fileobject
+from filemanager.models import fileobject, thumbobject, zippedobject
 
 from post.models import *
 from post.forms import PostForm, createForm, defaulttag
@@ -23,8 +22,26 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 def post(request, title,):
 
-    """Single post with comments and a comment form."""
-    c = RequestContext(request, dict(post=Post.objects.filter(title=title).exclude(draft=True)[0:1].get(), user=request.user))
+    post = Post.objects.filter(title=title).exclude(draft=True)[0:1].get()
+    postfiles = fileobject.objects.filter(post=post)
+    flobj = fileobject.objects.filter(post = post, filename = "uploads/"+str(post.id)+str(post.thumbnail))[0]
+    mainthumb = thumbobject.objects.get_or_create(fileobject=flobj, filex = 250, filey = 250)[0]
+    images=[]
+    for i in postfiles:
+        fullpath=i.filename.url
+        renderer=i.filetype
+        thumbmodel=thumbobject.objects.get_or_create( fileobject = i, filex=64, filey=64 )[0] 
+        thumbnail=thumbmodel.filename.url
+        images.append([thumbnail,fullpath,renderer])
+
+    download=zippedobject.objects.get_or_create(post=post)[0]
+    print(download)
+    c = RequestContext(request, dict(post=post, 
+				user=request.user,images=images, 
+				galleryname="base", 
+				mainthumb=mainthumb.filename.url,
+                                downloadurl=download.filename.url))
+
     return render(request, "article.html", c)
 
 
@@ -41,7 +58,6 @@ def list(request):
     for post in posts:
         flobj = fileobject.objects.filter(post = post, filename = "uploads/"+str(post.id)+str(post.thumbnail))[0]
         thumbnail = thumbobject.objects.get_or_create(fileobject=flobj, filex = 128, filey = 128)[0]
-        print("!!!!!!!!!thumbnail "+str(thumbnail))
         listdata += [[post, thumbnail]]
     print("listdata is "+str(listdata))
  

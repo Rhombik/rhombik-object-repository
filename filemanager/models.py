@@ -72,9 +72,9 @@ class thumbobject(models.Model):
 
 class zippedobject(models.Model):
 
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey(Post, unique=True)
     filename = models.FileField(upload_to="projects/", blank=True, null=True)
-    def save(self):
+    def save(self, *args, **kwargs):
         s = BytesIO()
 
         data = zipfile.ZipFile(s,'a')
@@ -88,6 +88,6 @@ class zippedobject(models.Model):
 
         self.filename = InMemoryUploadedFile(s, None, self.post.title+".zip", '',
                                     1, None)
-        super(zippedobject, self).save()
+        super(zippedobject, self).save(*args, **kwargs)
 
 
