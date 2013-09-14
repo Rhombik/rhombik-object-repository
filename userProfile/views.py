@@ -20,8 +20,11 @@ from django.contrib.auth.forms import PasswordChangeForm
 def edit(request):
     
     data = request.user
-    profile = userProfile.objects.filter(user=data)[0]
-    print(profile.bio)
+    try:
+        profile = userProfile.objects.filter(user=data)[0]
+    except:
+        print("redirecting")
+        return redirect("/register/")
     ## If loop true when user clicks the register button.
     if request.method == 'POST':
         #get data from the forms
@@ -61,7 +64,7 @@ def edit(request):
 
 def logout_user(request):
     logout(request)
-    return redirect("/login")
+    return redirect("/register")
 
 
 def index(request, user):
@@ -124,17 +127,17 @@ def register(request):
             data.set_password(form.cleaned_data["password1"])
             data.save()
             ###Create user's profile
-         #  profile = userProfile()
-         #  profile.user = data
+            profile = userProfile()
+            profile.user = data
          #  profile.bio = profileform.cleaned_data["bio"]
          #  #Create users picture.
          #  try:
          #      profile.filename=request.FILES["filename"]
          #  except: "null"
-         #  profile.save()
+            profile.save()
          #  if profile.filename=="stoopid":
          #      return render_to_response('register.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
-            return render_to_response('register.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
+            return redirect("/editProfile/")
         #returns form with error messages.
         else:
             return render_to_response('register.html', dict( user=request.user, form=form, email=email))
