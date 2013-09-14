@@ -1,5 +1,26 @@
 {% extends "includes.html" %}
 
+{% block contenttop %}
+
+  <div class="showcaseWrap"> 
+  <div class="container_16">
+  <div class="grid_16">
+  <div class="showcase">
+  <h1>{{ post.title }}</h1>
+  <div class="grid_4">
+<img src="{{mainthumb}}">
+  </div>
+{% include "gallery.html" %}
+<a href="/download/{{ post.pk }}">Download File</a>
+<a href="{{ downloadurl }}">Download All</a>
+
+</div>
+</div>
+</div>
+</div>
+{% endblock contenttop %}
+
+
 {% block content %}
 
 {% load gallerfy %}
