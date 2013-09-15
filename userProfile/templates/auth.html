@@ -2,21 +2,38 @@
 
 {% block content %}
 
-<title>Log in</title>
-<body>
-	{{ state }}
-	<form action="/login/" method="post">
-		{% if next %}
-		<input type="hidden" name="next" value="{{ next }}" />
-		{% endif %}
-		username:
-		<input type="text" name="username" value="{{ username}}" /><br />
-		password:
-		<input type="password" name="password" value="" /><br />
+{{ msg }}
 
-		<input type="submit" value="Log In" />
-	</form>
-</body>
-</html>
+<div class="container_12 maincontent">
+
+ <div class="grid_6">
+  <div class="vislink">
+
+<form enctype="multipart/form-data" action="/register/" method="post">{% csrf_token %}
+	{{ form.as_p }}
+        {{ email.as_p }}
+	<input type="submit" value="Register" />
+</form>
+
+  </div>
+ </div>
+
+ <div class="grid_6">
+  <div class="vislink">
+{{ state }}
+<form action="/login/" method="post">
+	{% if next %}
+	<input type="hidden" name="next" value="{{ next }}" />
+	{% endif %}
+	username:
+	<input type="text" name="username" value="{{ username }}" /><br />
+	password:
+	<input type="password" name="password" value="" /><br />
+
+	<input type="submit" value="Log In" />
+</form>
+
+  </div>
+ </div>
 
 {% endblock content %}

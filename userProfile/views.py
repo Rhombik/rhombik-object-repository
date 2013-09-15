@@ -188,4 +188,7 @@ def login_user(request):
         else:
             state = "Your username and/or password were incorrect."
 
-    return render_to_response('auth.html',{'state':state, 'username': username})
+    from django.contrib.auth.forms import UserCreationForm
+    form = UserCreationForm()
+    email = UserEmail()
+    return render_to_response('auth.html', {'form':form,'email':email, 'state':state, 'username': username})
