@@ -1,4 +1,3 @@
-from post.models import Post
 from django.db import models
 from thumbnailer import thumbnailer2
 from django.core.files.storage import default_storage
@@ -18,10 +17,10 @@ class fileobject(models.Model):
         return ("uploads/"+str(instance.post.id)+instance.subfolder+filename)
 
 
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey('post.Post')
     subfolder = models.CharField(max_length=256, default="/")
     filename = models.FileField(upload_to=uploadpath)
-    filetype = models.CharField(max_length=60, blank=True, null=True)
+    filetype = models.CharField(max_length=16, blank=True, null=True)
 
 
     def save(self):
@@ -45,7 +44,7 @@ class thumbobject(models.Model):
     #This is the actual thumbnail, stored using django storage, whatever that may be.
     filename = models.FileField(upload_to="thumbs/", blank=True, null=True)
     #What the file type is
-    filetype = models.CharField(max_length=60, blank=True, null=True)
+    filetype = models.CharField(max_length=16, blank=True, null=True)
     #the size of the file.
     filex = models.PositiveSmallIntegerField()
     filey = models.PositiveSmallIntegerField()
@@ -72,7 +71,7 @@ class thumbobject(models.Model):
 
 class zippedobject(models.Model):
 
-    post = models.ForeignKey(Post, unique=True)
+    post = models.ForeignKey('post.Post', unique=True)
     filename = models.FileField(upload_to="projects/", blank=True, null=True)
     def save(self, *args, **kwargs):
         s = BytesIO()

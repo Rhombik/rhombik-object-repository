@@ -10,7 +10,7 @@ import thumbnailer.thumbnailer as thumbnailer
 
 from filemanager.models import fileobject, thumbobject, zippedobject
 
-from post.models import *
+from post.models import Post
 from post.forms import PostForm, createForm, defaulttag
 from django import forms
 ##obviously ignoring csrf is a bad thing. Get this fixed.
@@ -24,8 +24,7 @@ def post(request, title,):
 
     post = Post.objects.filter(title=title).exclude(draft=True)[0:1].get()
     postfiles = fileobject.objects.filter(post=post)
-    flobj = fileobject.objects.filter(post = post, filename = "uploads/"+str(post.id)+str(post.thumbnail))[0]
-    mainthumb = thumbobject.objects.get_or_create(fileobject=flobj, filex = 250, filey = 250)[0]
+    mainthumb = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 250, filey = 250)[0]
     images=[]
     for i in postfiles:
         fullpath=i.filename.url
@@ -56,8 +55,7 @@ def list(request):
 
     listdata = []
     for post in posts:
-        flobj = fileobject.objects.filter(post = post, filename = "uploads/"+str(post.id)+str(post.thumbnail))[0]
-        thumbnail = thumbobject.objects.get_or_create(fileobject=flobj, filex = 128, filey = 128)[0]
+        thumbnail = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 128, filey = 128)[0]
         listdata += [[post, thumbnail]]
     print("listdata is "+str(listdata))
  
