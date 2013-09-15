@@ -2,21 +2,22 @@
 
 {% block contenttop %}
 
-  <div class="showcaseWrap"> 
-  <div class="container_16">
+<div class="showcaseWrap"> 
+ <div class="container_16">
   <div class="grid_16">
-  <div class="showcase">
-  <h1>{{ post.title }}</h1>
-  <div class="grid_4">
-<img src="{{mainthumb}}">
-  </div>
-{% include "gallery.html" %}
-<a href="/download/{{ post.pk }}">Download File</a>
-<a href="{{ downloadurl }}">Download All</a>
+   <div class="showcase">
+   <h1>{{ post.title }}</h1>
+    <div class="grid_4">
+    <img src="{{mainthumb}}">
+    </div>
+   {% include "gallery.html" %}
+   <a href="/download/{{ post.pk }}">Download File</a>
+   <br>
+   <a href="{{ downloadurl }}">Download All</a>
 
-</div>
-</div>
-</div>
+   </div>
+  </div>
+ </div>
 </div>
 {% endblock contenttop %}
 
@@ -39,7 +40,7 @@
  <div class="body">{{ post.body_rendered|gallerfy|safe }}</div>
  <div class="tags">
   {% for tag in post.tags.all %} 
-  <div class="tagrank=({{tag.num_times}})"> <a href="/tag/{{tag}}">{{tag}}</a></div>
+  <span class="tagrank=({{tag.num_times}})"> <a href="/tag/{{tag}}">{{tag}}</a></span>
   {% endfor %} 
  </div>
 </div>
