@@ -13,23 +13,34 @@ def cleanify(self, formName):
     print("form says pk is "+str(self.post.pk))
     cleaned_data = super(formName, self).clean()
 
-    ##make certain the selected thumbnail is valid
-    import os
-    thumb = fileobject.objects.filter(post = self.post, filename = "uploads/" + str(self.post.pk) + cleaned_data["thumbnail"])
-    if cleaned_data["thumbnail"] and not thumb:
-        raise ValidationError("The thumbnail you selected is not an uploaded image.")
-    elif not cleaned_data["thumbnail"]:
-        ##### this next bit is a wee hard to follow, so:
-        files=fileobject.objects.filter(post=self.post)###	This gets a list of files from the post
-        if all(['norender' == fltype for fltype in [fl.filetype for fl in files]]):###	This gets the .filetype value for all files and checks if they are all equal to 'norender'
+   ###	make certain the selected thumbnail is valid	##
+    try:
+        thumb = cleaned_data["thumbnail"]
+    except:
+        thumb = ""
+    files=fileobject.objects.filter(post=self.post)###	This gets a list of files from the post
+
+    if thumb:
+        noThumb = True
+        for fl in files:
+            if "uploads/"+str(self.post.pk)+thumb == str(fl.filename):
+                noThumb = False
+                self.post.thumbnail = fl
+                print(fl)
+                break
+        if noThumb:
+            self._errors['thumbnail'] = [u"The thumbnail you selected is not an uploaded image."]
+    else:
+        noThumb = True
+        for fl in files:
+            if fl.filetype != 'norender':
+                noThumb = False
+                self.post.thumbnail = fl
+                break
+        if noThumb:
             self._errors['thumbnail'] = [u"None of your uploaded file makes a thumbnail!"]##	and an error if they all are.
-        else:
-            for fl in files:
-                if fl.filetype != 'norender':
-                    cleaned_data["thumbnail"]="/"+os.path.split(str(fl.filename))[1]
-                    break
     
-    ###   make sure user wrote something about thier project.        
+   ###   make sure user wrote something about thier project.        
     if not cleaned_data['body']:
         self._errors['body'] = [u"Write something about your project! Jeezers."]
 
@@ -45,7 +56,9 @@ class PostForm(ModelForm):
 
     class Meta:
         model = Post
-        fields = ["thumbnail", "body","tags",]
+        fields = ["body","tags",]
+
+    thumbnail = forms.CharField()
 
     def clean(self):
         return cleanify(self, PostForm)
@@ -62,13 +75,15 @@ class createForm(ModelForm):
 
     class Meta:
         model = Post
-        fields = ["title","thumbnail", "body", "tags",]
+        fields = ["title", "body", "tags",]
 
     def clean_title(self):
        data=self.cleaned_data["title"]
        if not data:
            raise forms.ValidationError("There is no title! You gotta have a title.") 
        return data
+
+    thumbnail = forms.CharField()
 
     def clean(self):
         return cleanify(self, createForm)

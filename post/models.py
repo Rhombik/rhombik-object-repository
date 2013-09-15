@@ -3,7 +3,6 @@ from django.contrib.auth.models import User, Group
 from datetime import datetime
 import thumbnailer.shadowbox
 import thumbnailer.thumbnailer
-import os
 from django.conf import settings
 from taggit.managers import TaggableManager
 
@@ -22,6 +21,8 @@ class Post(models.Model):
     tags = TaggableManager(blank=True)
     draft = models.BooleanField(default=False)
 
+   #def __init__(self):
+   #    self.thumbnail.limit_choices_to({'post' = self })
 
     def __unicode__(self):
         return self.title

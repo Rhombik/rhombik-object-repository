@@ -58,7 +58,7 @@ def edit(request):
             profile.save()
           # if profile.filename=="stoopid":
           #     return render_to_response('editProfile.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
-            return redirect("/userProfile/"+str(data))
+            return redirect("/userProfile/"+str(data.pk))
         #returns form with error messages.
         else:
             return render_to_response('editProfile.html', dict( user=request.user, form2=profileform, form3=pictureform))
@@ -77,12 +77,12 @@ def logout_user(request):
     return redirect("/register")
 
 
-def index(request, user):
+def index(request, pk):
     
     """bleh blebh bhel bleh, IM GOING INSANE.... I mean; user profile display stuff."""
     #I hate this vampire head ~alex
     """THE VAMPIRE HEAD FIXES ALL OF YOUR BROKEN CODE!!!, that is to say, as long as you never look at this code, it could be anything. We guarantee that whatever you imaging is better written then what actually is written."""
-    userdata=User.objects.filter(username=user).get()
+    userdata=User.objects.filter(pk = pk).get()
     
     posts=Post.objects.filter(author=userdata).order_by("-created") #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!'''
 
@@ -118,7 +118,7 @@ def index(request, user):
   #     renderer = usrpic.filetype
   #     usrpic = usrpic.filename.url
 
-    c = RequestContext(request, dict(thumbpic = thumbpic, picfile = picfile, pictype = pictype, usersname=user, bio=userdata.profile.bio, posts = posts))
+    c = RequestContext(request, dict(thumbpic = thumbpic, picfile = picfile, pictype = pictype, usersname=userdata.username, bio=userdata.profile.bio, posts = posts))
     return render(request, "userProfile/index.html", c)
 
 
@@ -168,7 +168,7 @@ def register(request):
 ### simple logout view, redirects users to the login page.
 def logout_user(request):
     logout(request)
-    return redirect("/login")
+    return redirect("/register")
 
 ### Login page.
 @csrf_exempt

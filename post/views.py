@@ -20,9 +20,9 @@ from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect, HttpResponse
 
 
-def post(request, title,):
+def post(request, pk):
 
-    post = Post.objects.filter(title=title).exclude(draft=True)[0:1].get()
+    post = Post.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
     postfiles = fileobject.objects.filter(post=post)
     mainthumb = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 250, filey = 250)[0]
     images=[]
@@ -77,11 +77,11 @@ from django.utils import simplejson
 
 @csrf_exempt
 @requires_csrf_token
-def edit(request, title):
+def edit(request, pk):
 
 ##The form-----------------------------
     try:
-        post=Post.objects.filter(title=title)[0:1].get()
+        post=Post.objects.filter(pk = pk)[0:1].get()
     except:
         return HttpResponse(status=404)
     if request.method == 'POST':
@@ -94,7 +94,7 @@ def edit(request, title):
             post.thumbnail = form.cleaned_data["thumbnail"]
             list_to_tags(form.cleaned_data["tags"], post.tags)
             post.save()
-            return HttpResponseRedirect('/post/'+title)
+            return HttpResponseRedirect('/post/'+pk)
         else:
             if str(post.author) == str(request.user):
                 return render_to_response('edit.html', dict(post=post, user=request.user, form=form, ))
@@ -138,14 +138,14 @@ def create(request):
             post.title = form.cleaned_data["title"]
             post.body = form.cleaned_data["body"]
             post.author = request.user
-            post.thumbnail = form.cleaned_data["thumbnail"]
+           #post.thumbnail = form.cleaned_data["thumbnail"]
             post.draft=False
             post.save()
             list_to_tags(form.cleaned_data["tags"], post.tags)
             list_to_tags(form2.cleaned_data["categories"], post.tags, False)
             post.save()
             #add error if thumbnail is invalid
-            return HttpResponseRedirect('/post/'+form.cleaned_data["title"])
+            return HttpResponseRedirect('/post/'+str(post.pk))
         else:
             return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2,post=post))
 #--------------------------

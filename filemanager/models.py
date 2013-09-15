@@ -23,6 +23,10 @@ class fileobject(models.Model):
     filetype = models.CharField(max_length=16, blank=True, null=True)
 
 
+    def __unicode__(self):
+        return str(self.filename)
+
+
     def save(self):
         super(fileobject, self).save()
 
