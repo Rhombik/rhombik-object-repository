@@ -43,11 +43,21 @@ def edit(request):
             ###Create user's profile
             profile.bio = profileform.cleaned_data["bio"]
             #Create users picture.
+
             if pictureform.cleaned_data["filename"]:
-                profile.filename=request.FILES["filename"]
+                from avatarBot.models import uploadPic
+                try:
+                     upload = uploadPic.objects.filter( user = data )[0]
+                     print("#####"+str(upload.filename))
+                     upload.delete()
+                except: "whatever"
+                upload = uploadPic.objects.create( user = data, filename = request.FILES["filename"] )
+                upload.save()
+                profile.avatarType = "upload"
+
             profile.save()
-            if profile.filename=="stoopid":
-                return render_to_response('editProfile.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
+          # if profile.filename=="stoopid":
+          #     return render_to_response('editProfile.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
             return redirect("/userProfile/"+str(data))
         #returns form with error messages.
         else:
@@ -57,7 +67,7 @@ def edit(request):
     else:
         #form = PasswordChangeForm(data)
         profileform = UserProfileForm({'bio':profile.bio})
-        pictureform = UserPictureForm({"filename":profile.filename})
+        pictureform = UserPictureForm()#{"filename":profile.})
         return render_to_response('editProfile.html', dict( user=request.user, form2=profileform, form3=pictureform))
 
 
@@ -92,20 +102,23 @@ def index(request, user):
     '''the correct answer was "print(userdata.get_profile().profilePicPath)"   '''  # <-- I have no idea what this means.
     print(userdata.profile.profilePicType)
 
-#####		This fine code checks if the user has a renderable profile pic, and maybe gets the default one.
-    if userdata.profile.profilePicType != "norender":
-        from userProfile.models import userpicthumb
-        usrpic = userdata.profile.filename.url
-        thumbpic = userpicthumb.objects.get_or_create(fileobject = userdata.profile, filex = 128, filey = 128)[0]
-        renderer = userdata.profile.profilePicType
-    else:
-        from filemanager.models import fileobject, thumbobject
-        usrpic = fileobject.objects.exclude(filetype = "norender")[0]
-        thumbpic =  thumbobject.objects.get_or_create(fileobject = usrpic, filex = 128, filey = 128)[0]
-        renderer = usrpic.filetype
-        usrpic = usrpic.filename.url
+    from avatarBot.avatarBot import getPic
+    thumbpic, picfile, pictype = getPic(userdata, (256,256))
 
-    c = RequestContext(request, dict(userPic = usrpic, userPicThumb = thumbpic.filename.url, renderer = renderer, usersname=user, bio=userdata.profile.bio, posts = posts))
+#####		This fine code checks if the user has a renderable profile pic, and maybe gets the default one.
+  # if userdata.profile.profilePicType != "norender":
+  #     from userProfile.models import userpicthumb
+  #     usrpic = userdata.profile.filename.url
+  #     thumbpic = userpicthumb.objects.get_or_create(fileobject = userdata.profile, filex = 128, filey = 128)[0]
+  #     renderer = userdata.profile.profilePicType
+  # else:
+  #     from filemanager.models import fileobject, thumbobject
+  #     usrpic = fileobject.objects.exclude(filetype = "norender")[0]
+  #     thumbpic =  thumbobject.objects.get_or_create(fileobject = usrpic, filex = 128, filey = 128)[0]
+  #     renderer = usrpic.filetype
+  #     usrpic = usrpic.filename.url
+
+    c = RequestContext(request, dict(thumbpic = thumbpic, picfile = picfile, pictype = pictype, usersname=user, bio=userdata.profile.bio, posts = posts))
     return render(request, "userProfile/index.html", c)
 
 

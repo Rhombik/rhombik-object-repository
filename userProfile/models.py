@@ -15,21 +15,13 @@ class userProfile(models.Model):
     created = models.DateTimeField(auto_now_add = True)
 
     #username = models.CharField(max_length=30, blank=True, null=True)
-    filename = models.FileField(upload_to="userPics/", null=True)
+    avatarType = models.CharField(max_length=8, default="default")
     profilePicType = models.CharField(max_length=64, blank=True, null=True)
     bio = models.CharField(max_length=256, blank=True,  default="I didn't really care to tell you about myself, so the developers wrote this.")
 
     def __unicode__(self):
         return str(self.user)+"Profile"
 
-    def save(self, force_insert=False, force_update=False, using=None):
-        super(userProfile, self).save()
-
-        thumbnaildata = userpicthumb.objects.get_or_create(fileobject = self, filex = 64, filey = 64)[0]
-        
-        self.profilePicType = thumbnaildata.filetype
-
-        super(userProfile, self).save()
 
 
 ########         Alll of this is Evil, and will be erased once tristan is sure everyting works without it.     #####    
@@ -65,34 +57,6 @@ class userProfile(models.Model):
 #        super(fileobject, self).delete(*args, **kwargs)
 #        default_storage.delete(self.filename)
 #        default_storage.delete(self.thumbname)
-
-class userpicthumb(models.Model):
-    #A pointer to the file this is a thumbnail of.
-    fileobject = models.ForeignKey(userProfile)
-    #This is the actual thumbnail, stored using django storage, whatever that may be.
-    filename = models.FileField(upload_to="userPics/thumbs/", blank=True, null=True)
-    #What the file type is
-    filetype = models.CharField(max_length=60, blank=True, null=True)
-    #the size of the file.
-    filex = models.PositiveSmallIntegerField()
-    filey = models.PositiveSmallIntegerField()
-
-    class Meta:
-        unique_together = ('filex', 'filey', "fileobject")
-
-    def save(self, *args, **kwargs):
-        #try:
-##           old thumbnailer
-#            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
-        print("self.fileobject is "+str(self.fileobject))
-        self.filename, self.filetype = thumbnailer.thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
-        #except:
-        #    self.filetype = "norender"
-        super(userpicthumb, self).save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        super(thumbobject, self).delete(*args, **kwargs)
-        default_storage.delete(self.filename)
 
 
 
