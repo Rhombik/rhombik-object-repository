@@ -34,7 +34,7 @@ def post(request, pk):
         images.append([thumbnail,fullpath,renderer])
 
     download=zippedobject.objects.get_or_create(post=post)[0]
-    print(download)
+    print("^^ download is "+str(download))
     c = RequestContext(request, dict(post=post, 
 				user=request.user,images=images, 
 				galleryname="base", 
@@ -106,12 +106,14 @@ def edit(request, pk):
 
 
     elif str(post.author) == str(request.user):
+        from os.path import split
         taglist = []
         for i in post.tags.names():
            taglist.append(i)
         taglist = ",".join(taglist)
         print ("tags= "+str(taglist))
-        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail, 'tags' : str(taglist)}, post)
+        thumbnail = split(str(post.thumbnail.filename))[1]
+        form = PostForm({'body': post.body, 'thumbnail': "/"+thumbnail, 'tags' : str(taglist)}, post)
         return render_to_response('edit.html', dict(post=post, user=request.user, form=form,))
         #return HttpResponse(response_data, mimetype="application/json")
     else:

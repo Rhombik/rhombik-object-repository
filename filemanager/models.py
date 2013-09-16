@@ -83,7 +83,7 @@ class zippedobject(models.Model):
         data = zipfile.ZipFile(s,'a')
         postfiles = fileobject.objects.filter(post=self.post)
         for filedata in postfiles:
-            print(filedata.filename.name)
+            print("^^ Im'a zip "+filedata.filename.name)
             filed = filedata.filename.read()
             pathAndName = str(self.post.title)+filedata.subfolder+os.path.split(str(filedata.filename))[1] #### this is where subfolders will be added to inside the zip file.
             data.writestr(pathAndName, filed)
