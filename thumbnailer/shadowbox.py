@@ -17,7 +17,13 @@ from markdown.postprocessors import Postprocessor
 import re
 import os
 from django.conf import settings
-import thumbnailer.thumbnailer as thumbnailer
+
+try:
+    import thumbnailer.thumbnailer as thumbnailer
+except ImportError:
+    import thumbnailer
+
+
 import filemanager.models
 ##regular expressions...
 findSquareBrackets = re.compile(r'\[([^\[|\]*]+)\]')
