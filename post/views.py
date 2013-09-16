@@ -21,8 +21,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 
 def post(request, pk):
-
+    print("pk is "+str(pk))
     post = Post.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
+    print("post is "+str(post))
     postfiles = fileobject.objects.filter(post=post)
     mainthumb = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 250, filey = 250)[0]
     images=[]
@@ -34,7 +35,7 @@ def post(request, pk):
         images.append([thumbnail,fullpath,renderer])
 
     download=zippedobject.objects.get_or_create(post=post)[0]
-    print("^^ download is "+str(download))
+    print("^^ download url is "+str(download.filename.url))
     c = RequestContext(request, dict(post=post, 
 				user=request.user,images=images, 
 				galleryname="base", 
@@ -91,7 +92,7 @@ def edit(request, pk):
         if form.is_valid() and str(post.author) == str(request.user):
             #save thr form
             post.body = form.cleaned_data["body"]
-            post.thumbnail = form.cleaned_data["thumbnail"]
+           #post.thumbnail = form.cleaned_data["thumbnail"]
             list_to_tags(form.cleaned_data["tags"], post.tags)
             post.save()
             return HttpResponseRedirect('/post/'+pk)

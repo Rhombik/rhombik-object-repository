@@ -101,19 +101,22 @@ def multiuploader(request,pk):
             mimetype = 'text/plain'
         return HttpResponse(response_data, mimetype=mimetype)
     else: #GET
+        print("multiuploader getting images!")
         postfiles = fileobject.objects.filter(post=post)
   
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []
         for image in postfiles:
-            try:
-                thumburl =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0].filename.url
-            except:
-                thumburl = ""
+           #try:
+            print(image.filename.url)
+            thumburl =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0].filename.url
+            print(thumburl) 
+           #except:
+           #    thumburl = ""
             ##json stuff
             result.append({"name":image.subfolder+os.path.split(image.filename.name)[1],
                        "size":image.filename.size,
-                       "url":"/preview/"+str(image.filetype+image.filename.url),
+                       "url":"/preview/"+str(image.filetype)+str(image.filename.url),
                        "thumbnail_url":thumburl,
                        "delete_url":"/multi_delete/"+str(image.pk)+"/",
                        "delete_type":"POST",})

@@ -30,7 +30,7 @@
  <span>
   <div class="title"><h1>{{ post.title }}</h1></div>
   {% if user == post.author %}
-  <div class="editbutton" align="right"> <a href="/edit/{{ post.title }}">Edit</a></div>
+  <div class="editbutton" align="right"> <a href="/edit/{{ post.pk }}">Edit</a></div>
   {% endif %}
  </span>
  <div class="time">{{ post.created }}</div>
