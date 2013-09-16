@@ -27,8 +27,6 @@ urlpatterns = patterns('',
     (r'^tag/(.*)/$', 'post.views.tag'),
     (r'^tagcloud/$', 'post.views.tagcloud' ),
 
-    (r'^editorg/(.*)/$', 'organization.views.orgedit'),
-
     #Search urls
     (r'^search/', include('haystack.urls')),
     #captcha urls
@@ -48,6 +46,9 @@ urlpatterns = patterns('',
     #user profile pages
     url(r'^userProfile/', include('userProfile.urls')),
     (r'^editUser/', 'userProfile.views.edit'),
+    (r'^download/(.*)/$', 'filemanager.views.download'),
+
+
 
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
