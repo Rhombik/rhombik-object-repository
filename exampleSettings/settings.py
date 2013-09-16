@@ -36,14 +36,6 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-CUMULUS = {
-    'USERNAME': 'logic11',
-    'API_KEY': '96e65e401d5f78caec260084c4ab4102',
-    'CONTAINER': 'rhombic',
-    'STATIC_CONTAINER': 'rhombic-static'
-}
-DEFAULT_FILE_STORAGE = 'cumulus.storage.OpenStackStorage'
-
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
