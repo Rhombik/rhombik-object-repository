@@ -35,7 +35,7 @@
   {% endif %}
  </span>
  <div class="time">{{ post.created }}</div>
- <div class="author"><a href="/userProfile/{{ post.author }}">{{ post.author }}</a></div>
+ <div class="author"><a href="/userProfile/{{ post.author.id }}">{{ post.author }}</a></div>
 
  <div class="body">{{ post.body_rendered|gallerfy|safe }}</div>
  <div class="tags">

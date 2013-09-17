@@ -118,7 +118,7 @@ def index(request, pk):
   #     renderer = usrpic.filetype
   #     usrpic = usrpic.filename.url
 
-    c = RequestContext(request, dict(thumbpic = thumbpic, picfile = picfile, pictype = pictype, usersname=userdata.username, bio=userdata.profile.bio, posts = posts))
+    c = RequestContext(request, dict(thumbpic = thumbpic, picfile = picfile, pictype = pictype, user=request.user, owner=userdata, posts = posts))
     return render(request, "userProfile/index.html", c)
 
 
@@ -183,6 +183,10 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 state = "You're success'd the log in!"
+                ### right now logging in redirects you to home.
+                ### it would be nice to have it redirect to where a user was going.
+                ### like to the create page.
+                return redirect("/")
             else:
                 state = "Your account is not active, please contact the site admin."
         else:

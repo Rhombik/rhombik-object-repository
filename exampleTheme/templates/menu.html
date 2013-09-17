@@ -16,9 +16,9 @@
 
 {% if user.is_authenticated %}
 {% if active == "profile" %}
-<li class="current active"><a href="/userProfile/{{user}}" >Profile</a></li>
+<li class="current active"><a href="/userProfile/{{user.id}}" >Profile</a></li>
 {% else %}
-<li ><a href="/userProfile/{{user}}" >Profile</a></li>
+<li ><a href="/userProfile/{{user.id}}" >Profile</a></li>
 {% endif %}
 {% endif %}
 

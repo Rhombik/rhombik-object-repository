@@ -3,13 +3,17 @@
 {% block content %}
 <div class="container_12">
 
+  {% if user == owner %}
+  <div class="editbutton" align="right"> <a href="/editProfile/">Edit</a></div>
+  {% endif %}
+
     <div class="main">
 
 <img src="{{ thumbpic }}" class="thumbnail"></a></h2></div>
 
         <!-- The users name in a nice big font  -->
-                <div class="title"><h1>{{usersname}}</h1></div>
-                <br>{{ bio }}<br>
+                <div class="title"><h1>{{ owner.username }}</h1></div>
+                <br>{{ owner.profile.bio }}<br>
 
 <!--
                     <div class="body">{{ post.body_rendered|safe }}</div>
