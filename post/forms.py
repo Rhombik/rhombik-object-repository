@@ -58,7 +58,7 @@ class PostForm(ModelForm):
         model = Post
         fields = ["body","tags",]
 
-    thumbnail = forms.CharField()
+    thumbnail = forms.CharField(required=False)
 
     def clean(self):
         return cleanify(self, PostForm)
@@ -83,7 +83,7 @@ class createForm(ModelForm):
            raise forms.ValidationError("There is no title! You gotta have a title.") 
        return data
 
-    thumbnail = forms.CharField()
+    thumbnail = forms.CharField(required=False)
 
     def clean(self):
         return cleanify(self, createForm)
