@@ -62,8 +62,8 @@ class thumbobject(models.Model):
 #            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
         print("self.fileobject is "+str(self.fileobject))
         self.filename, self.filetype = thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
-        if not self.filename:
-            self.filename = "../static/noUserPic.png"
+       #if not self.filename:
+       #    self.filename = "../static/noUserPic.png"
         #    self.filetype = "norender"
         super(thumbobject, self).save(*args, **kwargs)
 
