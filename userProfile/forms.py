@@ -50,9 +50,16 @@ class UserProfileForm(ModelForm):
         fields = ["bio"]
 
 class UserPictureForm(forms.Form):
-        filename = forms.FileField(
+    filename = forms.ImageField(
             label='Select a file',
             help_text='This will be your profile pic',
+            required=False
+    )
+        
+class UserEmail(forms.Form):
+    email = forms.EmailField(
+            label='Email',
+            help_text='(option, for password recovery)',
             required=False
     )
         

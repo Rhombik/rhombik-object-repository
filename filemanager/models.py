@@ -1,4 +1,3 @@
-from post.models import Post
 from django.db import models
 from thumbnailer import thumbnailer2
 from django.core.files.storage import default_storage
@@ -18,10 +17,14 @@ class fileobject(models.Model):
         return ("uploads/"+str(instance.post.id)+instance.subfolder+filename)
 
 
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey('post.Post')
     subfolder = models.CharField(max_length=256, default="/")
     filename = models.FileField(upload_to=uploadpath)
-    filetype = models.CharField(max_length=60, blank=True, null=True)
+    filetype = models.CharField(max_length=16, blank=True, null=True)
+
+
+    def __unicode__(self):
+        return str(self.filename)
 
 
     def save(self):
@@ -45,7 +48,7 @@ class thumbobject(models.Model):
     #This is the actual thumbnail, stored using django storage, whatever that may be.
     filename = models.FileField(upload_to="thumbs/", blank=True, null=True)
     #What the file type is
-    filetype = models.CharField(max_length=60, blank=True, null=True)
+    filetype = models.CharField(max_length=16, blank=True, null=True)
     #the size of the file.
     filex = models.PositiveSmallIntegerField()
     filey = models.PositiveSmallIntegerField()
@@ -59,7 +62,8 @@ class thumbobject(models.Model):
 #            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
         print("self.fileobject is "+str(self.fileobject))
         self.filename, self.filetype = thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
-        #except:
+       #if not self.filename:
+       #    self.filename = "../static/noUserPic.png"
         #    self.filetype = "norender"
         super(thumbobject, self).save(*args, **kwargs)
 
@@ -72,7 +76,7 @@ class thumbobject(models.Model):
 
 class zippedobject(models.Model):
 
-    post = models.ForeignKey(Post, unique=True)
+    post = models.ForeignKey('post.Post', unique=True)
     filename = models.FileField(upload_to="projects/", blank=True, null=True)
     def save(self, *args, **kwargs):
         s = BytesIO()
@@ -80,7 +84,7 @@ class zippedobject(models.Model):
         data = zipfile.ZipFile(s,'a')
         postfiles = fileobject.objects.filter(post=self.post)
         for filedata in postfiles:
-            print(filedata.filename.name)
+            print("^^ Im'a zip "+filedata.filename.name)
             filed = filedata.filename.read()
             pathAndName = str(self.post.title)+filedata.subfolder+os.path.split(str(filedata.filename))[1] #### this is where subfolders will be added to inside the zip file.
             data.writestr(pathAndName, filed)

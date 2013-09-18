@@ -20,8 +20,11 @@ from django.contrib.auth.forms import PasswordChangeForm
 def edit(request):
     
     data = request.user
-    profile = userProfile.objects.filter(user=data)[0]
-    print(profile.bio)
+    try:
+        profile = userProfile.objects.filter(user=data)[0]
+    except:
+        print("redirecting")
+        return redirect("/register/")
     ## If loop true when user clicks the register button.
     if request.method == 'POST':
         #get data from the forms
@@ -40,12 +43,22 @@ def edit(request):
             ###Create user's profile
             profile.bio = profileform.cleaned_data["bio"]
             #Create users picture.
+
             if pictureform.cleaned_data["filename"]:
-                profile.filename=request.FILES["filename"]
+                from avatarBot.models import uploadPic
+                try:
+                     upload = uploadPic.objects.filter( user = data )[0]
+                     print("#####avatar is "+str(upload.filename))
+                     upload.delete()
+                except: "whatever"
+                upload = uploadPic.objects.create( user = data, filename = request.FILES["filename"] )
+                upload.save()
+                profile.avatarType = "upload"
+
             profile.save()
-            if profile.filename=="stoopid":
-                return render_to_response('editProfile.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
-            return render_to_response('editProfile.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
+          # if profile.filename=="stoopid":
+          #     return render_to_response('editProfile.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
+            return redirect("/userProfile/"+str(data.pk))
         #returns form with error messages.
         else:
             return render_to_response('editProfile.html', dict( user=request.user, form2=profileform, form3=pictureform))
@@ -54,22 +67,22 @@ def edit(request):
     else:
         #form = PasswordChangeForm(data)
         profileform = UserProfileForm({'bio':profile.bio})
-        pictureform = UserPictureForm({"filename":profile.filename})
+        pictureform = UserPictureForm()#{"filename":profile.})
         return render_to_response('editProfile.html', dict( user=request.user, form2=profileform, form3=pictureform))
 
 
 
 def logout_user(request):
     logout(request)
-    return redirect("/login")
+    return redirect("/register")
 
 
-def index(request, user):
+def index(request, pk):
     
     """bleh blebh bhel bleh, IM GOING INSANE.... I mean; user profile display stuff."""
     #I hate this vampire head ~alex
     """THE VAMPIRE HEAD FIXES ALL OF YOUR BROKEN CODE!!!, that is to say, as long as you never look at this code, it could be anything. We guarantee that whatever you imaging is better written then what actually is written."""
-    userdata=User.objects.filter(username=user).get()
+    userdata=User.objects.filter(pk = pk).get()
     
     posts=Post.objects.filter(author=userdata).order_by("-created") #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!'''
 
@@ -89,20 +102,23 @@ def index(request, user):
     '''the correct answer was "print(userdata.get_profile().profilePicPath)"   '''  # <-- I have no idea what this means.
     print(userdata.profile.profilePicType)
 
-#####		This fine code checks if the user has a renderable profile pic, and maybe gets the default one.
-    if userdata.profile.profilePicType != "norender":
-        from userProfile.models import userpicthumb
-        usrpic = userdata.profile.filename.url
-        thumbpic = userpicthumb.objects.get_or_create(fileobject = userdata.profile, filex = 128, filey = 128)[0]
-        renderer = userdata.profile.profilePicType
-    else:
-        from filemanager.models import fileobject, thumbobject
-        usrpic = fileobject.objects.exclude(filetype = "norender")[0]
-        thumbpic =  thumbobject.objects.get_or_create(fileobject = usrpic, filex = 128, filey = 128)[0]
-        renderer = usrpic.filetype
-        usrpic = usrpic.filename.url
+    from avatarBot.avatarBot import getPic
+    thumbpic, picfile, pictype = getPic(userdata, (256,256))
 
-    c = RequestContext(request, dict(userPic = usrpic, userPicThumb = thumbpic.filename.url, renderer = renderer, usersname=user, bio=userdata.profile.bio, posts = posts))
+#####		This fine code checks if the user has a renderable profile pic, and maybe gets the default one.
+  # if userdata.profile.profilePicType != "norender":
+  #     from userProfile.models import userpicthumb
+  #     usrpic = userdata.profile.filename.url
+  #     thumbpic = userpicthumb.objects.get_or_create(fileobject = userdata.profile, filex = 128, filey = 128)[0]
+  #     renderer = userdata.profile.profilePicType
+  # else:
+  #     from filemanager.models import fileobject, thumbobject
+  #     usrpic = fileobject.objects.exclude(filetype = "norender")[0]
+  #     thumbpic =  thumbobject.objects.get_or_create(fileobject = usrpic, filex = 128, filey = 128)[0]
+  #     renderer = usrpic.filetype
+  #     usrpic = usrpic.filename.url
+
+    c = RequestContext(request, dict(thumbpic = thumbpic, picfile = picfile, pictype = pictype, user=request.user, owner=userdata, posts = posts))
     return render(request, "userProfile/index.html", c)
 
 
@@ -115,38 +131,44 @@ def register(request):
     if request.method == 'POST':
         #get data from the forms
         form = UserCreationForm(request.POST)
-        if form.is_valid():
+        email = UserEmail(request.POST)
+        if form.is_valid() and email.is_valid():
             ###Create the user
             data = User();
             data.username = form.cleaned_data["username"]
+            if email.cleaned_data["email"]:
+                data.email = email.cleaned_data["email"]
            #data.password = form.cleaned_data["password"]###this is NOT how you set a password! Passwords are hashed.
             data.set_password(form.cleaned_data["password1"])
             data.save()
             ###Create user's profile
-         #  profile = userProfile()
-         #  profile.user = data
+            profile = userProfile()
+            profile.user = data
          #  profile.bio = profileform.cleaned_data["bio"]
          #  #Create users picture.
          #  try:
          #      profile.filename=request.FILES["filename"]
          #  except: "null"
-         #  profile.save()
+            profile.save()
          #  if profile.filename=="stoopid":
          #      return render_to_response('register.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
-            return render_to_response('register.html', dict( user=request.user, msg="success. btw, don't click the submit button again."))
+            user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
+            login(request, user)
+            return redirect("/editProfile/")
         #returns form with error messages.
         else:
-            return render_to_response('register.html', dict( user=request.user, form=form))
+            return render_to_response('register.html', dict( user=request.user, form=form, email=email))
     
     ## Initializes the page with the forms.
     else:
         form = UserCreationForm()
-        return render_to_response('register.html', dict( user=request.user, form=form))
+        email = UserEmail()
+        return render_to_response('register.html', dict( user=request.user, form=form, email=email))
 
 ### simple logout view, redirects users to the login page.
 def logout_user(request):
     logout(request)
-    return redirect("/login")
+    return redirect("/register")
 
 ### Login page.
 @csrf_exempt
@@ -161,9 +183,16 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 state = "You're success'd the log in!"
+                ### right now logging in redirects you to home.
+                ### it would be nice to have it redirect to where a user was going.
+                ### like to the create page.
+                return redirect("/")
             else:
                 state = "Your account is not active, please contact the site admin."
         else:
             state = "Your username and/or password were incorrect."
 
-    return render_to_response('auth.html',{'state':state, 'username': username})
+    from django.contrib.auth.forms import UserCreationForm
+    form = UserCreationForm()
+    email = UserEmail()
+    return render_to_response('auth.html', {'form':form,'email':email, 'state':state, 'username': username})

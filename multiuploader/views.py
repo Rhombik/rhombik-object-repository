@@ -67,7 +67,6 @@ def multiuploader(request,pk):
         postfiles.post = post
         postfiles.filename = request.FILES[u'files[]']
         postfiles.save()
-        print (postfiles)
         log.info ('Got file: "%s"' % str(postfiles.filename.name))
 
 
@@ -76,19 +75,17 @@ def multiuploader(request,pk):
             file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         except AttributeError:
             file_delete_url = 'multi_delete/'
-        print("postfiles is "+str(postfiles.filename.url))
-       #from thumbnailer import thumbnailer2
-       #try:
-        thumburl = thumbobject.objects.get_or_create( fileobject = postfiles, filex=64, filey=64 )[0]
-       #except:
-       #    thumburl = thumbnailer2.thumbnailify(postfiles, [64,64])[0]
-        print("thumburl is "+str(thumburl)) 
-        #generating json response array
+        thumbnail = thumbobject.objects.get_or_create( fileobject = postfiles, filex=64, filey=64 )[0]
         result = []
+
+        if thumbnail.filename != "False":
+            thumburl=thumbnail.filename.url
+        else:
+            thumburl=""
         result.append({"name":postfiles.subfolder+os.path.split(str(postfiles.filename.name))[1], 
                        "size":postfiles.filename.size, 
                        "url":str(postfiles.filename.url),
-                       "thumbnail_url":"/media/"+str(thumburl.filename),
+                       "thumbnail_url":thumburl,
                        "delete_url":"/multi_delete/"+str(postfiles.pk)+"/", 
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
@@ -106,10 +103,13 @@ def multiuploader(request,pk):
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []
         for image in postfiles:
-            try:
-                thumburl =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0].filename.url
-            except:
-                thumburl = ""
+            thumbnail =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0]
+
+            if thumbnail.filename != "False":
+                thumburl=thumbnail.filename.url
+            else:
+                thumburl=""
+
             ##json stuff
             result.append({"name":image.subfolder+os.path.split(image.filename.name)[1],
                        "size":image.filename.size,
