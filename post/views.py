@@ -25,7 +25,7 @@ def post(request, title,):
     post = Post.objects.filter(title=title).exclude(draft=True)[0:1].get()
     postfiles = fileobject.objects.filter(post=post)
     flobj = fileobject.objects.filter(post = post, filename = "uploads/"+str(post.id)+str(post.thumbnail))[0]
-    mainthumb = thumbobject.objects.get_or_create(fileobject=flobj, filex = 250, filey = 250)[0]
+    mainthumb = thumbobject.objects.get_or_create(fileobject=flobj, filex = 220, filey = 220)[0]
     images=[]
     for i in postfiles:
         fullpath=i.filename.url

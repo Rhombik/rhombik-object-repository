@@ -1,47 +1,37 @@
 {% extends "includes.html" %}
 
 {% block contenttop %}
-
-<div class="showcaseWrap"> 
- <div class="container_16">
-  <div class="grid_16">
-   <div class="showcase">
-   <h1>{{ post.title }}</h1>
-    <div class="grid_4">
-    <img src="{{mainthumb}}">
-    </div>
-   {% include "gallery.html" %}
-   <a href="/download/{{ post.pk }}">Download File</a>
-   <br>
-   <a href="{{ downloadurl }}">Download All</a>
-
-   </div>
-  </div>
- </div>
-</div>
+						<h2>{{ post.title }}</h2>
+						<div class="main_thumbnail grid_4">
+							<img src="{{mainthumb}}">
+						</div>
+						<div class="gallery_thumbnails grid_11">
+							{% include "gallery.html" %}
+						</div>
+						<div class="showcase_links grid_16">
+							<a href="/download/{{ post.pk }}" class="iframe">Download File</a>
+							<a href="{{ downloadurl }}">Download All</a>
+						</div>
+						<div class="clear clearfix"></div>
 {% endblock contenttop %}
-
 
 {% block content %}
 
 {% load gallerfy %}
 
-<div class="container_12">
- <!-- Posts-->
- <span>
-  <div class="title"><h1>{{ post.title }}</h1></div>
-  {% if user == post.author %}
-  <div class="editbutton" align="right"> <a href="/edit/{{ post.title }}">Edit</a></div>
-  {% endif %}
- </span>
- <div class="time">{{ post.created }}</div>
- <div class="author"><a href="/userProfile/{{ post.author }}">{{ post.author }}</a></div>
-
- <div class="body">{{ post.body_rendered|gallerfy|safe }}</div>
- <div class="tags">
-  {% for tag in post.tags.all %} 
-  <span class="tagrank=({{tag.num_times}})"> <a href="/tag/{{tag}}">{{tag}}</a></span>
-  {% endfor %} 
- </div>
-</div>
+					<!-- Posts-->
+					<span>
+					<div class="title"><h1>{{ post.title }}</h1></div>
+					{% if user == post.author %}
+					<div class="editbutton" align="right"> <a href="/edit/{{ post.title }}">Edit</a></div>
+					{% endif %}
+					</span>
+					<div class="time">{{ post.created }}</div>
+					<div class="author"><a href="/userProfile/{{ post.author }}">{{ post.author }}</a></div>
+					<div class="body">{{ post.body_rendered|gallerfy|safe }}</div>
+					<div class="tags">
+					{% for tag in post.tags.all %} 
+					<span class="tagrank=({{tag.num_times}})"> <a href="/tag/{{tag}}">{{tag}}</a></span>
+					{% endfor %} 
+					</div>
 {% endblock content %}
