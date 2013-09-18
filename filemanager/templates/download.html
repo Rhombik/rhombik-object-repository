@@ -1,3 +1,39 @@
-{% for thumbnail,name,downloadlink in download %}
-<a href="{{downloadlink}}"><img src="{{thumbnail}}">{{name}}</a><br>
+
+<style>
+.thumbs{
+	float-left;
+	width:81px;
+	background: #00ff00;
+}
+.links{
+	float: left;
+	width:400px; 
+}
+.nrlinks{
+        margin-left:81px;
+}
+.clear{
+	clear:both;
+}
+
+
+/*java style block comment.
+*/
+</style>
+<!--the horror!--> 
+
+{% for thumbnail,name,downloadlink,filetype in download %}
+{% if filetype == "norender" %}
+<div class = "nrlinks">
+<a href="{{downloadlink}}">{{name}}</a>
+</div>
+<div class = "clear"></div>
+{% else %}
+<div class = "thumbs">
+	<a href="{{downloadlink}}"><img src="{{thumbnail}}"></a>
+</div>
+<div class = "links"><a href="{{downloadlink}}">{{name}}</a>
+</div>
+<div class = "clear"></div>
+{% endif %}
 {% endfor %}

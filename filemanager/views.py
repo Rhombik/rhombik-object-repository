@@ -15,7 +15,8 @@ def download(request, pk):
         downloadlink=i.filename.url
         name=i.subfolder+os.path.split(i.filename.name)[1]
         thumbnail=thumbmodel.filename.url
-        download.append([thumbnail,name,downloadlink])
+        filetype=thumbmodel.filetype
+        download.append([thumbnail,name,downloadlink,filetype])
  
     return render(request, "download.html", dict(download=download))
 
