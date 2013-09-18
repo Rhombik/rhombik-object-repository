@@ -48,7 +48,7 @@ def edit(request):
                 from avatarBot.models import uploadPic
                 try:
                      upload = uploadPic.objects.filter( user = data )[0]
-                     print("#####"+str(upload.filename))
+                     print("#####avatar is "+str(upload.filename))
                      upload.delete()
                 except: "whatever"
                 upload = uploadPic.objects.create( user = data, filename = request.FILES["filename"] )

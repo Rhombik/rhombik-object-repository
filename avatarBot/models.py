@@ -11,7 +11,7 @@ import os
 class uploadPic(models.Model):
 
     user = models.ForeignKey(User, unique=True)
-    filename = models.FileField(upload_to="userPics/", null=True)
+    filename = models.ImageField(upload_to="userPics/", null=True)
     profilePicType = models.CharField(max_length=64, blank=True, null=True)
 
     def __unicode__(self):
