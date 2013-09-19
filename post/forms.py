@@ -33,7 +33,7 @@ def cleanify(self, formName):
     else:
         noThumb = True
         for fl in files:
-            if fl.filetype != 'norender':
+            if fl.filetype != 'norender':### Look for thumbnailable pic.
                 noThumb = False
                 self.post.thumbnail = fl
                 break

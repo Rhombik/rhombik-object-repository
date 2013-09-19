@@ -1,3 +1,5 @@
+from os import path
+
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, render
@@ -95,7 +97,7 @@ def edit(request, title):
             post.thumbnail = form.cleaned_data["thumbnail"]
             list_to_tags(form.cleaned_data["tags"], post.tags)
             post.save()
-            return HttpResponseRedirect('/post/'+title)
+            return HttpResponseRedirect('/post/'+str(post.pk))
         else:
             if str(post.author) == str(request.user):
                 return render_to_response('edit.html', dict(post=post, user=request.user, form=form, ))
@@ -112,7 +114,8 @@ def edit(request, title):
            taglist.append(i)
         taglist = ",".join(taglist)
         print ("tags= "+str(taglist))
-        form = PostForm({'body': post.body, 'thumbnail': post.thumbnail, 'tags' : str(taglist)}, post)
+        thumbnailstring = "/"+path.split(post.thumbnail.filename.url)[1]
+        form = PostForm({'body': post.body, 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, post)
         return render_to_response('edit.html', dict(post=post, user=request.user, form=form,))
         #return HttpResponse(response_data, mimetype="application/json")
     else:
@@ -139,14 +142,14 @@ def create(request):
             post.title = form.cleaned_data["title"]
             post.body = form.cleaned_data["body"]
             post.author = request.user
-            post.thumbnail = form.cleaned_data["thumbnail"]
+           #post.thumbnail = form.cleaned_data["thumbnail"]
             post.draft=False
             post.save()
             list_to_tags(form.cleaned_data["tags"], post.tags)
             list_to_tags(form2.cleaned_data["categories"], post.tags, False)
             post.save()
             #add error if thumbnail is invalid
-            return HttpResponseRedirect('/post/'+form.cleaned_data["title"])
+            return HttpResponseRedirect('/post/'+str(post.pk))
         else:
             return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2,post=post))
 #--------------------------
