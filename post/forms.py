@@ -23,13 +23,13 @@ def cleanify(self, formName):
     if thumb:
         noThumb = True
         for fl in files:
-            if "uploads/"+str(self.post.pk)+thumb == str(fl.filename):
+            if "uploads/"+str(self.post.pk)+thumb == str(fl.filename) and fl.filetype != "norender":
                 noThumb = False
                 self.post.thumbnail = fl
                 print(fl)
                 break
         if noThumb:
-            self._errors['thumbnail'] = [u"The thumbnail you selected is not an uploaded image."]
+            self._errors['thumbnail'] = [u"The thumbnail you selected is not a valid uploaded image."]
     else:
         noThumb = True
         for fl in files:

@@ -152,6 +152,7 @@ INSTALLED_APPS = (
     'captcha',
     'filemanager',
     'organization',
+    'avatarBot',
     'taggit',
     'taggit_autosuggest',
     'taggit_templatetags',

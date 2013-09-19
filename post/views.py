@@ -80,11 +80,11 @@ from django.utils import simplejson
 
 @csrf_exempt
 @requires_csrf_token
-def edit(request, title):
+def edit(request, pk):
 
 ##The form-----------------------------
     try:
-        post=Post.objects.filter(title=title)[0:1].get()
+        post=Post.objects.filter(pk=pk)[0:1].get()
     except:
         return HttpResponse(status=404)
     if request.method == 'POST':
@@ -94,7 +94,7 @@ def edit(request, title):
         if form.is_valid() and str(post.author) == str(request.user):
             #save thr form
             post.body = form.cleaned_data["body"]
-            post.thumbnail = form.cleaned_data["thumbnail"]
+           #post.thumbnail = form.cleaned_data["thumbnail"]
             list_to_tags(form.cleaned_data["tags"], post.tags)
             post.save()
             return HttpResponseRedirect('/post/'+str(post.pk))
