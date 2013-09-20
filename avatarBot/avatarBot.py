@@ -6,7 +6,7 @@ That is all. """
 
 
 from django.contrib.auth.models import User
-from avatarBot.models import uploadPic, userPicThumb
+from models import uploadPic, userPicThumb
 
 
 ###	This main function here calls the function of whatever user.avatarType is	###

@@ -164,6 +164,7 @@ def create(request):
 
 def tag(request,tag):
     posts = Post.objects.filter(tags__name__in=[tag]).order_by("-created")
+    print("post.views.tag says posts are "+str(posts))
     paginator = Paginator(posts, 15)
 
     try: page = int(request.GET.get("page", '1'))
