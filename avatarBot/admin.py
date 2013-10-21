@@ -1,7 +1,7 @@
 
 from post.models import *
 from django.contrib import admin
-from models import uploadPic, userPicThumb
+from avatarBot.models import uploadPic, userPicThumb
 
 class PostAdmin(admin.ModelAdmin):
     search_fields = ["title"]
