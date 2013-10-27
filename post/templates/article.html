@@ -1,17 +1,20 @@
 {% extends "includes.html" %}
 
 {% block contenttop %}
-						<h2>{{ post.title }}</h2>
-						<div class="main_thumbnail grid_4">
-							<img src="{{mainthumb}}">
-						</div>
-						<div class="gallery_thumbnails grid_11">
-							{% include "gallery.html" %}
-						</div>
-						<div class="showcase_links grid_16">
-							<a href="/download/{{ post.pk }}" class="iframe">Download File</a>
-							<a href="{{ downloadurl }}">Download All</a>
-						</div>
+                        <div class="grid_16 showcase_content"> 
+                        	<div class="grid_16"><h2>{{ post.title }}</h2></div>
+                            <div class="main_thumbnail grid_4 alpha">
+                                <img src="{{mainthumb}}">
+                            </div>
+                            <div class="gallery_thumbnails grid_12 omega">
+                                {% include "gallery.html" %}
+                            </div>
+                            <div class="showcase_links grid_16">
+                                <a href="/download/{{ post.pk }}" class="iframe">Download File</a>
+                                <a href="{{ downloadurl }}">Download All</a>
+                            </div>
+                            <div class="clear clearfix"></div>
+                        </div>
 						<div class="clear clearfix"></div>
 {% endblock contenttop %}
 

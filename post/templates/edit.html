@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container_12">
-
+<div class="grid_12">
 <form action="/edit/{{ post.pk}}/" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
@@ -15,7 +15,7 @@
 
 {% load multiuploader %}
 {% multiupform  %}
-
+</div>
 </div>
 
 {% endblock content %}

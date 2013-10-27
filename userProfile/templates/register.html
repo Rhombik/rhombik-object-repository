@@ -3,10 +3,11 @@
 {% block content %}
 
 {{ msg }}
+<style>
+</style>
+<div class="container_16 maincontent">
 
-<div class="container_12 maincontent">
-
- <div class="grid_6">
+ <div class="grid_12">
   <div class="vislink">
 
 <form enctype="multipart/form-data" action="/register/" method="post">{% csrf_token %}
@@ -18,7 +19,7 @@
   </div>
  </div>
 
- <div class="grid_6">
+ <div class="grid_4">
   <div class="vislink">
 
 <form action="/login/" method="post">
@@ -35,5 +36,5 @@
 
   </div>
  </div>
-
+</div>
 {% endblock content %}

@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 5.0 Transitional//EN">
 <HTML>
  <HEAD>
@@ -28,8 +29,8 @@
                 <button id="change" onclick="setRenderMode();">Change</button>
                 </div>
         </div>
-        <script type="text/javascript" src="/static/jsc3d.min.js"></script>
-        <script type="text/javascript" src="/static/jsc3d.console.js"></script>
+        <script type="text/javascript" src="{% static "jsc3d.min.js"%}"></script>
+        <script type="text/javascript" src="{% static "jsc3d.console.js"%}"></script>
         <script type="text/javascript">
         JSC3D.console.setup('main_frame', '30px');
 
