@@ -8,9 +8,11 @@
  */
 -->
 {% load verbatim %}
+{% load staticfiles %}
+
 <meta charset="utf-8">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/base/jquery-ui.css" id="theme">
-<link rel="stylesheet" href="/static/multiuploader/styles/jquery.fileupload-ui.css">
+<link rel="stylesheet" href="{% static "multiuploader/styles/jquery.fileupload-ui.css"%}">
 <div id="fileupload">
     <form action="{% url 'multiuploader.views.multiuploader' post.pk %}" method="POST" enctype="multipart/form-data">
         <div class="fileupload-buttonbar">
@@ -98,7 +100,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
-<script src="/static/multiuploader/scripts/jquery.iframe-transport.js"></script>
-<script src="/static/multiuploader/scripts/jquery.fileupload.js"></script>
-<script src="/static/multiuploader/scripts/jquery.fileupload-ui.js"></script>
-<script src="/static/multiuploader/scripts/application.js"></script>
+<script src="{% static "static/multiuploader/scripts/jquery.iframe-transport.js"%}"></script>
+<script src="{% static "multiuploader/scripts/jquery.fileupload.js"%}"></script>
+<script src="{% static "multiuploader/scripts/jquery.fileupload-ui.js"%}"></script>
+<script src="{% static "multiuploader/scripts/application.js"%}"></script>
