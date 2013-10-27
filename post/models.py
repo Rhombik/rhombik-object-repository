@@ -5,12 +5,35 @@ import thumbnailer.shadowbox
 import thumbnailer.thumbnailer
 from django.conf import settings
 from taggit.managers import TaggableManager
+from filemanager.models import fileobject
 
+
+
+	
 
 class Post(models.Model):
 
+    def select_thumbnail(post):
+    
+        print(post)
+       #post=Post.objects.filter(title=title)
+        files=fileobject.objects.filter(post=post)###  This gets a list of files from the post
+        noThumb = True
+        for fl in files:
+            if fl.filetype != 'norender' and fl.filename != post.thumbnail:### Look for thumbnailable pic.
+                noThumb = False
+                post.thumbnail = fl
+                post.save()
+                print("I set " + str(post) + "'s thumbnail to " + str(fl)) 
+               #self.thumbnail = fl
+               #break
+        if noThumb:
+            post.thumbnail = fileobject.objects.all()[0] ## !!!!! THIS SETS THE THUMBNAIL. It sets it to whatever the first uploaded image is. This should be something better asap.
+            post.save()
+
+
     title = models.CharField(max_length=60,blank=True, null=True, unique=True)
-    thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, related_name='thumbnail')
+    thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL , related_name='thumbnail')
     body = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
@@ -29,7 +52,10 @@ class Post(models.Model):
     def save(self):
 
         #Generates the thumbnail
+        if not self.thumbnail:
+		select_thumbnail(self)
         ##make certain the selected thumbnail is valid, and generate
+
 #        if self.thumbnail:
 #            try:
                 #I hate names.

@@ -54,10 +54,17 @@ def front(request):
 
 def list(request):
     """Main listing."""
+
+###   get all the posts!   ###
     posts = Post.objects.exclude(draft=True).order_by("-created")
 
     listdata = []
     for post in posts:
+        # if a post has no thumbnail. This happens when ignorant users delete thier pictures and navigate away without saving and seeing the form error. #
+	if not post.thumbnail:
+            print("I cant find the thumbnail for " + str(post))
+            # so we just get a new thumbnail for their post. #
+            Post.select_thumbnail(post)
         thumbnail = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 128, filey = 128)[0]
         listdata += [[post, thumbnail]]
     print("listdata is "+str(listdata))
