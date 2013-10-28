@@ -19,12 +19,12 @@ class SimpleTest(TestCase):
 class UserViewTest(TestCase):
   user="testuser"
   passw="testpass"
-
+  client=Client()
   from userProfile.models import userProfile
   from django.contrib.auth.models import User
   def test_register(self):
-    c = Client()
-    response = c.post('/register/', {'username': self.user, 'password1': self.passw, 'password2': self.passw,})
+    c = self.client
+    c.post('/register/', {'username': self.user, 'password1': self.passw, 'password2': self.passw,})
     self.assertEqual(self.User.objects.all()[0].username,self.user)
 
 
