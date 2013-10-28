@@ -21,6 +21,15 @@ from django.core.context_processors import csrf
 
 from django.http import HttpResponseRedirect, HttpResponse
 
+def thumbnail_get(post, fileobject, *args, **kwargs):
+    
+    if not post.thumbnail:
+        print("I cant find the thumbnail for " + str(post))
+        # so we just get a new thumbnail for their post. #
+        Post.select_thumbnail(post)
+    thumbnail = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 128, filey = 128)[0]
+    return thumbnail
+	
 
 def post(request, pk):
     print("pk is "+str(pk))
@@ -61,11 +70,11 @@ def list(request):
     listdata = []
     for post in posts:
         # if a post has no thumbnail. This happens when ignorant users delete thier pictures and navigate away without saving and seeing the form error. #
-	if not post.thumbnail:
-            print("I cant find the thumbnail for " + str(post))
-            # so we just get a new thumbnail for their post. #
-            Post.select_thumbnail(post)
-        thumbnail = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 128, filey = 128)[0]
+########if not post.thumbnail:
+########    print("I cant find the thumbnail for " + str(post))
+########    # so we just get a new thumbnail for their post. #
+########    Post.select_thumbnail(post)
+        thumbnail = thumbnail_get(post=post, fileobject=post.thumbnail, filex = 128, filey = 128)
         listdata += [[post, thumbnail]]
     print("listdata is "+str(listdata))
  
