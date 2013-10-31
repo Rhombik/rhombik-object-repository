@@ -52,8 +52,6 @@ class Post(models.Model):
     def save(self):
 
         #Generates the thumbnail
-        if not self.thumbnail:
-		select_thumbnail(self)
         ##make certain the selected thumbnail is valid, and generate
 
 #        if self.thumbnail:
