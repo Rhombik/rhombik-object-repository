@@ -13,4 +13,8 @@ class zippedobjectAdmin(admin.ModelAdmin):
 
 admin.site.register(zippedobject,zippedobjectAdmin)
 
+class thumbobjectAdmin(admin.ModelAdmin):
+    search_fields = ["post"]
+
+admin.site.register(thumbobject,thumbobjectAdmin)
 
