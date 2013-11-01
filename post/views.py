@@ -32,9 +32,7 @@ def thumbnail_get(post, fileobject, *args, **kwargs):
 	
 
 def post(request, pk):
-    print("pk is "+str(pk))
     post = Post.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
-    print("post is "+str(post))
     postfiles = fileobject.objects.filter(post=post)
     mainthumb = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 250, filey = 250)[0]
     images=[]
