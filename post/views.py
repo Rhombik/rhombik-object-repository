@@ -85,8 +85,6 @@ def list(request):
         listdata = paginator.page(page)
     except (InvalidPage, EmptyPage):
         listdata = paginator.page(paginator.num_pages)
-    print("listdata.object_list[?][0].title is "+str(listdata[0][0].title))
-    print("listdata.object_list[?][1].filename is "+str(listdata[0][1].filename.url))
     return render_to_response("front.html", dict(listdata=listdata, user=request.user, active="home"))
 
 
