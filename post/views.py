@@ -109,7 +109,7 @@ def edit(request, pk):
            #post.thumbnail = form.cleaned_data["thumbnail"]
             list_to_tags(form.cleaned_data["tags"], post.tags)
             post.save()
-            return HttpResponseRedirect('/post/'+str(post.pk))
+            return HttpResponseRedirect('/project/'+str(post.pk))
         else:
             if str(post.author) == str(request.user):
                 return render_to_response('edit.html', dict(post=post, user=request.user, form=form, ))
@@ -161,7 +161,7 @@ def create(request):
             list_to_tags(form2.cleaned_data["categories"], post.tags, False)
             post.save()
             #add error if thumbnail is invalid
-            return HttpResponseRedirect('/post/'+str(post.pk))
+            return HttpResponseRedirect('/project/'+str(post.pk))
         else:
             return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2,post=post))
 #--------------------------
