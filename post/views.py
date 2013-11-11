@@ -37,7 +37,7 @@ def post(request, pk):
     mainthumb = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 250, filey = 250)[0]
     images=[]
     for i in postfiles:
-        fullpath=i.filename.url
+        fullpath=i.pk
         renderer=i.filetype
         thumbmodel=thumbobject.objects.get_or_create( fileobject = i, filex=64, filey=64 )[0] 
         thumbnail=thumbmodel.filename.url
