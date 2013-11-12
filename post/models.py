@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from datetime import datetime
 import thumbnailer.shadowbox
-import thumbnailer.thumbnailer
 from django.conf import settings
 from taggit.managers import TaggableManager
 from filemanager.models import fileobject
@@ -52,8 +51,6 @@ class Post(models.Model):
     def save(self):
 
         #Generates the thumbnail
-        if not self.thumbnail:
-		select_thumbnail(self)
         ##make certain the selected thumbnail is valid, and generate
 
 #        if self.thumbnail:

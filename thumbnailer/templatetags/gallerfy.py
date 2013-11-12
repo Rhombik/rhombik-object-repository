@@ -18,7 +18,7 @@ def gallerfy(value):
             try:
                 objectish = get_object_or_404(fileobject, pk=picture["id"])
                 thumb = thumbobject.objects.get_or_create(fileobject = objectish, filex = 64, filey = 64)[0]
-                picture.insert(0, BeautifulSoup(render_to_string("gallery.html", dict(images=[[thumb.filename.url, objectish.filename.url, objectish.filetype]], galleryname=picture["galleryname"])), "html.parser"))
+                picture.insert(0, BeautifulSoup(render_to_string("gallery.html", dict(images=[[thumb.filename.url, objectish.pk, objectish.filetype]], galleryname=picture["galleryname"])), "html.parser"))
             except:
                 picture.insert(0,"")
     return soup

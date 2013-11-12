@@ -57,14 +57,9 @@ class thumbobject(models.Model):
         unique_together = ('filex', 'filey', "fileobject")
 
     def save(self, *args, **kwargs):
-        #try:
-##           old thumbnailer
-#            thumbnaildata = thumbnailer.thumbnailer.thumbnail(self.filename.path,(128,128), forceupdate=True)
-        print("self.fileobject is "+str(self.fileobject))
-        self.filename, self.filetype = thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
-       #if not self.filename:
-       #    self.filename = "../static/noUserPic.png"
-        #    self.filetype = "norender"
+        tmpfile, self.filetype = thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
+        print(str(tmpfile)+"==================================")
+        self.filename = tmpfile
         super(thumbobject, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):

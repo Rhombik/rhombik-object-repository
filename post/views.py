@@ -21,16 +21,23 @@ from django.core.context_processors import csrf
 
 from django.http import HttpResponseRedirect, HttpResponse
 
+def thumbnail_get(post, fileobject, *args, **kwargs):
+    
+    if not post.thumbnail:
+        print("I cant find the thumbnail for " + str(post))
+        # so we just get a new thumbnail for their post. #
+        Post.select_thumbnail(post)
+    thumbnail = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 128, filey = 128)[0]
+    return thumbnail
+	
 
 def post(request, pk):
-    print("pk is "+str(pk))
     post = Post.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
-    print("post is "+str(post))
     postfiles = fileobject.objects.filter(post=post)
     mainthumb = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 250, filey = 250)[0]
     images=[]
     for i in postfiles:
-        fullpath=i.filename.url
+        fullpath=i.pk
         renderer=i.filetype
         thumbmodel=thumbobject.objects.get_or_create( fileobject = i, filex=64, filey=64 )[0] 
         thumbnail=thumbmodel.filename.url
@@ -61,11 +68,11 @@ def list(request):
     listdata = []
     for post in posts:
         # if a post has no thumbnail. This happens when ignorant users delete thier pictures and navigate away without saving and seeing the form error. #
-	if not post.thumbnail:
-            print("I cant find the thumbnail for " + str(post))
-            # so we just get a new thumbnail for their post. #
-            Post.select_thumbnail(post)
-        thumbnail = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 128, filey = 128)[0]
+########if not post.thumbnail:
+########    print("I cant find the thumbnail for " + str(post))
+########    # so we just get a new thumbnail for their post. #
+########    Post.select_thumbnail(post)
+        thumbnail = thumbnail_get(post=post, fileobject=post.thumbnail, filex = 128, filey = 128)
         listdata += [[post, thumbnail]]
     print("listdata is "+str(listdata))
  
@@ -78,8 +85,6 @@ def list(request):
         listdata = paginator.page(page)
     except (InvalidPage, EmptyPage):
         listdata = paginator.page(paginator.num_pages)
-    print("listdata.object_list[?][0].title is "+str(listdata[0][0].title))
-    print("listdata.object_list[?][1].filename is "+str(listdata[0][1].filename.url))
     return render_to_response("front.html", dict(listdata=listdata, user=request.user, active="home"))
 
 
@@ -104,7 +109,7 @@ def edit(request, pk):
            #post.thumbnail = form.cleaned_data["thumbnail"]
             list_to_tags(form.cleaned_data["tags"], post.tags)
             post.save()
-            return HttpResponseRedirect('/post/'+str(post.pk))
+            return HttpResponseRedirect('/project/'+str(post.pk))
         else:
             if str(post.author) == str(request.user):
                 return render_to_response('edit.html', dict(post=post, user=request.user, form=form, ))
@@ -156,7 +161,7 @@ def create(request):
             list_to_tags(form2.cleaned_data["categories"], post.tags, False)
             post.save()
             #add error if thumbnail is invalid
-            return HttpResponseRedirect('/post/'+str(post.pk))
+            return HttpResponseRedirect('/project/'+str(post.pk))
         else:
             return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2,post=post))
 #--------------------------
