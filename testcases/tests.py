@@ -19,12 +19,25 @@ class SimpleTest(TestCase):
 class UserViewTest(TestCase):
   user="testuser"
   passw="testpass"
+  #Defines the client session. We're mostly going to be doing this in order. Need to define a test dependency graph.
   client=Client()
+
   from userProfile.models import userProfile
   from django.contrib.auth.models import User
+
+
   def test_register(self):
     c = self.client
     c.post('/register/', {'username': self.user, 'password1': self.passw, 'password2': self.passw,})
+    self.assertIn('_auth_user_id', c.session)
     self.assertEqual(self.User.objects.all()[0].username,self.user)
 
+  def test_logout(self):
+    c = self.client
+    c.post('/logout/', {})
+    self.assertNotIn('_auth_user_id', c.session)
+  def test_login(self):
+    c = self.client
+    c.post('/login/', {'username': self.user, 'password': self.passw,})
+    self.assertIn('_auth_user_id', c.session)
 
