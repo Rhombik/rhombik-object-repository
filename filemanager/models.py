@@ -58,7 +58,6 @@ class thumbobject(models.Model):
 
     def save(self, *args, **kwargs):
         tmpfile, self.filetype = thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
-        print(str(tmpfile)+"==================================")
         self.filename = tmpfile
         super(thumbobject, self).save(*args, **kwargs)
 
@@ -68,6 +67,8 @@ class thumbobject(models.Model):
 
 
 
+from django.core.files.uploadedfile import UploadedFile
+from io import BytesIO
 
 class zippedobject(models.Model):
 
@@ -79,14 +80,14 @@ class zippedobject(models.Model):
         data = zipfile.ZipFile(s,'a')
         postfiles = fileobject.objects.filter(post=self.post)
         for filedata in postfiles:
-            print("^^ Im'a zip "+filedata.filename.name)
             filed = filedata.filename.read()
             pathAndName = str(self.post.title)+filedata.subfolder+os.path.split(str(filedata.filename))[1] #### this is where subfolders will be added to inside the zip file.
             data.writestr(pathAndName, filed)
         data.close()
-
-        self.filename = InMemoryUploadedFile(s, None, self.post.title+".zip", '',
-                                    1, None)
+        s.seek(0)
+        filedata = UploadedFile(s)
+        filedata.name = self.post.title+".zip"
+        self.filename = filedata
         super(zippedobject, self).save(*args, **kwargs)
 
 
