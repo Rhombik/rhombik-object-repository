@@ -5,10 +5,7 @@ import thumbnailer.shadowbox
 from django.conf import settings
 from taggit.managers import TaggableManager
 from filemanager.models import fileobject
-
-
-
-	
+from updown.fields import RatingField	
 
 class Post(models.Model):
 
