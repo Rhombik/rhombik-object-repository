@@ -18,10 +18,6 @@ import re
 import os
 from django.conf import settings
 
-try:
-    import thumbnailer.thumbnailer as thumbnailer
-except ImportError:
-    import thumbnailer
 
 
 import filemanager.models

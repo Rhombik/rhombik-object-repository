@@ -9,7 +9,8 @@ import os
 
 
 import thumbnailer
-
+from filemanager.models import fileobject, thumbobject
+from django.shortcuts import get_object_or_404
 
 
 def imagedownload(request, title):
@@ -17,10 +18,12 @@ def imagedownload(request, title):
     return render(request, "gallery.html", c) 
 
 def stlthumb(request, path):
-    c = RequestContext(request, dict(user=request.user, path=path))
+    objectish = get_object_or_404(fileobject, pk=path)
+    c = RequestContext(request, dict(user=request.user, path=objectish.filename.url))
     return render(request, "thumbs/stl.html", c)
 
 def stlview(request, path):
-    c = RequestContext(request, dict(user=request.user, path=path))
+    objectish = get_object_or_404(fileobject, pk=path)
+    c = RequestContext(request, dict(user=request.user, path=objectish.filename.url))
     return render(request, "filehandlers/stl.html", c)
 

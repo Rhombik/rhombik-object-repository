@@ -11,7 +11,7 @@ from exampleTheme.views import AboutView
 urlpatterns = patterns('',
 
     url(r'^$', 'post.views.list', name='home'),
-    (r'^post/(.*)/$', 'post.views.post'),
+    (r'^project/(.*)/$', 'post.views.post'),
 
     # Examples:
     # url(r'^$', 'exampleSettings.views.home', name='home'),

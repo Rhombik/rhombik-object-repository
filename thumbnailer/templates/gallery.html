@@ -5,6 +5,6 @@
 	<a href="{{ fullpath }}" class="gallery-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
 {% endif %}
 {% if renderer == "jsc3d" %}
-	<a href="/preview/jsc3d{{ fullpath }}" class="iframe gallery-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
+	<a href="/preview/jsc3d/{{ fullpath }}" class="iframe gallery-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
 {% endif %}
 {% endfor %}
