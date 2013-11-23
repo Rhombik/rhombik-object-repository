@@ -1,11 +1,12 @@
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.conf import settings
-
-
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+
+
+from exampleTheme.views import AboutView
 
 urlpatterns = patterns('',
 
@@ -26,6 +27,8 @@ urlpatterns = patterns('',
 
     (r'^tag/(.*)/$', 'post.views.tag'),
     (r'^tagcloud/$', 'post.views.tagcloud' ),
+
+    (r'^about/', AboutView.as_view()),
 
     #Search urls
     (r'^search/', include('haystack.urls')),
@@ -51,5 +54,4 @@ urlpatterns = patterns('',
 
 
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 
