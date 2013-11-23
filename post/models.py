@@ -43,37 +43,17 @@ class Post(models.Model):
     tags = TaggableManager(blank=True)
     draft = models.BooleanField(default=False)
 
-   #def __init__(self):
-   #    self.thumbnail.limit_choices_to({'post' = self })
+    rating = RatingField(can_change_vote=True)
 
     def __unicode__(self):
         return self.title
     def save(self):
 
-        #Generates the thumbnail
-        ##make certain the selected thumbnail is valid, and generate
-
-#        if self.thumbnail:
-#            try:
-                #I hate names.
-#                thumbnail = thumbnailer.thumbnailer.thumbnail(settings.MEDIA_ROOT+"uploads/" + str(self.pk) + self.thumbnail,(128,128))
-#                thumbnail[2] != "norender"
-#                self.thumbnailpath = thumbnail[0]
-#            except:
-#                def clean(self):
-#                    from django.core.exceptions import ValidationError
-#                    raise ValidationError('No valid thumbnail')
-#        else:
-            #If no thumbnail is selected, pick one randomly and generate a thumb
-#            postfiles = filemanager.models.fileobject.objects.filter(post=self).exclude(filetype="norender")[0]
-#            self.thumbnailpath = thumbnailer.thumbnailer.thumbnail(postfiles.filename.path,(128,128))[0]
         import markdown
-        #Markdownifies the post body, striping out any raw html
         if self.allow_html == False and self.body:
             renderedtext = markdown.markdown(self.body, safe_mode=True)
             self.body_rendered = thumbnailer.shadowbox.run(renderedtext, str(self.pk))
             super(Post, self).save() # Call the "real" save() method.
-        #mardownifies the body of the post, leaving any raw HTML intact.
         elif self.body:
             renderedtext = markdown.markdown(self.body)
             self.body_rendered = thumbnailer.shadowbox.run(renderedtext, str(self.pk))
