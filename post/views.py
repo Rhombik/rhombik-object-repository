@@ -20,6 +20,9 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf
 from django.core.context_processors import csrf
 
 from django.http import HttpResponseRedirect, HttpResponse
+from filemanager.models import fileobject,
+
+
 
 def thumbnail_get(post, fileobject, *args, **kwargs):
     
@@ -101,7 +104,6 @@ def edit(request, pk):
         return HttpResponse(status=404)
     if request.method == 'POST':
         form = PostForm(request.POST, post)
-        print("view's post.pk = "+str(post.pk))
         #Check to make sure the form is valid and the user matches the post author
         if form.is_valid() and str(post.author) == str(request.user):
             #save thr form
