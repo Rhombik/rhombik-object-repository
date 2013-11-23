@@ -12,10 +12,8 @@ import os
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 ### stuff for the celery task queue
-import djcelery
-djcelery.setup_loader()
 
-BROKER_URL = 'django://127.0.0.1:8001'
+BROKER_URL = 'django://'
 
 MANAGERS = ADMINS
 
@@ -162,9 +160,9 @@ INSTALLED_APPS = (
     'taggit_templatetags',
 
    ### celery stuff  ###
-    'kombu.transport.django',
-    'djcelery',
-    'celerytask',
+#    'kombu.transport.django',
+#    'djcelery',
+#    'celerytask',
     #'djcelery.transport',
 
     # Uncomment the next line to enable the admin:
