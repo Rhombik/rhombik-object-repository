@@ -91,3 +91,22 @@ class zippedobject(models.Model):
         super(zippedobject, self).save(*args, **kwargs)
 
 
+import thumbnailer.shadowbox
+import markdown
+
+class htmlobject(models.Model):
+    #A pointer to the file this is a thumbnail of.
+    fileobject = models.ForeignKey(fileobject, unique=True)
+    allow_html = models.BooleanField(default=False)
+    body_rendered = models.TextField('Entry body as HTML', blank=True, null=True)
+
+        if self.allow_html == False and self.body:
+            renderedtext = markdown.markdown(self.body, safe_mode=True)
+            self.body_rendered = thumbnailer.shadowbox.run(renderedtext, str(self.pk))
+            super(Post, self).save() # Call the "real" save() method.
+        elif self.body:
+            renderedtext = markdown.markdown(self.body)
+            self.body_rendered = thumbnailer.shadowbox.run(renderedtext, str(self.pk))
+            super(Post, self).save() # Call the "real" save() method.
+        else:
+            super(Post, self).save()
