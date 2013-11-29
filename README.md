@@ -37,7 +37,7 @@ To set up a development enviroment simply
     cd rhombik-object-repository
     pip install $(cat requirements.txt)
     python manage.py syncdb
-    #follow the prompts to add a new superuser
+    #follow the prompts to add a new devleoper superuser account to the test DB.
     python manage.py runserver
 
 Then navigate to http://localhost:8000
