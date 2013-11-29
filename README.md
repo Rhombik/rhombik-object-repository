@@ -48,11 +48,11 @@ Neither of us are proffesional programmers. If you want to know how we did somet
 
 We would love to restructure this at some point.
 
-#post#
+**post**
 
 This app has all our default views. It also has the basic "post" model.
 
-#filemanager#
+**filemanager**
 
 This app contains the basic structure of our file systems. 
 
@@ -60,11 +60,11 @@ It has a "fileobject" model. That model contains the actual uploaded file. Each 
 
 It also has a "thumbobject" model. Each thumbobject is a png preview of a fileobject. It attaches to a fileobject. It gets the actual image from "thumbnailer.thumbnailer2". It's unique for [post, sizex, sizey]. This allows you to generate thumbnails of different sizes for each post.
 
-#thumbnailer#
+**thumbnailer**
 
 You pass it an uploadedFile object and a size. It returns an uploadedFile object to use as your thumbnail and a rendertype.
 
-#multiuploader#
+**multiuploader**
 
 Multiuploader contains the uploader code.
 
