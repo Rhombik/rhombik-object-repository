@@ -1,23 +1,72 @@
-Django3Dtools
+Rhombik-object-repository
 =============
 
-Some 3D tools for making previews of 3D objects, or anything else that can be previewed in javascript, such as GCODE or regular images.
 
-Most of the actual code happens in "thumbnailer/". 
+This is all development information. The site isn't up to par yet, but you can see an example at [testing.rhombik.com](http://testing.rhombik.com)
 
-"thumbnailer.thumbnail" expects a
+rhombik-object-repository is an AGPL licensed object repository, competing in the same sphere as [thingiverse](http://thingiverse.com), [cubehero](http://cubehero.com), [youMagine](http://www.youmagine.com)
+, and [bld3r](http://bld3r.com).
 
- * filepath, relative to http://yoursite.tld/, but not containing the URL string
- * A size in pixels. It just tells the javascript it's running in a browser window of that size, and makes certain the screenshot isn't bigger.
+###What makes rhombik different?###
 
-It relies on phantomJS for taking the screenshots, a headless webkit renderer. It gives you an array containing
+Open source.
 
- * The path to your originol file.
- * The path to the thumbnail.
- * what to render with as a string. "image", "stl", "gcode", or anything else.
+If you're one of the independent 3D printer manufacturers like lulzbot, printrbot, or makers tool works; you need to send your users to your competitors website. It was somewhat tolerable before they threw "makerbot" branding all over the site. Now it's not.
 
-The actual rendering is done via "thumbnailer/templates/gallery.html". It will take an array containing the output of thumbnailer.thumbnail (pass it as "images") and turn it into the correct html depending on whether it's a 3D file or an image or whatever. Right now it has renderes using jsc3d and your browsers image parser (just sends the image).
+So where should they send your users? Most of the alternatives have the potential to go the same way as thingiverse. If you want a platform that isn't going to get baught out by your competitors, you need open source.
 
-There's also an attempt at a markdown extension in "shadowbox.py". It will look for [lists, of, images, in, brackets] or [/folders] and turn them into galleries using "thumbnailer.py".
+We're commited to federation. If rhombik ever goes down or gets baught, you can just take our source and launch a new repo. It will be easy for users to migrate their projects. Don't bet on another horse you don't have control of.
 
-The code base is pretty ugly as it stands
+###Developer information###
+
+Rhombik uses:
+
+ * Django web framework
+ * pymarkdown
+ * Haystack search
+ * Celery queueing
+ * selenium for generating thumbnails of javascript previewers
+ * ...A bunch more that aren't really important enough to list.
+
+Right now the code base is a bit of a mess. We're big believers in "release early, release often, hopefully get around to writing better test cases". If you're interested in devloping for this, shoot me an [email](mailto://traverse.da@gmail.com). I can help get you up to speed on the code base. Take a look at the bug list for an idea of what needs doing.
+
+---
+To set up a development enviroment simply
+
+    git clone https://github.com/Rhombik/rhombik-object-repository.git
+    cd rhombik-object-repository
+    pip install $(cat requirements.txt)
+    python manage.py syncdb
+    #follow the prompts to add a new superuser
+    python manage.py runserver
+
+Then navigate to http://localhost:8000
+
+---
+
+Neither of us are proffesional programmers. If you want to know how we did something, please drop us a line. The code is probably pretty shitty, but we're here to explain anything that doesn't make sense.
+
+We would love to restructure this at some point.
+
+#post#
+
+This app has all our default views. It also has the basic "post" model.
+
+#filemanager#
+
+This app contains the basic structure of our file systems. 
+
+It has a "fileobject" model. That model contains the actual uploaded file. Each fileobject gets attached to a post. It has fields for subfolders, and "rendertype" which tells the front end what to use to display a preview and what to use to create a thumbnail. The rendertype field is filled by "thumbnailer.thumbnailer2".
+
+It also has a "thumbobject" model. Each thumbobject is a png preview of a fileobject. It attaches to a fileobject. It gets the actual image from "thumbnailer.thumbnailer2". It's unique for [post, sizex, sizey]. This allows you to generate thumbnails of different sizes for each post.
+
+#thumbnailer#
+
+You pass it an uploadedFile object and a size. It returns an uploadedFile object to use as your thumbnail and a rendertype.
+
+#multiuploader#
+
+Multiuploader contains the uploader code.
+
+
+
