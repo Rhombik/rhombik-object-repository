@@ -20,7 +20,7 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf
 from django.core.context_processors import csrf
 
 from django.http import HttpResponseRedirect, HttpResponse
-from filemanager.models import fileobject,
+from filemanager.models import fileobject
 
 
 

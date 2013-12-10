@@ -100,13 +100,3 @@ class htmlobject(models.Model):
     allow_html = models.BooleanField(default=False)
     body_rendered = models.TextField('Entry body as HTML', blank=True, null=True)
 
-        if self.allow_html == False and self.body:
-            renderedtext = markdown.markdown(self.body, safe_mode=True)
-            self.body_rendered = thumbnailer.shadowbox.run(renderedtext, str(self.pk))
-            super(Post, self).save() # Call the "real" save() method.
-        elif self.body:
-            renderedtext = markdown.markdown(self.body)
-            self.body_rendered = thumbnailer.shadowbox.run(renderedtext, str(self.pk))
-            super(Post, self).save() # Call the "real" save() method.
-        else:
-            super(Post, self).save()
