@@ -13,7 +13,9 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 ### stuff for the celery task queue
 
-CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend',
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+BROKER_URL = 'django://'
+CELERY_ALWAYS_EAGER = True
 
 MANAGERS = ADMINS
 
@@ -160,8 +162,8 @@ INSTALLED_APPS = (
     'taggit_templatetags',
 
    ### celery stuff  ###
-#    'kombu.transport.django',
-#    'djcelery',
+    'kombu.transport.django',
+    'djcelery',
 #    'celerytask',
     #'djcelery.transport',
 
