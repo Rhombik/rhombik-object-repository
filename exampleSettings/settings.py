@@ -13,7 +13,7 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 ### stuff for the celery task queue
 
-BROKER_URL = 'django://'
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend',
 
 MANAGERS = ADMINS
 
