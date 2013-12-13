@@ -5,7 +5,6 @@
 {{ msg }}
 <style>
 </style>
-<div class="container_16 maincontent">
 
  <div class="grid_12">
   <div class="vislink">
@@ -19,22 +18,4 @@
   </div>
  </div>
 
- <div class="grid_4">
-  <div class="vislink">
-
-<form action="/login/" method="post">
-	{% if next %}
-	<input type="hidden" name="next" value="{{ next }}" />
-	{% endif %}
-	username:
-	<input type="text" name="username" value="{{ username }}" /><br />
-	password:
-	<input type="password" name="password" value="" /><br />
-
-	<input type="submit" value="Log In" />
-</form>
-
-  </div>
- </div>
-</div>
 {% endblock content %}

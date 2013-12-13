@@ -4,19 +4,7 @@
 
 {{ msg }}
 
-<div class="container_12 maincontent">
 
- <div class="grid_6">
-  <div class="vislink">
-
-<form enctype="multipart/form-data" action="/register/" method="post">{% csrf_token %}
-	{{ form.as_p }}
-        {{ email.as_p }}
-	<input type="submit" value="Register" />
-</form>
-
-  </div>
- </div>
 
  <div class="grid_6">
   <div class="vislink">
@@ -34,6 +22,5 @@
 </form>
 
   </div>
- </div>
 
 {% endblock content %}

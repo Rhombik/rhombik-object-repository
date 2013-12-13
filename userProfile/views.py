@@ -158,11 +158,9 @@ def register(request):
         else:
             return render_to_response('register.html', dict( user=request.user, form=form, email=email))
     
-    ## Initializes the page with the forms.
+    ## redirect to rlogin.
     else:
-        form = UserCreationForm()
-        email = UserEmail()
-        return render_to_response('register.html', dict( user=request.user, form=form, email=email))
+        return redirect("/rlogin/")
 
 
 
@@ -189,10 +187,25 @@ def login_user(request):
         else:
             state = "Your username and/or password were incorrect."
 
+    else:
+        return redirect("/rlogin/")
+
     from django.contrib.auth.forms import UserCreationForm
     form = UserCreationForm()
     email = UserEmail()
     return render_to_response('auth.html', {'form':form,'email':email, 'state':state, 'username': username})
+
+
+
+
+### Register/login page.
+@csrf_exempt ## <-- because alex is a terrible person
+def rlogin(request):
+
+    from django.contrib.auth.forms import UserCreationForm
+    form = UserCreationForm()
+    email = UserEmail()
+    return render_to_response('rlogin.html', dict( user=request.user, form=form, email=email))
 
 
 
