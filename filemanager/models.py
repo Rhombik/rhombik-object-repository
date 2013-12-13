@@ -74,6 +74,20 @@ class zippedobject(models.Model):
 
     post = models.ForeignKey('post.Post', unique=True)
     filename = models.FileField(upload_to="projects/", blank=True, null=True)
+    def save(self, generate=True, *args, **kwargs):
+        from filemanager.tasks import zippedTask
+        if generate==True:
+            if self.pk:
+                self.delete()
+            zippedTask.delay(self.post)
+            return
+        else:
+            super(zippedobject, self,).save()
+
+class zippedObjectProxy(zippedobject):
+
+    class Meta:
+        proxy = True
     def save(self, *args, **kwargs):
         s = BytesIO()
 
@@ -88,9 +102,7 @@ class zippedobject(models.Model):
         filedata = UploadedFile(s)
         filedata.name = self.post.title+".zip"
         self.filename = filedata
-        super(zippedobject, self).save(*args, **kwargs)
-
-
+        super(zippedObjectProxy, self,).save(generate=False, *args, **kwargs)
 
 import thumbnailer.shadowbox
 import markdown
