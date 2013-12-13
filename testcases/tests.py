@@ -36,6 +36,7 @@ class UserViewTest(TestCase):
     c = self.client
     c.post('/logout/', {})
     self.assertNotIn('_auth_user_id', c.session)
+
   def test_login(self):
     c = self.client
     c.post('/login/', {'username': self.user, 'password': self.passw,})
