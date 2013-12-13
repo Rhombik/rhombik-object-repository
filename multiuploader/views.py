@@ -50,7 +50,7 @@ def multiuploader_delete(request, pk):
         return HttpResponseBadRequest('Only POST accepted')
 
 @csrf_exempt
-def multiuploader(request,pk):
+def multiuploader(request, pk):
 
     post=Post.objects.filter(pk=pk)[0]
     """
