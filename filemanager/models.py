@@ -91,6 +91,7 @@ class zippedobject(models.Model):
         super(zippedobject, self).save(*args, **kwargs)
 
 
+
 import thumbnailer.shadowbox
 import markdown
 
