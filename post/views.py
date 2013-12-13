@@ -27,8 +27,6 @@ from filemanager.models import fileobject
 def thumbnail_get(post, fileobject, *args, **kwargs):
     
     if not post.thumbnail:
-        print("I cant find the thumbnail for " + str(post))
-        # so we just get a new thumbnail for their post. #
         Post.select_thumbnail(post)
     thumbnail = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 128, filey = 128)[0]
     return thumbnail
@@ -40,7 +38,7 @@ def post(request, pk):
     mainthumb = thumbobject.objects.get_or_create(fileobject=post.thumbnail, filex = 250, filey = 250)[0]
     images=[]
     for i in postfiles:
-        fullpath=i.pk
+        fullpath=i
         renderer=i.filetype
         thumbmodel=thumbobject.objects.get_or_create( fileobject = i, filex=64, filey=64 )[0] 
         thumbnail=thumbmodel.filename.url
@@ -48,7 +46,8 @@ def post(request, pk):
     download=zippedobject.objects.get_or_create(post=post)[0]
 
     c = RequestContext(request, dict(post=post, 
-				user=request.user,images=images, 
+				user=request.user,
+                                images=images, 
 				galleryname="base", 
 				mainthumb=mainthumb.filename.url,
                                 downloadurl=download.filename.url))
