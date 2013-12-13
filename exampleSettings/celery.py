@@ -18,7 +18,7 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 settings.DEBUG=False
 #print("Celery backend from exampleSettings.settings:  "+str(settings.CELERY_RESULT_BACKEND))
 
-@app.task(bind=True)
-def debug_task(self):
-    print('Request: {0!r}'.format(self.request))
+#@app.task(bind=True)
+#def debug_task(self):
+#    print('Request: {0!r}'.format(self.request))
 

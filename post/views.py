@@ -45,9 +45,8 @@ def post(request, pk):
         thumbmodel=thumbobject.objects.get_or_create( fileobject = i, filex=64, filey=64 )[0] 
         thumbnail=thumbmodel.filename.url
         images.append([thumbnail,fullpath,renderer])
-
     download=zippedobject.objects.get_or_create(post=post)[0]
-    print("^^ download url is "+str(download.filename.url))
+
     c = RequestContext(request, dict(post=post, 
 				user=request.user,images=images, 
 				galleryname="base", 
