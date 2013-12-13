@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.template import RequestContext, loader
 
 from post.models import Post
+from post.views import thumbnail_get
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -85,7 +86,7 @@ def index(request, pk):
     # userdata is the user data who's page we are viewing.
     userdata=User.objects.filter(pk = pk).get()
 
-    posts=Post.objects.filter(author=userdata).order_by("-created") #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!''' YAY!
+    posts=Post.objects.filter(author=userdata).order_by("-created") #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!''' YAY!  And now it gets no posts? wtf.. ok, so it is getting the list.. it is just not getting displayed...
 
     #  paginator is neat!
     # It takes the list of posts and breaks them up into different pages.
@@ -104,7 +105,18 @@ def index(request, pk):
 
     thumbpic, picfile, pictype = getPic(userdata, (256,256))
 
-    c = RequestContext(request, dict(thumbpic = thumbpic, picfile = picfile, pictype = pictype, user=request.user, owner=userdata, posts = posts))
+    listdata = []
+    for post in posts:
+        # if a post has no thumbnail. This happens when ignorant users delete thier pictures and navigate away without saving and seeing the form error. #
+########if not post.thumbnail:
+########    print("I cant find the thumbnail for " + str(post))
+########    # so we just get a new thumbnail for their post. #
+########    Post.select_thumbnail(post)
+        thumbnail = thumbnail_get(post=post, fileobject=post.thumbnail, filex = 128, filey = 128)
+        listdata += [[post, thumbnail]]
+
+
+    c = RequestContext(request, dict(thumbpic = thumbpic, picfile = picfile, pictype = pictype, user=request.user, owner=userdata, listdata = listdata))
     return render(request, "userProfile/index.html", c)
 
 
@@ -126,41 +138,43 @@ def register(request):
     
     from django.contrib.auth.forms import UserCreationForm
 
-    ## If loop true when user clicks the register button.
+    ## This if loop is true when user clicks the register button.
     if request.method == 'POST':
+
         #get data from the forms
         form = UserCreationForm(request.POST)
         email = UserEmail(request.POST)
+
+        ###Create the user if the for is valid
         if form.is_valid() and email.is_valid():
-            ###Create the user
+
             data = User();
             data.username = form.cleaned_data["username"]
+
             if email.cleaned_data["email"]:
                 data.email = email.cleaned_data["email"]
+
            #data.password = form.cleaned_data["password"]###this is NOT how you set a password! Passwords are hashed.
-            data.set_password(form.cleaned_data["password1"])
+            data.set_password(form.cleaned_data["password1"])# Yes. Good.
             data.save()
+
             ###Create user's profile
             profile = userProfile()
             profile.user = data
-         #  profile.bio = profileform.cleaned_data["bio"]
-         #  #Create users picture.
-         #  try:
-         #      profile.filename=request.FILES["filename"]
-         #  except: "null"
             profile.save()
-         #  if profile.filename=="stoopid":
-         #      return render_to_response('register.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
+
+
             user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
             login(request, user)
             return redirect("/editProfile/")
-        #returns form with error messages.
+
+        #returns register form with error messages.
         else:
             return render_to_response('register.html', dict( user=request.user, form=form, email=email))
     
-    ## redirect to rlogin.
+    ## redirect to legister.
     else:
-        return redirect("/rlogin/")
+        return redirect("/legister/")
 
 
 
@@ -168,44 +182,53 @@ def register(request):
 ### Login page.
 @csrf_exempt
 def login_user(request):
-    state = "Please log in below..."
+
+    state = "Please log in below..."##hmm... you can never see this message.
     username = password = ''
+
     if request.POST:
+
+        # get data from form
         usernamedata = request.POST.get('username')
         passworddata = request.POST.get('password')
+
+	# authenticate that user!
         user = authenticate(username=usernamedata, password=passworddata)
         if user is not None:
             if user.is_active:
                 login(request, user)
-                state = "You're success'd the log in!"
+                state = "You're success'd the log in!"# this message is also never seen...:(
                 ### right now logging in redirects you to home.
                 ### it would be nice to have it redirect to where a user was going.
                 ### like to the create page.
+                ### for example.
                 return redirect("/")
+
+            ## Right now accounts are active by default. So it is unlikely a user will ever encounter this.
             else:
-                state = "Your account is not active, please contact the site admin."
+                state = "Your account is not active, please contact the site admin. Also... I have no idea how that could have happened... so ... Good Job!"
+                return render_to_response('auth.html', {'state':state, 'username': usernamedata})
+
+        # if some data doesn't check out, let the user know they failed.
         else:
             state = "Your username and/or password were incorrect."
+            return render_to_response('auth.html', {'state':state, 'username': usernamedata})
 
+    # redirect to legister
     else:
-        return redirect("/rlogin/")
-
-    from django.contrib.auth.forms import UserCreationForm
-    form = UserCreationForm()
-    email = UserEmail()
-    return render_to_response('auth.html', {'form':form,'email':email, 'state':state, 'username': username})
+        return redirect("/legister/")
 
 
 
 
 ### Register/login page.
 @csrf_exempt ## <-- because alex is a terrible person
-def rlogin(request):
+def legister(request):
 
     from django.contrib.auth.forms import UserCreationForm
     form = UserCreationForm()
     email = UserEmail()
-    return render_to_response('rlogin.html', dict( user=request.user, form=form, email=email))
+    return render_to_response('legister.html', dict( user=request.user, form=form, email=email))
 
 
 

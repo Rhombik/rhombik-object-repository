@@ -1,13 +1,28 @@
+
 {% extends "includes.html" %}
 
 {% block content %}
 
 {{ msg }}
+<style>
+</style>
+<div class="container_16 maincontent">
 
-
- <div class="grid_6">
+ <div class="grid_12">
   <div class="vislink">
-{{ state }}
+
+<form enctype="multipart/form-data" action="/register/" method="post">{% csrf_token %}
+	{{ form.as_p }}
+        {{ email.as_p }}
+	<input type="submit" value="Register" />
+</form>
+
+  </div>
+ </div>
+
+ <div class="grid_4">
+  <div class="vislink">
+
 <form action="/login/" method="post">
 	{% if next %}
 	<input type="hidden" name="next" value="{{ next }}" />
@@ -21,5 +36,6 @@
 </form>
 
   </div>
-
+ </div>
+</div>
 {% endblock content %}

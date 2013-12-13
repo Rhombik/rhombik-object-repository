@@ -44,7 +44,7 @@ Then navigate to http://localhost:8000
 
 ---
 
-Neither of us are proffesional programmers. If you want to know how we did something, please drop us a line. The code is probably pretty shitty, but we're here to explain anything that doesn't make sense.
+Neither of us are proffesional programmers. If you want to know how we did something, please drop us a line. The code is probably pretty skitty, but we're here to explain anything that doesn't make sense.
 
 We would love to restructure this at some point.
 
