@@ -14,41 +14,43 @@ from userProfile.forms import *
 from django.contrib.auth.forms import PasswordChangeForm
 
 
-#this obviously doesn't work... But it's a good base to work from.
+
+
+
 ### This Is the view for the user edit page.
+#it obviously ~~doesn't~~ Works... ~~But it's a good base to work from.~~
 @csrf_exempt
 def edit(request):
     
+    # data is the users userdata.
     data = request.user
+
+    ## redirect to login if not logged in.
     try:
         profile = userProfile.objects.filter(user=data)[0]
     except:
         print("redirecting")
         return redirect("/register/")
-    ## If loop true when user clicks the register button.
+
+
+    ##  User submitting profile data.
     if request.method == 'POST':
+
         #get data from the forms
-        #form = PasswordChangeForm(data, request.POST)
         profileform = UserProfileForm(request.POST)
         pictureform = UserPictureForm(request.POST, request.FILES)
-        #form.cleaned_data["user"]=data
-        ## puts the users stuff in the database if its valid.
+
+        ## puts the users stuff in the database if it is valid.
         if profileform.is_valid() and pictureform.is_valid():
-            ###Create the user
-            #data.username = form.cleaned_data["username"]
-            #if form.cleaned_data["password"]:
-                #data.password = form.cleaned_data["password"]###this is NOT how you set a password! Passwords are hashed.
-            #    data.set_password(form.cleaned_data["password"])
-            #    data.save()
+
             ###Create user's profile
             profile.bio = profileform.cleaned_data["bio"]
-            #Create users picture.
 
+            #Create users picture.
             if pictureform.cleaned_data["filename"]:
                 from avatarBot.models import uploadPic
                 try:
                      upload = uploadPic.objects.filter( user = data )[0]
-                     print("#####avatar is "+str(upload.filename))
                      upload.delete()
                 except: "whatever"
                 upload = uploadPic.objects.create( user = data, filename = request.FILES["filename"] )
@@ -56,13 +58,13 @@ def edit(request):
                 profile.avatarType = "upload"
 
             profile.save()
-          # if profile.filename=="stoopid":
-          #     return render_to_response('editProfile.html', dict( user=request.user, msg="Your profile pic didn't work, unsupported or something. Don't worry though, you can use the cool default one I drew if you want. btw, don't click the submit button again."))
             return redirect("/userProfile/"+str(data.pk))
+
         #returns form with error messages.
         else:
             return render_to_response('editProfile.html', dict( user=request.user, form2=profileform, form3=pictureform))
-    
+
+
     ## Initializes the page with the forms.
     else:
         #form = PasswordChangeForm(data)
@@ -72,9 +74,6 @@ def edit(request):
 
 
 
-def logout_user(request):
-    logout(request)
-    return redirect("/register")
 
 
 def index(request, pk):
@@ -82,13 +81,16 @@ def index(request, pk):
     """bleh blebh bhel bleh, IM GOING INSANE.... I mean; user profile display stuff."""
     #I hate this vampire head ~alex
     """THE VAMPIRE HEAD FIXES ALL OF YOUR BROKEN CODE!!!, that is to say, as long as you never look at this code, it could be anything. We guarantee that whatever you imaging is better written then what actually is written."""
+
+    # userdata is the user data who's page we are viewing.
     userdata=User.objects.filter(pk = pk).get()
-    
-    posts=Post.objects.filter(author=userdata).order_by("-created") #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!'''
 
-    #posts = Post.objects.all().order_by("-created")
+    posts=Post.objects.filter(author=userdata).order_by("-created") #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!''' YAY!
+
+    #  paginator is neat!
+    # It takes the list of posts and breaks them up into different pages.
+    # Kinda obvious huh?
     paginator = Paginator(posts, 3*3)
-
 
     try: page = int(request.GET.get("page", '1'))
     except ValueError: page = 1
@@ -98,36 +100,33 @@ def index(request, pk):
     except (InvalidPage, EmptyPage):
         posts = paginator.page(paginator.num_pages)
 
-    #help(userposts)
-    '''the correct answer was "print(userdata.get_profile().profilePicPath)"   '''  # <-- I have no idea what this means.
-    print(userdata.profile.profilePicType)
-
     from avatarBot.avatarBot import getPic
-    thumbpic, picfile, pictype = getPic(userdata, (256,256))
 
-#####		This fine code checks if the user has a renderable profile pic, and maybe gets the default one.
-  # if userdata.profile.profilePicType != "norender":
-  #     from userProfile.models import userpicthumb
-  #     usrpic = userdata.profile.filename.url
-  #     thumbpic = userpicthumb.objects.get_or_create(fileobject = userdata.profile, filex = 128, filey = 128)[0]
-  #     renderer = userdata.profile.profilePicType
-  # else:
-  #     from filemanager.models import fileobject, thumbobject
-  #     usrpic = fileobject.objects.exclude(filetype = "norender")[0]
-  #     thumbpic =  thumbobject.objects.get_or_create(fileobject = usrpic, filex = 128, filey = 128)[0]
-  #     renderer = usrpic.filetype
-  #     usrpic = usrpic.filename.url
+    thumbpic, picfile, pictype = getPic(userdata, (256,256))
 
     c = RequestContext(request, dict(thumbpic = thumbpic, picfile = picfile, pictype = pictype, user=request.user, owner=userdata, posts = posts))
     return render(request, "userProfile/index.html", c)
+
+
+
+
+
+### simple logout view, redirects users to the login page.
+def logout_user(request):
+    logout(request)
+    return redirect("/register")
+
+
+
 
 
 ### This Is the view for the registration page.
 @csrf_exempt
 def register(request):
     
-    ## If loop true when user clicks the register button.
     from django.contrib.auth.forms import UserCreationForm
+
+    ## If loop true when user clicks the register button.
     if request.method == 'POST':
         #get data from the forms
         form = UserCreationForm(request.POST)
@@ -165,10 +164,8 @@ def register(request):
         email = UserEmail()
         return render_to_response('register.html', dict( user=request.user, form=form, email=email))
 
-### simple logout view, redirects users to the login page.
-def logout_user(request):
-    logout(request)
-    return redirect("/register")
+
+
 
 ### Login page.
 @csrf_exempt
@@ -196,3 +193,6 @@ def login_user(request):
     form = UserCreationForm()
     email = UserEmail()
     return render_to_response('auth.html', {'form':form,'email':email, 'state':state, 'username': username})
+
+
+
