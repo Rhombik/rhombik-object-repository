@@ -5,7 +5,7 @@
     
     {{ msg }}
 
-    <form enctype="multipart/form-data" action="/editProfile/" method="post">{% csrf_token %}
+    <form enctype="multipart/form-data" action="/editProfile/" method="POST">{% csrf_token %}
     {{ form2.as_p }}
     {{ form3.as_p }}
     <input type="submit" value="Submit" />

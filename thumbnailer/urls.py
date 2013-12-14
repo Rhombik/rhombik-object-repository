@@ -4,7 +4,7 @@ from django.conf import settings
 
 urlpatterns = patterns('',
 
-    (r'^post/(.*)/$', 'post.views.post'),
+    (r'^project/(.*)/$', 'project.views.project'),
 
     #preview pages for the STL files.
     (r'^thumbs/jsc3d/(.*)', 'thumbnailer.views.stlthumb'),

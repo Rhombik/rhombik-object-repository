@@ -15,9 +15,9 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
 @app.task()
-def zippedTask(post):
+def zippedTask(project):
    from filemanager.models import zippedObjectProxy
-   z = zippedObjectProxy(post=post)
+   z = zippedObjectProxy(project=project)
    z.save()
    return
 

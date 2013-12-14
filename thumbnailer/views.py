@@ -14,7 +14,7 @@ from django.shortcuts import get_object_or_404
 
 
 def imagedownload(request, title):
-    c = RequestContext(request, dict(post=Post.objects.filter(title=title)[0:1].get(), user=request.user, images=images))
+    c = RequestContext(request, dict(project=Project.objects.filter(title=title)[0:1].get(), user=request.user, images=images))
     return render(request, "gallery.html", c) 
 
 def stlthumb(request, path):

@@ -149,7 +149,7 @@ INSTALLED_APPS = (
     'haystack',
     'searchsettings',
     'thumbnailer',
-    'post',
+    'project',
     'multiuploader',
     'exampleTheme',
     'userProfile',

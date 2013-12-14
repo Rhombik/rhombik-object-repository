@@ -24,7 +24,7 @@ log = logging
 
 import os.path
 from multiuploader.forms import MultiuploaderImage
-from post.models import *
+from project.models import *
 from filemanager.models import fileobject, thumbobject
 
 
@@ -36,13 +36,13 @@ def multiuploader_delete(request, pk):
     https://github.com/blueimp/jQuery-File-Upload
     """
     image = get_object_or_404(fileobject, pk=pk)
-    post=Post.objects.filter(fileobject__pk=image.pk)[0]
-    if request.method == 'POST' and str(post.author) == str(request.user):
+    project=Project.objects.filter(fileobject__pk=image.pk)[0]
+    if request.method == 'POST' and str(project.author) == str(request.user):
         log.info('Called delete image. image id='+str(pk))
         image.delete()
         log.info('DONE. Deleted photo id='+str(pk))
         return HttpResponse(str(pk))
-    elif request.method == 'POST' and str(post.author) != str(request.user):
+    elif request.method == 'POST' and str(project.author) != str(request.user):
         log.info("user "+str(request.user)+" tried to delete object "+str(pk)+" which doesn't belong to them")
         return HttpResponse(status=403)
     else:
@@ -52,22 +52,22 @@ def multiuploader_delete(request, pk):
 @csrf_exempt
 def multiuploader(request, pk):
 
-    post=Post.objects.filter(pk=pk)[0]
+    project=Project.objects.filter(pk=pk)[0]
     """
     Main Multiuploader module.
     Parses data from jQuery plugin and makes database changes.
     """
-    if request.method == 'POST' and str(post.author) == str(request.user):
+    if request.method == 'POST' and str(project.author) == str(request.user):
         log.info('received POST to main multiuploader view')
         if request.FILES == None:
             return HttpResponseBadRequest('Must have files attached!')
 
         #getting file data for farther manipulations
-        postfiles = fileobject()
-        postfiles.post = post
-        postfiles.filename = request.FILES[u'files[]']
-        postfiles.save()
-        log.info ('Got file: "%s"' % str(postfiles.filename.name))
+        projectfiles = fileobject()
+        projectfiles.project = project
+        projectfiles.filename = request.FILES[u'files[]']
+        projectfiles.save()
+        log.info ('Got file: "%s"' % str(projectfiles.filename.name))
 
 
         #settings imports
@@ -75,18 +75,18 @@ def multiuploader(request, pk):
             file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         except AttributeError:
             file_delete_url = 'multi_delete/'
-        thumbnail = thumbobject.objects.get_or_create( fileobject = postfiles, filex=64, filey=64 )[0]
+        thumbnail = thumbobject.objects.get_or_create( fileobject = projectfiles, filex=64, filey=64 )[0]
         result = []
 
         if thumbnail.filename != "False":
             thumburl=thumbnail.filename.url
         else:
             thumburl=""
-        result.append({"name":postfiles.subfolder+os.path.split(str(postfiles.filename.name))[1], 
-                       "size":postfiles.filename.size, 
-                       "url":str(postfiles.filename.url),
+        result.append({"name":projectfiles.subfolder+os.path.split(str(projectfiles.filename.name))[1], 
+                       "size":projectfiles.filename.size, 
+                       "url":str(projectfiles.filename.url),
                        "thumbnail_url":thumburl,
-                       "delete_url":"/multi_delete/"+str(postfiles.pk)+"/", 
+                       "delete_url":"/multi_delete/"+str(projectfiles.pk)+"/", 
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
         
@@ -98,11 +98,11 @@ def multiuploader(request, pk):
             mimetype = 'text/plain'
         return HttpResponse(response_data, mimetype=mimetype)
     else: #GET
-        postfiles = fileobject.objects.filter(post=post)
+        projectfiles = fileobject.objects.filter(project=project)
   
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []
-        for image in postfiles:
+        for image in projectfiles:
             thumbnail =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0]
 
             if thumbnail.filename != "False":
