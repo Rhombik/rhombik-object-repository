@@ -20,11 +20,11 @@
             <div class="container_12">
             {% for result in page.object_list %}
             <div class="grid_3">
-<div class=""><h2><a href="/post/{{ post.title }}"><img src="{{ post.thumbnailpath }}" class="bigthumb"></a></h2></div>
+<div class=""><h2><a href="/project/{{ project.title }}"><img src="{{ project.thumbnailpath }}" class="bigthumb"></a></h2></div>
             </div>
                 <p>
             <div class="grid_9">
-                    <a href="/post/{{ result.object.title }}">{{ result.object.title }}</a>
+                    <a href="/project/{{ result.object.title }}">{{ result.object.title }}</a>
                     {{ result.object.body_rendered|safe|truncatewords_html:20 }}
             </div>
 

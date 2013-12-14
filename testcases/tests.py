@@ -28,17 +28,17 @@ class UserViewTest(TestCase):
 
   def test_register(self):
     c = self.client
-    c.post('/register/', {'username': self.user, 'password1': self.passw, 'password2': self.passw,})
+    c.project('/register/', {'username': self.user, 'password1': self.passw, 'password2': self.passw,})
     self.assertIn('_auth_user_id', c.session)
     self.assertEqual(self.User.objects.all()[0].username,self.user)
 
   def test_logout(self):
     c = self.client
-    c.post('/logout/', {})
+    c.project('/logout/', {})
     self.assertNotIn('_auth_user_id', c.session)
 
   def test_login(self):
     c = self.client
-    c.post('/login/', {'username': self.user, 'password': self.passw,})
+    c.project('/login/', {'username': self.user, 'password': self.passw,})
     self.assertIn('_auth_user_id', c.session)
 

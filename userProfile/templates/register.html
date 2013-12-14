@@ -9,7 +9,7 @@
  <div class="grid_12">
   <div class="vislink">
 
-<form enctype="multipart/form-data" action="/register/" method="post">{% csrf_token %}
+<form enctype="multipart/form-data" action="/register/" method="POST">{% csrf_token %}
 	{{ form.as_p }}
         {{ email.as_p }}
 	<input type="submit" value="Register" />

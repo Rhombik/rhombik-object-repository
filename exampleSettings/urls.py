@@ -10,8 +10,8 @@ from exampleTheme.views import AboutView
 
 urlpatterns = patterns('',
 
-    url(r'^$', 'post.views.list', name='home'),
-    (r'^project/(.*)/$', 'post.views.post'),
+    url(r'^$', 'project.views.list', name='home'),
+    (r'^project/(.*)/$', 'project.views.project'),
 
     # Examples:
     # url(r'^$', 'exampleSettings.views.home', name='home'),
@@ -22,11 +22,11 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    (r'^edit/(.*)/$', 'post.views.edit'),
-    (r'^create/$', 'post.views.create'),
+    (r'^edit/(.*)/$', 'project.views.edit'),
+    (r'^create/$', 'project.views.create'),
 
-    (r'^tag/(.*)/$', 'post.views.tag'),
-    (r'^tagcloud/$', 'post.views.tagcloud' ),
+    (r'^tag/(.*)/$', 'project.views.tag'),
+    (r'^tagcloud/$', 'project.views.tagcloud' ),
 
     (r'^about/', AboutView.as_view()),
 

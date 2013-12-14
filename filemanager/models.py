@@ -14,10 +14,10 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 class fileobject(models.Model):
 
     def uploadpath(instance, filename):
-        return ("uploads/"+str(instance.post.id)+instance.subfolder+filename)
+        return ("uploads/"+str(instance.project.id)+instance.subfolder+filename)
 
 
-    post = models.ForeignKey('post.Post')
+    project = models.ForeignKey('project.Project')
     subfolder = models.CharField(max_length=256, default="/")
     filename = models.FileField(upload_to=uploadpath)
     filetype = models.CharField(max_length=16, blank=True, null=True)
@@ -86,14 +86,14 @@ from io import BytesIO
 
 class zippedobject(models.Model):
 
-    post = models.ForeignKey('post.Post', unique=True)
+    project = models.ForeignKey('project.Project', unique=True)
     filename = models.FileField(upload_to="projects/", blank=True, null=True)
     def save(self, generate=True, *args, **kwargs):
         from filemanager.tasks import zippedTask
         if generate==True:
             if self.pk:
                 self.delete()
-            zippedTask.delay(self.post)
+            zippedTask.delay(self.project)
             return
         else:
             super(zippedobject, self,).save()
@@ -106,15 +106,15 @@ class zippedObjectProxy(zippedobject):
         s = BytesIO()
 
         data = zipfile.ZipFile(s,'a')
-        postfiles = fileobject.objects.filter(post=self.post)
-        for filedata in postfiles:
+        projectfiles = fileobject.objects.filter(project=self.project)
+        for filedata in projectfiles:
             filed = filedata.filename.read()
-            pathAndName = str(self.post.title)+filedata.subfolder+os.path.split(str(filedata.filename))[1] #### this is where subfolders will be added to inside the zip file.
+            pathAndName = str(self.project.title)+filedata.subfolder+os.path.split(str(filedata.filename))[1] #### this is where subfolders will be added to inside the zip file.
             data.writestr(pathAndName, filed)
         data.close()
         s.seek(0)
         filedata = UploadedFile(s)
-        filedata.name = self.post.title+".zip"
+        filedata.name = self.project.title+".zip"
         self.filename = filedata
         super(zippedObjectProxy, self,).save(generate=False, *args, **kwargs)
 

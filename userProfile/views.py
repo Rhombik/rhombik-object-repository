@@ -4,8 +4,8 @@ from django.shortcuts import render_to_response, render, redirect
 from django.contrib.auth.models import User
 from django.template import RequestContext, loader
 
-from post.models import Post
-from post.views import thumbnail_get
+from project.models import Project
+from project.views import thumbnail_get
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -86,34 +86,34 @@ def index(request, pk):
     # userdata is the user data who's page we are viewing.
     userdata=User.objects.filter(pk = pk).get()
 
-    posts=Post.objects.filter(author=userdata).order_by("-created") #'''~this needs to get the users posts.... not just you know, all the posts.... and now it does!''' YAY!  And now it gets no posts? wtf.. ok, so it is getting the list.. it is just not getting displayed...
+    projects=Project.objects.filter(author=userdata).order_by("-created") #'''~this needs to get the users projects.... not just you know, all the projects.... and now it does!''' YAY!  And now it gets no projects? wtf.. ok, so it is getting the list.. it is just not getting displayed...
 
     #  paginator is neat!
-    # It takes the list of posts and breaks them up into different pages.
+    # It takes the list of projects and breaks them up into different pages.
     # Kinda obvious huh?
-    paginator = Paginator(posts, 3*3)
+    paginator = Paginator(projects, 3*3)
 
     try: page = int(request.GET.get("page", '1'))
     except ValueError: page = 1
 
     try:
-        posts = paginator.page(page)
+        projects = paginator.page(page)
     except (InvalidPage, EmptyPage):
-        posts = paginator.page(paginator.num_pages)
+        projects = paginator.page(paginator.num_pages)
 
     from avatarBot.avatarBot import getPic
 
     thumbpic, picfile, pictype = getPic(userdata, (256,256))
 
     listdata = []
-    for post in posts:
-        # if a post has no thumbnail. This happens when ignorant users delete thier pictures and navigate away without saving and seeing the form error. #
-########if not post.thumbnail:
-########    print("I cant find the thumbnail for " + str(post))
-########    # so we just get a new thumbnail for their post. #
-########    Post.select_thumbnail(post)
-        thumbnail = thumbnail_get(post=post, fileobject=post.thumbnail, filex = 128, filey = 128)
-        listdata += [[post, thumbnail]]
+    for project in projects:
+        # if a project has no thumbnail. This happens when ignorant users delete thier pictures and navigate away without saving and seeing the form error. #
+########if not project.thumbnail:
+########    print("I cant find the thumbnail for " + str(project))
+########    # so we just get a new thumbnail for their project. #
+########    Project.select_thumbnail(project)
+        thumbnail = thumbnail_get(project=project, fileobject=project.thumbnail, filex = 128, filey = 128)
+        listdata += [[project, thumbnail]]
 
 
     c = RequestContext(request, dict(thumbpic = thumbpic, picfile = picfile, pictype = pictype, user=request.user, owner=userdata, listdata = listdata))

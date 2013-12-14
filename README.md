@@ -48,17 +48,17 @@ Neither of us are proffesional programmers. If you want to know how we did somet
 
 We would love to restructure this at some point.
 
-**post**
+**project**
 
-This app has all our default views. It also has the basic "post" model.
+This app has all our default views. It also has the basic "project" model.
 
 **filemanager**
 
 This app contains the basic structure of our file systems. 
 
-It has a "fileobject" model. That model contains the actual uploaded file. Each fileobject gets attached to a post. It has fields for subfolders, and "rendertype" which tells the front end what to use to display a preview and what to use to create a thumbnail. The rendertype field is filled by "thumbnailer.thumbnailer2".
+It has a "fileobject" model. That model contains the actual uploaded file. Each fileobject gets attached to a project. It has fields for subfolders, and "rendertype" which tells the front end what to use to display a preview and what to use to create a thumbnail. The rendertype field is filled by "thumbnailer.thumbnailer2".
 
-It also has a "thumbobject" model. Each thumbobject is a png preview of a fileobject. It attaches to a fileobject. It gets the actual image from "thumbnailer.thumbnailer2". It's unique for [post, sizex, sizey]. This allows you to generate thumbnails of different sizes for each post.
+It also has a "thumbobject" model. Each thumbobject is a png preview of a fileobject. It attaches to a fileobject. It gets the actual image from "thumbnailer.thumbnailer2". It's unique for [project, sizex, sizey]. This allows you to generate thumbnails of different sizes for each project.
 
 **thumbnailer**
 
