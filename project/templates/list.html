@@ -1,0 +1,33 @@
+
+ 
+<div class="container_12 maincontent">
+ <!-- Projects-->
+
+ {% for project, thumb in listdata %}
+ <div class="grid_4">
+  <div class="vislink">
+   <div class=""><h2><a href="/project/{{ project.id }}"><img src="{{ thumb.filename.url }}" class="bigthumb"></a></h2></div>
+   <div class="title"><h2><a href="/project/{{ project.id }}" class="title">{{ project.title }}</a></h2></div>
+  </div>
+ </div>
+ {% cycle '' '' '<div class="clear"></div>' %}
+ {% endfor %}
+ <!-- Next/Prev page links-->
+ {% if listdata.object_list and listdata.paginator.num_pages > 1 %}
+ <div class="pagination">
+  <span class="step-links">
+   {% if listdata.has_previous %}
+   <a href= "?page={{ listdata.previous_page_number }}">newer entries &lt;&lt; </a>
+   {% endif %}
+   <span class="current">
+   &nbsp;Page {{ listdata.number }} of {{ listdata.paginator.num_pages }}
+   </span>
+
+   {% if listdata.has_next %}
+   <a href="?page={{ listdata.next_page_number }}"> &gt;&gt; older entries</a>
+   {% endif %}
+  </span>
+ </div>
+ {% endif %}
+
+</div>

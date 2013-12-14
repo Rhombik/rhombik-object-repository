@@ -1,0 +1,41 @@
+{% extends "includes.html" %}
+
+{% block contenttop %}
+                        <div class="grid_16 showcase_content"> 
+                        	<div class="grid_16"><h2>{{ project.title }}</h2></div>
+                            <div class="main_thumbnail grid_4 alpha">
+                                <img src="{{mainthumb}}">
+                            </div>
+                            <div class="gallery_thumbnails grid_12 omega">
+                                {% include "gallery.html" %}
+                            </div>
+                            <div class="showcase_links grid_16">
+                                <a href="/download/{{ project.pk }}" class="iframe">Download File</a>
+                                <a href="{{ downloadurl }}">Download All</a>
+                            </div>
+                            <div class="clear clearfix"></div>
+                        </div>
+						<div class="clear clearfix"></div>
+{% endblock contenttop %}
+
+
+{% block content %}
+
+{% load gallerfy %}
+
+					<!-- Projects-->
+					<span>
+					<div class="title"><h1>{{ project.title }}</h1></div>
+					{% if user == project.author %}
+					<div class="editbutton" align="right"> <a href="/edit/{{ project.pk }}">Edit</a></div>
+					{% endif %}
+					</span>
+					<div class="time">{{ project.created }}</div>
+					<div class="author"><a href="/userProfile/{{ project.author.pk }}">{{ project.author }}</a></div>
+					<div class="body">{{ project.body_rendered|gallerfy|safe }}</div>
+					<div class="tags">
+					{% for tag in project.tags.all %} 
+					<span class="tagrank=({{tag.num_times}})"> <a href="/tag/{{tag}}">{{tag}}</a></span>
+					{% endfor %} 
+					</div>
+{% endblock content %}
