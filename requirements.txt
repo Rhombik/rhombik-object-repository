@@ -1,2 +1,2 @@
 markdown django-simple-captcha django-taggit django-taggit-templatetags django-taggit-autosuggest django-easy-maps django-haystack pyelasticsearch requests Selenium beautifulsoup4 South django-cumulus
-django-updown
+django-updown celery

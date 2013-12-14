@@ -22,4 +22,11 @@ def zippedTask(post):
    return
 
 
+@app.task()
+def thumbTask(self):
+   from filemanager.models import thumbObjectProxy
+   z = thumbObjectProxy(fileobject=self.fileobject, filex=self.filex, filey=self.filey)
+   print(self)
+   z.save()
+   return
 

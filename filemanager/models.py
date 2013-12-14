@@ -56,15 +56,29 @@ class thumbobject(models.Model):
     class Meta:
         unique_together = ('filex', 'filey', "fileobject")
 
-    def save(self, *args, **kwargs):
-        tmpfile, self.filetype = thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
-        self.filename = tmpfile
-        super(thumbobject, self).save(*args, **kwargs)
+    def save(self, generate=True, *args, **kwargs):
+        from filemanager.tasks import thumbTask
+        if generate==True:
+            if self.pk:
+                self.delete()
+            thumbTask.delay(self)
+            return
+        else:
+            super(thumbobject, self,).save()
 
     def delete(self, *args, **kwargs):
         super(thumbobject, self).delete(*args, **kwargs)
         default_storage.delete(self.filename)
 
+class thumbObjectProxy(thumbobject):
+
+    class Meta:
+        proxy = True
+    def save(self, *args, **kwargs):
+        self=self
+        tmpfile, self.filetype = thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
+        self.filename = tmpfile
+        super(thumbObjectProxy, self,).save(generate=False, *args, **kwargs)
 
 
 from django.core.files.uploadedfile import UploadedFile
