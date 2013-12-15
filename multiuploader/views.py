@@ -78,10 +78,12 @@ def multiuploader(request, pk):
         thumbnail = thumbObjectProxy.objects.get_or_create( fileobject = projectfiles, filex=64, filey=64 )[0]
         result = []
         ##It waits for the thumbnail to generate before sending the json, which should work.
-        if thumbnail.filename != "False":
+        thumburl=""
+        try:
             thumburl=thumbnail.filename.url
-        else:
-            thumburl=""
+        except:
+            pass
+
         result.append({"name":projectfiles.subfolder+os.path.split(str(projectfiles.filename.name))[1], 
                        "size":projectfiles.filename.size, 
                        "url":str(projectfiles.filename.url),
