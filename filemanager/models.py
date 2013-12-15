@@ -20,7 +20,7 @@ class fileobject(models.Model):
     project = models.ForeignKey('project.Project')
     subfolder = models.CharField(max_length=256, default="/")
     filename = models.FileField(upload_to=uploadpath)
-    filetype = models.CharField(max_length=16, blank=True, null=True)
+    filetype = models.CharField(max_length=16, blank=True, null=True, default="norender")
 
 
     def __unicode__(self):
