@@ -30,10 +30,10 @@ class fileobject(models.Model):
     def save(self):
         super(fileobject, self).save()
 
-        thumbnaildata = thumbobject.objects.get_or_create(fileobject = self, filex = 64, filey = 64)[0]
+#        thumbnaildata = thumbobject.objects.get_or_create(fileobject = self, filex = 64, filey = 64)[0]
         
-        self.filetype = thumbnaildata.filetype
-
+#        self.filetype = thumbnaildata.filetype
+        self.filetype = thumbnailer2.thumbnailify(self, (0,0))[1]
         super(fileobject, self).save()
 
     def delete(self, *args, **kwargs):
@@ -62,6 +62,8 @@ class thumbobject(models.Model):
             if self.pk:
                 self.delete()
             thumbTask.delay(self)
+            self.filetype="norender"
+            self.filename=UploadedFile("null")
             return
         else:
             super(thumbobject, self,).save()

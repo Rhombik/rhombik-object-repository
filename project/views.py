@@ -67,7 +67,7 @@ def project(request, pk):
     for i in projectfiles:
         fullpath=i
         renderer=i.filetype
-        thumbmodel=thumbobject.objects.get_or_create( fileobject = i, filex=64, filey=64 )[0] 
+        thumbmodel=thumbobject.objects.get_or_create(fileobject = i, filex=64, filey=64 )[0] 
         thumbnail=thumbmodel.filename.url
         images.append([thumbnail,fullpath,renderer])
     download=zippedobject.objects.get_or_create(project=project)[0]
