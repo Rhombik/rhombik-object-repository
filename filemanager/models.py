@@ -9,6 +9,10 @@ import os.path
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
+class fakefile():
+    def url():
+        return("null")
+
 # Create your models here.
 
 class fileobject(models.Model):
@@ -30,9 +34,6 @@ class fileobject(models.Model):
     def save(self):
         super(fileobject, self).save()
 
-#        thumbnaildata = thumbobject.objects.get_or_create(fileobject = self, filex = 64, filey = 64)[0]
-        
-#        self.filetype = thumbnaildata.filetype
         self.filetype = thumbnailer2.thumbnailify(self, (0,0))[1]
         super(fileobject, self).save()
 
@@ -63,7 +64,7 @@ class thumbobject(models.Model):
                 self.delete()
             thumbTask.delay(self)
             self.filetype="norender"
-            self.filename=UploadedFile("null")
+            self.filename=fakefile()
             return
         else:
             super(thumbobject, self,).save()
@@ -96,6 +97,7 @@ class zippedobject(models.Model):
             if self.pk:
                 self.delete()
             zippedTask.delay(self.project)
+            self.filename=fakefile()
             return
         else:
             super(zippedobject, self,).save()
