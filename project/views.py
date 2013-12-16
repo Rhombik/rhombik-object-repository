@@ -10,7 +10,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 import thumbnailer.thumbnailer as thumbnailer 
 
 
-from filemanager.models import fileobject, thumbobject, zippedobject
+from filemanager.models import fileobject, thumbobject, htmlobject, zippedobject
 
 from project.models import Project
 from project.forms import ProjectForm, createForm, defaulttag
@@ -63,18 +63,32 @@ def project(request, pk):
     project = Project.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
     projectfiles = fileobject.objects.filter(project=project)
     mainthumb = thumbobject.objects.get_or_create(fileobject=project.thumbnail, filex = 250, filey = 250)[0]
+
     images=[]
+    texts = []
+    norenders =0
+
     for i in projectfiles:
         fullpath=i
         renderer=i.filetype
-        thumbmodel=thumbobject.objects.get_or_create(fileobject = i, filex=64, filey=64 )[0] 
-        thumbnail=thumbmodel.filename.url
-        images.append([thumbnail,fullpath,renderer])
+
+        if (renderer == "browser"):
+            thumbmodel=thumbobject.objects.get_or_create(fileobject = i, filex=64, filey=64 )[0] 
+            thumbnail=thumbmodel.filename.url
+            images.append([thumbnail,fullpath,renderer])
+        elif (renderer == "norender"):
+            norenders +=1
+        if (renderer == "text"):
+            htmlmodel=htmlobject.objects.get_or_create(fileobject = i )[0] 
+            texts.append([htmlmodel, path.split(str(i.filename))[1]])
+            
+
     download=zippedobject.objects.get_or_create(project=project)[0]
 
     c = RequestContext(request, dict(project=project, 
 				user=request.user,
                                 images=images, 
+				texts=texts,
 				galleryname="base", 
 				mainthumb=mainthumb.filename.url,
                                 downloadurl=download.filename.url))
