@@ -10,7 +10,7 @@ from django.conf import settings
 ###        This function validates the form for submitting projects. Excluding the title, thats only done in the createForm.
 def cleanify(self, formName):
 
-    print("form says pk is "+str(self.project.pk))
+    print("project.form says pk is "+str(self.project.pk))
     cleaned_data = super(formName, self).clean()
 
    ###	make certain the selected thumbnail is valid	##
@@ -18,24 +18,26 @@ def cleanify(self, formName):
         thumb = cleaned_data["thumbnail"]
     except:
         thumb = ""
+
     files=fileobject.objects.filter(project=self.project)###	This gets a list of files from the project
 
     if thumb:
         noThumb = True
         for fl in files:
-            if "uploads/"+str(self.project.pk)+thumb == str(fl.filename) and fl.filetype != "norender":
+            if "uploads/"+str(self.project.pk)+thumb == str(fl.filename) and fl.filetype != "norender" and fl.filetype != "text":
                 noThumb = False
                 self.project.thumbnail = fl
-                print(fl)
+                print("project.form settng "+self.project+"'s thumbnail to "+fl)
                 break
         if noThumb:
             self._errors['thumbnail'] = [u"The thumbnail you selected is not a valid uploaded image."]
     else:
         noThumb = True
         for fl in files:
-            if fl.filetype != 'norender':### Look for thumbnailable pic.
+            if fl.filetype != 'norender' and fl.filetype != "text":### Look for thumbnailable pic.
                 noThumb = False
                 self.project.thumbnail = fl
+                print("project.form settng "+self.project+"'s thumbnail to "+fl)
                 break
         if noThumb:
             self._errors['thumbnail'] = [u"None of your uploaded file makes a thumbnail!"]##	and an error if they all are.

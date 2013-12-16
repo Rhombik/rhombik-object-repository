@@ -11,16 +11,15 @@ class Project(models.Model):
 
     def select_thumbnail(project):
     
-        print(project)
        #project=Project.objects.filter(title=title)
         files=fileobject.objects.filter(project=project)###  This gets a list of files from the project
         noThumb = True
         for fl in files:
-            if fl.filetype != 'norender' and fl.type != 'text' and fl.filename != project.thumbnail:### Look for thumbnailable pic.
+            if fl.filetype != 'norender' and fl.filetype != "text" and fl.filename != project.thumbnail:### Look for thumbnailable pic.
                 noThumb = False
                 project.thumbnail = fl
                 project.save()
-                print("I set " + str(project) + "'s thumbnail to " + str(fl)) 
+                print("project.models set " + str(project.name) + "'s thumbnail to " + str(fl)) 
                #self.thumbnail = fl
                #break
         if noThumb:
