@@ -29,6 +29,7 @@ def thumbnailify(filebit, sizebit):
 
   browser_kind = [  ".png",".jpg",".gif" ]
   jsc3d_kind = [  ".stl",".obj" ]
+  text_kind = [".md",".txt"]
 # text_kind = [ ".txt" ]
   ##ext os the file extension, forced into lowercase becouse people are insane.
   ext = str(splitext(str(filebit.filename))[1].lower())
@@ -74,6 +75,9 @@ def thumbnailify(filebit, sizebit):
 #    thumb_file = False
 
     return(thumb_file, "jsc3d")
+
+  if ext in text_kind:
+    return(False, "text")
 
 # if ext in text_kind:
 #   print("filebit.filename"+str(filebit.filename.name))

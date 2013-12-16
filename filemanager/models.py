@@ -80,6 +80,9 @@ class thumbObjectProxy(thumbobject):
     def save(self, *args, **kwargs):
         self=self
         tmpfile, self.filetype = thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
+        #Bleh, this is awful. Means we won't have to refactor a bunch of other stuff, but implies some deeper architecture issues.
+        if self.filetype=="text":
+            self.filetype="norender"
         self.filename = tmpfile
         super(thumbObjectProxy, self,).save(generate=False, *args, **kwargs)
 
@@ -128,6 +131,9 @@ import markdown
 class htmlobject(models.Model):
     #A pointer to the file this is a thumbnail of.
     fileobject = models.ForeignKey(fileobject, unique=True)
-    allow_html = models.BooleanField(default=False)
     body_rendered = models.TextField('Entry body as HTML', blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.body_rendered = markdown.markdown(self.fileobject.filename.read(), safe_mode=True)
+        super(htmlobject, self).save(*args, **kwargs)
 

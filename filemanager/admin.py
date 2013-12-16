@@ -18,3 +18,9 @@ class thumbobjectAdmin(admin.ModelAdmin):
 
 admin.site.register(thumbobject,thumbobjectAdmin)
 
+
+class htmlobjectAdmin(admin.ModelAdmin):
+    search_fields = ["fileobject"]
+
+admin.site.register(htmlobject,htmlobjectAdmin)
+
