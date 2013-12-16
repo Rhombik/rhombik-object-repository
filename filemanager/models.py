@@ -34,7 +34,7 @@ class fileobject(models.Model):
     def save(self):
         super(fileobject, self).save()
 
-        self.filetype = thumbnailer2.thumbnailify(self, (0,0))[1]
+        self.filetype = thumbnailer2.thumbnailify(self, (1,1))[1]
         super(fileobject, self).save()
 
     def delete(self, *args, **kwargs):
