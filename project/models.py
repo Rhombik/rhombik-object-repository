@@ -16,7 +16,7 @@ class Project(models.Model):
         files=fileobject.objects.filter(project=project)###  This gets a list of files from the project
         noThumb = True
         for fl in files:
-            if fl.filetype != 'norender' and fl.filename != project.thumbnail:### Look for thumbnailable pic.
+            if fl.filetype != 'norender' and fl.type != 'text' and fl.filename != project.thumbnail:### Look for thumbnailable pic.
                 noThumb = False
                 project.thumbnail = fl
                 project.save()
