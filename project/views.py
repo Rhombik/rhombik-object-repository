@@ -17,6 +17,7 @@ from project.forms import ProjectForm, createForm, defaulttag
 from django import forms
 
 
+
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 ##obviously ignoring csrf is a bad thing. Get this fixedo.
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
@@ -186,7 +187,29 @@ def create(request):
             #save thr form
             project.author = request.user
             project.title = form.cleaned_data["title"]
-            project.body = form.cleaned_data["body"]
+
+
+           # Save body as file
+            bodyText = fileobject();
+            bodyText.project = project
+
+
+            from django.core.files.uploadedfile import UploadedFile
+            import base64
+            from io import BytesIO
+            from io import TextIOWrapper
+            from io import StringIO
+
+           #io = TextIOWrapper(TextIOBase(form.cleaned_data["body"]))
+            io = StringIO(form.cleaned_data["body"])
+            txfl = UploadedFile(io)
+
+            bodyText.filename.save('ReadMe.md', txfl)
+
+            txfl.close()
+
+            bodyText.save()
+
             project.author = request.user
            #project.thumbnail = form.cleaned_data["thumbnail"]
             project.draft=False

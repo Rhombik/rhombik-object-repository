@@ -77,7 +77,7 @@ class createForm(ModelForm):
 
     class Meta:
         model = Project
-        fields = ["title", "body", "tags",]
+        fields = ["title", "tags",]
 
     def clean_title(self):
        data=self.cleaned_data["title"]
@@ -85,6 +85,7 @@ class createForm(ModelForm):
            raise forms.ValidationError("There is no title! You gotta have a title.") 
        return data
 
+    body = forms.CharField(widget = forms.Textarea, required=True)
     thumbnail = forms.CharField(required=False)
 
     def clean(self):
