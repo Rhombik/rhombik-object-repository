@@ -53,6 +53,9 @@ class thumbobject(models.Model):
     #the size of the file.
     filex = models.PositiveSmallIntegerField()
     filey = models.PositiveSmallIntegerField()
+
+    def __unicode__(self):
+        return str(self.filename)
     
     class Meta:
         unique_together = ('filex', 'filey', "fileobject")
@@ -92,6 +95,9 @@ from io import BytesIO
 
 class zippedobject(models.Model):
 
+    def __unicode__(self):
+        return str(self.project.title)
+
     project = models.ForeignKey('project.Project', unique=True)
     filename = models.FileField(upload_to="projects/", blank=True, null=True)
     def save(self, generate=True, *args, **kwargs):
@@ -129,6 +135,9 @@ import thumbnailer.shadowbox
 import markdown
 
 class htmlobject(models.Model):
+
+    def __unicode__(self):
+        return str(self.fileobject.filename)
     #A pointer to the file this is a thumbnail of.
     fileobject = models.ForeignKey(fileobject, unique=True)
     body_rendered = models.TextField('Entry body as HTML', blank=True, null=True)
