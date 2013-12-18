@@ -27,7 +27,6 @@ def cleanify(self, formName):
             if "uploads/"+str(self.project.pk)+thumb == str(fl.filename) and fl.filetype != "norender" and fl.filetype != "text":
                 noThumb = False
                 self.project.thumbnail = fl
-                print("project.form settng "+cleaned_data["title"]+"'s thumbnail to "+str(fl.filename))
                 break
         if noThumb:
             self._errors['thumbnail'] = [u"The thumbnail you selected is not a valid uploaded image."]
