@@ -65,8 +65,12 @@ def project(request, pk):
     projectfiles = fileobject.objects.filter(project=project)
     mainthumb = thumbobject.objects.get_or_create(fileobject=project.thumbnail, filex = 250, filey = 250)[0]
 
-    images=[]
-    texts = []
+    images=[]# Images in the project; will be handed to template
+   # Get readme as first item in the list of texts to hand to the template.
+    readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/ReadMe.md" )
+    htmlreadme=htmlobject.objects.get_or_create(fileobject = readme )[0] 
+    texts = [[htmlreadme, path.split(str(readme.filename))[1]]]
+   # norenders. this is the number of files in the project not rendered. We currently do nothing.. unless someone changed that and not this note.
     norenders =0
 
     for i in projectfiles:
@@ -79,7 +83,7 @@ def project(request, pk):
             images.append([thumbnail,fullpath,renderer])
         elif (renderer == "norender"):
             norenders +=1
-        if (renderer == "text"):
+        if (renderer == "text" and i.filename != "uploads/"+str(project.pk)+"/ReadMe.md" ):
             htmlmodel=htmlobject.objects.get_or_create(fileobject = i )[0] 
             texts.append([htmlmodel, path.split(str(i.filename))[1]])
             
