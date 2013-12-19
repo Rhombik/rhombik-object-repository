@@ -27,7 +27,7 @@ def cleanify(self, formName):
             if "uploads/"+str(self.project.pk)+thumb == str(fl.filename) and fl.filetype != "norender" and fl.filetype != "text":
                 noThumb = False
                 self.project.thumbnail = fl
-                print("project.form settng "+cleaned_data["title"]+"'s thumbnail to "+str(fl.filename))
+                print("project.form settng "+self.project.title+"'s thumbnail to "+str(fl.filename))
                 break
         if noThumb:
             self._errors['thumbnail'] = [u"The thumbnail you selected is not a valid uploaded image."]
@@ -58,8 +58,9 @@ class ProjectForm(ModelForm):
 
     class Meta:
         model = Project
-        fields = ["body","tags",]
+        fields = ["tags"]
 
+    body = forms.CharField(widget = forms.Textarea, required=False)
     thumbnail = forms.CharField(required=False)
 
     def clean(self):
@@ -85,7 +86,7 @@ class createForm(ModelForm):
            raise forms.ValidationError("There is no title! You gotta have a title.") 
        return data
 
-    body = forms.CharField(widget = forms.Textarea, required=True)
+    body = forms.CharField(widget = forms.Textarea, required=False)
     thumbnail = forms.CharField(required=False)
 
     def clean(self):

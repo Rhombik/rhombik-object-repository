@@ -37,7 +37,7 @@ class Project(models.Model):
     author = models.ForeignKey(User, related_name='author',default=User)
     allow_html = models.BooleanField(default=False)
     ##only used internally, don't set
-    body_rendered = models.TextField('Entry body as HTML', blank=True, null=True)
+   #body_rendered = models.TextField('Entry body as HTML', blank=True, null=True)
     tags = TaggableManager(blank=True)
     draft = models.BooleanField(default=False)
 

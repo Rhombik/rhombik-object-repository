@@ -130,7 +130,8 @@ from django.utils import simplejson
 @requires_csrf_token
 def edit(request, pk):
 
-##The form-----------------------------
+##-----------------------------
+# User filled and sent form
     try:
         project=Project.objects.filter(pk=pk)[0:1].get()
     except:
@@ -140,7 +141,32 @@ def edit(request, pk):
         #Check to make sure the form is valid and the user matches the project author
         if form.is_valid() and str(project.author) == str(request.user):
             #save thr form
-            project.body = form.cleaned_data["body"]
+
+          # Delete the old body text file... cause I'm a bad person and I don't know how to just open and write to the old one easily.
+	    readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/ReadMe.md" )
+            readme.delete()
+           # Save body as file
+            bodyText = fileobject();
+            bodyText.project = project
+
+
+            from django.core.files.uploadedfile import UploadedFile
+            import base64
+            from io import BytesIO
+            from io import TextIOWrapper
+            from io import StringIO
+
+           #io = TextIOWrapper(TextIOBase(form.cleaned_data["body"]))
+            io = StringIO(form.cleaned_data["body"])
+            txfl = UploadedFile(io)
+
+            bodyText.filename.save('ReadMe.md', txfl)
+
+            txfl.close()
+            io.close()
+
+            bodyText.save()
+
            #project.thumbnail = form.cleaned_data["thumbnail"]
             list_to_tags(form.cleaned_data["tags"], project.tags)
             project.save()
@@ -156,17 +182,21 @@ def edit(request, pk):
 
 
     elif str(project.author) == str(request.user):
+	readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/ReadMe.md" )
         taglist = []
         for i in project.tags.names():
            taglist.append(i)
         taglist = ",".join(taglist)
         print ("tags= "+str(taglist))
         thumbnailstring = "/"+path.split(project.thumbnail.filename.url)[1]
-        form = ProjectForm({'body': project.body, 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, project)
+        form = ProjectForm({'body': readme.filename.read(), 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, project)
         return render_to_response('edit.html', dict(project=project, user=request.user, form=form,))
         #return HttpResponse(response_data, mimetype="application/json")
     else:
         return HttpResponse(status=403)
+
+
+
 
 @csrf_exempt
 def create(request):
@@ -207,8 +237,10 @@ def create(request):
             bodyText.filename.save('ReadMe.md', txfl)
 
             txfl.close()
+            io.close()
 
             bodyText.save()
+
 
             project.author = request.user
            #project.thumbnail = form.cleaned_data["thumbnail"]
