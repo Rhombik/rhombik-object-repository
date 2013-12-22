@@ -28,7 +28,7 @@ Rhombik uses:
  * selenium for generating thumbnails of javascript previewers
  * ...A bunch more that aren't really important enough to list.
 
-Right now the code base is a bit of a mess. We're big believers in "release early, release often, hopefully get around to writing ~~better~~ some test cases". If you're interested in devloping for this, shoot me an [email](mailto://traverse.da@gmail.com). I can help get you up to speed on the code base. Take a look at the bug list for an idea of what needs doing.
+Right now the code base is a bit of a mess. We're big believers in "release early, release often, hopefully get around to writing ~~better~~ some test cases". If you're interested in devloping for this, shoot me an [email](mailto://traverse.da@gmail.com) or visit are irc channel [#rhombik](irc://chat.freenode.net:6697/#rhombik) on freenode. I can help get you up to speed on the code base. Take a look at the bug list for an idea of what needs doing.
 
 ---
 To set up a development enviroment simply
