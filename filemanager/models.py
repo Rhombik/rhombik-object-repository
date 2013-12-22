@@ -16,7 +16,6 @@ class fakefile():
 # Create your models here.
 
 class fileobject(models.Model):
-
     def uploadpath(instance, filename):
         return ("uploads/"+str(instance.project.id)+instance.subfolder+filename)
 
@@ -38,8 +37,10 @@ class fileobject(models.Model):
         super(fileobject, self).save()
 
     def delete(self, *args, **kwargs):
-        super(fileobject, self).delete(*args, **kwargs)
+        from project.tasks import ThumbnailEnforcer
         default_storage.delete(self.filename)
+        ThumbnailEnforcer()
+        super(fileobject, self).delete(*args, **kwargs)
        #default_storage.delete(self.thumbname)
 
 
