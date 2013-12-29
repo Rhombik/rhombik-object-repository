@@ -26,6 +26,10 @@ class Project(models.Model):
     title = models.CharField(max_length=60,blank=True, null=True, unique=True)
     thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET(select_thumbnail) , related_name='thumbnail')
     body = models.TextField(blank=True, null=True)
+
+    #This exists soley so that we can find prohects that don't have a readme.
+    bodyFile = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET(select_thumbnail) , related_name='readme')
+
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
     author = models.ForeignKey(User, related_name='author',default=User)
