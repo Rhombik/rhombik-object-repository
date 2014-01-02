@@ -67,9 +67,12 @@ def project(request, pk):
 
     images=[]# Images in the project; will be handed to template
    # Get readme as first item in the list of texts to hand to the template.
-    readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/ReadMe.md" )
-    htmlreadme=htmlobject.objects.get_or_create(fileobject = readme )[0] 
-    texts = [[htmlreadme, path.split(str(readme.filename))[1]]]
+    try:
+        readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/ReadMe.md" )
+        htmlreadme=htmlobject.objects.get_or_create(fileobject = readme )[0]
+        texts = [[htmlreadme, path.split(str(readme.filename))[1]]]
+    else:
+        pass
    # norenders. this is the number of files in the project not rendered. We currently do nothing.. unless someone changed that and not this note.
     norenders =0
 

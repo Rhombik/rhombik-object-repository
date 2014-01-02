@@ -22,6 +22,14 @@ def ThumbnailEnforcer():
        i.save()
    return
 
+@app.task()
+def ReadmeEnforcer():
+   from project.models import Project
+   z = Project.objects.filter(bodyfile__isnull=True, draft=False)
+   #Search for things called "README.txt"
 
+   #If no readme exists, create one using bodytext as template.
+
+   return
 
 
