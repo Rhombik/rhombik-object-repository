@@ -68,10 +68,11 @@ def project(request, pk):
     images=[]# Images in the project; will be handed to template
    # Get readme as first item in the list of texts to hand to the template.
     try:
-        readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/ReadMe.md" )
+        #Thus is in a try statement becouse the file backend might name the readme "ReadMe_1.md" or similar. Need to switch it out for "bodyfile" forighnkey at some point.
+        readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/README.md" )
         htmlreadme=htmlobject.objects.get_or_create(fileobject = readme )[0]
         texts = [[htmlreadme, path.split(str(readme.filename))[1]]]
-    else:
+    except:
         pass
    # norenders. this is the number of files in the project not rendered. We currently do nothing.. unless someone changed that and not this note.
     norenders =0
@@ -86,7 +87,7 @@ def project(request, pk):
             images.append([thumbnail,fullpath,renderer])
         elif (renderer == "norender"):
             norenders +=1
-        if (renderer == "text" and i.filename != "uploads/"+str(project.pk)+"/ReadMe.md" ):
+        if (renderer == "text" and i.filename != "uploads/"+str(project.pk)+"/README.md" ):
             htmlmodel=htmlobject.objects.get_or_create(fileobject = i )[0] 
             texts.append([htmlmodel, path.split(str(i.filename))[1]])
             
@@ -150,7 +151,7 @@ def edit(request, pk):
             #save thr form
 
           # Delete the old body text file... cause I'm a bad person and I don't know how to just open and write to the old one easily.
-	    readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/ReadMe.md" )
+	    readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/README.md" )
             readme.delete()
            # Save body as file
             bodyText = fileobject();
@@ -167,7 +168,7 @@ def edit(request, pk):
             io = StringIO(form.cleaned_data["body"])
             txfl = UploadedFile(io)
 
-            bodyText.filename.save('ReadMe.md', txfl)
+            bodyText.filename.save('README.md', txfl)
 
             txfl.close()
             io.close()
@@ -189,7 +190,7 @@ def edit(request, pk):
 
 
     elif str(project.author) == str(request.user):
-	readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/ReadMe.md" )
+	readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/README.md" )
         taglist = []
         for i in project.tags.names():
            taglist.append(i)
@@ -241,7 +242,7 @@ def create(request):
             io = StringIO(form.cleaned_data["body"])
             txfl = UploadedFile(io)
 
-            bodyText.filename.save('ReadMe.md', txfl)
+            bodyText.filename.save('README.md', txfl)
 
             txfl.close()
             io.close()
