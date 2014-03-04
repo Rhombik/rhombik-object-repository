@@ -161,11 +161,6 @@ INSTALLED_APPS = (
     'taggit_autosuggest',
     'taggit_templatetags',
     'testcases',
-   ### celery stuff  ###
-#    'kombu.transport.django',
-    'djcelery',
-#    'celerytask',
-    #'djcelery.transport',
 
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',

@@ -105,7 +105,7 @@ def multiuploader(request, pk):
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []
         for image in projectfiles:
-            thumbnail =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0]
+            thumbnail =  thumbObjectProxy.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0]
 
             if thumbnail.filename != "False":
                 thumburl=thumbnail.filename.url

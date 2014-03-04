@@ -74,9 +74,11 @@ class thumbobject(models.Model):
             super(thumbobject, self,).save()
 
     def delete(self, *args, **kwargs):
-        super(thumbobject, self).delete(*args, **kwargs)
         default_storage.delete(self.filename)
+        super(thumbobject, self).delete(*args, **kwargs)
 
+
+##This directly creates the thumbnail, ignoring  any queueing. Try to use thumbobject.
 class thumbObjectProxy(thumbobject):
 
     class Meta:

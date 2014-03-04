@@ -36,10 +36,9 @@ def thumbnailify(filebit, sizebit):
   response = HttpResponse(mimetype="image/png")
 
   if ext in browser_kind:
-    print("filebit.filename"+str(filebit.filename.name))
+    print("filebit.filename:    "+str(filebit.filename))
     img = Image.open(filebit.filename)
     img.thumbnail(sizebit)
-    print(img) 
     # Create a file-like object to write thumb data (thumb data previously created
     # using PIL, and stored in variable 'img')
     # using PIL, and stored in variable 'thumb')

@@ -10,7 +10,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 import thumbnailer.thumbnailer as thumbnailer 
 
 
-from filemanager.models import fileobject, thumbobject, htmlobject, zippedobject
+from filemanager.models import fileobject, thumbobject, htmlobject, zippedobject, thumbObjectProxy
 
 from project.models import Project
 from project.forms import ProjectForm, createForm, defaulttag
@@ -63,7 +63,7 @@ def project_list_get(projects):
 def project(request, pk):
     project = Project.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
     projectfiles = fileobject.objects.filter(project=project)
-    mainthumb = thumbobject.objects.get_or_create(fileobject=project.thumbnail, filex = 250, filey = 250)[0]
+    mainthumb = thumbObjectProxy.objects.get_or_create(fileobject=project.thumbnail, filex = 250, filey = 250)[0]
 
     images=[]# Images in the project; will be handed to template
    # Get readme as first item in the list of texts to hand to the template.
