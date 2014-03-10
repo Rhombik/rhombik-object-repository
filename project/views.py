@@ -58,7 +58,17 @@ def project_list_get(projects):
 
     return listdata
 
+'''
+Printable Viewing
 
+- Need to output an array of the printables thumbnails.
+- Need to output the 3d render into a shadowbox via button click.
+- Need to output the detailed information about the model (read me, files, additional text files, etc) into some kind of flexible format (to deal with java being disabled)
+- Need to output comments
+- Need to output statistics (tags, total # of downloads, total # of comments, total # of up votes, date uploaded into English formatted variables that change semantically to quantity (i.e., 1 download, 200 downloads/1 up vote, 200 up votes)
+- Need to output download link for zip file for specific printable.
+- Need to output author info (other work, 4 or 5) with thumbnail and name.
+'''
 
 def project(request, pk):
     project = Project.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
