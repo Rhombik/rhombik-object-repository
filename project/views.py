@@ -119,7 +119,9 @@ def front(request):
  
     return render_to_response('list.html', dict(project=project, user=request.user,))
 
-
+'''
+- Needs to generate a list of the most popular printables of the day and/or week and/or month. The overhead of this is beyond me, but I imagine some sort of algorithm to factor in upvotes/downloads/comments and staff interest is needed to decide what is "popular".
+'''
 def list(request):
     """Main listing."""
 
