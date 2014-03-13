@@ -44,13 +44,16 @@ urlpatterns = patterns('',
     #preview pages for the STL files.
     (r'^thumbs/jsc3d/(.*)', 'thumbnailer.views.stlthumb'),
     (r'^preview/jsc3d/(.*)', 'thumbnailer.views.stlview'),
-    url(r'', include('multiuploader.urls')),
     (r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
 
     #user profile pages
     url(r'^userProfile/', include('userProfile.urls')),
     (r'^editUser/', 'userProfile.views.edit'),
     (r'^download/(.*)/$', 'filemanager.views.download'),
+
+    #We should try to move url definitions into each app.
+    url(r'', include('multiuploader.urls')),
+    url(r'', include('project.urls')),
 
 
 
