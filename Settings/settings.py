@@ -19,6 +19,7 @@ Production enviroment settings overrides. You can override Settings/defaultSetti
 
 If you're a developer, you want to be editing the defaultSettings file instead.
 
-Only edit this file if you're deploying it. And make sure it's in your .gitignore.
+Only edit this file if you're deploying it. And make sure it's not being updated by typing "git update-index --assume-unchanged Settings/settings.py"
 
 '''''
+
