@@ -41,7 +41,7 @@ class Project(models.Model):
 
     rating = RatingField(range=1, can_change_vote = True,allow_delete = True,)
 
-    #Pretends that 1 is -1 and 2 is 1.
+    #Pretends that 0 is -1 and 1 is 1.
     def get_adjusted_rating(self):
         return self.rating.score - (self.rating.votes/2)
 
