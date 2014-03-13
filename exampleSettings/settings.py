@@ -160,7 +160,7 @@ INSTALLED_APPS = (
     'taggit_autosuggest',
     'taggit_templatetags',
     'testcases',
-
+    'djangoratings',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

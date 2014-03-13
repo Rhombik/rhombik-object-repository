@@ -86,7 +86,7 @@ def project(request, pk):
         pass
    # norenders. this is the number of files in the project not rendered. We currently do nothing.. unless someone changed that and not this note.
     norenders =0
-
+    print(project.get_adjusted_rating())
     for i in projectfiles:
         fullpath=i
         renderer=i.filetype

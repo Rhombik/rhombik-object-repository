@@ -5,8 +5,7 @@ import thumbnailer.shadowbox
 from django.conf import settings
 from taggit.managers import TaggableManager
 from filemanager.models import fileobject
-from updown.fields import RatingField	
-
+from djangoratings.fields import RatingField
 
 ##Does this actuall work? I don't think it does.... It seems to always return(SET_NULL)
 ##I've disabled it. Now whenever a fileobject gets deleted, it starts a task checking for null fields.
@@ -40,7 +39,11 @@ class Project(models.Model):
     tags = TaggableManager(blank=True)
     draft = models.BooleanField(default=False)
 
-    rating = RatingField(can_change_vote=True)
+    rating = RatingField(range=2, weight=5,can_change_vote = True,allow_delete = True,)
+
+    #Pretends that 1 is -1 and 2 is 1.
+    def get_adjusted_rating(self):
+        return self.rating.score - (self.rating.votes/2)
 
     def __unicode__(self):
         return self.title
