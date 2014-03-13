@@ -21,4 +21,4 @@ If you're a developer, you want to be editing the defaultSettings file instead.
 
 Only edit this file if you're deploying it. And make sure it's in your .gitignore.
 
-''''
+'''''
