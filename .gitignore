@@ -36,3 +36,4 @@ nosetests.xml
 
 exampleSettings.sqlite3
 Settings/settings
+Settings/secret_key.py
