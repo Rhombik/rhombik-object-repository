@@ -24,7 +24,7 @@
             </div>
                 <p>
             <div class="grid_9">
-                    <a href="/project/{{ result.object.title }}">{{ result.object.title }}</a>
+                    <a href="/project/{{ result.object.pk }}">{{ result.object.title }}</a>
                     {{ result.object.body_rendered|safe|truncatewords_html:20 }}
             </div>
 

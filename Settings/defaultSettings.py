@@ -33,12 +33,9 @@ DATABASES = {
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
     },
 }
-
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -107,8 +104,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '@ymfrc@t0k-87ay!^#*s6dr*)c7h6c3umqihltrs-0ti22qu!t'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
