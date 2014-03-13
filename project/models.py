@@ -39,7 +39,7 @@ class Project(models.Model):
     tags = TaggableManager(blank=True)
     draft = models.BooleanField(default=False)
 
-    rating = RatingField(range=2, weight=5,can_change_vote = True,allow_delete = True,)
+    rating = RatingField(range=1, can_change_vote = True,allow_delete = True,)
 
     #Pretends that 1 is -1 and 2 is 1.
     def get_adjusted_rating(self):
