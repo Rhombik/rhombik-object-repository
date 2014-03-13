@@ -35,6 +35,4 @@ nosetests.xml
 .pydevproject
 
 exampleSettings.sqlite3
-prodSettings/
-brightcrowtheme/
-prodmanage.py
+Settings/settings
