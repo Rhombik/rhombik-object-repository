@@ -198,7 +198,7 @@ def edit(request, pk):
 
 
     elif str(project.author) == str(request.user):
-	readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/README.md" )
+	readme = project.bodyFile
         taglist = []
         for i in project.tags.names():
            taglist.append(i)
