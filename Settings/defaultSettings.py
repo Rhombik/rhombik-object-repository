@@ -156,11 +156,15 @@ INSTALLED_APPS = (
     'taggit_templatetags',
     'testcases',
     'djangoratings',
+    'threadedcomments',
+    'django.contrib.comments',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+COMMENTS_APP = 'threadedcomments'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
