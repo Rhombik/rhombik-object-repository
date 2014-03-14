@@ -13,8 +13,11 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 ### stuff for the celery task queue
 
+
+
 BROKER_URL = 'django://'
 CELERY_ALWAYS_EAGER = True
+
 
 MANAGERS = ADMINS
 
@@ -33,9 +36,12 @@ DATABASES = {
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(PROJECT_PATH, 'whoosh_index'),
     },
 }
+
+HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -158,6 +164,7 @@ INSTALLED_APPS = (
     'djangoratings',
     'threadedcomments',
     'django.contrib.comments',
+    'celery_haystack',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
