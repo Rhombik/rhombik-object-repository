@@ -77,7 +77,7 @@ def project(request, pk):
    # Get readme as first item in the list of texts to hand to the template.
     try:
         #Thus is in a try statement becouse the file backend might name the readme "ReadMe_1.md" or similar. Need to switch it out for "bodyfile" forighnkey at some point.
-        readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/README.md" )
+        readme = project.bodyFile
         htmlreadme=htmlobject.objects.get_or_create(fileobject = readme )[0]
         texts = [[htmlreadme, path.split(str(readme.filename))[1]]]
     except:
@@ -96,7 +96,7 @@ def project(request, pk):
             images.append([thumbnail,fullpath,renderer])
         elif (renderer == "norender"):
             norenders +=1
-        if (renderer == "text" and i.filename != "uploads/"+str(project.pk)+"/README.md" ):
+        if (renderer == "text" and i != project.bodyFile ):
             htmlmodel=htmlobject.objects.get_or_create(fileobject = i )[0] 
             texts.append([htmlmodel, path.split(str(i.filename))[1]])
             
