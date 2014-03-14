@@ -37,8 +37,10 @@ def thumbnail_get(project, fileobject, *args, **kwargs):
         project.enf_consistancy()
 
     ## gets or creates thumbnail object
-    thumbnail = thumbobject.objects.get_or_create(fileobject=project.thumbnail, filex = 128, filey = 128)[0]
-
+    try:
+        thumbnail = thumbobject.objects.get_or_create(fileobject=project.thumbnail, filex = 128, filey = 128)[0]
+    except:
+        pass
     return thumbnail
 
 
@@ -48,11 +50,6 @@ def project_list_get(projects):
 
     listdata = []
     for project in projects:
-        # if a project has no thumbnail. This happens when ignorant users delete thier pictures and navigate away without saving so they don't see the form error. #
-########if not project.thumbnail:
-########    print("I cant find the thumbnail for " + str(project))
-########    # so we just get a new thumbnail for their project. #
-########    Project.select_thumbnail(project)
         if project.enf_consistancy() == True:
             thumbnail = thumbnail_get(project=project, fileobject=project.thumbnail, filex = 128, filey = 128)
             listdata += [[project, thumbnail]]
@@ -129,15 +126,14 @@ def list(request):
 ###   get all the projects!   ###
     projects = Project.objects.exclude(draft=True).order_by("-created")
 
-    listdata = project_list_get(projects)
-
-    paginator = Paginator(listdata, 8)
+    paginator = Paginator(projects, 8)
 
     try: page = int(request.GET.get("page", '1'))
     except ValueError: page = 1
 
     try:
-        listdata = paginator.page(page)
+        #only get thumbnails for projects on the current page.
+        listdata = project_list_get(paginator.page(page))
     except (InvalidPage, EmptyPage):
         listdata = paginator.page(paginator.num_pages)
     return render_to_response("front.html", dict(listdata=listdata, user=request.user, active="home"))
