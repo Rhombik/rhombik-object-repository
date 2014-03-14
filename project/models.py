@@ -69,10 +69,10 @@ class Project(models.Model):
 
         #check to see if there's a readme.
         if not self.bodyFile:
-            files=htmlobject.objects.filter(project=self)
+            files=fileobject.objects.filter(project=self, filetype="text")
             for fl in files:
                 if False:### Look for thumbnailable pic.
-                    self.bodyFile = fl
+                    self.bodyFile = fl.fileobject
                     super(Project, self).save()
                     break
                 else:

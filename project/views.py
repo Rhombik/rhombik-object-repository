@@ -81,6 +81,7 @@ def project(request, pk):
         htmlreadme=htmlobject.objects.get_or_create(fileobject = readme )[0]
         texts = [[htmlreadme, path.split(str(readme.filename))[1]]]
     except:
+        texts = [[]]
         pass
    # norenders. this is the number of files in the project not rendered. We currently do nothing.. unless someone changed that and not this note.
     norenders =0
