@@ -34,7 +34,7 @@ def thumbnail_get(project, fileobject, *args, **kwargs):
     
     ## Sets the default thumbnail to an image in the project.
     if not project.thumbnail:
-        Project.select_thumbnail(project)
+        project.enf_consistancy()
 
     ## gets or creates thumbnail object
     thumbnail = thumbobject.objects.get_or_create(fileobject=project.thumbnail, filex = 128, filey = 128)[0]
@@ -53,8 +53,9 @@ def project_list_get(projects):
 ########    print("I cant find the thumbnail for " + str(project))
 ########    # so we just get a new thumbnail for their project. #
 ########    Project.select_thumbnail(project)
-        thumbnail = thumbnail_get(project=project, fileobject=project.thumbnail, filex = 128, filey = 128)
-        listdata += [[project, thumbnail]]
+        if project.enf_consistancy() == True:
+            thumbnail = thumbnail_get(project=project, fileobject=project.thumbnail, filex = 128, filey = 128)
+            listdata += [[project, thumbnail]]
 
     return listdata
 
@@ -130,8 +131,6 @@ def list(request):
 
     listdata = project_list_get(projects)
 
-    print("listdata is "+str(listdata))
- 
     paginator = Paginator(listdata, 8)
 
     try: page = int(request.GET.get("page", '1'))

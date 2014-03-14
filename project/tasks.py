@@ -19,6 +19,7 @@ def ThumbnailEnforcer():
    from project.models import Project
    z = Project.objects.filter(thumbnail__isnull=True, draft=False)
    for i in z:
+       i.draft = True
        i.save()
    return
 
@@ -27,7 +28,10 @@ def ReadmeEnforcer():
    from project.models import Project
    z = Project.objects.filter(bodyfile__isnull=True, draft=False)
    #Search for things called "README.txt"
-
+   for i in z:
+       i.draft = True
+       i.save()
+   return
    #If no readme exists, create one using bodytext as template.
 
    return
