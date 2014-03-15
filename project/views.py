@@ -164,6 +164,7 @@ def edit(request, pk):
 	    readme = project.bodyFile
             try:
                 readme = project.bodyFile
+                readmename = path.split(str(readme.filename))[1]
                 readme.delete()
             except:
                 pass
@@ -182,7 +183,12 @@ def edit(request, pk):
             io = StringIO(form.cleaned_data["body"])
             txfl = UploadedFile(io)
 
-            bodyText.filename.save('README.md', txfl)
+
+            #editfield is renaming your readme to readme.md every time. That's not good.
+            try:
+                bodyText.filename.save(readmename, txfl)
+            except:
+                bodyText.filename.save('README.md', txfl)
 
             txfl.close()
             io.close()
