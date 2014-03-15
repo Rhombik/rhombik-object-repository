@@ -159,7 +159,7 @@ def edit(request, pk):
             #save thr form
 
           # Delete the old body text file... cause I'm a bad person and I don't know how to just open and write to the old one easily.
-	    readme = fileobject.objects.get(project = project, filename = "uploads/"+str(project.pk)+"/README.md" )
+	    readme = project.bodyfile
             readme.delete()
            # Save body as file
             bodyText = fileobject();

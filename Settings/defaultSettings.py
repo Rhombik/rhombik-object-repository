@@ -41,6 +41,7 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+
 #HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
