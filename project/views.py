@@ -72,6 +72,8 @@ def project(request, pk):
     project = Project.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
     projectfiles = fileobject.objects.filter(project=project)
     mainthumb = thumbObjectProxy.objects.get_or_create(fileobject=project.thumbnail, filex = 250, filey = 250)[0]
+    if project.enf_consistancy == False:
+        raise Http404
 
     images=[]# Images in the project; will be handed to template
    # Get readme as first item in the list of texts to hand to the template.
@@ -159,10 +161,14 @@ def edit(request, pk):
             #save thr form
 
           # Delete the old body text file... cause I'm a bad person and I don't know how to just open and write to the old one easily.
-	    readme = project.bodyfile
-            readme.delete()
+	    readme = project.bodyFile
+            try:
+                readme = project.bodyFile
+                readme.delete()
+            except:
+                pass
            # Save body as file
-            bodyText = fileobject();
+            bodyText = fileobject()
             bodyText.project = project
 
 
@@ -182,7 +188,7 @@ def edit(request, pk):
             io.close()
 
             bodyText.save()
-
+            project.bodyFile = bodyText
            #project.thumbnail = form.cleaned_data["thumbnail"]
             list_to_tags(form.cleaned_data["tags"], project.tags)
             project.save()
@@ -198,14 +204,18 @@ def edit(request, pk):
 
 
     elif str(project.author) == str(request.user):
-	readme = project.bodyFile
+        if project.bodyFile:
+            readme = project.bodyFile.read()
+        else:
+            readme = project.body
+
         taglist = []
         for i in project.tags.names():
            taglist.append(i)
         taglist = ",".join(taglist)
-        print ("tags= "+str(taglist))
+
         thumbnailstring = "/"+path.split(project.thumbnail.filename.url)[1]
-        form = ProjectForm({'body': readme.filename.read(), 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, project)
+        form = ProjectForm({'body': readme, 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, project)
         return render_to_response('edit.html', dict(project=project, user=request.user, form=form,))
         #return HttpResponse(response_data, mimetype="application/json")
     else:
