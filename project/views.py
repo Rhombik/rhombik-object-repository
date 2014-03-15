@@ -205,7 +205,7 @@ def edit(request, pk):
 
     elif str(project.author) == str(request.user):
         if project.bodyFile:
-            readme = project.bodyFile.read()
+            readme = project.bodyFile.filename.read()
         else:
             readme = project.body
 
