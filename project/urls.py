@@ -13,5 +13,7 @@ urlpatterns = patterns("",
     }),
 
     (r'^project/(.*)/$', 'project.views.project'),
+    #for debugging search index tempalte
+    (r'^test/$', 'project.views.searchtest'),
 
 )

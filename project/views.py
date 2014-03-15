@@ -28,6 +28,10 @@ from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect, HttpResponse
 from filemanager.models import fileobject
 
+def searchtest(*args, **kwargs):
+    project = Project.objects.filter(pk=1)[0:1].get()
+    return render_to_response('search/indexes/project/project_text.txt', dict(object=project))
+
 
 
 def thumbnail_get(project, fileobject, *args, **kwargs):

@@ -1,10 +1,14 @@
 {{ object.title }}
 {{ object.author }}
 
+
 {% load addSearchContext %}
-{% for i in rawtext %}
-{{i}}
+{% for text in raw_text %}
+{{ text }}
 {% endfor %}
+
+{% raw_text %}
+
 
 {% for tag in object.tags.all %}
 {{tag}}
