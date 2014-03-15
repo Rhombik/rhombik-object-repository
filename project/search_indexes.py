@@ -2,15 +2,20 @@ import datetime
 from haystack import indexes
 from celery_haystack.indexes import CelerySearchIndex
 from project.models import Project
-
+from filemanager.models import fileobject
 
 class ProjectIndex(CelerySearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.NgramField(document=True, use_template=True)
+    data = indexes.NgramField()
+
     author = indexes.CharField(model_attr='author')
     created = indexes.DateTimeField(model_attr='created')
 
     def get_model(self):
         return Project
+
+    def prepare_tags(self, obj):
+        return [self.tags.slugs.names()]
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
