@@ -1,10 +1,10 @@
 import datetime
 from haystack import indexes
-from celery_haystack.indexes import CelerySearchIndex
+#from celery_haystack.indexes import CelerySearchIndex
 from project.models import Project
 from filemanager.models import fileobject
 
-class ProjectIndex(CelerySearchIndex, indexes.Indexable):
+class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.NgramField(document=True, use_template=True)
     data = indexes.NgramField()
 

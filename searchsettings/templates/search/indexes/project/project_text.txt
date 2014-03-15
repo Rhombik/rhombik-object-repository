@@ -1,12 +1,7 @@
-{% load addSearchContext %}
-{% for i in raw_text %}
-{{i}}
-{% endfor %}
-
-
 {{ object.title }}
 {{ object.author }}
 
+{% load addSearchContext %}
 {% for i in rawtext %}
 {{i}}
 {% endfor %}
