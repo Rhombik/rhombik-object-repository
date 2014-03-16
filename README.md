@@ -42,6 +42,10 @@ To set up a development enviroment simply
 
 Then navigate to http://localhost:8000
 
+If you want to use search functinality, you may need to rebuild the search index.
+
+    python manage.py rebuild_index
+
 ---
 
 Neither of us are proffesional programmers. If you want to know how we did something, please drop us a line. The code is probably pretty skitty, but we're here to explain anything that doesn't make sense.
