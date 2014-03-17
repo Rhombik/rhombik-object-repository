@@ -10,12 +10,14 @@ class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
 
     author = indexes.CharField(model_attr='author')
     created = indexes.DateTimeField(model_attr='created')
-
+    tags = indexes.MultiValueField()
     def get_model(self):
         return Project
 
     def prepare_tags(self, obj):
-        return [self.tags.slugs.names()]
+        print ([tag.name for tag in obj.tags.all()])
+        return [tag.name for tag in obj.tags.all()]
+
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
