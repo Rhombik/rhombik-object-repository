@@ -30,7 +30,7 @@ urlpatterns = patterns('',
     (r'^about/', AboutView.as_view()),
 
     #Search urls
-    (r'^search/', include('haystack.urls')),
+    (r'^search/', include('searchsettings.urls')),
     #captcha urls
     url(r'^captcha/', include('captcha.urls')),
 
