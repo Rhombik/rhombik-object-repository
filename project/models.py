@@ -44,9 +44,14 @@ class Project(models.Model):
 
     rating = RatingField(range=2, can_change_vote = True,allow_delete = True,)
     ratingSortBest = models.PositiveIntegerField(blank=True, null=True)
+    ratingCount = models.IntegerField(blank=True, null=True)
     #Pretends that 0 is -1 and 1 is 1.
     def calc_adjusted_rating(self):
-        self.ratingSortBest = (self.rating.score - self.rating.votes)
+        upvotes = self.rating.votes - self.rating.score
+        downvotes = self.rating.score - upvotes
+        self.ratingCount = upvotes-downvotes
+
+        self.ratingSortBest = self.ratingCount #fix this later
         super(Project, self).save()
 
     def __unicode__(self):
@@ -74,6 +79,7 @@ class Project(models.Model):
         #check to see if there's a readme.
         if not self.bodyFile:
             files=fileobject.objects.filter(project=self, filetype="text")
+            print(files)
             for fl in files:
                 if False:### Look for thumbnailable pic.
                     self.bodyFile = fl.fileobject

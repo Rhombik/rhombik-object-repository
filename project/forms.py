@@ -10,7 +10,6 @@ from django.conf import settings
 ###        This function validates the form for submitting projects. Excluding the title, thats only done in the createForm.
 def cleanify(self, formName):
 
-    print("project.form says pk is "+str(self.project.pk))
     cleaned_data = super(formName, self).clean()
 
    ###	make certain the selected thumbnail is valid	##
@@ -45,7 +44,9 @@ def cleanify(self, formName):
    ###   make sure user wrote something about thier project.        
     if not cleaned_data['body']:
         self._errors['body'] = [u"Write something about your project! Jeezers."]
-
+    print(self.project.enf_consistancy())
+    if self.project.enf_consistancy() != True:
+        self._errors['non_field_errors'] = [u"Something went wrong, and I have no idea what it was."]
     return cleaned_data
 
 

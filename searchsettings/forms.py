@@ -11,17 +11,17 @@ class DateRangeSearchForm(SearchForm):
     tags = forms.CharField(widget=TagAutoSuggest,required=False)
 
     sortOPTIONS = (
-    ("false", "Sort by nothing"),
-    ("false", "Also sort by noting"),
+    ("votes", "Votes"),
+    ("new", "Newest"),
     )
     sort = forms.ChoiceField(choices=sortOPTIONS)
 
     timeOPTIONS = (
-    ("false", "all time"),
-    ("false", "this year"),
-    ("false", "this month"),
-    ("false", "this week"),
-    ("false", "today"),
+    ("everything", "all time"),
+    ("year", "this year"),
+    ("month", "this month"),
+    ("week", "this week"),
+    ("today", "today"),
 
     )
     From = forms.ChoiceField(choices=timeOPTIONS)
