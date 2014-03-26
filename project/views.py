@@ -341,19 +341,19 @@ def list_to_tags(list, tags, clear=True):
                 tags.add(tag)
 
 
-from djangoratings.views import AddRatingView
-def ratingCalc(request, ):
-    pass
-#    response = HttpResponse(AddRatingFromModel()(request, **params))
-    #response = HttpResponse("noresponese")
-#    print(HttpResponse(AddRatingFromModel()(request, **params)))
-#    print(response)
+from djangoratings.views import AddRatingFromModel
+def ratingCalc(request,**params):
+    response2 = AddRatingFromModel()(request, **params)
+    if response2.status_code == 200:
+        print("votechanged")
 
-#    if response.status_code == 200:
-#        if response.content == 'Vote recorded.':
-#            print("successed the votething")
-#        return {'message': response.content, 'score': params['score']}
-#    return {'error': 9, 'message': response.content}
+    return response2
+
+
+
+
+
+
 
 def thingtracker(request, pk):
     import os.path
