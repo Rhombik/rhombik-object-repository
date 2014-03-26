@@ -357,7 +357,7 @@ def ratingCalc(request, ):
 
 def thingtracker(request, pk):
     import os.path
-    from django.utils import simplejson
+    import json
 
     project = Project.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
     projectfiles = fileobject.objects.filter(project=project)
@@ -372,15 +372,15 @@ def thingtracker(request, pk):
     
     things = []
     for i in projectfiles:
-        things.append({"name":i.subfolder+os.path.split(str(i.filename.name))[1],
+        things.append({"title":i.subfolder+os.path.split(str(i.filename.name))[1],
                        "size":i.filename.size,
                        "url":str(i.filename.url),
-                       "delete_url":"/multi_delete/"+str(i.pk)+"/",
-                       "delete_type":"POST",})
+                       })
     result.append({"things":things})
 
 
-    response_data = simplejson.dumps(result)
+    response_data = json.dumps(result,sort_keys=True,
+                  indent=4, separators=(',', ': '))
 
     #checking for json data type
     #big thanks to Guy Shapiro
