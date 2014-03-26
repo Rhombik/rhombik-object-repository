@@ -339,3 +339,56 @@ def list_to_tags(list, tags, clear=True):
                 tags.clear()
             for tag in list:
                 tags.add(tag)
+
+
+from djangoratings.views import AddRatingView
+def ratingCalc(request, ):
+    pass
+#    response = HttpResponse(AddRatingFromModel()(request, **params))
+    #response = HttpResponse("noresponese")
+#    print(HttpResponse(AddRatingFromModel()(request, **params)))
+#    print(response)
+
+#    if response.status_code == 200:
+#        if response.content == 'Vote recorded.':
+#            print("successed the votething")
+#        return {'message': response.content, 'score': params['score']}
+#    return {'error': 9, 'message': response.content}
+
+def thingtracker(request, pk):
+    import os.path
+    from django.utils import simplejson
+
+    project = Project.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
+    projectfiles = fileobject.objects.filter(project=project)
+
+    result=[{"type":"object"}]
+
+    result.append({"properties":
+			{"name":project.title,
+			}
+                  })
+
+    
+    things = []
+    for i in projectfiles:
+        things.append({"name":i.subfolder+os.path.split(str(i.filename.name))[1],
+                       "size":i.filename.size,
+                       "url":str(i.filename.url),
+                       "delete_url":"/multi_delete/"+str(i.pk)+"/",
+                       "delete_type":"POST",})
+    result.append({"things":things})
+
+
+    response_data = simplejson.dumps(result)
+
+    #checking for json data type
+    #big thanks to Guy Shapiro
+    if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
+        mimetype = 'application/json'
+    else:
+        mimetype = 'text/plain'
+    return HttpResponse(response_data, mimetype=mimetype)
+
+
+

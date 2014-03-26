@@ -39,8 +39,11 @@ class Project(models.Model):
     tags = TaggableManager(blank=True)
     draft = models.BooleanField(default=False)
 
-    rating = RatingField(range=1, can_change_vote = True,allow_delete = True,)
+    downloadcount = RatingField(range=1,allow_delete = False,allow_anonymous = True,) 
 
+
+    rating = RatingField(range=1, can_change_vote = True,allow_delete = True,)
+    ratingSortBest = models.PositiveIntegerField(blank=True, null=True)
     #Pretends that 0 is -1 and 1 is 1.
     def get_adjusted_rating(self):
         return self.rating.score - (self.rating.votes/2)
