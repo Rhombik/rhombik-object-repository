@@ -42,11 +42,12 @@ class Project(models.Model):
     downloadcount = RatingField(range=1,allow_delete = False,allow_anonymous = True,) 
 
 
-    rating = RatingField(range=1, can_change_vote = True,allow_delete = True,)
+    rating = RatingField(range=2, can_change_vote = True,allow_delete = True,)
     ratingSortBest = models.PositiveIntegerField(blank=True, null=True)
     #Pretends that 0 is -1 and 1 is 1.
-    def get_adjusted_rating(self):
-        return self.rating.score - (self.rating.votes/2)
+    def calc_adjusted_rating(self):
+        self.ratingSortBest = (self.rating.score - self.rating.votes)
+        super(Project, self).save()
 
     def __unicode__(self):
         return self.title

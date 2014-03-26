@@ -343,11 +343,12 @@ def list_to_tags(list, tags, clear=True):
 
 from djangoratings.views import AddRatingFromModel
 def ratingCalc(request,**params):
-    response2 = AddRatingFromModel()(request, **params)
-    if response2.status_code == 200:
-        print("votechanged")
-
-    return response2
+    response = AddRatingFromModel()(request, **params)
+    project= Project.objects.get(pk=params['object_id'])
+    if response.status_code == 200:
+        project.calc_adjusted_rating()
+        pass
+    return response
 
 
 
