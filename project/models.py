@@ -47,11 +47,22 @@ class Project(models.Model):
     ratingCount = models.IntegerField(blank=True, null=True)
     #Pretends that 0 is -1 and 1 is 1.
     def calc_adjusted_rating(self):
+        import math
+
         upvotes = self.rating.votes - self.rating.score
         downvotes = self.rating.score - upvotes
         self.ratingCount = upvotes-downvotes
-
+        votes = self.rating.votes
         self.ratingSortBest = self.ratingCount #fix this later
+
+        if(self.rating.votes==0): 
+            self.ratingSortBest = 0 
+        else: 
+            r=1.0*upvotes/votes
+            z=1.95 
+            self.ratingSortBest = (r+z*z-z*math.sqrt((r*(1-r)+(z*z/4*votes))/votes))/(1+z*z/votes)
+
+
         super(Project, self).save()
 
     def __unicode__(self):
