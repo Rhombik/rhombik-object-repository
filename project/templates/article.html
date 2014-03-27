@@ -2,21 +2,8 @@
 
 
 {% block contenttop %}
-                        <div class="grid_16 showcase_content"> 
-                        	<div class="grid_16"><h2>{{ project.title }}</h2></div>
-                            <div class="main_thumbnail grid_4 alpha">
-                                <img src="{{mainthumb}}">
-                            </div>
-                            <div class="gallery_thumbnails grid_12 omega">
-                                {% include "gallery.html" %}
-                            </div>
-                            <div class="showcase_links grid_16">
-                                <a href="/download/{{ project.pk }}" class="iframe">Download File</a>
-                                <a href="{{ downloadurl }}">Download All</a>
-                            </div>
-                            <div class="clear clearfix"></div>
-                        </div>
-						<div class="clear clearfix"></div>
+	<div id="pageContent">
+		<div id="innerIndent" class="grid-container">
 {% endblock contenttop %}
 
 
@@ -27,78 +14,74 @@
 
 {% load gallerfy %}
 
-					<!-- Projects-->
-					<span>
-					<div class="title"><h1>{{ project.title }}</h1></div>
+		<section class="pageLeft">
+			<h1 class="title">{{ project.title }}</h1>
+			<span class="author small">by <a href="/userProfile/{{ project.author.pk }}">{{ project.author }}</a></span>
+			<span class="time small">at {{ project.created }}</span>
+			<div class="printablePreview clearfix">
+					<div class="printableContainer">
+						<div class="printableInfo">
+							<div class="printableImageContainer" id="printableImageContainer">
+								<img src="{{mainthumb}}" alt="{{ project.title }}">
+							</div>
+						</div>
+					</div>
+					<ol class="printableThumbs">
+						{% include "gallery.html" %}
+					</ol>
+				</div>
+			</section>
+			<section class="pageRight">
+				<h3>Printable Info</h3>
+				<hr>
+				<div class="bodyContainer">
+					<div class="containerContent">
 					{% if user == project.author %}
-					<div class="editbutton" align="right"> <a href="/edit/{{ project.pk }}">Edit</a></div>
+						<a href="/edit/{{ project.pk }}" class="button purple fullWidth">Edit</a>
+						<hr>
 					{% endif %}
-					</span>
-					<div class="time">{{ project.created }}</div>
-					<div class="author"><a href="/userProfile/{{ project.author.pk }}">{{ project.author }}</a></div>
-					<div class="body">
+					</div>
+				</div>
+			</section>
 
-					  {{ project.body_rendered|gallerfy|safe }}
-					  
-					  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-					  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-					  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-					  <link rel="stylesheet" href="/resources/demos/style.css">
-					  
-					  <script>
-					    $(function() {
-					    $( "#tabs" ).tabs();
-					    });
-					  </script>
-					  
-					  
-					  <div id="tabs">
-					    
-					    <ul>
+			<section class="pageLeft">
+				<div id="tabs">
+					<div class="sortCategories sortBody clearfix">
+						<ul>
+						<li><a href="#a.a">a</a></li>
 					      {% for html, name in texts %}
 					        <li><a href="#{{name}}">{{name}}</a></li>
 					      {%endfor%}
-					    </ul>
-					    
-					    {% for html, name in texts %}
-					      
-					      
-					      <div id="{{name}}">
-					      
-					        <div name="toggleText" style="display: block">
-					          <br>
-					          <b>
-					          {{name}}
-					          </b>
-					        </div>
-					      
-					        <p>
-					        {{html.body_rendered | safe}}
-					      
-					      </div>
-					    {%endfor%}
-					  
-					  </div>
-					  
+						</ul>
 					</div>
-					<div class="tags">
-					{% for tag in project.tags.all %} 
-					<span class="tagrank=({{tag.num_times}})"> <a href="/tag/{{tag}}">{{tag}}</a></span>
-					{% endfor %} 
+					<article class="bodyContainer" id="a.a">
+						<h2>a</h2>
+						<hr>
+						<div class="bodyContent">
+						<p>a</p>
+						</div>
+					</article>
+					{% for html, name in texts %}
+					<article class="bodyContainer" id="{{name}}">
+						<h2>{{name}}</h2>
+						<hr>
+						<div class="bodyContent">
+						<p>{{html.body_rendered | safe}}</p>
+						</div>
+					</article>
+					{%endfor%}
+				</div>
+			</section>
+			<section class="pageRight">
+				<h3>Tags</h3>
+				<hr>
+				<div class="bodyContainer">
+					<div class="containerContent">
+						{% for tag in project.tags.all %} 
+							<span class="tagrank=({{tag.num_times}})"> <a href="/tag/{{tag}}">{{tag}}</a></span>
+						{% endfor %} 
 					</div>
-
-
-
-
-
-<script language="javascript"> 
-function toggle() {
-    var ele = document.getElementsByName("toggleText");
-     for(var i=0;i<ele.length;i++)
-            ele[i].style.display = "none";
-} 
-window.onload = toggle;
-</script>
-
+				</div>
+			</section>
 
 {% endblock content %}
