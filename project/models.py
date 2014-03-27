@@ -43,25 +43,24 @@ class Project(models.Model):
 
 
     rating = RatingField(range=2, can_change_vote = True,allow_delete = True,)
-    ratingSortBest = models.PositiveIntegerField(blank=True, null=True)
+    ratingSortBest = models.FloatField(default=2)
     ratingCount = models.IntegerField(blank=True, null=True)
     #Pretends that 0 is -1 and 1 is 1.
     def calc_adjusted_rating(self):
         import math
 
-        upvotes = self.rating.votes - self.rating.score
-        downvotes = self.rating.score - upvotes
+        upvotes = self.rating.score - self.rating.votes
+        downvotes = self.rating.votes - upvotes
         self.ratingCount = upvotes-downvotes
         votes = self.rating.votes
-        self.ratingSortBest = self.ratingCount #fix this later
 
-        if(self.rating.votes==0): 
-            self.ratingSortBest = 0 
+        if(votes == 0):
+            #Set to 2 by default, to encourage people to look at/vote on new content. 
+            self.ratingSortBest = 2 
         else: 
             r=1.0*upvotes/votes
             z=1.95 
-            self.ratingSortBest = (r+z*z-z*math.sqrt((r*(1-r)+(z*z/4*votes))/votes))/(1+z*z/votes)
-
+            self.ratingSortBest = ((r+z*z-z*math.sqrt((r*(1-r)+(z*z/4*votes))/votes))/(1+z*z/votes))
 
         super(Project, self).save()
 
