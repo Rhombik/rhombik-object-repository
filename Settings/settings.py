@@ -12,6 +12,7 @@ except ImportError:
 
     secretfile = open(SETTINGS_DIR+"/secret_key.py", 'w')
     secretfile.write("SECRET_KEY = \'"+secret_key+"\'\n")
+    secretfile.close()
     from Settings.secret_key import *
 
 ''''
