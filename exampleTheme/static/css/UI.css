@@ -1,0 +1,249 @@
+.button {
+	display: inline-block;
+	padding: 7px 15px;
+	margin: 0 15px 15px 0;
+	border: none;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	font-size: 11pt;
+	text-align: center;
+	line-height: 16pt;
+	color: rgb(255, 255, 255);
+	background-color: rgb(200,200,200);
+}
+
+.button:link, .button:visited, .button:active {
+	color: rgb(255, 255, 255);
+}
+
+.button:hover, .button:focus {
+	color: rgb(58, 48, 62);
+}
+
+.button span {
+	float: left;
+	margin-right: 10px;
+}
+
+.button i {
+	float: right;
+}
+	
+.purple {
+	background-color: rgb(173, 112, 211);
+}
+
+.green {
+	background-color: rgb(98,196,68);
+}
+
+.field {
+	display: block;
+	padding: 5px 0;
+}
+
+.button.fullWidth {
+	display: block;
+}
+
+dl {
+	color: rgb(153,153,153);
+	margin: 0 0 20px 0;
+}
+
+.dataRow {
+	display: block;
+	width: 100%;
+	margin: 5px 0px;
+}
+
+dd {
+	float: left;
+	font-weight: 600;
+}
+
+dt {
+	width: auto;
+	text-align: right;
+}
+
+label {
+	display: block;
+	margin: 0px 0px 5px 0px;
+	font-size: 11pt;
+	color: rgb(153, 153, 153);
+}
+
+	label.wrapLabel {
+		display: inline-block;
+		width: auto;
+		margin: 0 13px 20px 2px;
+		padding: 10px 15px;
+		border: 1px solid rgb(180, 180, 180);
+		border-radius: 3px;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		text-align: middle;
+		background: rgb(235,235,235);
+	}
+
+input, textarea {
+	font-size: 11pt;
+	padding: 10px 15px;
+	resize: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+	input:focus, textarea:focus {
+		outline: none;
+		box-shadow: 1px 1px 0 rgb(180,180,180);
+	}
+
+input[type='text'], input[type='password'], input[type='search'], textarea {
+	max-width: 100%;
+	border: 1px solid rgb(180, 180, 180);
+	border-radius: 3px;
+	background: rgb(255,255,255);
+}
+
+#sideBar input[type='text'], #sideBar input[type='password'], #sideBar input[type='search'], #sideBar textarea {
+	width: 100%;
+}
+
+input[type='radio']{
+	visibility: hidden;
+	width: 12px;
+	height: 12px;
+}
+
+	input[type='radio']:before {
+		content: 'No';
+		display: block;
+		visibility: visible;
+		width: 12px;
+		height: 12px;
+		border-radius: 12px;
+		border: 1px solid rgb(180, 180, 180);
+		text-indent: -9999px;
+		background-color: rgb(255, 255, 255);
+	}
+	
+	input[type='radio']:checked:before {
+		background: rgb(255, 255, 255) url(../img/radioChecked.png) no-repeat center;
+	}
+
+input[type='checkbox'] {
+	visibility: hidden;
+	width: 12px;
+	height: 12px;
+}
+
+	input[type='checkbox']:before {
+		content: 'No';
+		display: block;
+		visibility: visible;
+		width: 12px;
+		height: 12px;
+		border-radius: 3px;
+		border: 1px solid rgb(180, 180, 180);
+		text-indent: -9999px;
+		background-color: rgb(255, 255, 255);
+	}
+	
+	input[type='checkbox']:checked:before {
+		background: rgb(255, 255, 255) url(../img/radioChecked.png) no-repeat center;
+	}
+	
+		input.toggle{}
+
+#searchForm {
+	display: block;
+	float: left;
+	padding-top: 7px;
+}
+
+	 input#searchInput {
+		float: left;
+		width: auto;
+		margin: 0 0 0 20px;
+		padding: 10px 10px 10px 15px;
+		border: none;
+		border-top-left-radius: 3px;
+		border-bottom-left-radius: 3px;
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
+		font-size: 11pt;
+		background-color: rgb(255, 255, 255);
+	}
+	
+		 input#searchInput:focus {
+			box-shadow: none;
+		}
+	
+	button#searchSubmit {
+		float: left;
+		margin: 0;
+		padding: 10px;
+		border: none;
+		border-top-left-radius: 0px;
+		border-bottom-left-radius: 0px;
+		border-top-right-radius: 3px;
+		border-bottom-right-radius: 3px;
+		background-color: rgb(255, 255, 255);
+	}
+	
+		button#searchSubmit i {
+			padding: 0;
+			font-size: 12pt;
+			color: rgb(180, 180, 180);
+		}
+
+.sortBody {
+	width: 100%;
+	height: auto;
+	margin: 0 0 20px 0;
+	border-bottom: 1px solid rgb(180, 180, 180);
+}
+
+	.sortBody ul {
+		list-style: none;
+	}
+	
+	.sortBody ul li {
+		position: relative;
+		top: 1px;
+		display: block;
+		float: left;
+		padding: 5px 20px;
+		color: rgb(180, 180, 180);
+	}
+	
+		.sortBody ul li a:link, .sortBody ul li a:visited {
+			color: rgb(180, 180, 180);
+			text-decoration: none;
+		}
+	
+		.sortBody ul li:hover, .sortBody ul li a:hover, .sortBody ul li a:active  {
+			cursor: pointer;
+			color: rgb(51, 51, 51);
+		}
+	
+		.sortBody ul li.active {
+			border: 1px solid rgb(180, 180, 180);
+			border-bottom: 0;
+			-webkit-border-top-right-radius: 2px;
+			-webkit-border-top-left-radius: 2px;
+			-moz-border-top-right-radius: 2px;
+			-moz-border-top-left-radius: 2px;
+			border-top-right-radius: 2px;
+			border-top-left-radius: 2px;
+			color: rgb(51, 51, 51);
+			background-color: rgb(242, 242, 242);
+		}
