@@ -91,8 +91,8 @@ class Project(models.Model):
             files=fileobject.objects.filter(project=self, filetype="text")
             print(files)
             for fl in files:
-                if False:### Look for thumbnailable pic.
-                    self.bodyFile = fl.fileobject
+                if fl:### Look for thumbnailable pic.
+                    self.bodyFile = fl
                     super(Project, self).save()
                     break
                 else:
