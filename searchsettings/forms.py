@@ -39,10 +39,10 @@ class DateRangeSearchForm(SearchForm):
             sqs = sqs.filter(tags=parse_tags(self.cleaned_data['tags']))
 
 
-        if self.cleaned_data['start_date']:
+        if 'start_date' in self.cleaned_data:
             sqs = sqs.filter(created__gte=self.cleaned_data['start_date'])
 
         # Check to see if an end_date was chosen.
-        if self.cleaned_data['end_date']:
+        if 'end_date' in self.cleaned_data:
             sqs = sqs.filter(created=self.cleaned_data['end_date'])
         return sqs
