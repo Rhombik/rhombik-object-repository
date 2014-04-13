@@ -120,7 +120,6 @@ def multiuploader(request, pk):
                        "delete_url":"/multi_delete/"+str(image.pk)+"/",
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
-        print(response_data)
         if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
             mimetype = 'application/json'
         else:

@@ -36,7 +36,6 @@ def thumbnailify(filebit, sizebit):
   response = HttpResponse(mimetype="image/png")
 
   if ext in browser_kind:
-    print("filebit.filename:    "+str(filebit.filename))
     img = Image.open(filebit.filename)
     img.thumbnail(sizebit)
     backround = Image.new('RGBA', sizebit, (255, 255, 255, 0))  #with alpha

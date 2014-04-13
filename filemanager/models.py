@@ -10,7 +10,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 class fakefile():
-    url = "null"
+    url = ""
 #    def url():
 #        return("null")
 
@@ -64,9 +64,8 @@ class thumbobject(models.Model):
 
     def save(self, generate=True, *args, **kwargs):
         from filemanager.tasks import thumbTask
+
         if generate==True:
-            if self.pk:
-                self.delete()
             thumbTask.delay(self)
             self.filetype="norender"
             self.filename=fakefile()
