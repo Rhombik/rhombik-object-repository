@@ -75,7 +75,7 @@ def multiuploader(request, pk):
             file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         except AttributeError:
             file_delete_url = 'multi_delete/'
-        thumbnail = thumbObjectProxy.objects.get_or_create( fileobject = projectfiles, filex=64, filey=64 )[0]
+        thumbnail = thumbobject.objects.get_or_create( fileobject = projectfiles, filex=64, filey=64 )[0]
         result = []
         ##It waits for the thumbnail to generate before sending the json, which should work.
         thumburl=""
@@ -105,7 +105,7 @@ def multiuploader(request, pk):
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []
         for image in projectfiles:
-            thumbnail =  thumbObjectProxy.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0]
+            thumbnail =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0]
 
             if thumbnail.filename != "False":
                 thumburl=thumbnail.filename.url
@@ -120,7 +120,7 @@ def multiuploader(request, pk):
                        "delete_url":"/multi_delete/"+str(image.pk)+"/",
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
-
+        print(response_data)
         if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
             mimetype = 'application/json'
         else:
