@@ -10,8 +10,9 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 class fakefile():
-    def url():
-        return("null")
+    url = ""
+#    def url():
+#        return("null")
 
 # Create your models here.
 
@@ -63,9 +64,8 @@ class thumbobject(models.Model):
 
     def save(self, generate=True, *args, **kwargs):
         from filemanager.tasks import thumbTask
+
         if generate==True:
-            if self.pk:
-                self.delete()
             thumbTask.delay(self)
             self.filetype="norender"
             self.filename=fakefile()
@@ -88,6 +88,7 @@ class thumbObjectProxy(thumbobject):
         tmpfile, self.filetype = thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
         #Bleh, this is awful. Means we won't have to refactor a bunch of other stuff, but implies some deeper architecture issues.
         if self.filetype=="text":
+            #Means you won't get text files when you query thumobjects.
             self.filetype="norender"
         self.filename = tmpfile
         super(thumbObjectProxy, self,).save(generate=False, *args, **kwargs)

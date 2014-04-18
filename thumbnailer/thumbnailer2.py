@@ -36,15 +36,16 @@ def thumbnailify(filebit, sizebit):
   response = HttpResponse(mimetype="image/png")
 
   if ext in browser_kind:
-    print("filebit.filename:    "+str(filebit.filename))
     img = Image.open(filebit.filename)
     img.thumbnail(sizebit)
+    backround = Image.new('RGBA', sizebit, (255, 255, 255, 0))  #with alpha
+    backround.paste(img,((sizebit[0] - img.size[0]) / 2, (sizebit[1] - img.size[1]) / 2))
     # Create a file-like object to write thumb data (thumb data previously created
     # using PIL, and stored in variable 'img')
     # using PIL, and stored in variable 'thumb')
 #    thumb_io = BytesIO()
     thumb_io = BytesIO()
-    img.save( thumb_io, format='png')
+    backround.save( thumb_io, format='png')
   
     # Create a new Django file-like object to be used in models as ImageField using
     # InMemoryUploadedFile.  If you look at the source in Django, a
