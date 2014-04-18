@@ -63,35 +63,16 @@ class thumbobject(models.Model):
         unique_together = ('filex', 'filey', "fileobject")
 
     def save(self, generate=True, *args, **kwargs):
-        from filemanager.tasks import thumbTask
+        super(thumbobject, self,).save()
 
-        if generate==True:
-            thumbTask.delay(self)
-            self.filetype="norender"
-            self.filename=fakefile()
-            return
-        else:
-            super(thumbobject, self,).save()
+        if generate == True:
+            from filemanager.tasks import thumbTask
+            thumbTask(self. self.fileobject.filename)
+        self.fakedata=fakefile()
 
     def delete(self, *args, **kwargs):
         default_storage.delete(self.filename)
         super(thumbobject, self).delete(*args, **kwargs)
-
-
-##This directly creates the thumbnail, ignoring  any queueing. Try to use thumbobject.
-class thumbObjectProxy(thumbobject):
-
-    class Meta:
-        proxy = True
-    def save(self, *args, **kwargs):
-        self=self
-        tmpfile, self.filetype = thumbnailer2.thumbnailify(self.fileobject, (self.filex, self.filey))
-        #Bleh, this is awful. Means we won't have to refactor a bunch of other stuff, but implies some deeper architecture issues.
-        if self.filetype=="text":
-            #Means you won't get text files when you query thumobjects.
-            self.filetype="norender"
-        self.filename = tmpfile
-        super(thumbObjectProxy, self,).save(generate=False, *args, **kwargs)
 
 
 from django.core.files.uploadedfile import UploadedFile

@@ -25,7 +25,7 @@ log = logging
 import os.path
 from multiuploader.forms import MultiuploaderImage
 from project.models import *
-from filemanager.models import fileobject, thumbobject, thumbObjectProxy
+from filemanager.models import fileobject, thumbobject
 
 
 @csrf_exempt
@@ -107,9 +107,9 @@ def multiuploader(request, pk):
         for image in projectfiles:
             thumbnail =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0]
 
-            if thumbnail.filename != "False":
+            try:
                 thumburl=thumbnail.filename.url
-            else:
+            except:
                 thumburl=""
 
             ##json stuff
@@ -120,6 +120,7 @@ def multiuploader(request, pk):
                        "delete_url":"/multi_delete/"+str(image.pk)+"/",
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
+        print(response_data)
         if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
             mimetype = 'application/json'
         else:

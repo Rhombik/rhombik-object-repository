@@ -23,10 +23,16 @@ def zippedTask(project):
 
 
 @app.task()
-def thumbTask(self):
-   from filemanager.models import thumbObjectProxy
-   z = thumbObjectProxy(fileobject=self.fileobject, filex=self.filex, filey=self.filey)
-   print(self)
-   z.save()
+def thumbTask(self, fullfile):
+   from thumbnailer import thumbnailer2
+
+   self.filename, self.filetype = thumbnailer2.thumbnailify(fullfile, (self.filex, self.filey))
+   #Bleh, this is awful. Means we won't have to refactor a bunch of other stuff, but implies some deeper architecture issues.
+   if self.filetype=="text":
+   #Means you won't get text files when you query thumobjects.
+      self.filetype="norender"
+
+
+   self.save(generate=False)
    return
 
