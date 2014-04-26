@@ -34,6 +34,7 @@ def searchtest(*args, **kwargs):
 
 
 
+
 def thumbnail_get(project, fileobject, *args, **kwargs):
     
     ## Sets the default thumbnail to an image in the project.
@@ -49,7 +50,11 @@ def thumbnail_get(project, fileobject, *args, **kwargs):
 
 
 
-
+"""______________________________"""
+## project_list_get takes a list of projects and returns a list of lists containing:
+## -a thumbnail object for the project.
+## -the project.
+"""~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 def project_list_get(projects):
 
     listdata = []
@@ -60,17 +65,8 @@ def project_list_get(projects):
 
     return listdata
 
-'''
-Printable Viewing
 
-- Need to output an array of the printables thumbnails.
-- Need to output the 3d render into a shadowbox via button click.
-- Need to output the detailed information about the model (read me, files, additional text files, etc) into some kind of flexible format (to deal with java being disabled)
-- Need to output comments
-- Need to output statistics (tags, total # of downloads, total # of comments, total # of up votes, date uploaded into English formatted variables that change semantically to quantity (i.e., 1 download, 200 downloads/1 up vote, 200 up votes)
-- Need to output download link for zip file for specific printable.
-- Need to output author info (other work, 4 or 5) with thumbnail and name.
-'''
+
 
 def project(request, pk):
     project = Project.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
@@ -321,25 +317,17 @@ def tag(request,tag):
     return render_to_response("front.html", dict(listdata=listdata, user=request.user, active="home"))
 
 
-
-#   try: page = int(request.GET.get("page", '1'))
-#   except ValueError: page = 1
-
-#   try:
-#       projects = paginator.page(page)
-#   except (InvalidPage, EmptyPage):
-#       projects = paginator.page(paginator.num_pages)
-
-#   return render_to_response("list.html", dict(listdata=listdata, user=request.user))
-
 def tagcloud(request):
     return render(request, "tagcloud.html")
+
 
 def list_to_tags(list, tags, clear=True):
             if clear:
                 tags.clear()
             for tag in list:
                 tags.add(tag)
+
+
 
 
 from djangoratings.views import AddRatingFromModel
@@ -350,9 +338,6 @@ def ratingCalc(request,**params):
         project.calc_adjusted_rating()
         pass
     return response
-
-
-
 
 
 
