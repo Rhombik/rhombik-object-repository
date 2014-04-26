@@ -31,8 +31,11 @@ def thumbTask(self, fullfile):
    if self.filetype=="text":
    #Means you won't get text files when you query thumobjects.
       self.filetype="norender"
-
-
-   self.save(generate=False)
+   if self.filename:
+       self.save(generate=False)
+   else:
+       import time
+       time.sleep(5)
+       thumbTask.delay(self, fullfile)
    return
 

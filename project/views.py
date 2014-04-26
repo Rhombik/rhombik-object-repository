@@ -99,6 +99,7 @@ def project(request, pk):
             thumbmodel=thumbobject.objects.get_or_create(fileobject = i, filex=64, filey=64 )[0] 
             thumbnail=thumbmodel.filename.url
             images.append([thumbnail,fullpath,renderer])
+
         elif (renderer == "norender"):
             norenders +=1
         if (renderer == "text" and i != project.bodyFile ):
