@@ -4,9 +4,8 @@ from __future__ import absolute_import
 from django.db import models
 import os
 
-from celery import Celery
+from celery import Celery, shared_task
 from django.conf import settings
-
 
 app = Celery('tasks',)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'exampleSettings.settings')
@@ -25,7 +24,6 @@ def zippedTask(project):
 @app.task()
 def thumbTask(self, fullfile):
    from thumbnailer import thumbnailer2
-
    self.filename, self.filetype = thumbnailer2.thumbnailify(fullfile, (self.filex, self.filey))
    #Bleh, this is awful. Means we won't have to refactor a bunch of other stuff, but implies some deeper architecture issues.
    if self.filetype=="text":

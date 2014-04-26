@@ -63,11 +63,10 @@ class thumbobject(models.Model):
         unique_together = ('filex', 'filey', "fileobject")
 
     def save(self, generate=True, *args, **kwargs):
-
         super(thumbobject, self,).save()
         if generate == True:
             from filemanager.tasks import thumbTask
-            thumbTask(self, self.fileobject.filename)
+            thumbTask.delay(self, self.fileobject)
 
     def delete(self, *args, **kwargs):
         default_storage.delete(self.filename)
