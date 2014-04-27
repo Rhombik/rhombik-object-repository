@@ -48,11 +48,11 @@ urlpatterns = patterns('',
     #user profile pages
     url(r'^userProfile/', include('userProfile.urls')),
     (r'^editUser/', 'userProfile.views.edit'),
-    (r'^download/(.*)/$', 'filemanager.views.download'),
 
     #We should try to move url definitions into each app.
     url(r'', include('multiuploader.urls')),
     url(r'', include('project.urls')),
+    url(r'', include('filemanager.urls')),
 
 
 
