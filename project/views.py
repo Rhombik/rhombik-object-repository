@@ -88,21 +88,18 @@ def project(request, pk):
    # norenders. this is the number of files in the project not rendered. We currently do nothing.. unless someone changed that and not this note.
     norenders =0
     for i in projectfiles:
-        fullpath=i
         renderer=i.filetype
+        if renderer != "norender" and renderer != "text":
+            images.append(i.get_thumb(64,64))
 
-        if (renderer == "browser" or renderer == "jsc3d"):
-            thumbmodel=thumbobject.objects.get_or_create(fileobject = i, filex=64, filey=64 )[0]
-            thumbnail=thumbmodel.filename.url
-            images.append([thumbnail,fullpath,renderer])
-
-        elif (renderer == "norender"):
+        if renderer == "norender":
             norenders +=1
-        if (renderer == "text" and i != project.bodyFile ):
+
+
+        if renderer == "text" and i != project.bodyFile :
             htmlmodel=htmlobject.objects.get_or_create(fileobject = i )[0] 
             texts.append([htmlmodel, path.split(str(i.filename))[1]])
-            
-
+    print(images)
     download=zippedobject.objects.get_or_create(project=project)[0]
 
     c = RequestContext(request, dict(project=project, 

@@ -7,4 +7,9 @@
 {% if renderer == "jsc3d" %}
 	<a href="/preview/jsc3d/{{ fullpath.pk }}" class="iframe gallery-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
 {% endif %}
+
+{% if renderer == "ajax" %}
+        <a class="iframe gallery-{{ galleryname }}">I'm an ajax! {{fullpath.pk}} </a>
+{% endif %}
+
 {% endfor %}
