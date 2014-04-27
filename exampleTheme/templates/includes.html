@@ -21,6 +21,12 @@ jQuery(document).ready(function () {
 
 </script>
 
+{% load coffeescript %}
+
+<script type="text/javascript"
+        src="{{ STATIC_URL}}{% coffeescript "script/thumbloader.coffee" %}">
+</script>
+
 </head>
 <body>
 
