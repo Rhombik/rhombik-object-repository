@@ -39,10 +39,10 @@ def ajaxthumblist(request,csv):
                 localdata.append({"error":"Not a thumbnailable data type"})
             elif not thumbinstance.filename:
                 localdata.append("loading")
-                localdata.append({"size":(str(thumbinstance.filex),str(thumbinstance.filey))})
+                localdata.append({"size":(thumbinstance.filex,thumbinstance.filey)})
             elif thumbinstance.filename.url:
                 localdata.append({"html":str(thumbinstance.filename.url)})
-                localdata.append({"size":(str(thumbinstance.filex),str(thumbinstance.filey))})
+                localdata.append({"size":(thumbinstance.filex,thumbinstance.filey)})
 
 
         jsondata.append({"object":localdata})
