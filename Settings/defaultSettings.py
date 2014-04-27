@@ -16,7 +16,7 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 
 BROKER_URL = 'django://'
-CELERY_ALWAYS_EAGER = True
+#CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 
 MANAGERS = ADMINS
@@ -109,8 +109,13 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'static_precompiler.finders.StaticPrecompilerFinder',
 )
 
+
+STATIC_PRECOMPILER_COMPILERS = (
+    'static_precompiler.compilers.CoffeeScript',
+)
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -165,6 +170,10 @@ INSTALLED_APPS = (
     'djangoratings',
     'threadedcomments',
     'django.contrib.comments',
+    #So we can inline coffeescript
+    'static_precompiler',
+#    'djcelery',
+    'kombu.transport.django',
 #    'celery_haystack',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
@@ -202,6 +211,7 @@ LOGGING = {
         },
     }
 }
+
 
 
 if False:

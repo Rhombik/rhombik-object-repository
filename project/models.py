@@ -68,7 +68,6 @@ class Project(models.Model):
         return self.title
     def save(self):
         if not self.thumbnail:
-            print(self.thumbnail)
             self.draft=True
         super(Project, self).save()
 
@@ -89,7 +88,6 @@ class Project(models.Model):
         #check to see if there's a readme.
         if not self.bodyFile:
             files=fileobject.objects.filter(project=self, filetype="text")
-            print(files)
             for fl in files:
                 if fl:### Look for thumbnailable pic.
                     self.bodyFile = fl

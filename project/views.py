@@ -97,7 +97,6 @@ def project(request, pk):
 
         if (renderer == "browser" or renderer == "jsc3d"):
             thumbmodel=thumbobject.objects.get_or_create(fileobject = i, filex=64, filey=64 )[0]
-            print(thumbmodel)
             thumbnail=thumbmodel.filename.url
             images.append([thumbnail,fullpath,renderer])
 

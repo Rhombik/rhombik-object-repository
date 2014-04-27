@@ -22,15 +22,24 @@ def zippedTask(project):
 
 
 @app.task()
-def thumbTask(self, fullfile):
+def thumbTask(thumbnailpk, fullfilepk):
    from thumbnailer import thumbnailer2
-   self.filename, self.filetype = thumbnailer2.thumbnailify(fullfile, (self.filex, self.filey))
+   from filemanager.models import fileobject, thumbobject
+
+   #Celery pickles the object before it sends it to the queue, so we need to look it up on this side.
+   thumbnail= thumbobject.objects.get(pk=thumbnailpk)
+   fullfile = fileobject.objects.get(pk=fullfilepk)
+
+   print(thumbnail)
+   print(fullfile)
+
+   thumbnail.filename, thumbnail.filetype = thumbnailer2.thumbnailify(fullfile, (thumbnail.filex, thumbnail.filey))
    #Bleh, this is awful. Means we won't have to refactor a bunch of other stuff, but implies some deeper architecture issues.
-   if self.filetype=="text":
+   if thumbnail.filetype=="text":
    #Means you won't get text files when you query thumobjects.
-      self.filetype="norender"
-   if self.filename:
-       self.save(generate=False)
+      thumbnail.filetype="norender"
+   if thumbnail.filename:
+       thumbnail.save(generate=False)
    else:
        import time
        time.sleep(5)
