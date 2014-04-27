@@ -134,6 +134,9 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+if DEBUG ==True:
+    MIDDLEWARE_CLASSES += ('Settings.BeautifulMiddleware.BeautifulMiddleware',)
+
 ROOT_URLCONF = 'Settings.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
