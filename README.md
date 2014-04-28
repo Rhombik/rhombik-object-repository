@@ -78,19 +78,16 @@ At the core of our service is a very robust thumbnailer. It takes screenshots of
 
 ```python
 #in your view
-
 #Set up a list to store your images in
 myimages = []
 #get the first fileobject in the database, and append it to our images list.
 myimages.append(fileobject.objects.get(pk=1))
 
 render\_to\_string('mytemplate.html', dict(myimages=myimages, testgallery="testgallery")
-
 ```
 ```
 #In "mytemplate.html"
 {% include "gallery.html" with images=myimages galleryname=testgallery %}
-
 ```
 
 **multiuploader**
