@@ -27,25 +27,30 @@ def ajaxthumblist(request,csv):
     csv = csv.split(',')
     jsondata= []
     for i in csv:
-        localdata = [{"pk":int(i)}]
+        localdata = {"pk":int(i)}
         try:
             thumbinstance = thumbobject.objects.get(pk=int(i))
         except:
             thumbinstance= False
-            localdata.append({"error":"404"})
+            localdata["error"] = "404"
 
         if thumbinstance != False:
             if thumbinstance.filetype == "norender" or thumbinstance.filetype == "text":
-                localdata.append({"error":"Not a thumbnailable data type"})
+                localdata["error"] = "Not a thumbnailable data type"
             elif not thumbinstance.filename:
-                localdata.append("loading")
-                localdata.append({"size":(thumbinstance.filex,thumbinstance.filey)})
+                localdata["loading"] = True
+                localdata["size"] =(thumbinstance.filex,thumbinstance.filey)
             elif thumbinstance.filename.url:
-                localdata.append({"html":str(thumbinstance.filename.url)})
-                localdata.append({"size":(thumbinstance.filex,thumbinstance.filey)})
+                from django.template.loader import render_to_string
+    
+                images=[thumbinstance.fileobject.get_thumb(thumbinstance.filex,thumbinstance.filey)]
+                rendered = render_to_string('gallery.html', dict(images=images, galleryname="ajax"))
+                rendered = rendered.strip('\n')
+                localdata["html"] = str(rendered)
+                localdata["size"] = (thumbinstance.filex,thumbinstance.filey)
 
 
-        jsondata.append({"object":localdata})
+        jsondata.append(localdata)
 
     response_data = json.dumps(jsondata,sort_keys=True,
                   indent=4, separators=(',', ': '))

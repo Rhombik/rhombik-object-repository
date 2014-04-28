@@ -29,6 +29,15 @@ class fileobject(models.Model):
 
     def __unicode__(self):
         return str(self.filename)
+    def get_thumb(self, sizex, sizey):
+        renderer = str(self.filetype)
+        if (renderer == "browser" or renderer == "jsc3d"):
+            thumbmodel=thumbobject.objects.get(fileobject = self, filex=sizex, filey=sizey )
+            return [thumbmodel,self,renderer]
+        elif (renderer == "ajax"):
+            return ["",self,self.renderer]
+        else:
+            return
 
 
     def save(self):

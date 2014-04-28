@@ -42,9 +42,11 @@ To set up a development enviroment simply
     #follow the prompts to add a new devleoper superuser account to the test DB.
     python manage.py runserver
 
-Unfortunately django-static-precompiler requires the nodejs coffee command, which means we can't just rely on pip for all of our dependencies. There's a [bug report](https://github.com/andreyfedoseev/django-static-precompiler/issues/16) to get this fixed. For now, install nodejs and run
+Unfortunately django-static-precompiler requires the nodejs coffee command, which means we can't just rely on pip for all of our dependencies. Install nodejs and run.
 
     sudo npm install coffee-script -g
+
+We'll work on cacheing the compiled scripts into git, so you won't need it unless you're editing the javascript.
 
 Then navigate to http://localhost:8000
 
@@ -72,7 +74,23 @@ It also has a "thumbobject" model. Each thumbobject is a png preview of a fileob
 
 **thumbnailer**
 
-You pass it an uploadedFile object and a size. It returns an uploadedFile object to use as your thumbnail and a rendertype.
+At the core of our service is a very robust thumbnailer. It takes screenshots of javascript renderers, so that what the use sees in a thumbnail and what the user see in a live preview are identical. Thumbnailing like that can take a while for more complicated file types, so we have a queueing system and an ajax thumbnail loader. It's overly complicated and poorly documents. But the short story is that in order to get a thumbnail you need to call somefileobject.get\_thumbnail(thumbX, thumbY), and then pass that data in a list[] to the gallery.html template. So something like
+
+```python
+#in your view
+#Set up a list to store your images in
+myimages = []
+#get the first fileobject in the database.
+filedata = fileobject.objects.get(pk=1))
+#generate a 64x64 thumbnail (or ajax loader if it takes too long) for our file
+myimages.append(filedata.get_thumb(64,64))
+
+render\_to\_string('mytemplate.html', dict(myimages=myimages, testgallery="testgallery")
+```
+```
+#In "mytemplate.html"
+{% include "gallery.html" with images=myimages galleryname=testgallery %}
+```
 
 **multiuploader**
 
