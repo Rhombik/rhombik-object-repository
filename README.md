@@ -87,7 +87,6 @@ myimages.append(fileobject.objects.get(pk=1))
 render\_to\_string('mytemplate.html', dict(myimages=myimages, testgallery="testgallery")
 
 ```
----
 ```
 #In "mytemplate.html"
 {% include "gallery.html" with images=myimages galleryname=testgallery %}
