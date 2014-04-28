@@ -41,7 +41,12 @@ def ajaxthumblist(request,csv):
                 localdata.append("loading")
                 localdata.append({"size":(thumbinstance.filex,thumbinstance.filey)})
             elif thumbinstance.filename.url:
-                localdata.append({"html":str(thumbinstance.filename.url)})
+                from django.template.loader import render_to_string
+
+                images=[[thumbinstance.filename.url,thumbinstance.fileobject,thumbinstance.filetype]]
+                rendered = render_to_string('gallery.html', dict(images=images))
+
+                localdata.append({"html":str(rendered)})
                 localdata.append({"size":(thumbinstance.filex,thumbinstance.filey)})
 
 

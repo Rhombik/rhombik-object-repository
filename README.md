@@ -42,9 +42,11 @@ To set up a development enviroment simply
     #follow the prompts to add a new devleoper superuser account to the test DB.
     python manage.py runserver
 
-Unfortunately django-static-precompiler requires the nodejs coffee command, which means we can't just rely on pip for all of our dependencies. There's a [bug report](https://github.com/andreyfedoseev/django-static-precompiler/issues/16) to get this fixed. For now, install nodejs and run
+Unfortunately django-static-precompiler requires the nodejs coffee command, which means we can't just rely on pip for all of our dependencies. Install nodejs and run.
 
     sudo npm install coffee-script -g
+
+We'll work on cacheing the compiled scripts into git, so you won't need it unless you're editing the javascript.
 
 Then navigate to http://localhost:8000
 

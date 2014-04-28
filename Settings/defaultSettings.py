@@ -112,6 +112,20 @@ STATICFILES_FINDERS = (
     'static_precompiler.finders.StaticPrecompilerFinder',
 )
 
+#Let's try and cache the inline javascript so you don't need to generate it
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': PROJECT_PATH+'/django_cache',
+    }
+    'javascript': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': PROJECT_PATH+'/coffeecache',
+    }
+
+}
+
 
 STATIC_PRECOMPILER_COMPILERS = (
     'static_precompiler.compilers.CoffeeScript',
