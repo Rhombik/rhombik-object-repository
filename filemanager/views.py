@@ -35,7 +35,7 @@ def ajaxthumblist(request,csv):
             localdata["error"] = "404"
 
         if thumbinstance != False:
-            if thumbinstance.filetype == "norender" or thumbinstance.filetype == "text":
+            if thumbinstance.filetype == "norender" or thumbinstance.filetype == "text" or not thumbinstance.filetype:
                 localdata["error"] = "Not a thumbnailable data type"
             elif not thumbinstance.filename:
                 localdata["loading"] = True
