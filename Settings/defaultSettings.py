@@ -118,7 +118,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': PROJECT_PATH+'/django_cache',
-    }
+    },
     'javascript': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': PROJECT_PATH+'/coffeecache',
