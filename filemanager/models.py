@@ -33,8 +33,7 @@ class fileobject(models.Model):
         renderer = str(self.filetype)
         if (renderer == "browser" or renderer == "jsc3d"):
             thumbmodel=thumbobject.objects.get(fileobject = self, filex=sizex, filey=sizey )
-            thumbnail=thumbmodel.filename.url
-            return [thumbnail,self,renderer]
+            return [thumbmodel,self,renderer]
         elif (renderer == "ajax"):
             return ["",self,self.renderer]
         else:
