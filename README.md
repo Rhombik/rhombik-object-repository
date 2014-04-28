@@ -80,8 +80,10 @@ At the core of our service is a very robust thumbnailer. It takes screenshots of
 #in your view
 #Set up a list to store your images in
 myimages = []
-#get the first fileobject in the database, and append it to our images list.
-myimages.append(fileobject.objects.get(pk=1))
+#get the first fileobject in the database.
+filedata = fileobject.objects.get(pk=1))
+#generate a 64x64 thumbnail (or ajax loader if it takes too long) for our file
+myimages.append(filedata.get_thumb(64,64))
 
 render\_to\_string('mytemplate.html', dict(myimages=myimages, testgallery="testgallery")
 ```
