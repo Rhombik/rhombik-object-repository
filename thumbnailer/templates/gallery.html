@@ -1,15 +1,13 @@
-<!--Gallery is {{ galleryname }} -->
-
 {% for thumbnail,fullpath,renderer in images %}
 {% if renderer == "browser" %}
-	<a href="{{ fullpath.filename.url }}" class="gallery-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
+<a href="{{ fullpath.filename.url }}" class="gallery-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
 {% endif %}
 {% if renderer == "jsc3d" %}
-	<a href="/preview/jsc3d/{{ fullpath.pk }}" class="iframe gallery-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
+<a href="/preview/jsc3d/{{ fullpath.pk }}" class="iframe gallery-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
 {% endif %}
 
 {% if renderer == "ajax" %}
-        <a class="iframe gallery-{{ galleryname }}">I'm an ajax! {{fullpath.pk}}</a>
+<a class="iframe gallery-{{ galleryname }}">I'm an ajax! {{fullpath.pk}}</a>
 {% endif %}
 
 {% endfor %}
