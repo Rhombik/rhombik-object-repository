@@ -32,7 +32,7 @@ def ajaxthumblist(request,csv):
             thumbinstance = thumbobject.objects.get(pk=int(i))
         except:
             thumbinstance= False
-            localdata.append({"error":"404"})
+            localdata["error"] = "404"
 
         if thumbinstance != False:
             if thumbinstance.filetype == "norender" or thumbinstance.filetype == "text":
