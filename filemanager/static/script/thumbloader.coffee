@@ -23,3 +23,4 @@ class window.thumbloader
 
     register: (pk, gallery) ->
         this.datalist.push([pk,gallery])
+        console.log this.datalist
