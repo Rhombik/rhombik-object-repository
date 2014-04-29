@@ -16,3 +16,10 @@ $(document).ready(GetViewedItem("/ajax/thumblist/1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2
 
 console.log "I like tea!"
 
+
+
+class thumbloader
+    datalist: []
+
+    register: (pk) (gallery) ->
+        datalist.push([pk,gallery])
