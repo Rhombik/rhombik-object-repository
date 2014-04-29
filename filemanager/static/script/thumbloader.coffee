@@ -12,7 +12,7 @@ GetViewedItem= (foo) ->
             handleViewedItem data
 
 
-$(document).ready(GetViewedItem("ajax/thumblist/1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10"))
+$(document).ready(GetViewedItem("/ajax/thumblist/1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10"))
 
 console.log "I like tea!"
 
