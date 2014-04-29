@@ -1,7 +1,7 @@
 
 
 handleViewedItem= (data) ->
-    console.log $.parseJSON(data)[0].pk
+    console.log $.parseJSON(data)
     console.log $.parseJSON(data)[0].loading
     console.log $.parseJSON(data)[0].size[0]
     console.log $.parseJSON(data)[0].size[1]
@@ -18,8 +18,8 @@ console.log "I like tea!"
 
 
 
-class thumbloader
+class window.thumbloader
     datalist: []
 
-    register: (pk) (gallery) ->
-        datalist.push([pk,gallery])
+    register: (pk, gallery) ->
+        this.datalist.push([pk,gallery])
