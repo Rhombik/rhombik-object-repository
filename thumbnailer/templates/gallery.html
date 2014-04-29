@@ -7,7 +7,7 @@
 {% endif %}
 
 {% if renderer == "ajax" %}
-<a>Register an ajax, where thumbnail == {{thumbnail.pk}}  and gallery == gallery-{{ galleryname }}</a>
+         <div class="thumbloader pk={{thumbnail.pk}}"><script>thumbloader.register("{{thumbnail.pk}}", "gallery-{{ galleryname }}")</script></div>
 {% endif %}
 
 {% endfor %}
