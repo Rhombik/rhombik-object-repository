@@ -75,7 +75,7 @@ def multiuploader(request, pk):
             file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         except AttributeError:
             file_delete_url = 'multi_delete/'
-        thumbnail = thumbobject.objects.get_or_create( fileobject = projectfiles, filex=64, filey=64 )[0]
+        #thumbnail = thumbobject.objects.get_or_create( fileobject = projectfiles, filex=64, filey=64 )[0]
         result = []
         ##It waits for the thumbnail to generate before sending the json, which should work.
         thumburl=""
@@ -87,7 +87,7 @@ def multiuploader(request, pk):
         result.append({"name":projectfiles.subfolder+os.path.split(str(projectfiles.filename.name))[1], 
                        "size":projectfiles.filename.size, 
                        "url":str(projectfiles.filename.url),
-                       "thumbnail_url":thumburl,
+                       "thumbnail_url":"",
                        "delete_url":"/multi_delete/"+str(projectfiles.pk)+"/", 
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
@@ -105,7 +105,7 @@ def multiuploader(request, pk):
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []
         for image in projectfiles:
-            thumbnail =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0]
+            #thumbnail =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0]
 
             try:
                 thumburl=thumbnail.filename.url
@@ -116,7 +116,7 @@ def multiuploader(request, pk):
             result.append({"name":image.subfolder+os.path.split(image.filename.name)[1],
                        "size":image.filename.size,
                        "url":"/preview/"+str(image.filetype+image.filename.url),
-                       "thumbnail_url":thumburl,
+                       "thumbnail_url":"",
                        "delete_url":"/multi_delete/"+str(image.pk)+"/",
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)

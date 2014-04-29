@@ -72,6 +72,9 @@ class thumbobject(models.Model):
         unique_together = ('filex', 'filey', "fileobject")
 
     def save(self, generate=True, *args, **kwargs):
+        if generate == True:
+            self.filetype = "ajax"
+
         super(thumbobject, self,).save()
         if generate == True:
             from filemanager.tasks import thumbTask

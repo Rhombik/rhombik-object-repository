@@ -35,7 +35,7 @@ def thumbTask(thumbnailpk, fullfilepk):
 
    thumbnail.filename, thumbnail.filetype = thumbnailer2.thumbnailify(fullfile, (thumbnail.filex, thumbnail.filey))
    #Bleh, this is awful. Means we won't have to refactor a bunch of other stuff, but implies some deeper architecture issues.
-   if thumbnail.filetype=="text":
+   if thumbnail.filetype=="text" or "":
    #Means you won't get text files when you query thumobjects.
       thumbnail.filetype="norender"
    if thumbnail.filename:
