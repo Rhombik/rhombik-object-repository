@@ -34,10 +34,9 @@ GetViewedItem= (foo) ->
 $(document).ready(GetViewedItem("/ajax/thumblist/1,2,3,4,5,6,7,8,9,10"))
 
 
-$(document).ready(startAttemptLoop)
+$(document).ready(startAttemptLoop())
 
 console.log "I like tea!"
-
 
 
 class window.thumbloader
@@ -46,3 +45,5 @@ class window.thumbloader
     register: (pk, gallery) ->
         this.datalist.push([pk,gallery])
         console.log this.datalist
+
+
