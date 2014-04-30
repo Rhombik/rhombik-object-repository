@@ -22,7 +22,7 @@
 					<div class="printableContainer">
 						<div class="printableInfo">
 							<div class="printableImageContainer" id="printableImageContainer">
-								<img src="{{mainthumb}}" alt="{{ project.title }}">
+								{% include "gallery.html" with images=mainthumb %}
 							</div>
 						</div>
 					</div>

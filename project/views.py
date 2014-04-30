@@ -74,7 +74,7 @@ def project(request, pk):
     if project.enf_consistancy == False:
         raise Http404
     else:
-        mainthumb = project.thumbnail.get_thumb(250, 250)
+        mainthumb = project.thumbnail.get_thumb(650,425)
 
     images=[]# Images in the project; will be handed to template
    # Get readme as first item in the list of texts to hand to the template.
@@ -91,12 +91,9 @@ def project(request, pk):
     for i in projectfiles:
         renderer=i.filetype
         if renderer != "norender" and renderer != "text":
-            images.append(i.get_thumb(64,64))
-
+            images.append(i.get_thumb(65,50))
         if renderer == "norender":
             norenders +=1
-
-
         if renderer == "text" and i != project.bodyFile :
             htmlmodel=htmlobject.objects.get_or_create(fileobject = i )[0] 
             texts.append([htmlmodel, path.split(str(i.filename))[1]])
