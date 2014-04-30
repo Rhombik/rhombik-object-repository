@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html lang="en">
 {% load static %}
+{% load scss %}
+
 <head>
 	<meta charset="utf-8">
 	<meta name="description" content="">
@@ -8,7 +10,7 @@
 	<title></title>
 	
 	<link href="/static/css/reset.css" media="screen, projection" rel="stylesheet" type="text/css">
-	<link href="/static/css/global.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="{% static "" %}{% scss "css/global.scss"%}" media="screen, projection" rel="stylesheet" type="text/css">
 	<link href="/static/css/us-grid.css" media="screen, projection" rel="stylesheet" type="text/css">
 	<link href="/static/css/foundation-icons.css" media="screen, projection" rel="stylesheet" type="text/css">
 	<noscript><link href="/static/css/noscript.css" media="screen" rel="stylesheet" type="text/css"></noscript>
@@ -39,7 +41,6 @@ thumbloader = new thumbloader
 </script>
 
 
-{% load scss %}
 
 <link rel="stylesheet" href="{% static "" %}{% scss "css/settings.scss" %}" />
 
