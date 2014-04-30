@@ -5,7 +5,7 @@
                         <div class="grid_16 showcase_content"> 
                         	<div class="grid_16"><h2>{{ project.title }}</h2></div>
                             <div class="main_thumbnail grid_4 alpha">
-                                <img src="{{mainthumb}}">
+                                {% include "thumbview.html" with images=mainthumb  %}
                             </div>
                             <div class="gallery_thumbnails grid_12 omega">
                                 {% include "gallery.html" %}
@@ -40,10 +40,7 @@
 
 					  {{ project.body_rendered|gallerfy|safe }}
 					  
-					  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-					  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 					  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-					  <link rel="stylesheet" href="/resources/demos/style.css">
 					  
 					  <script>
 					    $(function() {

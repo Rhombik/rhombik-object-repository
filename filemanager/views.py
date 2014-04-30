@@ -21,7 +21,7 @@ def download(request, pk):
  
     return render(request, "download.html", dict(download=download))
 
-def ajaxthumblist(request,csv):
+def ajaxthumblist(request,csv,template):
     from filemanager.models import thumbobject
     import json
     csv = csv.rstrip(',').split(',')
@@ -44,7 +44,7 @@ def ajaxthumblist(request,csv):
                 from django.template.loader import render_to_string
     
                 images=[thumbinstance.fileobject.get_thumb(thumbinstance.filex,thumbinstance.filey)]
-                rendered = render_to_string('gallery.html', dict(images=images, galleryname="ajax"))
+                rendered = render_to_string(template, dict(images=images, galleryname="ajax"))
                 rendered = rendered.strip('\n')
                 localdata["html"] = str(rendered)
                 localdata["size"] = (thumbinstance.filex,thumbinstance.filey)
