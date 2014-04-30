@@ -1,13 +1,10 @@
 {% for thumbnail,fullpath,renderer in images %}
 {% if renderer == "browser" %}
-<a href="{{ fullpath.filename.url }}" class="gallery-{{ galleryname }}"><img src="{{ thumbnail.filename.url }}" class="thumbnail"></a>
+	<a href="{{ fullpath.filename.url }}" class="gallery-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
+	<li><img class="imageSwitch" src="{{ thumbnail }}" rel="{{ fullpath.filename.url }}" alt="sample image"></li>
 {% endif %}
 {% if renderer == "jsc3d" %}
-<a href="/preview/jsc3d/{{ fullpath.pk }}" class="iframe gallery-{{ galleryname }}"><img src="{{ thumbnail.filename.url }}" class="thumbnail"></a>
+	<a href="/preview/jsc3d/{{ fullpath.pk }}" class="iframe gallery-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
+	<li><img class="imageSwitch" src="{{ thumbnail }}" rel="/preview/jsc3d/{{ fullpath.pk }}" alt="sample image"></li>
 {% endif %}
-
-{% if renderer == "ajax" %}
-         <div class="thumbloader pk={{thumbnail.pk}}"><script>thumbloader.register("{{thumbnail.pk}}", "gallery-{{ galleryname }}")</script></div>
-{% endif %}
-
 {% endfor %}

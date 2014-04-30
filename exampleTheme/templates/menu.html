@@ -1,48 +1,87 @@
-<ul class="menu">
+	<input id="navHack" type="checkbox">
+	
+	<nav id="mobileNav">
+		<ul class="group">
+			
+			{% if user.is_authenticated %}
+			<a href="/logout/"><i class="fi-lock"></i> Log Out</a>
+			{% endif %}
 
-{% if active == "home" %}
-<li class="current active"><a href="/" >Home</a></li>
-{% else %}
-<li ><a href="/" >Home</a></li>
-{% endif %}
+			{% if not user.is_authenticated %}
+			<li><a href="/register/"{% if active == "register" %} class="active"{% endif %}><i class="fi-torsos"></i> Sign Up</a></li>
+			<li><a href="/register/"><i class="fi-lock"></i> Log In</a></li>
+			{% endif %}
+			<li><a href="#Printables" class="active">Printables</a>
+				<ul class="subNav">
+					<li><a href="#">Top</a></li>
+					<li><a href="#">Hot</a></li>
+				</ul>
+			</li>
+			<li><a href="#members">Members</a></li>
+			<li><a href="#projects">Projects</a></li>
+		</ul>
+	</nav>
 
-{% if not user.is_authenticated %}
-{% if active == "register" %}
-<li class="current active"><a href="/register/" >Login/Register</a></li>
-{% else %}
-<li ><a href="/register/" >Login/Register</a></li>
-{% endif %}
-{% endif %}
+<div id="outerWrap">
+<div id="innerWrap">
 
-{% if user.is_authenticated %}
-{% if active == "profile" %}
-<li class="current active"><a href="/userProfile/{{user.id}}" >Profile</a></li>
-{% else %}
-<li ><a href="/userProfile/{{user.id}}" >Profile</a></li>
-{% endif %}
-{% endif %}
+	<form id="mobileSearch">
+		<fieldset>
+						
+						<button type="submit" id="searchSubmit">
+							<i class="fi-magnifying-glass"></i>
+						</button>
+						<div class="fill">
+							<input type="text" id="searchInput" class="searchInput" placeholder="Type to search...">
+						</div>
+		</fieldset>
+	</form>
 
+	<header>
+		<div class="grid-container group">
+				<span id="userInfo">
+					{% if user.is_authenticated %}
+					{% if active == "profile" %}
+					<a href="/userProfile/{{user.id}}">Projects</a>
+					{% else %}
+					<a href="/userProfile/{{user.id}}" >Profile</a>
+					{% endif %}
+					{% endif %}
+					{% if user.is_authenticated %}
+					{% if active == "create" %}
+					<a href="/create/" >Create</a>
+					{% else %}
+					<a href="/create/" >Create</a>
+					{% endif %}
+					{% endif %}
+					
+					{% if user.is_authenticated %}
+					<a href="/logout/"><i class="fi-lock"></i> Log Out</a>
+					{% endif %}
 
-{% if not user.is_authenticated %}
-{% if active == "create" %}
-<li class="current active"><a href="/register" >Create</a></li>
-{% else %}
-<li ><a href="/register/" >Create</a></li>
-{% endif %}
-{% endif %}
-
-{% if user.is_authenticated %}
-{% if active == "create" %}
-<li class="current active"><a href="/create/" >Create</a></li>
-{% else %}
-<li ><a href="/create/" >Create</a></li>
-{% endif %}
-{% endif %}
-
-{% if user.is_authenticated %}
-<li ><a href="/logout/" >Logout</a></li>
-{% endif %}
-
-
-
-</ul>
+					<form id="searchForm">
+						<input type="text" id="searchInput" placeholder="Type to search...">
+						<button type="submit" id="searchSubmit">
+							<i class="fi-magnifying-glass"></i>
+						</button>
+					</form>
+					<span id="searchToggle"><noscript><a href="#search"></noscript><i class="fi-magnifying-glass"></i><noscript></a></noscript></span>
+				</span>
+				
+				<span id="navToggle"><i class="fi-list"></i></span>
+				<label for="navHack" id="navToggleHack"><i class="fi-list"></i></label>
+				
+				{% if active == "home" %}
+				{% endif %}
+				<a id="home" class="group" href="/"><img class="image-hover" src="img/logo2xHover.png"></a>
+					<ul id="nav" class="group">
+						<li><a href="#Printables">Printables</a></li>
+						<li><a href="#members">Members</a></li>
+						<li><a href="#projects">Projects</a></li>
+						{% if not user.is_authenticated %}
+						<li><a href="/register/"{% if active == "register" %} class="active"{% endif %}><i class="fi-torsos"></i> Sign Up</a></li>
+						<li><a href="/register/"><i class="fi-lock"></i> Log In</a></li>
+						{% endif %}
+					</ul>
+		</div>
+	</header>
