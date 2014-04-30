@@ -7,14 +7,15 @@ class loadinglooper
         myID = thumbloader.loadinglooper.loopID
         trier.attempt({
             until: () ->
-                console.log "HI"
                 return ! (myID==thumbloader.loadinglooper.loopID and thumbloader.alive())
             ,
             action: () ->
-                console.log "The Action is done!!! "
-                console.log "My id is #{myID}"
-                console.log "loop id is #{thumbloader.loadinglooper.loopID}"
-                thumbloader.comparifier()
+	
+                if (myID==thumbloader.loadinglooper.loopID and thumbloader.alive())
+                    console.log "The Action is done!!! "
+                    console.log "My id is #{myID}"
+                    console.log "loop id is #{thumbloader.loadinglooper.loopID}"
+                    thumbloader.comparifier()
             ,
             interval: -1000,
             limit: -1
@@ -37,8 +38,15 @@ console.log "I like tea!"
 
 class window.thumbloader
     datalist: []
+    
     loadinglooper: new loadinglooper
 
+    remove: (pk) ->
+       for i in [0...@.datalist.length]
+           console.log "What do we have? We have got #{this.datalist[i][0]} and #{pk}"
+           console.log "By the by, the datalist is #{this.datalist}"
+           if "#{this.datalist[i][0]}" == "#{pk}"
+               this.datalist.splice(i, 1)
     alive: () ->
         if this.datalist.length<0
             return false
@@ -64,9 +72,10 @@ class window.thumbloader
        for i in [0...updata.length]
            if updata[i].html
                console.log "I HAVE AN IMAGE!!!"
-               console.log updata[i].pk
-               console.log updata[i].html
+               replacelet= document.getElementsByClassName("pk=#{updata[i].pk}")
+             ##  Make this a for loop or a way to do all of the array items!
+               replacelet[0].innerHTML=updata[i].html
+               this.remove(updata[i].pk)
            else
                console.log "i have no image........"
-               console.log updata[i].pk
 
