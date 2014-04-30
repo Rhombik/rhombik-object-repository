@@ -24,7 +24,7 @@ def download(request, pk):
 def ajaxthumblist(request,csv):
     from filemanager.models import thumbobject
     import json
-    csv = csv.split(',')
+    csv = csv.rstrip(',').split(',')
     jsondata= []
     for i in csv:
         localdata = {"pk":int(i)}
