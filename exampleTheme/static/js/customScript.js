@@ -2,13 +2,13 @@
   
 //Call the flag
 $(document).ready(function(){
-
-  $('.imageSwitch').click(function(){
+  $('.imageSwitch').click(function(e){
   	var image = $(this).attr('rel');
   	var height = $('.printableImageContainer').height();
   		$('.printableImageContainer').css('height', height);
-  		$('.printableImageContainer').html('<img src="' + image + '">');
-  		$('.printableImageContainer').css('height', 'auto');
+          	$('.printableImageContainer').html('<img src="' + image + '">');
+           	$('.printableImageContainer').css('height', 'auto');
+        e.preventDefault();
   });
   
 	$('#tabs article').hide();
