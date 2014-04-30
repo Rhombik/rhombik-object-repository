@@ -1,6 +1,5 @@
 {% for thumbnail,fullpath,renderer in images %}
 {% if renderer == "browser" %}
-	<a href="{{ fullpath.filename.url }}" class="gallery-{{ galleryname }}"><img src="{{ thumbnail }}" class="thumbnail"></a>
 	<li  class="thumbloader pk={{thumbnail.pk}}"><img class="imageSwitch" src="{{ thumbnail.filename.url  }}" rel="{{ fullpath.filename.url }}" alt="sample image"></li>
 {% endif %}
 {% if renderer == "jsc3d" %}
