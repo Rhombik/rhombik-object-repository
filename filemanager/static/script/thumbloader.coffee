@@ -46,9 +46,13 @@ class window.thumbloader
            console.log "What do we have? We have got #{this.datalist[i][0]} and #{pk}"
            console.log "By the by, the datalist is #{this.datalist}"
            if "#{this.datalist[i][0]}" == "#{pk}"
+               console.log "It seems that the pk is found!!!!"
+               console.log "the value of i is #{i}"
+               console.log "OH, oh oh!!! and the datalist.length is #{this.datalist.length}"
                this.datalist.splice(i, 1)
+               console.log "Well........... it was, but now it is #{this.datalist.length}"
     alive: () ->
-        if this.datalist.length<0
+        if this.datalist.length==0
             return false
         else
             return true
