@@ -71,9 +71,10 @@ def project_list_get(projects):
 def project(request, pk):
     project = Project.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
     projectfiles = fileobject.objects.filter(project=project)
-    mainthumb = thumbobject.objects.get_or_create(fileobject=project.thumbnail, filex = 250, filey = 250)[0]
     if project.enf_consistancy == False:
         raise Http404
+    else:
+        mainthumb = project.thumbnail.get_thumb(250, 250)
 
     images=[]# Images in the project; will be handed to template
    # Get readme as first item in the list of texts to hand to the template.
@@ -107,9 +108,9 @@ def project(request, pk):
                                 images=images, 
 				texts=texts,
 				galleryname="base", 
-				mainthumb=mainthumb.filename.url,
+				mainthumb=[mainthumb],
                                 downloadurl=download.filename.url))
-
+    print(mainthumb)
     return render(request, "article.html", c)
 
 
