@@ -129,7 +129,9 @@ CACHES = {
 
 STATIC_PRECOMPILER_COMPILERS = (
     'static_precompiler.compilers.CoffeeScript',
+    'static_precompiler.compilers.SCSS',
 )
+
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (

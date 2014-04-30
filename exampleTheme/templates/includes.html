@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="/static/css/footer.css">
 <link rel="stylesheet" type="text/css" href="/static/css/footerfix.css">
 <link rel="stylesheet" type="text/css" href="/static/css/colorbox.css">
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-UI-exampleTheme/jquery-ui-1.10.4.custom.min.css">
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="/static/js/jquery.colorbox.js"></script>
@@ -33,6 +34,10 @@ jQuery(document).ready(function () {
 thumbloader = new thumbloader
 </script>
 
+
+{% load scss %}
+
+<link rel="stylesheet" href="{% static "" %}{% scss "css/settings.scss" %}" />
 
 </head>
 <body>
