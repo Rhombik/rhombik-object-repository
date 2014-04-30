@@ -33,6 +33,8 @@ GetViewedItem= (foo) ->
 
 class window.thumbloader
     datalist: []
+    constructor: (contentkind) ->
+        @contentkind = contentkind
     
     loadinglooper: new loadinglooper
 
@@ -56,7 +58,7 @@ class window.thumbloader
        for i in [0...@.datalist.length]
            request+="#{@.datalist[i][0]},"
      #### This line is where you will add support for different content types
-       GetViewedItem("/ajax/thumblist/#{request}")
+       GetViewedItem("/ajax/#{this.contentkind}/#{request}")
        return null
 
     finishComparifying: (updata) ->
