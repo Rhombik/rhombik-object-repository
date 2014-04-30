@@ -150,7 +150,8 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-if DEBUG ==True:
+#if DEBUG ==True:
+if False:
     MIDDLEWARE_CLASSES += ('Settings.BeautifulMiddleware.BeautifulMiddleware',)
 
 ROOT_URLCONF = 'Settings.urls'

@@ -1,0 +1,8 @@
+{% for thumbnail,fullpath,renderer in images %}
+{% if renderer == "ajax" %}
+<div class="thumbloader pk={{thumbnail.pk}}"><script>thumbloader.register("{{thumbnail.pk}}", "")</script></div>
+{% else %}
+<img src="{{ thumbnail.filename.url }}" class="thumbnail">
+{% endif %}
+
+{% endfor %}
