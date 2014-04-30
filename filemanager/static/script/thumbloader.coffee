@@ -1,32 +1,20 @@
 
 
 class loadinglooper
-    alive: false
-    reserect: false
-    beginify: () ->
-        if ! this.alive
-            this.alive=true
-            this.goloopy()
-        else
-            this.alive=false
-            this.reserect=true
-    dying: () ->
-       if this.reserect
-          this.reserect = false
-          this.alive = true
-          this.goloopy()
-        
+    loopID: 0
+
     goloopy: () ->
+        myID = thumbloader.loadinglooper.loopID
         trier.attempt({
             until: () ->
-                return ! thumbloader.loadinglooper.alive
+                console.log "HI"
+                return ! (myID==thumbloader.loadinglooper.loopID and thumbloader.alive())
             ,
             action: () ->
                 console.log "The Action is done!!! "
+                console.log "My id is #{myID}"
+                console.log "loop id is #{thumbloader.loadinglooper.loopID}"
                 thumbloader.comparifier()
-            ,
-            pass: () ->
-                thumbloader.loadinglooper.dying()
             ,
             interval: -1000,
             limit: -1
@@ -59,7 +47,8 @@ class window.thumbloader
 
     register: (pk, gallery) ->
         this.datalist.push([pk,gallery])
-        this.loadinglooper.beginify()
+        this.loadinglooper.loopID++
+        this.loadinglooper.goloopy()
         console.log this.datalist
 
     comparifier: () ->
