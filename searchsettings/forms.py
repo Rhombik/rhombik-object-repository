@@ -22,10 +22,8 @@ class DateRangeSearchForm(SearchForm):
     ("month", "this month"),
     ("week", "this week"),
     ("today", "today"),
-
     )
     From = forms.ChoiceField(choices=timeOPTIONS, required=False)
-
 
     def search(self):
         # First, store the SearchQuerySet received from other processing.
@@ -45,4 +43,5 @@ class DateRangeSearchForm(SearchForm):
         # Check to see if an end_date was chosen.
         if 'end_date' in self.cleaned_data:
             sqs = sqs.filter(created=self.cleaned_data['end_date'])
+
         return sqs
