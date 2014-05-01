@@ -9,9 +9,10 @@ register = template.Library()
 def searchform(context):
     try:
         request = context['request']
+        form = DateRangeSearchForm(request.GET)
     except:
         "meh"
-    form = DateRangeSearchForm()
+        form = DateRangeSearchForm()
 
     return {'form': form}
 

@@ -31,6 +31,7 @@ urlpatterns = patterns('',
 
     #Search urls
     (r'^search/', include('searchsettings.urls')),
+
     #captcha urls
     url(r'^captcha/', include('captcha.urls')),
 
