@@ -29,6 +29,9 @@ urlpatterns = patterns('',
 
     (r'^about/', AboutView.as_view()),
 
+    # Comments urls
+    url(r'^articles/comments/', include('django.contrib.comments.urls')),
+
     #Search urls
     (r'^search/', include('searchsettings.urls')),
 
@@ -54,7 +57,6 @@ urlpatterns = patterns('',
     url(r'', include('multiuploader.urls')),
     url(r'', include('project.urls')),
     url(r'', include('filemanager.urls')),
-
 
 
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

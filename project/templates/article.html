@@ -83,5 +83,13 @@
 					</div>
 				</div>
 			</section>
+			<section class="comments">
+				{% load threadedcomments_tags %}
+				
+				<b>***This is the comments place.***</b>
+				
+				{% render_comment_list for project %}
+				{% render_comment_form for project %}
+			</section>
 
 {% endblock content %}
