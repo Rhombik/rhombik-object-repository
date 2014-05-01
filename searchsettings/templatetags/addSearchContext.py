@@ -14,3 +14,4 @@ def raw_text(context):
     return textlist
 
 register.simple_tag(takes_context=True)(raw_text)
+

@@ -14,7 +14,7 @@ class DateRangeSearchForm(SearchForm):
     ("votes", "Votes"),
     ("new", "Newest"),
     )
-    sort = forms.ChoiceField(choices=sortOPTIONS)
+    sort = forms.ChoiceField(choices=sortOPTIONS, required=False)
 
     timeOPTIONS = (
     ("everything", "all time"),
@@ -24,7 +24,7 @@ class DateRangeSearchForm(SearchForm):
     ("today", "today"),
 
     )
-    From = forms.ChoiceField(choices=timeOPTIONS)
+    From = forms.ChoiceField(choices=timeOPTIONS, required=False)
 
 
     def search(self):

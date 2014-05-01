@@ -10,7 +10,7 @@ class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
 
     author = indexes.CharField(model_attr='author')
     created = indexes.DateTimeField(model_attr='created')
-    tags = indexes.MultiValueField()
+    tags = indexes.MultiValueField(boost=1.125)
     def get_model(self):
         return Project
 

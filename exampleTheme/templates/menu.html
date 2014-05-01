@@ -59,8 +59,8 @@
 					<a href="/logout/"><i class="fi-lock"></i> Log Out</a>
 					{% endif %}
 
-					<form id="searchForm">
-						<input type="text" id="searchInput" placeholder="Type to search...">
+					<form id="searchForm" action="/search/">
+						<input type="text" name="q" id="searchInput" placeholder="Type to search...">
 						<button type="submit" id="searchSubmit">
 							<i class="fi-magnifying-glass"></i>
 						</button>
