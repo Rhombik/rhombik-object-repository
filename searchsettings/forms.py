@@ -32,8 +32,10 @@ class DateRangeSearchForm(SearchForm):
             return self.no_query_found()
 
         # Check to see if a start_date was chosen.
-        if self.cleaned_data['tags']:
+        if self.cleaned_data['tags'] and not self.cleaned_data['q']:
 #            from taggit.models import tag
+            sqs = sqs.filter_or(tags=parse_tags(self.cleaned_data['tags']))
+        elif self.cleaned_data['tags']
             sqs = sqs.filter(tags=parse_tags(self.cleaned_data['tags']))
 
 
