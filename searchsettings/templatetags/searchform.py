@@ -7,7 +7,10 @@ register = template.Library()
 
 @register.inclusion_tag('search/searchform.html', takes_context=True)
 def searchform(context):
-    request = context['request']
+    try:
+        request = context['request']
+    except:
+        "meh"
     form = DateRangeSearchForm()
 
     return {'form': form}
