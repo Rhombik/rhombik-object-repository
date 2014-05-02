@@ -1,11 +1,7 @@
-<form method="get" action="/search/">
-    <table>
-        {{ form.as_table }}
-        <tr>
-            <td>&nbsp;</td>
-            <td>
-                <input type="submit" value="Search">
-            </td>
-        </tr>
-    </table>
+<form id="searchForm" method="get" action="/search/">
+        {{ searchform.q }}
+        {{ searchform.tags }}
+        <button type="submit" id="searchSubmit">
+                <i class="fi-magnifying-glass"></i>
+        </button>
 </form>

@@ -169,7 +169,11 @@ input[type='checkbox'] {
 	padding-top: 7px;
 }
 
-	 input#searchInput {
+/*Django automaticall generates the form, and it's not easy to tell the search form to generate with a particular ID becouse of the way it's handled.
+So I replaced your nice pretted "searchInput" id with the one django uses, "id_q". Sorry.
+*/
+
+	 input#id_q {
 		float: left;
 		width: auto;
 		margin: 0 0 0 20px;
@@ -183,7 +187,7 @@ input[type='checkbox'] {
 		background-color: rgb(255, 255, 255);
 	}
 	
-		 input#searchInput:focus {
+		 input#id_q:focus {
 			box-shadow: none;
 		}
 	

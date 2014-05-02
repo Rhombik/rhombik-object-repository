@@ -58,17 +58,13 @@
 					{% if user.is_authenticated %}
 					<a href="/logout/"><i class="fi-lock"></i> Log Out</a>
 					{% endif %}
-
-					<form id="searchForm" action="/search/">
-						<input type="text" name="q" id="searchInput" placeholder="Type to search...">
-						<button type="submit" id="searchSubmit">
-							<i class="fi-magnifying-glass"></i>
-						</button>
-					</form>
+					
+					{% load searchform %}
+					{% searchform %}
+		
 					<span id="searchToggle"><noscript><a href="#search"></noscript><i class="fi-magnifying-glass"></i><noscript></a></noscript></span>
 				</span>
-			        {% load searchform %}
-                                {% searchform %}
+				
 				<span id="navToggle"><i class="fi-list"></i></span>
 				<label for="navHack" id="navToggleHack"><i class="fi-list"></i></label>
 				

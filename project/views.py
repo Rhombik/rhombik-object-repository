@@ -97,7 +97,6 @@ def project(request, pk):
         if renderer == "text" and i != project.bodyFile :
             htmlmodel=htmlobject.objects.get_or_create(fileobject = i )[0] 
             texts.append([htmlmodel, path.split(str(i.filename))[1]])
-    print(images)
     download=zippedobject.objects.get_or_create(project=project)[0]
 
     c = RequestContext(request, dict(project=project, 
@@ -107,7 +106,6 @@ def project(request, pk):
 				galleryname="base", 
 				mainthumb=[mainthumb],
                                 downloadurl=download.filename.url))
-    print(mainthumb)
     return render(request, "article.html", c)
 
 
@@ -292,12 +290,10 @@ def create(request):
 
 def tag(request,tag):
     projects = Project.objects.filter(tags__name__in=[tag]).order_by("-created")
-    print("project.views.tag says projects are "+str(projects))
     paginator = Paginator(projects, 15)
 
     listdata = project_list_get(projects)
 
-    print("listdata is "+str(listdata))
  
     paginator = Paginator(listdata, 8)
 

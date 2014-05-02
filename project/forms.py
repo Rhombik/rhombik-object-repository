@@ -26,7 +26,6 @@ def cleanify(self, formName):
             if "uploads/"+str(self.project.pk)+thumb == str(fl.filename) and fl.filetype != "norender" and fl.filetype != "text":
                 noThumb = False
                 self.project.thumbnail = fl
-                print("project.form settng "+self.project.title+"'s thumbnail to "+str(fl.filename))
                 break
         if noThumb:
             self._errors['thumbnail'] = [u"The thumbnail you selected is not a valid uploaded image."]
@@ -36,7 +35,6 @@ def cleanify(self, formName):
             if fl.filetype != 'norender' and fl.filetype != "text":### Look for thumbnailable pic.
                 noThumb = False
                 self.project.thumbnail = fl
-                print("project.form settng "+cleaned_data["title"]+"'s thumbnail to "+str(fl.filename))
                 break
         if noThumb:
             self._errors['thumbnail'] = [u"None of your uploaded file makes a thumbnail!"]##	and an error if they all are.
@@ -44,7 +42,6 @@ def cleanify(self, formName):
    ###   make sure user wrote something about thier project.        
     if not cleaned_data['body']:
         self._errors['body'] = [u"Write something about your project! Jeezers."]
-    print(self.project.enf_consistancy())
     if self.project.enf_consistancy() != True:
         self._errors['non_field_errors'] = [u"Something went wrong, and I have no idea what it was."]
     return cleaned_data

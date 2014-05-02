@@ -1,1 +1,1 @@
-markdown django-simple-captcha django-taggit django-taggit-templatetags django-taggit-autosuggest django-haystack pyelasticsearch requests Selenium beautifulsoup4 South celery django-threadedcomments celery-haystack Whoosh django-ratings django-static-precompiler 
+markdown django-simple-captcha django-taggit django-taggit-templatetags django-haystack pyelasticsearch requests Selenium beautifulsoup4 South celery django-threadedcomments celery-haystack Whoosh django-ratings django-static-precompiler 

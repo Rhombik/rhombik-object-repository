@@ -1,14 +1,14 @@
 from django import forms
 
-from taggit_autosuggest.widgets import TagAutoSuggest
 from haystack.forms import SearchForm
 from taggit.utils import parse_tags
 from project.models import Project
-
+from taggit_autocomplete.widgets import TagAutocomplete
+ 
 class DateRangeSearchForm(SearchForm):
 #    start_date = forms.DateField(required=False)
 #    end_date = forms.DateField(required=False)
-    tags = forms.CharField(widget=TagAutoSuggest,required=False)
+    tags = forms.CharField(widget=TagAutocomplete,required=False)
 
     sortOPTIONS = (
     ("votes", "Votes"),

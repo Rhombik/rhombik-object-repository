@@ -14,5 +14,5 @@ def searchform(context):
         "meh"
         form = DateRangeSearchForm()
 
-    return {'form': form}
+    return {'searchform': form}
 
