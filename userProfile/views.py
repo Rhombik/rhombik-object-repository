@@ -30,7 +30,6 @@ def edit(request):
     try:
         profile = userProfile.objects.filter(user=data)[0]
     except:
-        print("redirecting")
         return redirect("/register/")
 
 
@@ -49,14 +48,17 @@ def edit(request):
 
             #Create users picture.
             if pictureform.cleaned_data["filename"]:
-                from avatarBot.models import uploadPic
-                try:
-                     upload = uploadPic.objects.filter( user = data )[0]
-                     upload.delete()
-                except: "whatever"
-                upload = uploadPic.objects.create( user = data, filename = request.FILES["filename"] )
-                upload.save()
-                profile.avatarType = "upload"
+
+#####DELETE THIS OLD AVATERSTUFF!!
+          #     from avatarBot.models import uploadPic
+          #     try:
+          #          upload = uploadPic.objects.filter( user = data )[0]
+          #          upload.delete()
+          #     except: "whatever"
+          #     upload = uploadPic.objects.create( user = data, filename = request.FILES["filename"] )
+          #     upload.save()
+          #     profile.avatarType = "upload"
+                profile.thumbnail = thumbobject.objects.get_or_create(userpicfileobject=request.FILES["filename"], filex = 128, filey = 128)[0]
 
             profile.save()
             return redirect("/userProfile/"+str(data.pk))
