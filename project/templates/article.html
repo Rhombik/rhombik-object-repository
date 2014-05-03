@@ -15,6 +15,33 @@
 {% load gallerfy %}
 
 		<section class="pageLeft">
+
+<!--
+{% load ratings %}
+{% rating_by_request request on project.rating as vote %}
+
+user vote. Null means no vote. 1 means downvote. 2 means upvote.
+You can remove your vote by voting 0
+{% if not vote  %}
+<a href="/vote/{{ project.pk }}/1/" class="button purple fullWidth">Downvote!</a>
+<a href="/vote/{{ project.pk }}/2/" class="button purple fullWidth">Upvote!</a>
+
+<a href="/vote/{{ project.pk }}/0/" class="button purple fullWidth">Delete vote!</a>
+{% elif vote == 1 %}
+you downvoted
+{% elif vote == 2 %}
+you upvoted
+{% endif %}
+Or you can just call {{Vote}} if you want the value for javascript.
+
+
+Both of these will be null if no one has voted/downloaded. So you can use the "if not" template tag. 
+{{ project.downloadcount.scores }}
+{{ project.ratingCount }}
+-->
+
+
+
 			<h1 class="title">{{ project.title }}</h1>
 			<span class="author small">by <a href="/userProfile/{{ project.author.pk }}">{{ project.author }}</a></span>
 			<span class="time small">at {{ project.created }}</span>

@@ -47,7 +47,7 @@ urlpatterns = patterns('',
     #preview pages for the STL files.
     (r'^thumbs/jsc3d/(.*)', 'thumbnailer.views.stlthumb'),
     (r'^preview/jsc3d/(.*)', 'thumbnailer.views.stlview'),
-    (r'^taggit_autocomplete/', include('taggit_autocomplete.urls')),
+    (r'', include('taggit_autocomplete.urls')),
     #user profile pages
     url(r'^userProfile/', include('userProfile.urls')),
     (r'^editUser/', 'userProfile.views.edit'),
