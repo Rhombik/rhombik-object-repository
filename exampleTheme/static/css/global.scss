@@ -1,3 +1,4 @@
+@import 'settings';
 @import url('globalDeclarations.css');
 @import url('UI.css');
 @import url('header.css');
@@ -6,9 +7,16 @@
 @import url('footer.css');
 @import url('mediaQueries.css');
 
+/* Original chris colour codes and the settings.scss equivelents
+
+ rgb(242, 242, 242) == $backround-color
+ rgb(58, 48, 62); == $primary-color
+
+ */
+
 body {
 	font-family: 'source sans pro', arial, verdana, sans-serif;
-	background-color: rgb(242, 242, 242);
+	background-color: $backround-color;
 	width: 100%;
 }
 
@@ -18,7 +26,7 @@ a:link, a:visited, a:active {
 }
 
 a:hover, a:focus {
-	color: rgb(58, 48, 62);
+	color: $primary-color;
 	outline-color: rgb(173, 112, 211);
 }
 
