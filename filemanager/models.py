@@ -8,9 +8,8 @@ from io import BytesIO
 import os.path
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-
 
 class fakefile():
     url = ""
@@ -25,7 +24,7 @@ class fileobject(models.Model):
 
     parentType = models.ForeignKey(ContentType)
     parentID = models.PositiveIntegerField()
-    parent = GenericForeignKey('parentType', 'parentID')
+    parent = generic.GenericForeignKey('parentType', 'parentID')
 
     subfolder = models.CharField(max_length=256, default="/")
     filename = models.FileField(upload_to=uploadpath)
