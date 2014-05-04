@@ -16,8 +16,8 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 
 BROKER_URL = 'django://'
+CELERY_ALWAYS_EAGER = True
 #CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
-
 
 MANAGERS = ADMINS
 

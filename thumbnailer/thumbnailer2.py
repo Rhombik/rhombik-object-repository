@@ -37,7 +37,8 @@ def thumbnailify(filebit, sizebit):
 
   if ext in browser_kind:
     img = Image.open(filebit.filename)
-    img.thumbnail(sizebit)
+    img = img.convert('RGB')
+    img.thumbnail(sizebit, Image.ANTIALIAS)
     backround = Image.new('RGBA', sizebit, (255, 255, 255, 0))  #with alpha
     backround.paste(img,((sizebit[0] - img.size[0]) / 2, (sizebit[1] - img.size[1]) / 2))
     # Create a file-like object to write thumb data (thumb data previously created
@@ -60,16 +61,22 @@ def thumbnailify(filebit, sizebit):
   if ext in jsc3d_kind:
     from selenium import webdriver
     from django.conf import settings
-
+    #How much to antialias by.
+    rendermul = 2
     driver = webdriver.PhantomJS()
-    driver.set_window_size(sizebit[0],sizebit[1]) # not optional
+    driver.set_window_size(sizebit[0]*rendermul,sizebit[1]*rendermul) # not optional
     driver.get(settings.URL+"/thumbs/jsc3d/"+str(filebit.pk))
     imagedata = driver.get_screenshot_as_base64() # save a screenshot as base64 string, the only format phantom supports that isn't disk.
 
     import base64
     from io import BytesIO
     #converts the base64 encoded image data into a python file object
-    thumb_io = BytesIO(base64.b64decode(imagedata))
+    img = Image.open(BytesIO(base64.b64decode(imagedata)))
+    img = img.convert('RGB')
+    img.thumbnail(sizebit, Image.ANTIALIAS)
+    thumb_io = BytesIO()
+    img.save(thumb_io, format='png')
+
     thumb_file = UploadedFile(thumb_io)
     thumb_file.name = str(sizebit)+"-"+str(filebit.filename)+".png"
 #    thumb_file = False
