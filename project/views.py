@@ -255,7 +255,7 @@ def create(request):
 
            # Save body as file
             bodyText = fileobject();
-            bodyText.project = project
+            bodyText.parent = project
 
 
             from django.core.files.uploadedfile import UploadedFile
