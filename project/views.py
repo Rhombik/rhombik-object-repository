@@ -69,7 +69,7 @@ def project_list_get(projects):
 
 
 def project(request, pk):
-    project = Project.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
+    project = Project.objects.exclude(draft=True).get(pk=pk)
     projectfiles = fileobject.objects.filter(project=project)
     if project.enf_consistancy == False:
         raise Http404
@@ -89,9 +89,10 @@ def project(request, pk):
    # norenders. this is the number of files in the project not rendered. We currently do nothing.. unless someone changed that and not this note.
     norenders =0
     for i in projectfiles:
+        thumb=i.get_thumb(65,50)
         renderer=i.filetype
         if renderer != "norender" and renderer != "text":
-            images.append(i.get_thumb(65,50))
+            images.append(thumb)
         if renderer == "norender":
             norenders +=1
         if renderer == "text" and i != project.bodyFile :
