@@ -70,7 +70,8 @@ def project_list_get(projects):
 
 def project(request, pk):
     project = Project.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
-    projectfiles = fileobject.objects.filter(project=project)
+ ## the content_type__pk doesn't seem to do anything... it's not a problem now, but it may become a problem.
+    projectfiles = fileobject.objects.filter(content_type__pk=1,object_id=pk)
     if project.enf_consistancy == False:
         raise Http404
     else:

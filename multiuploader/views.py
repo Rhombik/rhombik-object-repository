@@ -100,7 +100,7 @@ def multiuploader(request, pk):
             mimetype = 'text/plain'
         return HttpResponse(response_data, mimetype=mimetype)
     else: #GET
-        projectfiles = fileobject.objects.filter(project=project)
+        projectfiles = fileobject.objects.filter(parent=project,content_type_id=1,object_id=project.id)
   
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []

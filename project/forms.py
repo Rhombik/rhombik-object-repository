@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from filemanager.models import fileobject
 from project.models import Project
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 
 
 ###        This function validates the form for submitting projects. Excluding the title, thats only done in the createForm.
@@ -17,12 +18,14 @@ def cleanify(self, formName):
         thumb = cleaned_data["thumbnail"]
     except:
         thumb = ""
-
-    files=fileobject.objects.filter(project=self.project)###	This gets a list of files from the project
+ 
+    parentType = ContentType.objects.get_for_model(self.project)
+    files = fileobject.objects.filter(content_type__pk=parentType.id,object_id=self.project.id)###	This gets a list of files from the project
 
     if thumb:
         noThumb = True
         for fl in files:
+            print(str(self.project.pk)+thumb)
             if "uploads/"+str(self.project.pk)+thumb == str(fl.filename) and fl.filetype != "norender" and fl.filetype != "text":
                 noThumb = False
                 self.project.thumbnail = fl

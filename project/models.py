@@ -6,6 +6,7 @@ from django.conf import settings
 from taggit.managers import TaggableManager
 from filemanager.models import fileobject
 from djangoratings.fields import RatingField
+from django.contrib.contenttypes import generic
 
 ##Does this actuall work? I don't think it does.... It seems to always return(SET_NULL)
 ##I've disabled it. Now whenever a fileobject gets deleted, it starts a task checking for null fields.
@@ -24,11 +25,13 @@ def select_thumbnail(instance):
 class Project(models.Model):
 
     title = models.CharField(max_length=60,blank=True, null=True, unique=True)
-    thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL , related_name='thumbnail')
+   #thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL , related_name='thumbnail')
+    thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, related_name='thumbnail')
     body = models.TextField(blank=True, null=True)
 
     #This exists soley so that we can find prohects that don't have a readme.
-    bodyFile = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL , related_name='readme')
+    bodyFile = models.ForeignKey('filemanager.fileobject', blank=True, null=True, related_name='readme')
+  # bodyFile = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL , related_name='readme')
 
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
@@ -65,7 +68,10 @@ class Project(models.Model):
         super(Project, self).save()
 
     def __unicode__(self):
-        return self.title
+        if self.title:
+             return self.title
+        else:
+             return "Untitled Project"
     def save(self):
         if not self.thumbnail:
             self.draft=True
@@ -87,7 +93,7 @@ class Project(models.Model):
 
         #check to see if there's a readme.
         if not self.bodyFile:
-            files=fileobject.objects.filter(project=self, filetype="text")
+            files=fileobject.objects.filter(object_id=self.id, filetype="text")
             for fl in files:
                 if fl:### Look for thumbnailable pic.
                     self.bodyFile = fl

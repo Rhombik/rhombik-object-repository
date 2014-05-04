@@ -20,17 +20,21 @@ class fakefile():
 
 class fileobject(models.Model):
     def uploadpath(instance, filename):
-        return ("uploads/"+str(instance.project.id)+instance.subfolder+filename)
+        return ("uploads/"+str(instance.object_id)+instance.subfolder+filename)
 
-    parentType = models.ForeignKey(ContentType)
-    parentID = models.PositiveIntegerField()
-    parent = generic.GenericForeignKey('parentType', 'parentID')
+## These attributes point to the object/project/userProfile that this file belongs to.
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    parent = generic.GenericForeignKey('content_type', 'object_id')
 
     subfolder = models.CharField(max_length=256, default="/")
-    filename = models.FileField(upload_to=uploadpath)
+    filename = models.FileField(upload_to=uploadpath,null=True)
     filetype = models.CharField(max_length=16, blank=True, null=True, default="norender")
 
 
+### I don't know why __unicode__() broke, but unicode() fixed it... so now we have both.
+    def unicode(self):
+        return str(self.filename)
     def __unicode__(self):
         return str(self.filename)
     def get_thumb(self, sizex, sizey):
@@ -45,6 +49,7 @@ class fileobject(models.Model):
 
 
     def save(self):
+        print("BLEEE BLOOOO    "+str(self.content_type))
         super(fileobject, self).save()
 
         self.filetype = thumbnailer2.thumbnailify(self, (1,1))[1]
