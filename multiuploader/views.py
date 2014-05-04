@@ -63,7 +63,7 @@ def multiuploader(request, pk):
             return HttpResponseBadRequest('Must have files attached!')
 
         #getting file data for farther manipulations
-        projectfiles = fileobject()
+        projectfiles = fileobject(parent=project)
         projectfiles.project = project
         projectfiles.filename = request.FILES[u'files[]']
         projectfiles.save()
@@ -100,7 +100,7 @@ def multiuploader(request, pk):
             mimetype = 'text/plain'
         return HttpResponse(response_data, mimetype=mimetype)
     else: #GET
-        projectfiles = fileobject.objects.filter(parent=project,content_type_id=1,object_id=project.id)
+        projectfiles = fileobject.objects.filter(content_type=Project,object_id=project.id)
   
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []
