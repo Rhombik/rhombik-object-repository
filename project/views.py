@@ -16,6 +16,8 @@ from project.models import Project
 from project.forms import ProjectForm, createForm, defaulttag
 from django import forms
 
+from django.contrib.contenttypes.models import ContentType
+
 
 
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
@@ -71,8 +73,10 @@ def project_list_get(projects):
 def project(request, pk):
     project = Project.objects.exclude(draft=True).get(pk=pk)
 
- ## the content_type__pk doesn't seem to do anything... it's not a problem now, but it may become a problem.
-    projectfiles = fileobject.objects.filter(content_type__pk=1,object_id=pk)
+    object_type = ContentType.objects.get_for_model(project)
+    projectfiles = fileobject.objects.filter(content_type=object_type,object_id=project.id)
+
+
     if project.enf_consistancy == False:
         raise Http404
     else:
@@ -166,7 +170,9 @@ def edit(request, pk):
                 pass
            # Save body as file
             bodyText = fileobject()
-            bodyText.project = project
+
+
+            bodyText.parent = project
 
 
             from django.core.files.uploadedfile import UploadedFile

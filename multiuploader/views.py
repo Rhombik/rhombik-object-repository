@@ -27,6 +27,7 @@ from multiuploader.forms import MultiuploaderImage
 from project.models import *
 from filemanager.models import fileobject, thumbobject
 
+from django.contrib.contenttypes.models import ContentType
 
 @csrf_exempt
 def multiuploader_delete(request, pk):
@@ -100,7 +101,8 @@ def multiuploader(request, pk):
             mimetype = 'text/plain'
         return HttpResponse(response_data, mimetype=mimetype)
     else: #GET
-        projectfiles = fileobject.objects.filter(content_type=Project,object_id=project.id)
+        object_type = ContentType.objects.get_for_model(project)
+        projectfiles = fileobject.objects.filter(content_type=object_type,object_id=project.id)
   
         file_delete_url = settings.MULTI_FILE_DELETE_URL+'/'
         result = []

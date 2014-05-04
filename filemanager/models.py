@@ -49,7 +49,6 @@ class fileobject(models.Model):
 
 
     def save(self):
-        print("BLEEE BLOOOO    "+str(self.content_type))
         super(fileobject, self).save()
 
         self.filetype = thumbnailer2.thumbnailify(self, (1,1))[1]
