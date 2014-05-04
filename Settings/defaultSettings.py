@@ -18,7 +18,7 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 BROKER_URL = 'django://'
 #Makes debugging easier. Don't use in production
 CELERY_ALWAYS_EAGER = True
-CELERY_EAGER_PROPAGATES_EXCEPTIONS =True
+#CELERY_EAGER_PROPAGATES_EXCEPTIONS =True
 
 MANAGERS = ADMINS
 
