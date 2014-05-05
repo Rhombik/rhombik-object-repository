@@ -81,11 +81,11 @@
         {{else}}
             <td class="preview">
                 {{if thumbnail_url}}
-                    <a href="${url}" target="_blank"><img src="${thumbnail_url}"></a>
+                    {{html thumbnail_url}}
                 {{/if}}
             </td>
             <td class="name">
-                <a href="${url}"{{if thumbnail_url}} target="_blank"{{/if}}>${name}</a>
+                ${name}
             </td>
             <td class="size">${sizef}</td>
             <td colspan="2"></td>

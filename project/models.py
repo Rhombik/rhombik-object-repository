@@ -74,35 +74,32 @@ class Project(models.Model):
         else:
              return "Untitled Project (A Draft..?)"
     def save(self):
-        if not self.thumbnail:
-            self.draft=True
         super(Project, self).save()
+        self.enf_consistancy()
 
     def enf_consistancy(self):
         #checks if there's a thumbnail.
-        if not self.thumbnail:
+
+        #Sometimes the "thumbnail = models.ForeignKey" key doesn't get set to null fast enough. This checks to see if the key points to a thumbobject that doesn't actually exist, or if the key is null.
+        try:
+            if self.thumbnail:
+                getnewthumb=False
+            else:
+                getnewthumb=True
+        except:
+            getnewthumb=True
+
+        if getnewthumb:
             object_type = ContentType.objects.get_for_model(self)
             files = fileobject.objects.filter(content_type=object_type,object_id=self.id)
             for fl in files:
                 if fl.filetype != 'norender' and fl.filetype != "text":### Look for thumbnailable pic.
                     self.thumbnail = fl
                     super(Project, self).save()
-                    break
-                else:
-                    self.draft = True
-                    super(Project, self).save()
-                    return False
+                    return True
+            self.draft = True
+            super(Project, self).save()
+            return False
+        else:
+            return True
 
-        #check to see if there's a readme.
-        if not self.bodyFile:
-            files=fileobject.objects.filter(object_id=self.id, filetype="text")
-            for fl in files:
-                if fl:### Look for thumbnailable pic.
-                    self.bodyFile = fl
-                    super(Project, self).save()
-                    break
-                else:
-                    self.draft = True
-                    super(Project, self).save()
-                    return False
-        return True
