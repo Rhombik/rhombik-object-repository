@@ -28,7 +28,6 @@ from django.core.context_processors import csrf
 
 
 from django.http import HttpResponseRedirect, HttpResponse
-from filemanager.models import fileobject
 
 def searchtest(*args, **kwargs):
     project = Project.objects.filter(pk=1)[0:1].get()

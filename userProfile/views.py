@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.template import RequestContext, loader
 
 from project.models import Project
-from project.views import thumbnail_get
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -14,7 +13,9 @@ from userProfile.models import userProfile
 from userProfile.forms import *
 from django.contrib.auth.forms import PasswordChangeForm
 
+from filemanager.models import fileobject
 
+from project.views import project_list_get
 
 
 
@@ -48,17 +49,12 @@ def edit(request):
 
             #Create users picture.
             if pictureform.cleaned_data["filename"]:
-
-#####DELETE THIS OLD AVATERSTUFF!!
-          #     from avatarBot.models import uploadPic
-          #     try:
-          #          upload = uploadPic.objects.filter( user = data )[0]
-          #          upload.delete()
-          #     except: "whatever"
-          #     upload = uploadPic.objects.create( user = data, filename = request.FILES["filename"] )
-          #     upload.save()
-          #     profile.avatarType = "upload"
-                profile.thumbnail = thumbobject.objects.get_or_create(userpicfileobject=request.FILES["filename"], filex = 128, filey = 128)[0]
+                
+                profile.userpic.delete()
+                thumbiwumbi = fileobject(parent=profile)
+                thumbiwumbi.filename = request.FILES["filename"]
+                thumbiwumbi.save()
+                profile.userpic = thumbiwumbi
 
             profile.save()
             return redirect("/userProfile/"+str(data.pk))
@@ -88,6 +84,8 @@ def index(request, pk):
     # userdata is the user data who's page we are viewing.
     userdata=User.objects.filter(pk = pk).get()
 
+    profile = userProfile.objects.filter(user=userdata)[0]
+
     projects=Project.objects.filter(author=userdata).order_by("-created") #'''~this needs to get the users projects.... not just you know, all the projects.... and now it does!''' YAY!  And now it gets no projects? wtf.. ok, so it is getting the list.. it is just not getting displayed...
 
     #  paginator is neat!
@@ -103,22 +101,11 @@ def index(request, pk):
     except (InvalidPage, EmptyPage):
         projects = paginator.page(paginator.num_pages)
 
-    from avatarBot.avatarBot import getPic
+    listdata = project_list_get(projects)
 
-    thumbpic, picfile, pictype = getPic(userdata, (256,256))
+    thumbpic = [profile.userpic.get_thumb(512,512)]
 
-    listdata = []
-    for project in projects:
-        # if a project has no thumbnail. This happens when ignorant users delete thier pictures and navigate away without saving and seeing the form error. #
-########if not project.thumbnail:
-########    print("I cant find the thumbnail for " + str(project))
-########    # so we just get a new thumbnail for their project. #
-########    Project.select_thumbnail(project)
-        thumbnail = thumbnail_get(project=project, fileobject=project.thumbnail, filex = 128, filey = 128)
-        listdata += [[project, thumbnail]]
-
-
-    c = RequestContext(request, dict(thumbpic = thumbpic, picfile = picfile, pictype = pictype, user=request.user, owner=userdata, listdata = listdata))
+    c = RequestContext(request, dict(thumbpic=thumbpic, user=request.user, owner=userdata, listdata = listdata))
     return render(request, "userProfile/index.html", c)
 
 

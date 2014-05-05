@@ -9,7 +9,8 @@
 
     <div class="main">
 
-<img src="{{ thumbpic }}" class="thumbnail"></a></h2></div>
+{% include "gallery.html" with images=thumbpic %}
+</h2></div>
 
         <!-- The users name in a nice big font  -->
                 <div class="title"><h1>{{ owner.username }}</h1></div>
