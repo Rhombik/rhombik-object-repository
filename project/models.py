@@ -7,6 +7,7 @@ from taggit.managers import TaggableManager
 from filemanager.models import fileobject
 from djangoratings.fields import RatingField
 from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
 
 ##Does this actuall work? I don't think it does.... It seems to always return(SET_NULL)
 ##I've disabled it. Now whenever a fileobject gets deleted, it starts a task checking for null fields.
@@ -80,7 +81,8 @@ class Project(models.Model):
     def enf_consistancy(self):
         #checks if there's a thumbnail.
         if not self.thumbnail:
-            files=fileobject.objects.filter(project=self)
+            object_type = ContentType.objects.get_for_model(self)
+            files = fileobject.objects.filter(content_type=object_type,object_id=self.id)
             for fl in files:
                 if fl.filetype != 'norender' and fl.filetype != "text":### Look for thumbnailable pic.
                     self.thumbnail = fl
