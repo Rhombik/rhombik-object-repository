@@ -79,7 +79,17 @@ class Project(models.Model):
 
     def enf_consistancy(self):
         #checks if there's a thumbnail.
-        if not self.thumbnail:
+
+        #Sometimes the "thumbnail = models.ForeignKey" key doesn't get set to null fast enough. This checks to see if the key points to a thumbobject that doesn't actually exist, or if the key is null.
+        try:
+            if self.thumbnail:
+                getnewthumb=False
+            else:
+                getnewthumb=True
+        except:
+            getnewthumb=True
+
+        if getnewthumb:
             object_type = ContentType.objects.get_for_model(self)
             files = fileobject.objects.filter(content_type=object_type,object_id=self.id)
             for fl in files:
@@ -87,9 +97,9 @@ class Project(models.Model):
                     self.thumbnail = fl
                     super(Project, self).save()
                     return True
-                else:
-                    self.draft = True
-                    super(Project, self).save()
-                    return False
+            self.draft = True
+            super(Project, self).save()
+            return False
         else:
             return True
+
