@@ -37,7 +37,9 @@ def multiuploader_delete(request, pk):
     https://github.com/blueimp/jQuery-File-Upload
     """
     image = get_object_or_404(fileobject, pk=pk)
-    project=Project.objects.filter(fileobject__pk=image.pk)[0]
+    project = image.parent
+
+
     if request.method == 'POST' and str(project.author) == str(request.user):
         log.info('Called delete image. image id='+str(pk))
         image.delete()
