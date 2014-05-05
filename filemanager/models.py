@@ -58,7 +58,11 @@ class fileobject(models.Model):
         from project.tasks import ThumbnailEnforcer
         default_storage.delete(self.filename)
         super(fileobject, self).delete(*args, **kwargs)
-        self.parent.enf_consistancy()
+        #parent does not need to implement an enf_consistancy method. It is optional.
+        try:
+            self.parent.enf_consistancy()
+        except:
+            pass
 
        #default_storage.delete(self.thumbname)
 
