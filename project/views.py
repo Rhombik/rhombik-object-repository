@@ -37,20 +37,6 @@ def searchtest(*args, **kwargs):
 
 
 
-def thumbnail_get(project, fileobject, *args, **kwargs):
-    
-    ## Sets the default thumbnail to an image in the project.
-    if not project.thumbnail:
-        project.enf_consistancy()
-
-    ## gets or creates thumbnail object
-    try:
-        thumbnail = thumbobject.objects.get_or_create(fileobject=project.thumbnail, filex = 128, filey = 128)[0]
-    except:
-        pass
-    return thumbnail
-
-
 
 """______________________________"""
 ## project_list_get takes a list of projects and returns a list of lists containing:
@@ -62,8 +48,9 @@ def project_list_get(projects):
     listdata = []
     for project in projects:
         if project.enf_consistancy() == True:
-            thumbnail = thumbnail_get(project=project, fileobject=project.thumbnail, filex = 128, filey = 128)
-            listdata += [[project, thumbnail]]
+            object_type = ContentType.objects.get_for_model(project)
+            thumbnail = project.thumbnail.get_thumb(128,128)
+            listdata += [[project, thumbnail[0]]]
 
     return listdata
 

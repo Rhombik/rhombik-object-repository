@@ -83,16 +83,13 @@ def multiuploader(request, pk):
         #thumbnail = thumbobject.objects.get_or_create( fileobject = projectfiles, filex=64, filey=64 )[0]
         result = []
         ##It waits for the thumbnail to generate before sending the json, which should work.
-        thumburl=""
-        try:
-            thumburl=thumbnail.filename.url
-        except:
-            pass
+        images=[projectfiles.get_thumb(64,64)]
+        thumburl = render_to_string("gallery.html", dict(images=images, galleryname="ajax"))
+
 
         result.append({"name":projectfiles.subfolder+os.path.split(str(projectfiles.filename.name))[1], 
                        "size":projectfiles.filename.size, 
-                       "url":str(projectfiles.filename.url),
-                       "thumbnail_url":"",
+                       "thumbnail_url":thumburl,
                        "delete_url":"/multi_delete/"+str(projectfiles.pk)+"/", 
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)

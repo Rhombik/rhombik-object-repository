@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.template import RequestContext, loader
 
 from project.models import Project
-from project.views import thumbnail_get
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
