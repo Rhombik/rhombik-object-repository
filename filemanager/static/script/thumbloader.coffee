@@ -44,13 +44,19 @@ class window.thumbloader
         this.loadinglooper.goloopy()
 
     remove: (pk) ->
+       # console.log "I'm trying to kill pic with pk #{pk}"
        listlength=this.datalist.length
        i=0
-       while true
+       killed=false
+       while i < listlength
            if "#{this.datalist[i][0]}" == "#{pk}"
-               console.log "I killed #{this.datalist[i][0]}"
+               # console.log "I killed #{this.datalist[i][0]}"
                this.datalist.splice(i, 1)
+               killed=true
                break
+           i++
+       if ! killed
+           console.log "Thumbloader failed to delete pic with pk #{pk}. This should not have happened."
 
     alive: () ->
         if this.datalist.length==0
@@ -66,12 +72,9 @@ class window.thumbloader
 
     comparifier: () ->
        request = ""
-       console.log this.datalist.length
        for i in [0...this.datalist.length]
            request+="#{this.datalist[i][0]},"
-     #### This line is where you will add support for different content types
        GetViewedItem("/ajax/#{this.contentkind}/#{request}")
-       return null
 
     finishComparifying: (updata) ->
        killem=[]
@@ -80,9 +83,7 @@ class window.thumbloader
                replacelet= document.getElementsByClassName("pk=#{updata[i].pk}")
              ##  Make this a for loop or a way to do all of the array items!
                replacelet[0].innerHTML=updata[i].html
-               killem+=updata[i].pk
-           else
-               console.log "i have no image........"
+               killem.push(updata[i].pk)
        for i in [0...killem.length]
            this.remove(killem[i])
 
