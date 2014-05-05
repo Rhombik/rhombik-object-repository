@@ -57,8 +57,9 @@ class fileobject(models.Model):
     def delete(self, *args, **kwargs):
         from project.tasks import ThumbnailEnforcer
         default_storage.delete(self.filename)
-        ThumbnailEnforcer()
         super(fileobject, self).delete(*args, **kwargs)
+        self.parent.enf_consistancy()
+
        #default_storage.delete(self.thumbname)
 
 

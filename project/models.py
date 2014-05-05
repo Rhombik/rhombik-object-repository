@@ -73,9 +73,8 @@ class Project(models.Model):
         else:
              return "Untitled Project"
     def save(self):
-        if not self.thumbnail:
-            self.draft=True
         super(Project, self).save()
+        self.enf_consistancy()
 
     def enf_consistancy(self):
         #checks if there's a thumbnail.
@@ -85,22 +84,10 @@ class Project(models.Model):
                 if fl.filetype != 'norender' and fl.filetype != "text":### Look for thumbnailable pic.
                     self.thumbnail = fl
                     super(Project, self).save()
-                    break
+                    return True
                 else:
                     self.draft = True
                     super(Project, self).save()
                     return False
-
-        #check to see if there's a readme.
-        if not self.bodyFile:
-            files=fileobject.objects.filter(object_id=self.id, filetype="text")
-            for fl in files:
-                if fl:### Look for thumbnailable pic.
-                    self.bodyFile = fl
-                    super(Project, self).save()
-                    break
-                else:
-                    self.draft = True
-                    super(Project, self).save()
-                    return False
-        return True
+        else:
+            return True
