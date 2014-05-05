@@ -29,6 +29,8 @@ from filemanager.models import fileobject, thumbobject
 
 from django.contrib.contenttypes.models import ContentType
 
+from django.template.loader import render_to_string
+
 @csrf_exempt
 def multiuploader_delete(request, pk):
     """
@@ -110,17 +112,12 @@ def multiuploader(request, pk):
         result = []
         for image in projectfiles:
             #thumbnail =  thumbobject.objects.get_or_create( fileobject = image, filex=64, filey=64 )[0]
-
-            try:
-                thumburl=thumbnail.filename.url
-            except:
-                thumburl=""
-
+            images=[image.get_thumb(64,64)]
+            thumburl = render_to_string("gallery.html", dict(images=images, galleryname="ajax"))
             ##json stuff
             result.append({"name":image.subfolder+os.path.split(image.filename.name)[1],
                        "size":image.filename.size,
-                       "url":"/preview/"+str(image.filetype+image.filename.url),
-                       "thumbnail_url":"",
+                       "thumbnail_url":thumburl,
                        "delete_url":"/multi_delete/"+str(image.pk)+"/",
                        "delete_type":"POST",})
         response_data = simplejson.dumps(result)
