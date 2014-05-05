@@ -27,7 +27,7 @@ class Project(models.Model):
 
     title = models.CharField(max_length=60,blank=True, null=True, unique=True)
    #thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL , related_name='thumbnail')
-    thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, related_name='thumbnail')
+    thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL, related_name='thumbnail')
     body = models.TextField(blank=True, null=True)
 
     #This exists soley so that we can find prohects that don't have a readme.
@@ -72,7 +72,7 @@ class Project(models.Model):
         if self.title:
              return self.title
         else:
-             return "Untitled Project"
+             return "Untitled Project (A Draft..?)"
     def save(self):
         if not self.thumbnail:
             self.draft=True
