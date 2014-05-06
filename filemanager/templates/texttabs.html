@@ -1,0 +1,24 @@
+
+<div id="tabs">
+	<div class="sortCategories sortBody clearfix">
+		<ul>
+	      {% for html, name in texts %}
+	        <li><a href="#{{name}}">{{name}}</a></li>
+	      {%endfor%}
+		</ul>
+	</div>
+	<article class="Main bodyContainer" id="TextsMain">
+		<div class="Main body">
+		</div>
+	</article>
+	{% for html, name in texts %}
+	<article class="texts bodyContainer" id="{{name}}">
+		<h2>
+                <div class="texts title">{{name}}</div></h2>
+		<hr>
+		<div class="texts body">
+		<p>{{html.body_rendered | safe}}</p>
+		</div>
+	</article>
+	{%endfor%}
+</div>
