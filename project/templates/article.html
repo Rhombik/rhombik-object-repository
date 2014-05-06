@@ -72,32 +72,7 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
 			</section>
 
 			<section class="pageLeft">
-				<div id="tabs">
-					<div class="sortCategories sortBody clearfix">
-						<ul>
-						<li><a href="#a.a">a</a></li>
-					      {% for html, name in texts %}
-					        <li><a href="#{{name}}">{{name}}</a></li>
-					      {%endfor%}
-						</ul>
-					</div>
-					<article class="bodyContainer" id="a.a">
-						<h2>a</h2>
-						<hr>
-						<div class="bodyContent">
-						<p>a</p>
-						</div>
-					</article>
-					{% for html, name in texts %}
-					<article class="bodyContainer" id="{{name}}">
-						<h2>{{name}}</h2>
-						<hr>
-						<div class="bodyContent">
-						<p>{{html.body_rendered | safe}}</p>
-						</div>
-					</article>
-					{%endfor%}
-				</div>
+                            {% include "texttabs.html" %}
 			</section>
 			<section class="pageRight">
 				<h3>Tags</h3>
