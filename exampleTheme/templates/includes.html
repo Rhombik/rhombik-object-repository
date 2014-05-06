@@ -29,10 +29,9 @@ jQuery(document).ready(function () {
                         jQuery('a.gallery-'+i).colorbox({ opacity:0.5 , rel:'group'+i, width:"70%", height:"70%"});
                 }
                 $(".iframe").colorbox({iframe:true, width:"70%", height:"70%"});
-            jQuery('a.gallery-base').colorbox({ opacity:0.5 , rel:'group-base', width:"70%", height:"70%"});
-
+                jQuery('a.gallery-base').colorbox({ opacity:0.5 , rel:'group-base', width:"70%", height:"70%"});
                 thumbloader.wakeUp();
-            
+                texttabbeler.htmltabme();
             });
 
 </script>
@@ -40,9 +39,11 @@ jQuery(document).ready(function () {
 <script src="/static/script/trier/src/trier.js"></script>
 {% load coffeescript %}
 <script type="text/javascript"  src="{% static "" %}{% coffeescript "script/thumbloader.coffee" %}"></script>
+<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/tabbeler.coffee" %}"></script>
 
 <script>
-thumbloader = new thumbloader("thumblist")
+    thumbloader = new thumbloader("thumblist")
+    texttabbeler = new tabbeler("texts")
 </script>
 
 
