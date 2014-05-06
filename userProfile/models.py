@@ -19,6 +19,8 @@ class userProfile(models.Model):
 
     bio = models.CharField(max_length=256, blank=True,  default="I didn't really care to tell you about myself, so the developers wrote this.")
 
+    listpref = models.SmallIntegerField(max_length=256, blank=True, null=True,)
+
     def __unicode__(self):
         return str(self.user)+"Profile"
 
