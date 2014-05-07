@@ -4,7 +4,9 @@ from haystack.forms import SearchForm
 from taggit.utils import parse_tags
 from project.models import Project
 from taggit_autocomplete.widgets import TagAutocomplete
- 
+from haystack.query import SearchQuerySet
+
+
 class DateRangeSearchForm(SearchForm):
 #    start_date = forms.DateField(required=False)
 #    end_date = forms.DateField(required=False)
@@ -27,7 +29,11 @@ class DateRangeSearchForm(SearchForm):
 
     def search(self):
         # First, store the SearchQuerySet received from other processing.
-        sqs = super(DateRangeSearchForm, self).search()
+        if self.cleaned_data['q']:
+            sqs = super(DateRangeSearchForm, self).search()
+        else:
+            sqs= SearchQuerySet().all()
+  
         if not self.is_valid():
             return self.no_query_found()
 
