@@ -1,5 +1,6 @@
 
   
+//Stuff for image-tab controlling the large gallery pic.
 //Call the flag
 $(document).ready(function(){
   $('.imageSwitch').click(function(e){
@@ -10,6 +11,9 @@ $(document).ready(function(){
            	$('.printableImageContainer').css('height', 'auto');
         e.preventDefault();
   });
+
+
+//tabbed text viewer switching. I'm hoping to move this in with project/static/script/tabbeler.coffee
   
 	$('#tabs article').hide();
 	$('#tabs article:first').show();
@@ -23,6 +27,9 @@ $(document).ready(function(){
 		$(currentTab).show();
 	});
 
+
+//scrolly top menu
+
 $(window).scroll(function () {
   if($(this).scrollTop() > 58 && !$('header').hasClass('fixed') ){
   	$('header').addClass('fixed');
@@ -32,6 +39,9 @@ $(window).scroll(function () {
 
   
 });
+
+
+//Other stuff!
 
 var searchToggle = false;
 var navToggle = false;
