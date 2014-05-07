@@ -52,12 +52,15 @@ class Project(models.Model):
     #Pretends that 0 is -1 and 1 is 1.
     def calc_adjusted_rating(self):
         import math
-
+        #The total score (you can vote 1 or 2) of all the votes, minus the number of people who have voted.
         upvotes = self.rating.score - self.rating.votes
+        #Total number of people who voted minus upvotes
         downvotes = self.rating.votes - upvotes
         self.ratingCount = upvotes-downvotes
         votes = self.rating.votes
 
+
+        #http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
         if(votes == 0):
             #Set to 2 by default, to encourage people to look at/vote on new content. 
             self.ratingSortBest = 2 
