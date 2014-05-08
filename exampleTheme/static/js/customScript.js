@@ -15,9 +15,21 @@ $(document).ready(function(){
 
 //tabbed text viewer switching. I'm hoping to move this in with project/static/script/tabbeler.coffee
   
-	$('#tabs article').hide();
-	$('#tabs article:first').show();
-	$('#tabs div ul li:first').addClass('active');
+	//$('#tabs article').hide();// this functionality is now covered by the tabbeler.
+        if(window.location.hash){
+            var goo = $('#tabs div ul li');
+            for (var i = 0; i<goo.length; i++){
+                if('#'+goo[i].textContent==window.location.hash){
+                    console.log(goo[i].textContent+" is the best at space");
+                    $(goo[i]).addClass('active');
+                }else{
+                    $(goo[i]).removeClass('active');
+                }
+            }
+        }else{
+		$('#tabs article:first').show();
+		$('#tabs div ul li:first').addClass('active');
+        }
  
 	$('#tabs div ul li a').click(function(){
                 texttabbeler.showtabcontent($(this)[0].innerHTML);
