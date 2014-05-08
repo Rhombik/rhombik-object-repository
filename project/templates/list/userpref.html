@@ -1,0 +1,13 @@
+
+ 
+<div class="container_12 maincontent">
+ <!-- Projects-->
+
+{#This is going to get complicated fast... #}
+
+{% if not user.profile.listpref or user.profile.listpref == 1 %}
+
+{% include "list/icon.html"  %}
+
+{% endif %}
+</div>
