@@ -49,8 +49,6 @@ class fileobject(models.Model):
 
 
     def save(self):
-        super(fileobject, self).save()
-
         self.filetype = thumbnailer2.thumbnailify(self, (1,1))[1]
         super(fileobject, self).save()
 
@@ -84,6 +82,7 @@ class thumbobject(models.Model):
     class Meta:
         unique_together = ('filex', 'filey', "fileobject")
 
+#        index_together = [['filex', 'filey', "fileobject"]]
     def save(self, generate=True, *args, **kwargs):
         if generate == True:
             self.filetype = "ajax"
@@ -94,8 +93,8 @@ class thumbobject(models.Model):
             thumbTask.delay(self, self.fileobject)
 
     def delete(self, *args, **kwargs):
-        default_storage.delete(self.filename)
         super(thumbobject, self).delete(*args, **kwargs)
+        default_storage.delete(self.filename)
 
 
 from django.core.files.uploadedfile import UploadedFile

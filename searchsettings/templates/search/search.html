@@ -6,7 +6,7 @@
 <div class="container_12">
 
 
-        {% if query %}
+        {% if page.object_list %}
             <h3>Results</h3>
             <div class="container_12">
             {% for result in page.object_list %}
@@ -33,6 +33,8 @@
             {% endif %}
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}
+            There were no results. <br>
+            Maybe try on of our exciting watermelon flavoured categories?
         {% endif %}
 {% endblock %}
 </div>
