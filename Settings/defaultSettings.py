@@ -192,8 +192,8 @@ INSTALLED_APPS = (
     'taggit_autocomplete',
     'testcases',
     'djangoratings',
-    'threadedcomments',
-    'django.contrib.comments',
+#    'threadedcomments',
+#    'django.contrib.comments',
     #So we can inline coffeescript
     'static_precompiler',
 #    'djcelery',

@@ -86,12 +86,15 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
 				</div>
 			</section>
 			<section class="comments pageLeft">
+
+{% comment %}
 				{% load threadedcomments_tags %}
 				
 				<b>***This is the comments place.***</b>
 				
 				{% render_comment_list for project %}
 				{% render_comment_form for project %}
+{%endcomment%}
 			</section>
 
 {% endblock content %}
