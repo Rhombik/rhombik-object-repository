@@ -48,8 +48,6 @@ function getParameterByName(name) {
 `
 
 
- 
-
 
 #And now for the main event!
 class window.tabbeler
@@ -69,17 +67,6 @@ class window.tabbeler
             this.showtabcontent(window.location.hash.substring(1))
         else
             this.body.innerHTML = this.datalist[0][1]
-
-        `
-	$('#tabs div ul li a').click(function(){
-                texttabbeler.showtabcontent($(this)[0].innerHTML);
-		$('#tabs div ul li').removeClass('active');
-		$(this).parent().addClass('active');
-		var currentTab = $(this).attr('href');
-                console.log(currentTab);
-		$(currentTab).show();
-	});
-        `
 
     showtabcontent: (name)->
         for i in [0...this.datalist.length]

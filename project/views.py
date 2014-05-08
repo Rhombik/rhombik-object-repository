@@ -92,8 +92,18 @@ def project(request, pk):
             texts.append([htmlmodel, path.split(str(i.filename))[1]])
     download=zippedobject.objects.get_or_create(project=project)[0]
 
+    author = project.author
+    from userProfile.models import userProfile
+    authorprofile = userProfile.objects.filter(user=author)[0]
+    authorpic=authorprofile.userpic.get_thumb(128,128)[0]
+
     c = RequestContext(request, dict(project=project, 
 				user=request.user,
+
+				author=author,
+				authorprofile=authorprofile,
+				authorpic=authorpic,
+
                                 images=images, 
 				texts=texts,
 				galleryname="base", 

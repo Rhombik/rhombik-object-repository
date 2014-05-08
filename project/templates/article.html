@@ -63,10 +63,11 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
 				<hr>
 				<div class="bodyContainer">
 					<div class="containerContent">
-					{% if user == project.author %}
-						<a href="/edit/{{ project.pk }}" class="button purple fullWidth">Edit</a>
-						<hr>
-					{% endif %}
+						{% if user == project.author %}
+							<a href="/edit/{{ project.pk }}" class="button purple fullWidth">Edit</a>
+							<hr>
+						{% endif %}
+						{% include "usertagcard.html" with user=author profile=authorprofile userpic=authorpic %}
 					</div>
 				</div>
 			</section>
