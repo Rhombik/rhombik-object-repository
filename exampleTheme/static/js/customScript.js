@@ -1,5 +1,6 @@
 
   
+//Stuff for image-tab controlling the large gallery pic.
 //Call the flag
 $(document).ready(function(){
   $('.imageSwitch').click(function(e){
@@ -10,10 +11,25 @@ $(document).ready(function(){
            	$('.printableImageContainer').css('height', 'auto');
         e.preventDefault();
   });
+
+
+//tabbed text viewer switching. I'm hoping to move this in with project/static/script/tabbeler.coffee
   
-	$('#tabs article').hide();
-	$('#tabs article:first').show();
-	$('#tabs div ul li:first').addClass('active');
+	//$('#tabs article').hide();// this functionality is now covered by the tabbeler.
+        if(window.location.hash){
+            var goo = $('#tabs div ul li');
+            for (var i = 0; i<goo.length; i++){
+                if('#'+goo[i].textContent==window.location.hash){
+                    console.log(goo[i].textContent+" is the best at space");
+                    $(goo[i]).addClass('active');
+                }else{
+                    $(goo[i]).removeClass('active');
+                }
+            }
+        }else{
+		$('#tabs article:first').show();
+		$('#tabs div ul li:first').addClass('active');
+        }
  
 	$('#tabs div ul li a').click(function(){
                 texttabbeler.showtabcontent($(this)[0].innerHTML);
@@ -22,6 +38,9 @@ $(document).ready(function(){
 		var currentTab = $(this).attr('href');
 		$(currentTab).show();
 	});
+
+
+//scrolly top menu
 
 $(window).scroll(function () {
   if($(this).scrollTop() > 58 && !$('header').hasClass('fixed') ){
@@ -32,6 +51,9 @@ $(window).scroll(function () {
 
   
 });
+
+
+//Other stuff!
 
 var searchToggle = false;
 var navToggle = false;
