@@ -57,7 +57,13 @@ def project_list_get(projects):
 
 
 def project(request, pk):
-    project = Project.objects.exclude(draft=True).get(pk=pk)
+
+## If the post doesn't exist 404 them
+    try:
+        project = Project.objects.exclude(draft=True).get(pk=pk)
+    except:
+        return HttpResponse(status=404)
+
 
     object_type = ContentType.objects.get_for_model(project)
     projectfiles = fileobject.objects.filter(content_type=object_type,object_id=project.id)
@@ -116,6 +122,8 @@ def front(request):
  
     return render_to_response('list.html', dict(project=project, user=request.user,))
 
+
+
 '''
 - Needs to generate a list of the most popular printables of the day and/or week and/or month. The overhead of this is beyond me, but I imagine some sort of algorithm to factor in upvotes/downloads/comments and staff interest is needed to decide what is "popular".
 '''
@@ -140,36 +148,52 @@ def list(request):
 
 from django.utils import simplejson
 
-@csrf_exempt
-@requires_csrf_token
-def edit(request, pk):
 
-##-----------------------------
-# User filled and sent form
-    try:
-        project=Project.objects.filter(pk=pk)[0:1].get()
-    except:
-        return HttpResponse(status=404)
+
+'''
+ Here lives stuff for the edit and create a project pages.
+'''
+
+def editOrCreateStuff(project, request):
+
+## Note: if project.draft == true this is a post being created.
+#Because there are so many similarities in creating a post vs editing a post we are using this method, and using project.draft when we need to do something different for editing vs creating.
+
+  ## postmode! We are getting pretty post data from the user!!!
     if request.method == 'POST':
-        form = ProjectForm(request.POST, project)
-        #Check to make sure the form is valid and the user matches the project author
-        if form.is_valid() and str(project.author) == str(request.user):
-            #save thr form
+    ## get the forms and check that they are valid
+        formValid=False
+        if project.draft:
+            form = createForm(request.POST, project)
+            form2 = defaulttag(request.POST)
+            if form.is_valid() and form2.is_valid() and request.user.is_authenticated():
+                formValid=True
+               # If we are creating the post we need to set the author and title.
+                project.author = request.user
+                project.title = form.cleaned_data["title"]
+        else:
+            form = ProjectForm(request.POST, project)
+            if form.is_valid() and str(project.author) == str(request.user):
+                formValid=True
+       ## if the form is valid make the changes to the project!
+        if formValid:
 
+          # Editing the Readme.md file stuff.
+
+            if not project.draft:
           # Delete the old body text file... cause I'm a bad person and I don't know how to just open and write to the old one easily.
-	    readme = project.bodyFile
-            try:
-                readme = project.bodyFile
-                readmename = path.split(str(readme.filename))[1]
-                readme.delete()
-            except:
-                pass
+	        readme = project.bodyFile
+                try:
+                    readme = project.bodyFile
+                    readmename = path.split(str(readme.filename))[1]
+                    readme.delete()
+                except:
+                    pass
+
            # Save body as file
             bodyText = fileobject()
 
-
             bodyText.parent = project
-
 
             from django.core.files.uploadedfile import UploadedFile
             import base64
@@ -182,7 +206,7 @@ def edit(request, pk):
             txfl = UploadedFile(io)
 
 
-            #editfield is renaming your readme to readme.md every time. That's not good.
+            #editfield may be renaming your readme to readme.md every time. That's not good.
             try:
                 bodyText.filename.save(readmename, txfl)
             except:
@@ -192,22 +216,44 @@ def edit(request, pk):
             io.close()
 
             bodyText.save()
+
+     #### this did not appear to be happening in the create.... but I think it should have been?
             project.bodyFile = bodyText
-           #project.thumbnail = form.cleaned_data["thumbnail"]
+
+         # Done with editing the README.md textfile.
+
+         # 
             list_to_tags(form.cleaned_data["tags"], project.tags)
+            if project.draft:
+                list_to_tags(form2.cleaned_data["categories"], project.tags, False)
+
+         # This may be redundant, but either way, this post is not a draft past this point.
+            project.draft=False
+
             project.save()
+
             return HttpResponseRedirect('/project/'+str(project.pk))
+
+     #### If the form data was NOT valid
         else:
-            if str(project.author) == str(request.user):
-                return render_to_response('edit.html', dict(project=project, user=request.user, form=form, ))
+            if project.draft:
+                return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2, project=project))
             else:
-                return HttpResponse(status=403)
+                if str(project.author) == str(request.user):
+                    return render_to_response('edit.html', dict(project=project, user=request.user, form=form, ))
+                else:
+                    return HttpResponse(status=403)
 
-#--------------------------
-#Set up the actual view.
+   #### Not POSTmode! We are setting up the form for the user to fill in. We are not getting form data from the user.
 
+##### CREATE
+    elif project.draft and request.user.is_authenticated():
+        form = createForm("",project)
+        form2 = defaulttag()
+        return render_to_response('create.html', dict(user=request.user, form=form, form2=form2, project=project))
 
-    elif str(project.author) == str(request.user):
+##### EDIT
+    elif (not project.draft) and str(project.author) == str(request.user):
         if project.bodyFile:
             readme = project.bodyFile.filename.read()
         else:
@@ -227,9 +273,24 @@ def edit(request, pk):
 
 
 
+@csrf_exempt
+@requires_csrf_token
+def edit(request, pk):
+
+## Get the project the user wishes to edit.
+    try:
+        project=Project.objects.filter(pk=pk)[0:1].get()
+    except:
+        return HttpResponse(status=404)
+
+    return editOrCreateStuff(project, request)
+######## MURDER MURDER MURDER MURDER MURDER MURDER MURDER MURDER #############
+
 
 @csrf_exempt
 def create(request):
+
+## get the draft or draft a new empty project.
     try:
         project=Project.objects.filter(author=request.user).filter(draft=True)[0]
     except:
@@ -238,60 +299,10 @@ def create(request):
         project.draft=True
         project.author = request.user
         project.save()
-##The form-----------------------------
-    if request.method == 'POST':
-        form = createForm(request.POST, project)
-        form2 = defaulttag(request.POST)
-        #Check to make sure the form is valid and the user matches the project author
-        if form.is_valid() and form2.is_valid() and request.user.is_authenticated():
-            #save thr form
-            project.author = request.user
-            project.title = form.cleaned_data["title"]
 
+    return editOrCreateStuff(project, request)
+######## MURDER MURDER MURDER MURDER MURDER MURDER MURDER MURDER #############
 
-           # Save body as file
-            bodyText = fileobject();
-            bodyText.parent = project
-
-
-            from django.core.files.uploadedfile import UploadedFile
-            import base64
-            from io import BytesIO
-            from io import TextIOWrapper
-            from io import StringIO
-
-           #io = TextIOWrapper(TextIOBase(form.cleaned_data["body"]))
-            io = StringIO(form.cleaned_data["body"])
-            txfl = UploadedFile(io)
-
-            bodyText.filename.save('README.md', txfl)
-
-            txfl.close()
-            io.close()
-
-            bodyText.save()
-
-
-            project.author = request.user
-           #project.thumbnail = form.cleaned_data["thumbnail"]
-            project.draft=False
-            project.save()
-            list_to_tags(form.cleaned_data["tags"], project.tags)
-            list_to_tags(form2.cleaned_data["categories"], project.tags, False)
-            project.save()
-            #add error if thumbnail is invalid
-            return HttpResponseRedirect('/project/'+str(project.pk))
-        else:
-            return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2,project=project))
-#--------------------------
-#Set up the actual view.
-    elif request.user.is_authenticated():
-        form = createForm("",project)
-        form2 = defaulttag()
-
-        return render_to_response('create.html', dict(user=request.user, form=form, form2=form2, project=project))
-    else:
-        return HttpResponse(status=403)
 
 def tag(request,tag):
     projects = Project.objects.filter(tags__name__in=[tag]).order_by("-created")
