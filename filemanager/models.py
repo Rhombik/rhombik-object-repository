@@ -49,12 +49,14 @@ class fileobject(models.Model):
 
 
     def save(self):
+        super(fileobject, self).save()
+
         self.filetype = thumbnailer2.thumbnailify(self, (1,1))[1]
         super(fileobject, self).save()
 
     def delete(self, *args, **kwargs):
         from project.tasks import ThumbnailEnforcer
-        default_storage.delete(self.filename)
+        self.filename.delete()
         super(fileobject, self).delete(*args, **kwargs)
         #parent does not need to implement an enf_consistancy method. It is optional.
         try:
@@ -93,8 +95,8 @@ class thumbobject(models.Model):
             thumbTask.delay(self, self.fileobject)
 
     def delete(self, *args, **kwargs):
+        self.filename.delete()
         super(thumbobject, self).delete(*args, **kwargs)
-        default_storage.delete(self.filename)
 
 
 from django.core.files.uploadedfile import UploadedFile
