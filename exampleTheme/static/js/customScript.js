@@ -36,13 +36,6 @@ $(document).ready(function(){
 		$('#tabs div ul li:first').addClass('active');
         }
  
-	$('#tabs div ul li a').click(function(){
-                texttabbeler.showtabcontent($(this)[0].innerHTML);
-		$('#tabs div ul li').removeClass('active');
-		$(this).parent().addClass('active');
-		var currentTab = $(this).attr('href');
-		$(currentTab).show();
-	});
 
 
 //scrolly top menu

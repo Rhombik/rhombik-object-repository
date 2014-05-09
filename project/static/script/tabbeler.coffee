@@ -47,8 +47,8 @@ function getParameterByName(name) {
 // Thanks stack overflow user "jolly.exe"
 `
 
-
-
+`
+`
 #And now for the main event!
 class window.tabbeler
 
@@ -57,16 +57,27 @@ class window.tabbeler
     constructor: (contentname) ->
         @contentname = contentname
 
+
     htmltabme: () ->
         this.datalist = gettitandbod(this.contentname)
         deletethings(this.contentname)
         #document.getElementById("TextsMain").style.visibility="visible"
         this.body = document.getElementsByClassName("Main body")[0]
         this.body.style.visibility="visible"
+       # If the url has a fragment identifier show the text named by it.
         if window.location.hash
             this.showtabcontent(window.location.hash.substring(1))
         else
             this.body.innerHTML = this.datalist[0][1]
+
+        $('#tabs div ul li a').on 'click', (event) =>
+            thing = $(event.target)
+            this.showtabcontent(thing[0].innerHTML)
+            $('#tabs div ul li').removeClass('active')
+            thing.parent().addClass('active')
+            thing.parent().show()
+
+
 
     showtabcontent: (name)->
         for i in [0...this.datalist.length]

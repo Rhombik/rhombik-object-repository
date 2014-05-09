@@ -46,17 +46,8 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
 			<span class="author small">by <a href="/userProfile/{{ project.author.pk }}">{{ project.author }}</a></span>
 			<span class="time small">at {{ project.created }}</span>
 			<div class="printablePreview clearfix">
-					<div class="printableContainer">
-						<div class="printableInfo">
-							<div class="printableImageContainer" id="printableImageContainer">
-								{% include "gallery.html" with images=mainthumb %}
-							</div>
-						</div>
-					</div>
-					<ol class="printableThumbs">
-						{% include "gallery.html" %}
-					</ol>
-				</div>
+				{% include "pictabs.html" with mainthumb=mainthumb images=images %}
+			</div>
 			</section>
 			<section class="pageRight">
 				<h3>Printable Info</h3>
