@@ -48,6 +48,22 @@ function getParameterByName(name) {
 `
 
 `
+function inittab(){
+        if(window.location.hash){
+            var goo = $('#tabs div ul li');
+            for (var i = 0; i<goo.length; i++){
+                if('#'+goo[i].textContent==window.location.hash){
+                    console.log(goo[i].textContent+" is the best at space");
+                    $(goo[i]).addClass('active');
+                }else{
+                    $(goo[i]).removeClass('active');
+                }
+            }
+        }else{
+		$('#tabs article:first').show();
+		$('#tabs div ul li:first').addClass('active');
+        }
+}
 `
 #And now for the main event!
 class window.tabbeler
@@ -76,6 +92,8 @@ class window.tabbeler
             $('#tabs div ul li').removeClass('active')
             thing.parent().addClass('active')
             thing.parent().show()
+
+        inittab()
 
 
 
