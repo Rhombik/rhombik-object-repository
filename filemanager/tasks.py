@@ -21,14 +21,14 @@ def zippedTask(project):
    return
 
 
-def thumbsave(thumbnail):
-   import time
-   print(str(thumbnail)+" thumbsave class")
-   if thumbnail.filename:
-        thumbnail.save(generate=False)
-   else:
-       time.sleep(1)
-       thumbsave(thumbnail)
+#def thumbsave(thumbnail):
+#   import time
+#   print(str(thumbnail)+" thumbsave class")
+#   if thumbnail.filename:
+#        thumbnail.save(generate=False)
+#   else:
+#       time.sleep(1)
+#       thumbsave(thumbnail)
 
 
 @app.task()
@@ -37,13 +37,9 @@ def thumbTask(thumbnail, fullfile):
    from filemanager.models import fileobject, thumbobject
    import time
 
-   print(type(thumbnail.filename))
    thumbnail.filename, thumbnail.filetype = thumbnailer2.thumbnailify(fullfile, (thumbnail.filex, thumbnail.filey))
    #Bleh, this is awful. Means we won't have to refactor a bunch of other stuff, but implies some deeper architecture issues.
    if thumbnail.filetype=="text" or "":
-   #Means you won't get text files when you query thumobjects.
       thumbnail.filetype="norender"
-   if thumbnail.filetype != "norender":
-       thumbsave(thumbnail)
-   return
+   thumbnail.save(generate=False)
 
