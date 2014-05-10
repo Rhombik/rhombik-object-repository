@@ -50,7 +50,12 @@ def edit(request):
             #Create users picture.
             if pictureform.cleaned_data["filename"]:
                 
-                profile.userpic.delete()
+                  ## if they don't have a userpic yet we can't delete it.
+                try:
+                    profile.userpic.delete()
+		except:
+                    pass
+
                 thumbiwumbi = fileobject(parent=profile)
                 thumbiwumbi.filename = request.FILES["filename"]
                 thumbiwumbi.save()
