@@ -103,7 +103,10 @@ def index(request, pk):
 
     listdata = project_list_get(projects)
 
-    thumbpic = [profile.userpic.get_thumb(512,512)]
+    try:
+        thumbpic = [profile.userpic.get_thumb(512,512)]
+    except:
+        thumbpic = False
 
     c = RequestContext(request, dict(thumbpic=thumbpic, user=request.user, owner=userdata, listdata = listdata))
     return render(request, "userProfile/index.html", c)
