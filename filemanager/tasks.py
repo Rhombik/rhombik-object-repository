@@ -41,5 +41,6 @@ def thumbTask(thumbnail, fullfile):
    #Bleh, this is awful. Means we won't have to refactor a bunch of other stuff, but implies some deeper architecture issues.
    if thumbnail.filetype=="text" or "":
       thumbnail.filetype="norender"
+      thumbnail.filename = None
    thumbnail.save(generate=False)
 
