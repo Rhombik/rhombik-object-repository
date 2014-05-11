@@ -1,9 +1,11 @@
 
 Author:<br>
 <div>
+        {% if userpic %}
 	<a href="/userProfile/{{ user.pk }}">
 	<img src="{{userpic.filename.url}}">
 	</a>
+        {% endif %}
 </div>
 <div>
 	<a href="/userProfile/{{ user.pk }}">

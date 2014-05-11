@@ -101,7 +101,10 @@ def project(request, pk):
     author = project.author
     from userProfile.models import userProfile
     authorprofile = userProfile.objects.filter(user=author)[0]
-    authorpic=authorprofile.userpic.get_thumb(128,128)[0]
+    try:
+        authorpic=authorprofile.userpic.get_thumb(128,128)[0]
+    except:
+        authorpic=False
 
     c = RequestContext(request, dict(project=project, 
 				user=request.user,
