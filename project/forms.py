@@ -33,13 +33,8 @@ def cleanify(self, formName):
         if noThumb:
             self._errors['thumbnail'] = [u"The thumbnail you selected is not a valid uploaded image."]
     else:
-        noThumb = True
-        for fl in files:
-            if fl.filetype != 'norender' and fl.filetype != "text":### Look for thumbnailable pic.
-                noThumb = False
-                self.project.thumbnail = fl
-                break
-        if noThumb:
+
+        if not self.project.enf_consistancy():
             self._errors['thumbnail'] = [u"None of your uploaded file makes a thumbnail!"]##	and an error if they all are.
     
    ###   make sure user wrote something about thier project.        
