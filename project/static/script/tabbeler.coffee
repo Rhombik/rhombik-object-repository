@@ -79,12 +79,14 @@ class window.tabbeler
         deletethings(this.contentname)
         #document.getElementById("TextsMain").style.visibility="visible"
         this.body = document.getElementsByClassName("Main body")[0]
-        this.body.style.visibility="visible"
-       # If the url has a fragment identifier show the text named by it.
-        if window.location.hash
-            this.showtabcontent(window.location.hash.substring(1))
-        else
-            this.body.innerHTML = this.datalist[0][1]
+      # If this.body does not get defined then it must not exist. So we don't do anything.
+        if this.body
+             this.body.style.visibility="visible"
+            # If the url has a fragment identifier show the text named by it.
+             if window.location.hash
+                 this.showtabcontent(window.location.hash.substring(1))
+             else
+                 this.body.innerHTML = this.datalist[0][1]
 
         $('#tabs div ul li a').on 'click', (event) =>
             thing = $(event.target)
