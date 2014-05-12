@@ -92,10 +92,14 @@ class thumbobject(models.Model):
         super(thumbobject, self,).save()
         if generate == True:
             from filemanager.tasks import thumbTask
-            thumbTask.delay(self, self.fileobject)
+            thumbTask(self, self.fileobject)
 
     def delete(self, *args, **kwargs):
-        self.filename.delete()
+        import warnings
+        try:
+            self.filename.delete()
+        except:
+            pass
         super(thumbobject, self).delete(*args, **kwargs)
 
 

@@ -35,12 +35,11 @@ def zippedTask(project):
 def thumbTask(thumbnail, fullfile):
    from thumbnailer import thumbnailer2
    from filemanager.models import fileobject, thumbobject
-   import time
-
    thumbnail.filename, thumbnail.filetype = thumbnailer2.thumbnailify(fullfile, (thumbnail.filex, thumbnail.filey))
    #Bleh, this is awful. Means we won't have to refactor a bunch of other stuff, but implies some deeper architecture issues.
-   if thumbnail.filetype=="text" or "" or "norender":
+   if thumbnail.filetype=="text" or thumbnail.filetype=="" or thumbnail.filetype=="norender":
       thumbnail.filetype="norender"
       thumbnail.filename = None
    thumbnail.save(generate=False)
+
 
