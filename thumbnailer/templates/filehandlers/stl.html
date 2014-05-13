@@ -19,6 +19,13 @@
                 <!-- <button id="load" onclick="loadModel();">Load</button> -->
                 </div>
                 <div style="float:right;">
+                Quality:
+                <select id="render_quality_list">
+                <option>standard</option>
+                <option>low</option>
+                <option>high</option>
+                </select>
+                Mode:
                 <select id="render_mode_list">
                 <option>render as flat</option>
                 <option>render as points</option>
@@ -46,6 +53,7 @@
         viewer.setParameter('BackgroundColor1', '#FFFFFF');
         viewer.setParameter('BackgroundColor2', '#707070');
         viewer.setParameter('RenderMode', 'flat');
+        viewer.setParameter('Definition', 'standard');
         viewer.init();
         viewer.update();
 
@@ -116,6 +124,25 @@
                         viewer.setRenderMode('flat');
                         break;
                 }
+                var modes = document.getElementById('render_quality_list');
+                switch(modes.selectedIndex) {
+                case 0:
+                        viewer.setDefinition('standard');
+                        JSC3D.console.logInfo('Set to standard quality.');
+                        break;
+                case 1:
+                        viewer.setDefinition('low');
+                        JSC3D.console.logInfo('Set to low quality..');
+                        break;
+                case 2:
+                        viewer.setDefinition('high');
+                        JSC3D.console.logInfo('Set to high quality.');
+                        break;
+                default:
+                        viewer.setDefinition();
+                        break;
+                }
+
                 viewer.update();
         }
   </script>
