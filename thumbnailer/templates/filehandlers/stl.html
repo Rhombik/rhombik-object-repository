@@ -21,8 +21,8 @@
                 <div style="float:right;">
                 Quality:
                 <select id="render_quality_list">
-                <option>standard</option>
                 <option>low</option>
+                <option>standard</option>
                 <option>high</option>
                 </select>
                 Mode:
@@ -53,7 +53,7 @@
         viewer.setParameter('BackgroundColor1', '#FFFFFF');
         viewer.setParameter('BackgroundColor2', '#707070');
         viewer.setParameter('RenderMode', 'flat');
-        viewer.setParameter('Definition', 'standard');
+        viewer.setParameter('Definition', 'low');
         viewer.init();
         viewer.update();
 
@@ -127,19 +127,21 @@
                 var modes = document.getElementById('render_quality_list');
                 switch(modes.selectedIndex) {
                 case 0:
-                        viewer.setDefinition('standard');
-                        JSC3D.console.logInfo('Set to standard quality.');
-                        break;
-                case 1:
                         viewer.setDefinition('low');
                         JSC3D.console.logInfo('Set to low quality..');
                         break;
+                case 1:
+
+                        viewer.setDefinition('standard');
+                        JSC3D.console.logInfo('Set to standard quality.');
+                        break;
+
                 case 2:
                         viewer.setDefinition('high');
                         JSC3D.console.logInfo('Set to high quality.');
                         break;
                 default:
-                        viewer.setDefinition();
+                        viewer.setDefinition('standard');
                         break;
                 }
 
