@@ -1,0 +1,21 @@
+
+
+
+{% load mptt_tags %}
+<ul class="comments">
+    {% recursetree nodes %}
+        <li>
+            {{ node.level }}
+               ..
+            {{ node.commenttext }}
+            <font size="1">-_-_-_-___comment comment commentelate here.</font>
+            {% if not node.is_leaf_node %}
+                <ul class="children">
+                    {{ children }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
+
+

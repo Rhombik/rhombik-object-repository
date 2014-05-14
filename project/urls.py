@@ -20,6 +20,9 @@ urlpatterns = patterns("",
         'field_name': 'downloadcount',
     }),
 
+## Comments!!!
+    (r'^project/(?P<pk>\d+)/comment/(?P<comment_id>\d+)/$', 'comments.views.comment', {'content_type':'project'}),
+    (r'^project/(?P<pk>\d+)/comment/$', 'comments.views.comment', {'content_type':'project'}),
 
     (r'^project/(.*)/thingtracker/$', 'project.views.thingtracker'),
 

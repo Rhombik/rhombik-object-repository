@@ -192,6 +192,8 @@ INSTALLED_APPS = (
     'taggit_autocomplete',
     'testcases',
     'djangoratings',
+    'comments',
+    'mptt',
 #    'threadedcomments',
 #    'django.contrib.comments',
     #So we can inline coffeescript

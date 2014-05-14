@@ -3,6 +3,7 @@ from os import path
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, render
+from django.http import HttpResponseRedirect, HttpResponse
 
 from django.template import RequestContext
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -27,7 +28,6 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf
 from django.core.context_processors import csrf
 
 
-from django.http import HttpResponseRedirect, HttpResponse
 
 def searchtest(*args, **kwargs):
     project = Project.objects.filter(pk=1)[0:1].get()
@@ -106,12 +106,22 @@ def project(request, pk):
     except:
         authorpic=False
 
+    from comments.models import Comment
+    object_type = ContentType.objects.get(model="project")
+    nodes = Comment.objects.filter(content_type=object_type,object_id=project.id)
+
+    from comments.forms import commentForm
+    commentform = commentForm()
+
     c = RequestContext(request, dict(project=project, 
 				user=request.user,
 
 				author=author,
 				authorprofile=authorprofile,
 				authorpic=authorpic,
+
+                                nodes=nodes,
+				commentform=commentform,
 
                                 images=images, 
 				texts=texts,
