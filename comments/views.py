@@ -42,6 +42,7 @@ def comment(request, content_type, pk, comment_id=-1):
     else:
         #Make a new form
         form = commentForm()
+        form.fields['parent'].queryset = Comment.objects.filter(subject=objecty)
         return render_to_response('commentform.html', dict(form=form, projectpk=pk))
 
 

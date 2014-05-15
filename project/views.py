@@ -112,6 +112,7 @@ def project(request, pk):
 
     from comments.forms import commentForm
     commentform = commentForm()
+    commentform.fields['parent'].queryset = Comment.objects.filter(object_id=project.id)
 
     c = RequestContext(request, dict(project=project, 
 				user=request.user,
