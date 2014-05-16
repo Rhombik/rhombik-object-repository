@@ -9,7 +9,7 @@
  <BODY>
         <div id="main_frame" style="width:window.innerWidth; margin:auto; position:relative; font-size: 9pt; color: #777777;">
                 <canvas id="cv" style="border: 1px solid;" width="600" height="368" ></canvas>
-                <div id="control_panel" style="display:block; color:#000000; padding:5px; position:absolute; left:10px; top:325px; background-color:#ffffff; height:22px; width:128px; border-radius:5px; border:1px solid #777777; font-family:Arial,sans-serif; opacity:0.6;">
+                <div id="control_panel" style="display:block; color:#000000; padding:5px; position:absolute; top:325px; background-color:#ffffff; height:22px; width:128px; border-radius:5px; border:1px solid #777777; font-family:Arial,sans-serif; opacity:0.6;">
                         <input type="radio" name="operate" value="rotate" onclick="viewer.setMouseUsage('rotate');" checked="true">Rotate</input>
                         <input type="radio" name="operate" value="zoom" onclick="viewer.setMouseUsage('zoom');">Zoom</input>
                 </div>
@@ -19,10 +19,17 @@
                 <!-- <button id="load" onclick="loadModel();">Load</button> -->
                 </div>
                 <div style="float:right;">
+                Quality:
+                <select id="render_quality_list">
+                <option>low</option>
+                <option>standard</option>
+                <option>high</option>
+                </select>
+                Mode:
                 <select id="render_mode_list">
+                <option>render as flat</option>
                 <option>render as points</option>
                 <option>render as wireframe</option>
-                <option>render as flat</option>
                 <option>render as smooth</option>
                 </select>
                 <button id="change" onclick="setRenderMode();">Change</button>
@@ -34,8 +41,8 @@
         JSC3D.console.setup('main_frame', '30px');
 
         var canvas = document.getElementById('cv');
-	canvas.width  = (window.innerWidth-30);
-	canvas.height = (window.innerHeight-140);
+	canvas.width  = (window.innerWidth-25);
+	canvas.height = (window.innerHeight-90);
         var viewer = new JSC3D.Viewer(canvas);
         var logoTimerID = 0;
         viewer.setParameter('SceneUrl', '{{ path }}');
@@ -46,6 +53,7 @@
         viewer.setParameter('BackgroundColor1', '#FFFFFF');
         viewer.setParameter('BackgroundColor2', '#707070');
         viewer.setParameter('RenderMode', 'flat');
+        viewer.setParameter('Definition', 'low');
         viewer.init();
         viewer.update();
 
@@ -97,16 +105,16 @@
                 var modes = document.getElementById('render_mode_list');
                 switch(modes.selectedIndex) {
                 case 0:
+                        viewer.setRenderMode('flat');
+                        JSC3D.console.logInfo('Set to flat mode.');
+                        break;
+                case 1:
                         viewer.setRenderMode('point');
                         JSC3D.console.logInfo('Set to point mode.');
                         break;
-                case 1:
+                case 2:
                         viewer.setRenderMode('wireframe');
                         JSC3D.console.logInfo('Set to wireframe mode.');
-                        break;
-                case 2:
-                        viewer.setRenderMode('flat');
-                        JSC3D.console.logInfo('Set to flat mode.');
                         break;
                 case 3:
                         viewer.setRenderMode('smooth');
@@ -116,6 +124,27 @@
                         viewer.setRenderMode('flat');
                         break;
                 }
+                var modes = document.getElementById('render_quality_list');
+                switch(modes.selectedIndex) {
+                case 0:
+                        viewer.setDefinition('low');
+                        JSC3D.console.logInfo('Set to low quality..');
+                        break;
+                case 1:
+
+                        viewer.setDefinition('standard');
+                        JSC3D.console.logInfo('Set to standard quality.');
+                        break;
+
+                case 2:
+                        viewer.setDefinition('high');
+                        JSC3D.console.logInfo('Set to high quality.');
+                        break;
+                default:
+                        viewer.setDefinition('standard');
+                        break;
+                }
+
                 viewer.update();
         }
   </script>
