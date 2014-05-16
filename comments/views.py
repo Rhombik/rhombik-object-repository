@@ -23,7 +23,6 @@ def comment(request, content_type, pk, comment_id=-1):
     except:
         return HttpResponse(status=404)
 
-    print("objecty : "+str(objecty))
 
     if request.method == 'POST':
         form = commentForm(request.POST)
@@ -32,13 +31,16 @@ def comment(request, content_type, pk, comment_id=-1):
             commenttext = form.cleaned_data["commenttext"]
             parent=form.cleaned_data["parent"]
             commenter=request.user
-            comment = Comment(commenttext=commenttext, commenter=commenter, parent=parent,subject=objecty)
+            comment = Comment(
+			commenttext=commenttext,
+			commenter=commenter,
+			parent=parent,
+			subject=objecty)
             comment.save()
    ########## I am so sorry. This redirect breaks the flexibility I was going for. This is very project.
             return HttpResponseRedirect('/project/'+str(objecty.pk))
         else:
             #Form errors
-            print(" form is NOT valid")
             return render_to_response('commentform.html', dict(form=form, projectpk=pk))
     else:
         #Make a new form
