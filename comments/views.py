@@ -31,7 +31,8 @@ def comment(request, content_type, pk, comment_id=-1):
             #Save comment.
             commenttext = form.cleaned_data["commenttext"]
             parent=form.cleaned_data["parent"]
-            comment = Comment(commenttext=commenttext, parent=parent,subject=objecty)
+            commenter=request.user
+            comment = Comment(commenttext=commenttext, commenter=commenter, parent=parent,subject=objecty)
             comment.save()
    ########## I am so sorry. This redirect breaks the flexibility I was going for. This is very project.
             return HttpResponseRedirect('/project/'+str(objecty.pk))

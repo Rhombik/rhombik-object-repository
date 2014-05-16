@@ -4,11 +4,13 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User, Group
 
 class Comment(MPTTModel):
 
     commenttext = models.CharField(max_length=4096, unique=True)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+    commenter = models.ForeignKey(User, related_name='commenter',default=User)
 
    ## This stuff is the content type, id, and ForeignKey of the object we are commenting on.
     content_type = models.ForeignKey(ContentType)
