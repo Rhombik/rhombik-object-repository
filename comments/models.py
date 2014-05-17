@@ -11,7 +11,7 @@ class Comment(MPTTModel):
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
 
-    commenttext = models.CharField(max_length=4096, unique=True)
+    commenttext = models.CharField(max_length=4096)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     commenter = models.ForeignKey(User, related_name='commenter',default=User)
 
