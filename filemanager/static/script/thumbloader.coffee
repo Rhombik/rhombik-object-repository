@@ -84,6 +84,8 @@ class window.thumbloader
              ##  Make this a for loop or a way to do all of the array items!
                replacelet[0].innerHTML=updata[i].html
                killem.push(updata[i].pk)
+             ##  We got some new things to click on so we better make em clickable.
+               window.clickifyGallery()
        for i in [0...killem.length]
            this.remove(killem[i])
 
