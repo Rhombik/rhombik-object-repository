@@ -2,7 +2,7 @@
   
 //Stuff for image-tab controlling the large gallery pic.
 //Call the flag
-$(document).ready(function(){
+window.clickifyGallery = (function(){
   $('.imageSwitch').click(function(e){
   	var image = $(this).attr('rel');
   	var height = $('.printableImageContainer').height();
@@ -16,6 +16,12 @@ $(document).ready(function(){
            	$('.printableImageContainer').css('height', 'auto');
         e.preventDefault();
   });
+});
+
+
+$(document).ready(function(){
+
+window.clickifyGallery();
 
 
 //tabbed text viewer switching. I'm hoping to move this in with project/static/script/tabbeler.coffee
@@ -113,17 +119,17 @@ else {
 	});
 	
 	$('#searchToggle').click(function(){
-	if(!searchToggle){
-		searchToggle = true;
-		$('#mobileSearch').animate({
-			'margin-top' : '0px'
-		},200);
-	} else {
-		searchToggle = false;
-		$('#mobileSearch').animate({
-			'margin-top' : '-58px'
-		},200);
-	}
-});
+		if(!searchToggle){
+			searchToggle = true;
+			$('#mobileSearch').animate({
+				'margin-top' : '0px'
+			},200);
+		} else {
+			searchToggle = false;
+			$('#mobileSearch').animate({
+				'margin-top' : '-58px'
+			},200);
+		}
+        });
 }
 });
