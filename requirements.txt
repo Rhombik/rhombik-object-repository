@@ -1,7 +1,7 @@
 CoffeeScript==1.0.9
 Django==1.5.4
 Markdown==2.3.1
-Pillow==2.0.0
+Pillow
 PyExecJS==1.0.4
 South==0.8.2
 Whoosh==2.6.0
