@@ -17,6 +17,11 @@ So where should they send your users? Most of the alternatives have the potentia
 
 We're commited to federation. If rhombik ever goes down or gets baught, you can just take our source and launch a new repo. It will be easy for users to migrate their projects. Don't bet on another horse you don't have control of.
 
+##Donate!
+
+We accept bitcoin at 147dJaeXj9sXcnRrGJ3Zpu7tSh2wyyj9Rw, other donations can be sent to traverse.da@gmail.com.
+
+
 ###Developer information###
 
 Rhombik uses:
