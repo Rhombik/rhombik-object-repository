@@ -1,8 +1,9 @@
 <form id="searchForm" method="get" action="/search/">
-        <div class="tabletSearchOpen">{{ searchform.q }}
+        <div class="tabletSearchOpen" onClick="tabletSearchDrop.open()">{{ searchform.q }}
         <button type="submit" id="searchSubmit">
                 <i class="fi-magnifying-glass"></i>
         </button>
         </div>
+<hr>
         <div class="group searchDrop jshidden">{{ searchform.tags }}</div>
 </form>
