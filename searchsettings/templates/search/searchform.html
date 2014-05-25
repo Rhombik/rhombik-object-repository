@@ -1,10 +1,8 @@
 <form id="searchForm" method="get" action="/search/">
-        {{ searchform.q }}
-<!--searchsettings/templates/search/searchform.html-->
-
-<!--        {{ searchform.tags }} -->
+        <div class="tabletSearchOpen">{{ searchform.q }}
         <button type="submit" id="searchSubmit">
                 <i class="fi-magnifying-glass"></i>
         </button>
+        </div>
         <div class="group searchDrop jshidden">{{ searchform.tags }}</div>
 </form>

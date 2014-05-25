@@ -32,7 +32,6 @@ class TagAutocomplete(forms.TextInput):
                                 });
                             }
                         });
-                       document.getElementsByClassName('tagit-hidden-field')[0].style.visibility='hidden';
                     });
                 })(jQuery);
             </script>
