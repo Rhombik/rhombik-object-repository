@@ -24,4 +24,4 @@ class window.searchDrop
         if formlistcontent != true
             for i in [0...this.dropdownlist.length]
                 $(this.dropdownlist[i]).slideUp()
-       
+
