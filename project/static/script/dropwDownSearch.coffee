@@ -5,8 +5,8 @@ class window.searchDrop
     open: false
 
     #Register a css class to slide down in the event of a click
-    registerClass: (id) ->
-        document.getElementById(id);       
+    registerClass: (argument) ->
+        this.dropdownlist = document.getElementsByClassName(argument);       
 
     #Register some forms. Element will only close if forms are empty.
     registerFormClass: () ->
@@ -15,12 +15,13 @@ class window.searchDrop
 
     #Slide down any registerd elements.
     open: () ->
-        for i in drowdownlist
-            i.slideDown()
+        for i in [0...this.dropdownlist.length]
+            $(this.dropdownlist[i]).slideDown()
 
     #Only close if all the forms in formlist are empy. Attached to the main content.
     close: () ->
-        if formlistcontent != empty
-            for i in drowdownlist
-               i.slideUp()
+        formlistcontent = false
+        if formlistcontent != true
+            for i in [0...this.dropdownlist.length]
+                $(this.dropdownlist[i]).slideUp()
        
