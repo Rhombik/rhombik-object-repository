@@ -19,7 +19,8 @@ We're commited to federation. If rhombik ever goes down or gets baught, you can 
 
 ##Donate!
 
-We accept bitcoin at 147dJaeXj9sXcnRrGJ3Zpu7tSh2wyyj9Rw, other donations can be sent to traverse.da@gmail.com.
+I (traverseda) accept bitcoin at 147dJaeXj9sXcnRrGJ3Zpu7tSh2wyyj9Rw and have a gittip account [here](https://www.gittip.com/traverseda/).
+Other donations can be sent to traverse.da@gmail.com. We don't have a proper donation system set up yet, so it's just going to me. Expect a proper rhombik donation system and transparency eventually. Right now we're mostly focused on moving to alpha.
 
 
 ###Developer information###
