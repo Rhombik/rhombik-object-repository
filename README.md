@@ -17,6 +17,14 @@ So where should they send your users? Most of the alternatives have the potentia
 
 We're commited to federation. If rhombik ever goes down or gets baught, you can just take our source and launch a new repo. It will be easy for users to migrate their projects. Don't bet on another horse you don't have control of.
 
+##Donate!
+
+I (traverseda) accept bitcoin at 147dJaeXj9sXcnRrGJ3Zpu7tSh2wyyj9Rw and have a gittip account [here](https://www.gittip.com/traverseda/).
+Other donations can be sent to traverse.da@gmail.com. 
+
+We don't have a proper donation system set up yet, so it's just going to me. Expect a proper rhombik donation system and transparency eventually. Right now we're mostly focused on moving to alpha.
+
+
 ###Developer information###
 
 Rhombik uses:
@@ -35,11 +43,21 @@ Right now the code base is a bit of a mess. We're big believers in "release earl
 ---
 To set up a development enviroment simply
 
+    ##Let's make a new directory so the rhombik dependencies don't interfere with the rest of the system
+    mkdir rhombik-env
+    ##Creates a virtualenv using python 2
+    virtualenv -p $(which python2) rhombik-env
+    cd rhombik-env
+    ##Tell our shell to use our rhombik enviroment version of python
+    source bin/activate
+    ##Download the latest rhombik
     git clone https://github.com/Rhombik/rhombik-object-repository.git
     cd rhombik-object-repository
-    pip install $(cat requirements.txt)
-    python manage.py syncdb
+    ##Tell the rhombik-env python to download all of our python dependencies. This will install them to rhombik-env, not our normal python.
+    pip install -r requirements.txt
     #follow the prompts to add a new devleoper superuser account to the test DB.
+    python manage.py syncdb
+    ##Run the server.
     python manage.py runserver
 
 Unfortunately django-static-precompiler requires the nodejs coffee command, which means we can't just rely on pip for all of our dependencies. Install nodejs and run.
@@ -48,15 +66,10 @@ Unfortunately django-static-precompiler requires the nodejs coffee command, whic
 
 We also need sass. Run 
 
-    sudo gem install sass
-
-We'll work on cacheing the compiled scripts into git, so you won't need it unless you're editing the javascript.
+    gem install sass
 
 Then navigate to http://localhost:8000
 
-If you want to use search functinality, you may need to rebuild the search index.
-
-    python manage.py rebuild_index
 
 ---
 

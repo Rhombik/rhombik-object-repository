@@ -1,16 +1,10 @@
 {% extends "includes.html" %}
 
-
-{% block contenttop %}
-	<div id="pageContent">
-		<div id="innerIndent" class="grid-container">
-{% endblock contenttop %}
-
-
 {% block content %}
 
 <title>Rhombik - {{project.title}}</title>
 
+<div id="innerIndent" class="grid-container">
 
 {% load gallerfy %}
 
@@ -80,11 +74,11 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
 			<section class="comments pageLeft">
 
 
+{% comment %}
 
 				{% include "commenttree.html" with nodes=nodes %}
 				{% include "commentform.html" with projectpk=project.pk form=commentform %}
 
-{% comment %}
 				{% load threadedcomments_tags %}
 				
 				<b>***This is the comments place.***</b>

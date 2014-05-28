@@ -72,7 +72,7 @@ def project(request, pk):
     if project.enf_consistancy == False:
         raise Http404
     else:
-        mainthumb = project.thumbnail.get_thumb(650,425)
+        mainthumb = project.thumbnail.get_thumb(650,500)
 
     images=[]# Images in the project; will be handed to template
    # Get readme as first item in the list of texts to hand to the template.
