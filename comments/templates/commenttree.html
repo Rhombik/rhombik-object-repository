@@ -8,19 +8,24 @@ Hopefully somebody with design taste will redo it as soon as possible.
 {% load mptt_tags %}
 <ul class="comments">
     {% recursetree nodes %}
-        <li class="comment={{ node.id }}">
-            {{ node.level }}
-               ..
+        <!-- This is supposed to be css'd nice with list stuff, but instead I'm div-ing it and giving it text indent. Someone will fix it!
+        <li class="comment={{ node.id }}" style="text-indent:{{ node.level }}em;">
+        -->
+        <div class="comment={{ node.id }}" style="text-indent:{{ node.level }}em;">
+            
             <font size="1">@{{ node.created }}</font>
             <b>{{ node.commenter }}</b> <font size="1">says</font>
-            "{{ node.commenttext }}"
-            <font size="1">-_-_-_-___comment comment commentelate here.</font>
+            " {{ node.commenttext }} "
+            <a href="/project/{{ projectpk }}/comment/{{ node.id }}/">
+            <font size="1">reply?</font>
+            </a>
             {% if not node.is_leaf_node %}
                 <ul class="children">
                     {{ children }}
                 </ul>
             {% endif %}
-        </li>
+        <!</li>
+        </div>
     {% endrecursetree %}
 </ul>
 

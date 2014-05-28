@@ -33,7 +33,6 @@ def comment(request, content_type, pk, comment_id=-1):
             if(form.cleaned_data["parent"]):
                 parent=form.cleaned_data["parent"]
             else:
-                from comments.models import CommentRoot
                 parent = CommentRoot.objects.get(content_type=object_type, object_id=objecty.pk)
 
             commenter=request.user
@@ -51,7 +50,12 @@ def comment(request, content_type, pk, comment_id=-1):
     else:
         #Make a new form
         form = commentForm()
-        form.fields['parent'].queryset = Comment.objects.filter(subject=objecty)
+        if comment_id==-1:
+            form.fields['parent'].queryset = CommentRoot.objects.get(content_type=object_type, object_id=objecty.pk).get_descendants(include_self=False)
+        else:
+            from django import forms
+            form.fields['parent'].widget = forms.HiddenInput()
+            form.fields['parent'].initial = Comment.objects.get(pk=comment_id)
         return render_to_response('commentform.html', dict(form=form, projectpk=pk))
 
 
