@@ -6,7 +6,6 @@ from taggit.models import Tag
 
 def list_tags(request):
     """List all tags that start with the given query"""
-    print("list tags---------")
     query = request.GET.get('q', None)
     if request.method != 'GET' or not query:
         return HttpResponseBadRequest()
