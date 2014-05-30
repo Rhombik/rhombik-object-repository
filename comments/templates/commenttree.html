@@ -16,7 +16,7 @@ Hopefully somebody with design taste will redo it as soon as possible.
             <font size="1">@{{ node.created }}</font>
             <b>{{ node.commenter }}</b> <font size="1">says</font>
             " {{ node.commenttext }} "
-            <a href="/project/{{ projectpk }}/comment/{{ node.id }}/">
+            <a class="commentReply" href="/project/{{ projectpk }}/comment/{{ node.id }}/">
             <font size="1">reply?</font>
             </a>
             {% if not node.is_leaf_node %}

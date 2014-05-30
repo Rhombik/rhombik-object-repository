@@ -78,6 +78,31 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
 				{% include "commenttree.html" with projectpk=project.pk nodes=nodes %}
 				{% include "commentform.html" with projectpk=project.pk form=commentform %}
 
+                                <script>$(document).ready(function(){
+					console.log($('.commentForm'));
+					$('.commentForm')[0].innerHTML="<a href=\"/project/{{ project.pk }}/comment/{{ commentRootId }}/\">Comment?</a>";
+					$('.commentForm')[0].href="/project/{{ project.pk }}/comment/{{ commentRootId }}/";
+					$('.commentForm').click(function(e){
+						$.get(e.currentTarget.href,function(data,status){
+							var newdiv = document.createElement('div');
+							newdiv.innerHTML=data;
+							e.currentTarget.parentNode.insertBefore(newdiv, e.currentTarget.nextSibling);
+							e.currentTarget.hidden=true;
+						});
+						e.preventDefault();
+					});
+					$('.commentReply').click(function(e){
+						$.get(e.currentTarget.href,function(data,status){
+							var newdiv = document.createElement('div');
+							newdiv.innerHTML=data;
+							e.currentTarget.parentNode.insertBefore(newdiv, e.currentTarget.nextSibling);
+							e.currentTarget.hidden=true;
+						});
+						e.preventDefault();
+					});
+				});
+				</script>
+
 {% comment %}
 Only uncomment to here. The rest is cruft.
 				{% load threadedcomments_tags %}

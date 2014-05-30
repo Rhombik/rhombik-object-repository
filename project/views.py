@@ -109,7 +109,8 @@ def project(request, pk):
     ## get the root comment of the project and use it to get all the projects comments.
     from comments.models import CommentRoot
     object_type = ContentType.objects.get(model="project")
-    nodes = CommentRoot.objects.get_or_create(commenter=project.author, content_type=object_type, object_id=project.pk)[0].get_descendants(include_self=False)
+    commentRoot = CommentRoot.objects.get_or_create(commenter=project.author, content_type=object_type, object_id=project.pk)[0]
+    nodes = commentRoot.get_descendants(include_self=False)
     ## Put the comments in the comment form. Then users can only use this form to reply to comments on this project.
     from comments.forms import commentForm
     commentform = commentForm()
@@ -122,6 +123,7 @@ def project(request, pk):
 				authorprofile=authorprofile,
 				authorpic=authorpic,
 
+                                commentRootId=commentRoot.id,
                                 nodes=nodes,
 				commentform=commentform,
 
