@@ -29,13 +29,19 @@ def comment(request, content_type, pk, comment_id=-1):
         if form.is_valid():
             #Save comment.
             commenttext = form.cleaned_data["commenttext"]
-            parent=form.cleaned_data["parent"]
+            ## If the comment is replying to another comment, thats fine, otherwise we set the parent to the root comment.
+            if(form.cleaned_data["parent"]):
+                parent=form.cleaned_data["parent"]
+            else:
+                from comments.models import CommentRoot
+                parent = CommentRoot.objects.get(content_type=object_type, object_id=objecty.pk)
+
             commenter=request.user
             comment = Comment(
 			commenttext=commenttext,
 			commenter=commenter,
-			parent=parent,
-			subject=objecty)
+			parent=parent
+			)
             comment.save()
    ########## I am so sorry. This redirect breaks the flexibility I was going for. This is very project.
             return HttpResponseRedirect('/project/'+str(objecty.pk))
