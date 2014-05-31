@@ -75,9 +75,13 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
 
 
 
-				{% include "commenttree.html" with projectpk=project.pk nodes=nodes %}
+			{% include "commenttree.html" with user=user projectpk=project.pk nodes=nodes %}
+
+			{% if user.is_authenticated %}
+
 				{% include "commentform.html" with projectpk=project.pk form=commentform %}
 
+			<!-- look it is my pretty comment javascript! -->
                                 <script>$(document).ready(function(){
 					console.log($('.commentForm'));
 					$('.commentForm')[0].innerHTML="<a href=\"/project/{{ project.pk }}/comment/{{ commentRootId }}/\">Comment?</a>";
@@ -102,6 +106,13 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
 					});
 				});
 				</script>
+
+			{% else %}
+
+				Sign up/in to comment!
+
+			{% endif %}
+
 
 {% comment %}
 Only uncomment to here. The rest is cruft.
