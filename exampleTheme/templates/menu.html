@@ -40,6 +40,7 @@
 	<header>
 		<div class="grid-container group">
 				<span id="userInfo">
+                                <span id="contentHide">
 					{% if user.is_authenticated %}
 					{% if active == "profile" %}
 					<a href="/userProfile/{{user.id}}">Projects</a>
@@ -61,6 +62,7 @@
 					
 					{% load searchform %}
 					{% searchform %}
+                                </span>
 		
 					<span id="searchToggle"><noscript><a href="#search"></noscript><i class="fi-magnifying-glass"></i><noscript></a></noscript></span>
 				</span>
