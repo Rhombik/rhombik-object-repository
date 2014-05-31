@@ -3,11 +3,17 @@
 <div class="container_12 maincontent">
  <!-- Projects-->
 
+{% include "userButton.html" %}
+
 {#This is going to get complicated fast... #}
 
 {% if not user.profile.listpref or user.profile.listpref == 1 %}
 
 {% include "list/icon.html"  %}
+
+{% else %}
+
+{% include "list/detail.html"  %}
 
 {% endif %}
 </div>
