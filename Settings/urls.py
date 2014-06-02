@@ -6,7 +6,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 
-from exampleTheme.views import AboutView
+from bootstrapTheme.views import AboutView
 
 urlpatterns = patterns('',
 

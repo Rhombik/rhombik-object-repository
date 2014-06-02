@@ -1,11 +1,8 @@
 {% extends "includes.html" %}
 
 {% block content %}
- 
-<div id="innerIndent" class="grid-container">
- <!-- Projects-->
-
-{% include "list/userpref.html" with listdata=listdata %}
-
-</div>
+    <div id="innerIndent" class="grid-container">
+        <!-- Projects-->
+        {% include "list/userpref.html" with listdata=listdata %}
+    </div>
 {% endblock content %}
