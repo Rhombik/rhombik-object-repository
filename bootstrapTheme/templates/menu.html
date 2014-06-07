@@ -22,25 +22,32 @@
         <li><a href="#Projects">Projects</a></li>
       </ul>
 
-      <ul class="nav navbar-nav navbar-right">
-        {% if user.is_authenticated %}
-            <li><a href="/userProfile/{{user.id}}">Profile</a></li>
-            <li><a href="{% url "project.views.create" %}">Create</a></li>
+
+{# The right bar #}
+
+     <form class="navbar-form navbar-right" role="search">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search&hellip;">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fi-magnifying-glass"></i></button>
+            </span>
+            </input>
+        </div>
+      </form>
+
+     <ul class="nav navbar-nav navbar-right">
+        {% if not user.is_authenticated %}      
+        <li><a href="/register/"{% if active == "register" %} class="active"{% endif %}><span class="fi-torsos"></span> Sign Up</a></li>
+        <li><a href="/register/"><i class="fi-lock"></i> Log In</a></li>
+        {% elif user.is_authenticated %}
+        <li><a href="/userProfile/{{user.id}}"><span class="fi-torso"></span> Profile</a></li>
+        <li><a href="{% url "project.views.create" %}"><span class="fi-plus"></span> Create</a></li>
         {% endif %}
       </ul>
-      <form class="navbar-form navbar-right" role="search">
-        <div class="form-group">
-         <form>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search&hellip;">
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default"><i class="fi-magnifying-glass"></i></button>
-                </span>
-         </form>
 
 
     </div><!-- /.navbar-collapse -->
 
-  </div><!-- /.container-fluid -->
+  </div><!-- /.container -->
 </nav>
 
