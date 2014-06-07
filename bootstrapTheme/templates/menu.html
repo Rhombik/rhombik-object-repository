@@ -1,7 +1,7 @@
 {% load static %}
 
 <nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
+  <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -10,7 +10,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-        <a id="home" class="navbar-brand" href="/"><img class="image-hover" src="{% static "" %}rhombik/img/logo2xHover.png"></a>
+        <a id="home" class="" href="/"><img class="image-hover" src="{% static "" %}rhombik/img/logo2xHover.png"></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -28,12 +28,15 @@
             <li><a href="{% url "project.views.create" %}">Create</a></li>
         {% endif %}
       </ul>
-      <form class="navbar-form navbar-left" role="search">
+      <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
+         <form>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search&hellip;">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default"><i class="fi-magnifying-glass"></i></button>
+                </span>
+         </form>
 
 
     </div><!-- /.navbar-collapse -->
