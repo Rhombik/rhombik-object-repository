@@ -48,7 +48,7 @@ def project_list_get(projects):
     for project in projects:
         if project.enf_consistancy() == True:
             object_type = ContentType.objects.get_for_model(project)
-            thumbnail = project.thumbnail.get_thumb(128,128)
+            thumbnail = project.thumbnail.get_thumb(300,200)
             listdata += [[project, thumbnail[0]]]
 
     return listdata
