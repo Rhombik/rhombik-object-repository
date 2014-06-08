@@ -25,15 +25,8 @@
 
 {# The right bar #}
 
-     <form class="navbar-form navbar-right" role="search">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search&hellip;">
-            <span class="input-group-btn">
-                <button type="button" class="btn btn-default"><i class="fi-magnifying-glass"></i></button>
-            </span>
-            </input>
-        </div>
-      </form>
+{% load searchform %}
+{% searchform %}
 
      <ul class="nav navbar-nav navbar-right">
         {% if not user.is_authenticated %}      

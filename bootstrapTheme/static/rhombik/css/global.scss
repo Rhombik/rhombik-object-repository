@@ -1,3 +1,13 @@
 @import 'settings';
 
 @import 'navbar-icon';
+
+.break { 
+    margin-left:-200%;
+    margin-right:-200%;
+}
+.breakwrapper {
+    width:300px;
+    margin:0 auto;
+    background:yellow;
+}
