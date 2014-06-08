@@ -37,7 +37,7 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
                         <h1 class="title">{{ project.title }}</h1>
                         <span class="author small">by <a href="/userProfile/{{ project.author.pk }}">{{ project.author }}</a></span>
                         <span class="time small">at {{ project.created }}</span>
-                        <div class="thumbnail">
+                        <div class="thumbnail printableImageContainer">
                         {% include "gallery.html" with images=mainthumb %}
                         </div>    
 
