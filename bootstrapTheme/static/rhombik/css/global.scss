@@ -2,12 +2,15 @@
 
 @import 'navbar-icon';
 
-.break { 
-    margin-left:-200%;
-    margin-right:-200%;
+body {background-color:$backround-color;}
+
+#TextsMain{
+    background-color:$foreground-color;
+    position: relative;
+    top: -10px;
+    padding: 25px;
 }
-.breakwrapper {
-    width:300px;
-    margin:0 auto;
-    background:yellow;
+.fullwidth{
+    display: block; 
+    width: 100%;
 }

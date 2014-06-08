@@ -93,7 +93,7 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
                                 <div class="bodyContainer">
                                         <div class="containerContent">
                                                 {% if user == project.author %}
-                                                        <a href="/edit/{{ project.pk }}" class="button purple fullWidth">Edit</a>
+                                                        <a href="/edit/{{ project.pk }}" class="btn btn-default fullwidth">Edit</a>
                                                         <hr>
                                                 {% endif %}
                                                 {% include "usertagcard.html" with user=author profile=authorprofile userpic=authorpic %}
@@ -105,7 +105,7 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
                                 <div class="bodyContainer">
                                         <div class="containerContent">
                                                 {% for tag in project.tags.all %}
-                                                        <span class="tagrank=({{tag.num_times}})"> <a href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
+                                                        <span class="tagrank=({{tag.num_times}}) btn btn-default"> <a href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
                                                 {% endfor %}
                                         </div>
                                 </div>
