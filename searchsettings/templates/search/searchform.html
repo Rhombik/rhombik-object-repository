@@ -1,16 +1,18 @@
-     <form id="searchForm" method="get" class="navbar-form navbar-right" role="search" action="/search/"> 
-        <div class="input-group" onclick="tabletSearchDrop.open()">
-            {% if searchform.q.value %}
-            <input type="text" id="id_q" name="q" value="{{ searchform.q.value }}" class="form-control" placeholder="Search&hellip;">
-            {% else %}
-            <input type="text" id="id_q" name="q" class="form-control" placeholder="Search&hellip;">
-            {% endif %}
-            <span class="input-group-btn">
-                <button type="submit" id="searchSubmit" class="btn btn-default"><i class="fi-magnifying-glass"></i></button>
-            </span>
-            </input>
-        </div>
-        <div class="group searchDrop jshidden"><br>{{ searchform.tags }}</div>
+     <form id="searchForm" method="get" class="" role="search" action="/search/"> 
+        <div class="searchDrop jshidden">{{ searchform.tags }}</div>
+        <fieldset class="navbar-form navbar-right">
+		<div class="input-group" onclick="tabletSearchDrop.open()">
+		    {% if searchform.q.value %}
+		    <input type="text" id="id_q" name="q" value="{{ searchform.q.value }}" class="form-control" placeholder="Search&hellip;">
+		    {% else %}
+		    <input type="text" id="id_q" name="q" class="form-control" placeholder="Search&hellip;">
+		    {% endif %}
+		    <span class="input-group-btn">
+			<button type="submit" id="searchSubmit" class="btn btn-default"><i class="fi-magnifying-glass"></i></button>
+		    </span>
+		    </input>
+		</div>
+        </fieldset>
      </form>
 
 

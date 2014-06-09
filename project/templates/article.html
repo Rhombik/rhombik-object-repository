@@ -41,11 +41,13 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
                         {% include "gallery.html" with images=mainthumb %}
                         </div>    
 
-                        <ol class="printableThumbs">
+                        <div class="printableThumbs">
                           {% include "gallery.html" %}
-                        </ol>
+                        </div>
 
-                            {% include "texttabs.html" %}
+                        <div class="clearfix"></div>
+
+                        {% include "texttabs.html" %}
 
 
 			{% include "commenttree.html" with user=user projectpk=project.pk nodes=nodes %}
@@ -90,7 +92,7 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
 <div class="col-md-3">
                                 <h3>Printable Info</h3>
                                 <hr>
-                                <div class="bodyContainer">
+                                <div class="bodyContainer thumbnail">
                                         <div class="containerContent">
                                                 {% if user == project.author %}
                                                         <a href="/edit/{{ project.pk }}" class="btn btn-default fullwidth">Edit</a>
@@ -102,7 +104,7 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
 
                                 <h3>Tags</h3>
                                 <hr>
-                                <div class="bodyContainer">
+                                <div class="thumbnail">
                                         <div class="containerContent">
                                                 {% for tag in project.tags.all %}
                                                         <span class="tagrank=({{tag.num_times}}) btn btn-default"> <a href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
