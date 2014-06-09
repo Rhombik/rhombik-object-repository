@@ -26,6 +26,15 @@ iframe {
 border: none;
 }
 
+//upvotes and downvotes
+.upvote.active{
+color: red;
+}
+.downvote.active{
+color: blue;
+}
+
+
 //From chrises css
 
 hr {

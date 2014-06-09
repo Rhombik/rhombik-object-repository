@@ -7,32 +7,6 @@
 
 {% load gallerfy %}
 
-
-<!--
-{% load ratings %}
-{% rating_by_request request on project.rating as vote %}
-
-user vote. Null means no vote. 1 means downvote. 2 means upvote.
-You can remove your vote by voting 0
-{% if not vote  %}
-<a href="/vote/{{ project.pk }}/1/" class="button purple fullWidth">Downvote!</a>
-<a href="/vote/{{ project.pk }}/2/" class="button purple fullWidth">Upvote!</a>
-
-<a href="/vote/{{ project.pk }}/0/" class="button purple fullWidth">Delete vote!</a>
-{% elif vote == 1 %}
-you downvoted
-{% elif vote == 2 %}
-you upvoted
-{% endif %}
-Or you can just call {{Vote}} if you want the value for javascript.
-
-
-Both of these will be null if no one has voted/downloaded. So you can use the "if not" template tag. 
-{{ project.downloadcount.scores }}
-{{ project.ratingCount }}
--->
-
-
 <div class="col-md-9">
                         <h1 class="title">{{ project.title }}</h1>
                         <span class="author small">by <a href="/userProfile/{{ project.author.pk }}">{{ project.author }}</a></span>
@@ -90,29 +64,56 @@ Both of these will be null if no one has voted/downloaded. So you can use the "i
 
 </div>
 <div class="col-md-3">
-                                <h3>Printable Info</h3>
-                                <hr>
-                                <div class="bodyContainer thumbnail">
-                                        <div class="containerContent">
-                                                {% if user == project.author %}
-                                                        <a href="/edit/{{ project.pk }}" class="btn btn-default fullwidth">Edit</a>
-                                                        <hr>
-                                                {% endif %}
-                                                {% include "usertagcard.html" with user=author profile=authorprofile userpic=authorpic %}
-                                        </div>
-                                </div>
+     <h3>Printable Info</h3>
+     <hr>
+     <div class="bodyContainer thumbnail">
+             <div class="containerContent">
+                     {% if user == project.author %}
+                             <a href="/edit/{{ project.pk }}" class="btn btn-default fullwidth">Edit</a>
+                             <hr>
+                     {% endif %}
+                     {% include "usertagcard.html" with user=author profile=authorprofile userpic=authorpic %}
+             </div>
 
-                                <h3>Tags</h3>
-                                <hr>
-                                <div class="thumbnail">
-                                        <div class="containerContent">
-                                                {% for tag in project.tags.all %}
-                                                        <span class="tagrank=({{tag.num_times}}) btn btn-default"> <a href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
-                                                {% endfor %}
-                                        </div>
-                                </div>
+     	{# The rating block #}
+     	{% load ratings %}
+     	{% rating_by_request request on project.rating as vote %}
 
+     	Score:
+     	{% if not project.ratingCount %}
+     	0
+     	{% else %}
+     	{{ project.ratingCount }}
+     	{% endif %}
+     	{#user vote. Null means no vote. 1 means downvote. 2 means upvote. #}
+     	{# You can remove your vote by voting 0 #}
+     	{% if not vote  %}
+     	<a href="vote/2/"><i class="fi-like votebutton upvote"></i></a>
+     	<a href="vote/1/"><i class="fi-dislike votebutton downvote"></i></a>
+     	{% elif vote == 1 %}
+     	<a href="vote/2/"><i class="fi-like votebutton upvote"></i></a>
+     	<a href="vote/0/"><i class="fi-dislike votebutton downvote active"></i></a>
+     	{% elif vote == 2 %}
+     	<a href="vote/0/"><i class="fi-like votebutton upvote active"></i></a>
+     	<a href="vote/1/"><i class="fi-dislike votebutton downvote"></i></a>
+     	{% endif %}
+     	{#Or you can just call {{Vote}} if you want the value for javascript.#}
+     	<br>
+     	{#Both of these will be null if no one has voted/downloaded. So you can use the "if not" template tag. #}
+     	Downloads: {{ project.downloadcount.score }}
+     	{# end ratings #}
 
+     </div>
+
+     <h3>Tags</h3>
+     <hr>
+     <div class="thumbnail">
+             <div class="containerContent">
+                     {% for tag in project.tags.all %}
+                             <span class="tagrank=({{tag.num_times}}) btn btn-default"> <a href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
+                     {% endfor %}
+             </div>
+     </div>
 </div>
 
 
