@@ -126,7 +126,7 @@ def project(request, pk):
                                 commentRootId=commentRoot.id,
                                 nodes=nodes,
 				commentform=commentform,
-
+                                moreobjects=norenders,
                                 images=images, 
 				texts=texts,
 				galleryname="base", 

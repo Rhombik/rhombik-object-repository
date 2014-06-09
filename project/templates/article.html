@@ -16,7 +16,10 @@
                         </div>    
 
                         <div class="printableThumbs">
-                          {% include "gallery.html" %}
+                        	{% include "gallery.html" %}
+                        {% if moreobjects != 0 %}
+                        <span>+{{moreobjects }}<br> others</span>
+                        {% endif  %}
                         </div>
 
                         <div class="clearfix"></div>
