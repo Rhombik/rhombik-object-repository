@@ -6,8 +6,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 
-from bootstrapTheme.views import AboutView
-
 urlpatterns = patterns('',
 
     url(r'^$', 'project.views.list', name='home'),
@@ -26,8 +24,6 @@ urlpatterns = patterns('',
 
     (r'^tag/(.*)/$', 'project.views.tag'),
     (r'^tagcloud/$', 'project.views.tagcloud' ),
-
-    (r'^about/', AboutView.as_view()),
 
     # Comments urls
     url(r'^articles/comments/', include('django.contrib.comments.urls')),
@@ -52,7 +48,8 @@ urlpatterns = patterns('',
     url(r'^userProfile/', include('userProfile.urls')),
     (r'^editUser/', 'userProfile.views.edit'),
 
-    #We should try to move url definitions into each app.
+    #We should try to move url definitions into each app
+    url(r'', include('bootstrapTheme.urls')),
     url(r'', include('multiuploader.urls')),
     url(r'', include('project.urls')),
     url(r'', include('filemanager.urls')),
