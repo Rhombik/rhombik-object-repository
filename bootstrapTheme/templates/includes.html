@@ -39,7 +39,6 @@
     //Thinkgs to do when the dom is loaded
     jQuery(document).ready(function () {
                     thumbloader.wakeUp();
-                    texttabbeler.htmltabme();
                 });
     //Include css/js-enabled.css if js is enabled.
     (function () {
@@ -58,12 +57,10 @@
 
 {% load coffeescript %}
 <script type="text/javascript"  src="{% static "" %}{% coffeescript "script/thumbloader.coffee" %}"></script>
-<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/tabbeler.coffee" %}"></script>
 <script type="text/javascript"  src="{% static "" %}{% coffeescript "script/dropwDownSearch.coffee" %}"></script>
 
 <script>
     thumbloader = new thumbloader("thumblist")
-    texttabbeler = new tabbeler("texts")
     tabletSearchDrop = new searchDrop()
     tabletSearchDrop.registerClass("searchDrop")
 </script>

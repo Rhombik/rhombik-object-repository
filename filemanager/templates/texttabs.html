@@ -1,4 +1,14 @@
 
+{% load static %}
+{% load coffeescript %}
+<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/tabbeler.coffee" %}"></script>
+<script>
+$(document).ready(function(){
+    texttabbeler = new tabbeler("texts")
+    texttabbeler.htmltabme();
+});
+</script>
+
 <div id="tabs">
 	<div class="sortCategories sortBody clearfix">
 		<ul class="nav nav-tabs">
