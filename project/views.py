@@ -344,10 +344,11 @@ def tagcloud(request):
     return render(request, "tagcloud.html")
 
 
-def list_to_tags(list, tags, clear=True):
+def list_to_tags(data, tags, clear=True):
+            data=data.split(',')
             if clear:
                 tags.clear()
-            for tag in list:
+            for tag in data:
                 tags.add(tag)
 
 

@@ -6,6 +6,7 @@ from filemanager.models import fileobject
 from project.models import Project
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from taggit_autocomplete.widgets import TagAutocomplete
 
 
 ###        This function validates the form for submitting projects. Excluding the title, thats only done in the createForm.
@@ -54,10 +55,10 @@ class ProjectForm(ModelForm):
 
     class Meta:
         model = Project
-        fields = ["tags"]
-
+        fields = []
     body = forms.CharField(widget = forms.Textarea, required=False)
     thumbnail = forms.CharField(required=False)
+    tags = forms.CharField(widget=TagAutocomplete(attrs={'id': 'uploadTag'}),required=False)
 
     def clean(self):
         return cleanify(self, ProjectForm)
@@ -74,7 +75,7 @@ class createForm(ModelForm):
 
     class Meta:
         model = Project
-        fields = ["title", "tags",]
+        fields = ["title",]
 
     def clean_title(self):
        data=self.cleaned_data["title"]
@@ -84,6 +85,7 @@ class createForm(ModelForm):
 
     body = forms.CharField(widget = forms.Textarea, required=False)
     thumbnail = forms.CharField(required=False)
+    tags = forms.CharField(widget=TagAutocomplete(attrs={'id': 'uploadTag'}),required=False)
 
     def clean(self):
         return cleanify(self, createForm)

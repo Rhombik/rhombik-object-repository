@@ -15,6 +15,11 @@ class TagAutocomplete(forms.TextInput):
             value = edit_string_for_tags(
                     [o.tag for o in value.select_related("tag")])
         html = super(TagAutocomplete, self).render(name, value, attrs)
+        ##Some hacks to deal with stupid attribute shit. I'm pretty sure this loop is stooopid, but it is 6 am.
+        if self.attrs.get('id') == None:
+           cssId=attrs['id']
+        else:
+           cssId = self.attrs.get('id')
 
         # Activate tag-it in this field
         js = u"""
@@ -36,7 +41,7 @@ class TagAutocomplete(forms.TextInput):
                 })(jQuery);
             </script>
             """ % ({
-                'id': attrs['id'],
+                'id': cssId,
                 'source': list_view
             })
         return mark_safe("\n".join([html, js]))
