@@ -1,5 +1,5 @@
      <form id="searchForm" method="get" class="" role="search" action="/search/"> 
-        <div class="searchDrop jshidden fullwidth">{{ searchform.tags }}</div>
+        <div class="container searchDrop jshidden searchTagBox">{{ searchform.tags }}</div>
         <fieldset class="navbar-form navbar-right">
 		<div class="input-group" onclick="tabletSearchDrop.open()">
 		    {% if searchform.q.value %}
