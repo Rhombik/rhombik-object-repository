@@ -242,7 +242,8 @@ def editOrCreateStuff(project, request, creating):
          # 
             list_to_tags(form.cleaned_data["tags"], project.tags)
             if creating:
-                list_to_tags(form2.cleaned_data["categories"], project.tags, False)
+                for i in form2.cleaned_data["categories"]:
+                    project.tags.add(i)
 
          # This may be redundant, but either way, this post is not a draft past this point.
             project.draft=False
