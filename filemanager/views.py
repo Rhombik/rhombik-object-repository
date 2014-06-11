@@ -13,15 +13,16 @@ def download(request, pk):
     projectfiles = fileobject.objects.filter(content_type=object_type,object_id=project.id)
     download=[]
     for i in projectfiles:
-        thumbmodel=thumbobject.objects.get_or_create( fileobject = i, filex=64, filey=64 )[0]
+        thumbmodel=i.get_thumb(64,64)[0]
         downloadlink=i.filename.url
         name=i.subfolder+os.path.split(i.filename.name)[1]
+        filetype=i.filetype
         try:
-            thumbnail=thumbmodel.filename.url
+            thumbmodel.filename.url
+            pass
         except:
-            thumbnail=None
-        filetype=thumbmodel.filetype
-        download.append([thumbnail,name,downloadlink,filetype,i])
+            filetype="norender"
+        download.append([thumbmodel,name,downloadlink,filetype,i])
  
     return render(request, "downloadWrapper.html", dict(download=download))
 

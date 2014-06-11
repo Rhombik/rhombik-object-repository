@@ -92,11 +92,14 @@ class createForm(ModelForm):
 
 
 class defaulttag(forms.Form):
-    OPTIONS = (
-    ("learning", "learning"),
-    ("household", "househole"),
-    ("abstract", "abstract"),
-    ("game", "game")
-    )
+    OPTIONS = []
+
+    #I am horribly lazy, vbut cpu time is cheap.
+    tmpoptions = "kitchen,math,sculpture,household,functional,parametric,abstract,tool,case".split(',')
+    for i in tmpoptions:
+        OPTIONS.append((i,i))
+
+
+
     categories = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                          choices=OPTIONS)
