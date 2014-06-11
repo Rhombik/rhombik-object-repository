@@ -9,17 +9,21 @@ from django.http import HttpResponse
 
 def download(request, pk):
     project = Project.objects.filter(pk=pk).exclude(draft=True)[0:1].get()
-    projectfiles = fileobject.objects.filter(project=project)
+    object_type = ContentType.objects.get_for_model(project)
+    projectfiles = fileobject.objects.filter(content_type=object_type,object_id=project.id)
     download=[]
     for i in projectfiles:
         thumbmodel=thumbobject.objects.get_or_create( fileobject = i, filex=64, filey=64 )[0]
         downloadlink=i.filename.url
         name=i.subfolder+os.path.split(i.filename.name)[1]
-        thumbnail=thumbmodel.filename.url
+        try:
+            thumbnail=thumbmodel.filename.url
+        except:
+            thumbnail=None
         filetype=thumbmodel.filetype
-        download.append([thumbnail,name,downloadlink,filetype])
+        download.append([thumbnail,name,downloadlink,filetype,i])
  
-    return render(request, "download.html", dict(download=download))
+    return render(request, "downloadWrapper.html", dict(download=download))
 
 def ajaxthumblist(request,csv,template):
     from filemanager.models import thumbobject

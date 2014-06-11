@@ -132,7 +132,10 @@ class zippedObjectProxy(zippedobject):
         s = BytesIO()
 
         data = zipfile.ZipFile(s,'a')
-        projectfiles = fileobject.objects.filter(project=self.project)
+
+        object_type = ContentType.objects.get_for_model(project)
+        projectfiles = fileobject.objects.filter(content_type=object_type,object_id=project.id)
+
         for filedata in projectfiles:
             filed = filedata.filename.read()
             pathAndName = str(self.project.title)+filedata.subfolder+os.path.split(str(filedata.filename))[1] #### this is where subfolders will be added to inside the zip file.
