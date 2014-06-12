@@ -1,16 +1,19 @@
 {% extends "includes.html" %}
 
+{% block head %}
+<meta property="og:title" content="{{project.title}} - On rhombik.com" />
+{# AHAHAHAHA LOOKAT AT MY STRING #}
+<meta property="og:image" content="{{mainthumb.0.0.filename.url}}" />
+<title>{{project.title}} - Rhombik</title>
+{% endblock head %}
+
+
 {% block content %}
-
-<title>Rhombik - {{project.title}}</title>
-
 
 {% load gallerfy %}
 
 <div class="col-md-9">
                         <h1 class="title">{{ project.title }}</h1>
-                        <span class="author small">by <a href="/userProfile/{{ project.author.pk }}">{{ project.author }}</a></span>
-                        <span class="time small" title="{{project.created}}" > {{ project.created|timesince }} ago</span>
                         <div class="thumbnail printableImageContainer">
                         {% include "gallery.html" with images=mainthumb %}
                         </div>    
@@ -26,7 +29,7 @@
 
                         {% include "texttabs.html" %}
 
-
+                        <h2>Comments</h2>
 			{% include "commenttree.html" with user=user projectpk=project.pk nodes=nodes %}
 
 			{% if user.is_authenticated %}
@@ -104,6 +107,9 @@
      	<br>
      	{#Both of these will be null if no one has voted/downloaded. So you can use the "if not" template tag. #}
      	Downloads: {{ project.downloadcount.score }}
+        <br>
+        Published: <span title="{{project.created}}" > {{ project.created|timesince }} ago </span>
+
      	{# end ratings #}
 
      </div>

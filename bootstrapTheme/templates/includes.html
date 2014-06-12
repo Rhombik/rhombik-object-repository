@@ -7,8 +7,6 @@
 	<meta charset="utf-8">
 	<meta name="description" content="">
 	
-    <title>{% block page_title %}{% endblock %}</title>
-
     {% comment %}
     %%%%%%%%%%%%%%%%%%%% Boostrap core CSS
     {% endcomment %}
@@ -64,6 +62,11 @@
     tabletSearchDrop = new searchDrop()
     tabletSearchDrop.registerClass("searchDrop")
 </script>
+
+{% block head %}
+<title>Rhombik</title>
+{% endblock %}
+
 
 </head>
 
