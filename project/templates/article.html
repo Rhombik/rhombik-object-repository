@@ -10,7 +10,7 @@
 <div class="col-md-9">
                         <h1 class="title">{{ project.title }}</h1>
                         <span class="author small">by <a href="/userProfile/{{ project.author.pk }}">{{ project.author }}</a></span>
-                        <span class="time small">at {{ project.created }}</span>
+                        <span class="time small" title="{{project.created}}" > {{ project.created|timesince }} ago</span>
                         <div class="thumbnail printableImageContainer">
                         {% include "gallery.html" with images=mainthumb %}
                         </div>    
@@ -107,6 +107,12 @@
      	{# end ratings #}
 
      </div>
+     <a href="download/" class="btn btn-default fullwidth">Download Files</a>
+     {% if downloadurl %}
+     <a href="{{downloadurl}}" class="btn btn-default fullwidth">Download All</a>
+     {% endif %}
+     {{downloadurl}}
+
 
      <h3>Tags</h3>
      <hr>

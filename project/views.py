@@ -97,7 +97,6 @@ def project(request, pk):
             htmlmodel=htmlobject.objects.get_or_create(fileobject = i )[0] 
             texts.append([htmlmodel, path.split(str(i.filename))[1]])
     download=zippedobject.objects.get_or_create(project=project)[0]
-
     author = project.author
     from userProfile.models import userProfile
     authorprofile = userProfile.objects.filter(user=author)[0]
