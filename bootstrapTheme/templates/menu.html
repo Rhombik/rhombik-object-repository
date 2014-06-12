@@ -30,8 +30,6 @@
 {# The right bar #}
 
 {% load searchform %}
-{% searchform %}
-
      <ul class="nav navbar-nav navbar-right">
         {% if not user.is_authenticated %}      
         <li><a href="/register/"{% if active == "register" %} class="active"{% endif %}><span class="fi-torsos"></span> Sign Up</a></li>
@@ -40,14 +38,12 @@
         <li><a href="/userProfile/{{user.id}}"><span class="fi-torso"></span> Profile</a></li>
         <li><a href="{% url "project.views.create" %}"><span class="fi-plus"></span> Create</a></li>
         {% endif %}
-      </ul>
-
+        {% searchform %}
+     {# </ul> #}
+{# the UL closes in searchform, because django forms are structured stupid. #}
 
     </div><!-- /.navbar-collapse -->
 
   </div><!-- /.container -->
 
-<div class="searchTagContainer jshidden searchDrop"></div>
-
 </nav>
-

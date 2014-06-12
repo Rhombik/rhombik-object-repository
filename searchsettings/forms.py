@@ -10,7 +10,7 @@ from haystack.query import SearchQuerySet
 class DateRangeSearchForm(SearchForm):
 #    start_date = forms.DateField(required=False)
 #    end_date = forms.DateField(required=False)
-    tags = forms.CharField(widget=TagAutocomplete,required=False)
+    tags = forms.CharField(widget=TagAutocomplete(attrs={'form':'searchForm'}),required=False)
 
     sortOPTIONS = (
     ("votes", "Votes"),

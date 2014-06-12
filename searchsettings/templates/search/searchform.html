@@ -1,5 +1,5 @@
+<li>
      <form id="searchForm" method="get" class="" role="search" action="/search/"> 
-        <div class="container searchDrop jshidden searchTagBox">{{ searchform.tags }}</div>
         <fieldset class="navbar-form navbar-right">
 		<div class="input-group" onclick="tabletSearchDrop.open()">
 		    {% if searchform.q.value %}
@@ -14,5 +14,11 @@
 		</div>
         </fieldset>
      </form>
+</li>
 
+</ul>
+
+<div class="clearfix"></div>
+
+<div class="searchDrop jshidden searchTagBox">{{ searchform.tags }}</div>
 
