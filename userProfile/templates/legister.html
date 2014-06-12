@@ -4,25 +4,19 @@
 {% block content %}
 
 {{ msg }}
-<style>
-</style>
-<div class="container_16 maincontent">
 
- <div class="grid_12">
-  <div class="vislink">
-
+ <div class="col-lg-6">
+<h2>Register</h2>
 <form enctype="multipart/form-data" action="/register/" method="POST">{% csrf_token %}
 	{{ form.as_p }}
         {{ email.as_p }}
 	<input type="submit" value="Register" />
 </form>
 
-  </div>
  </div>
 
- <div class="grid_4">
-  <div class="vislink">
-
+ <div class="col-lg-6">
+<h2>Login</h2>
 <form action="/login/" method="POST">
 	{% if next %}
 	<input type="hidden" name="next" value="{{ next }}" />
@@ -30,12 +24,10 @@
 	username:
 	<input type="text" name="username" value="{{ username }}" /><br />
 	password:
-	<input type="password" name="password" value="" /><br />
+	<input type="password" name="password" /><br />
 
 	<input type="submit" value="Log In" />
 </form>
 
-  </div>
  </div>
-</div>
 {% endblock content %}

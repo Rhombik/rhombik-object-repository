@@ -1,9 +1,24 @@
-<form id="searchForm" method="get" action="/search/">
-        <div class="tabletSearchOpen" onClick="tabletSearchDrop.open()">{{ searchform.q }}
-        <button type="submit" id="searchSubmit">
-                <i class="fi-magnifying-glass"></i>
-        </button>
-        </div>
-<br>
-        <div class="group searchDrop jshidden">{{ searchform.tags }}</div>
-</form>
+<li>
+     <form id="searchForm" method="get" class="" role="search" action="/search/"> 
+        <fieldset class="navbar-form navbar-right">
+		<div class="input-group" onclick="tabletSearchDrop.open()">
+		    {% if searchform.q.value %}
+		    <input type="text" id="id_q" name="q" value="{{ searchform.q.value }}" class="form-control" placeholder="Search&hellip;">
+		    {% else %}
+		    <input type="text" id="id_q" name="q" class="form-control" placeholder="Search&hellip;">
+		    {% endif %}
+		    <span class="input-group-btn">
+			<button type="submit" id="searchSubmit" class="btn btn-default"><i class="fi-magnifying-glass"></i></button>
+		    </span>
+		    </input>
+		</div>
+        </fieldset>
+     </form>
+</li>
+
+</ul>
+
+<div class="clearfix"></div>
+
+<div class="searchDrop jshidden searchTagBox">{{ searchform.tags }}</div>
+

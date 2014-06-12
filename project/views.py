@@ -48,7 +48,7 @@ def project_list_get(projects):
     for project in projects:
         if project.enf_consistancy() == True:
             object_type = ContentType.objects.get_for_model(project)
-            thumbnail = project.thumbnail.get_thumb(128,128)
+            thumbnail = project.thumbnail.get_thumb(300,200)
             listdata += [[project, thumbnail[0]]]
 
     return listdata
@@ -97,7 +97,6 @@ def project(request, pk):
             htmlmodel=htmlobject.objects.get_or_create(fileobject = i )[0] 
             texts.append([htmlmodel, path.split(str(i.filename))[1]])
     download=zippedobject.objects.get_or_create(project=project)[0]
-
     author = project.author
     from userProfile.models import userProfile
     authorprofile = userProfile.objects.filter(user=author)[0]
@@ -109,7 +108,8 @@ def project(request, pk):
     ## get the root comment of the project and use it to get all the projects comments.
     from comments.models import CommentRoot
     object_type = ContentType.objects.get(model="project")
-    nodes = CommentRoot.objects.get_or_create(commenter=project.author, content_type=object_type, object_id=project.pk)[0].get_descendants(include_self=False)
+    commentRoot = CommentRoot.objects.get_or_create(commenter=project.author, content_type=object_type, object_id=project.pk)[0]
+    nodes = commentRoot.get_descendants(include_self=False)
     ## Put the comments in the comment form. Then users can only use this form to reply to comments on this project.
     from comments.forms import commentForm
     commentform = commentForm()
@@ -122,9 +122,10 @@ def project(request, pk):
 				authorprofile=authorprofile,
 				authorpic=authorpic,
 
+                                commentRootId=commentRoot.id,
                                 nodes=nodes,
 				commentform=commentform,
-
+                                moreobjects=norenders,
                                 images=images, 
 				texts=texts,
 				galleryname="base", 
@@ -240,7 +241,8 @@ def editOrCreateStuff(project, request, creating):
          # 
             list_to_tags(form.cleaned_data["tags"], project.tags)
             if creating:
-                list_to_tags(form2.cleaned_data["categories"], project.tags, False)
+                for i in form2.cleaned_data["categories"]:
+                    project.tags.add(i)
 
          # This may be redundant, but either way, this post is not a draft past this point.
             project.draft=False
@@ -342,10 +344,11 @@ def tagcloud(request):
     return render(request, "tagcloud.html")
 
 
-def list_to_tags(list, tags, clear=True):
+def list_to_tags(data, tags, clear=True):
+            data=data.split(',')
             if clear:
                 tags.clear()
-            for tag in list:
+            for tag in data:
                 tags.add(tag)
 
 

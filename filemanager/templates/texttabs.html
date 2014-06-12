@@ -1,7 +1,17 @@
 
+{% load static %}
+{% load coffeescript %}
+<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/tabbeler.coffee" %}"></script>
+<script>
+$(document).ready(function(){
+    texttabbeler = new tabbeler("texts")
+    texttabbeler.htmltabme();
+});
+</script>
+
 <div id="tabs">
 	<div class="sortCategories sortBody clearfix">
-		<ul>
+		<ul class="nav nav-tabs">
 	      {% for html, name in texts %}
 	        <li><a href="#{{name}}">{{name}}</a></li>
 	      {%endfor%}

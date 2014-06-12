@@ -1,0 +1,49 @@
+{% load static %}
+
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+{% comment %}
+
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+        <a id="home" class="" href="/"><img class="image-hover" src="{% static "" %}rhombik/img/logo2xHover.png"></a>
+    </div>
+{% endcomment %}
+    <!-- Collect the nav links, forms, and other content for toggling -->
+ <!--   <div class="collapse navbar-collapse"> -->
+     <div>
+      <ul class="nav navbar-nav">
+        <li><a id="home" class="navbar-brand" href="/"><img class="image-hover" src="{% static "" %}rhombik/img/logo2xHover.png"></a></li>
+
+        <li><a href="#Printables">Printables</a></li>
+        <li><a href="#Members">Members</a></li>
+        <li><a href="#Projects">Projects</a></li>
+      </ul>
+
+
+{# The right bar #}
+
+{% load searchform %}
+     <ul class="nav navbar-nav navbar-right">
+        {% if not user.is_authenticated %}      
+        <li><a href="/register/"{% if active == "register" %} class="active"{% endif %}><span class="fi-torsos"></span> Sign Up</a></li>
+        <li><a href="/register/"><i class="fi-lock"></i> Log In</a></li>
+        {% elif user.is_authenticated %}
+        <li><a href="/userProfile/{{user.id}}"><span class="fi-torso"></span> Profile</a></li>
+        <li><a href="{% url "project.views.create" %}"><span class="fi-plus"></span> Create</a></li>
+        {% endif %}
+        {% searchform %}
+     {# </ul> #}
+{# the UL closes in searchform, because django forms are structured stupid. #}
+
+    </div><!-- /.navbar-collapse -->
+
+  </div><!-- /.container -->
+
+</nav>

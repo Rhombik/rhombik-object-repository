@@ -1,39 +1,27 @@
 
-<style>
-.thumbs{
-	float-left;
-	width:81px;
-	background: #00ff00;
-}
-.links{
-	float: left;
-	width:400px; 
-}
-.nrlinks{
-        margin-left:81px;
-}
-.clear{
-	clear:both;
-}
-
-
-/*java style block comment.
-*/
-</style>
 <!--the horror!--> 
 
-{% for thumbnail,name,downloadlink,filetype in download %}
+<style>
+.downloadBoxRow{
+ line-height:70px;
+}
+</style>
+
+<table >
+<tr style="border: 1px solid #808080;"></tr>
+</tr>
+{% for thumbnail,name,downloadlink,filetype,fileobject in download %}
+<tr class="downloadBoxRow">
 {% if filetype == "norender" %}
-<div class = "nrlinks">
-<a href="{{downloadlink}}">{{name}}</a>
-</div>
-<div class = "clear"></div>
+<td></td>
 {% else %}
-<div class = "thumbs">
-	<a href="{{downloadlink}}"><img src="{{thumbnail}}"></a>
-</div>
-<div class = "links"><a href="{{downloadlink}}">{{name}}</a>
-</div>
-<div class = "clear"></div>
+<td>
+<a href="{{downloadlink}}"><img src="{{thumbnail.filename.url}}"></a>
+</td>
 {% endif %}
+<td><a style="padding-left: 20px;" href="{{downloadlink}}">{{name}}</a></td>
+<td><a style="padding-left: 20px;" href="{{downloadlink}}">{{fileobject.filename.size|filesizeformat}}</a></td>
+</tr>
+<tr style="border: 1px solid #808080;"></tr>
 {% endfor %}
+</table>

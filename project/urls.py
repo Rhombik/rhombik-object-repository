@@ -6,7 +6,7 @@ from project.views import ratingCalc
 urlpatterns = patterns("",
     #Controls the ratings
     #/project/$PROJECTID/vote/1 for downvote. /project/$PROJECTID/vote/2 for upvote. 0 deletes your vote
-    url(r'project/(?P<object_id>\d+)/rate/(?P<score>\d+)/', 'project.views.ratingCalc', {
+    url(r'project/(?P<object_id>\d+)/vote/(?P<score>\d+)/', 'project.views.ratingCalc', {
         'app_label': 'project',
         'model': 'project',
         'field_name': 'rating',
@@ -23,6 +23,7 @@ urlpatterns = patterns("",
 ## Comments!!!
     (r'^project/(?P<pk>\d+)/comment/(?P<comment_id>\d+)/$', 'comments.views.comment', {'content_type':'project'}),
     (r'^project/(?P<pk>\d+)/comment/$', 'comments.views.comment', {'content_type':'project'}),
+
 
     (r'^project/(.*)/thingtracker/$', 'project.views.thingtracker'),
 
