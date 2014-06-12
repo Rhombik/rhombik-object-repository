@@ -36,7 +36,7 @@
 			<!-- look it is my pretty comment javascript! -->
                                 <script>$(document).ready(function(){
 					console.log($('.commentForm'));
-					$('.commentForm')[0].innerHTML="<a href=\"/project/{{ project.pk }}/comment/{{ commentRootId }}/\">Comment?</a>";
+					$('.commentForm')[0].innerHTML="<a href=\"/project/{{ project.pk }}/comment/{{ commentRootId }}/\">New Comment</a>";
 					$('.commentForm')[0].href="/project/{{ project.pk }}/comment/{{ commentRootId }}/";
 					$('.commentForm').click(function(e){
 						$.get(e.currentTarget.href,function(data,status){
