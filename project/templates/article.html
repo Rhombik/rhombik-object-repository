@@ -47,10 +47,23 @@
 						});
 						e.preventDefault();
 					});
+
+				<!-- A function for canceling comment forms. -->
+					function commentCancel(el, replyEl)
+					{
+						replyEl.hidden=false;
+						el.parentNode.remove();
+					}
+				<!-- The function for adding the comment form when replying. -->
 					$('.commentReply').click(function(e){
 						$.get(e.currentTarget.href,function(data,status){
+							var cancelButton = document.createElement('a');
+							cancelButton.innerHTML="Cancel";
+							cancelButton.className="commentCancel";
+							cancelButton.onclick=function() { commentCancel(this, e.currentTarget); };
 							var newdiv = document.createElement('div');
 							newdiv.innerHTML=data;
+							newdiv.insertBefore(cancelButton, null);
 							e.currentTarget.parentNode.insertBefore(newdiv, e.currentTarget.nextSibling);
 							e.currentTarget.hidden=true;
 						});
