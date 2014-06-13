@@ -84,12 +84,6 @@ class thumbobject(models.Model):
 
 #        index_together = [['filex', 'filey', "fileobject"]]
     def save(self, generate=True, *args, **kwargs):
-        try:
-            self.filename.delete()
-        except:
-            pass
-
-
         if generate == True:
             self.filetype = "ajax"
 
@@ -115,12 +109,6 @@ class zippedobject(models.Model):
     project = models.ForeignKey('project.Project', unique=True)
     filename = models.FileField(upload_to="projects/", blank=True, null=True)
     def save(self, generate=True, *args, **kwargs):
-        try:
-            self.filename.delete()
-        except:
-            pass
-
-
         super(zippedobject, self).save()
         if generate == True:
             from filemanager.tasks import zippedTask
