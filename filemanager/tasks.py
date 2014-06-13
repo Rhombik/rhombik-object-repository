@@ -22,6 +22,7 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 def zippedTask(livezippedobject,project):
    from filemanager.models import zippedobject,fileobject
    import zipfile
+   from django.core.files.base import ContentFile
    s = BytesIO()
 
    data = zipfile.ZipFile(s,'a')
@@ -33,10 +34,9 @@ def zippedTask(livezippedobject,project):
        data.writestr(pathAndName, filed)
    data.close()
    s.seek(0)
-   filedata = UploadedFile(s)
+   filedata = ContentFile(s.getvalue())
    filedata.name = project.title+".zip"
    livezippedobject.filename = filedata
-
    livezippedobject.save(generate=False)
 
 
