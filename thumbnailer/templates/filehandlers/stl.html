@@ -7,8 +7,8 @@
  </HEAD>
 
  <BODY>
-        <div id="main_frame" style="width:window.innerWidth; margin:auto; position:relative; font-size: 9pt; color: #777777;">
-                <canvas id="cv" style="border: 1px solid;" width="600" height="368" ></canvas>
+        <div id="main_frame" style="font-size: 9pt; color: #777777;">
+                <canvas id="cv" style="border: 1px solid;" ></canvas>
                 <div id="control_panel" style="display:block; color:#000000; padding:5px; position:absolute; top:30%; background-color:#ffffff; height:22px; width:128px; border-radius:5px; border:1px solid #777777; font-family:Arial,sans-serif; opacity:0.6;">
                         <input type="radio" name="operate" value="rotate" onclick="viewer.setMouseUsage('rotate');" checked="true">Rotate</input>
                         <input type="radio" name="operate" value="zoom" onclick="viewer.setMouseUsage('zoom');">Zoom</input>
@@ -72,6 +72,7 @@
         ctx.font = '12px Courier New';
         ctx.fillStyle = '#FF0000';
         viewer.afterupdate = function() {
+
                 if(logoTimerID > 0)
                         return;
 
@@ -88,6 +89,14 @@
                         ctx.fillText(totalFaceCount.toString() + ' faces', 10, 35);
                 }
         };
+
+        //Dynamically rsize the canvas.
+        window.addEventListener("resize",function(){
+	        canvas.width  = (window.innerWidth-25);
+	        canvas.height = (window.innerHeight-90);
+                viewer.init();
+                viewer.update();
+        });
 
         function loadModel() {
                 if(logoTimerID > 0) {
