@@ -7,6 +7,11 @@ import os
 from celery import Celery, shared_task
 from django.conf import settings
 
+from django.core.files.uploadedfile import UploadedFile
+from io import BytesIO
+from django.contrib.contenttypes.models import ContentType
+
+
 app = Celery('tasks')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Settings.settings')
 app.config_from_object('django.conf:settings')
@@ -14,11 +19,25 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
 @app.task()
-def zippedTask(project):
-   from filemanager.models import zippedObjectProxy
-   z = zippedObjectProxy(project=project)
-   z.save()
-   return
+def zippedTask(livezippedobject,project):
+   from filemanager.models import zippedobject,fileobject
+   import zipfile
+   s = BytesIO()
+
+   data = zipfile.ZipFile(s,'a')
+   object_type = ContentType.objects.get_for_model(project)
+   projectfiles = fileobject.objects.filter(content_type=object_type,object_id=project.id)
+   for filedata in projectfiles:
+       filed = filedata.filename.read()
+       pathAndName = str(project.title)+filedata.subfolder+os.path.split(str(filedata.filename))[1] #### this is where subfolders will be added to inside the zip file.
+       data.writestr(pathAndName, filed)
+   data.close()
+   s.seek(0)
+   filedata = UploadedFile(s)
+   filedata.name = project.title+".zip"
+   livezippedobject.filename = filedata
+
+   livezippedobject.save(generate=False)
 
 
 #def thumbsave(thumbnail):

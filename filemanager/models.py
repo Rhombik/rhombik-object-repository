@@ -3,7 +3,6 @@ from thumbnailer import thumbnailer2
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
-import zipfile
 from io import BytesIO
 import os.path
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -103,9 +102,6 @@ class thumbobject(models.Model):
         super(thumbobject, self).delete(*args, **kwargs)
 
 
-from django.core.files.uploadedfile import UploadedFile
-from io import BytesIO
-
 class zippedobject(models.Model):
 
     def __unicode__(self):
@@ -114,38 +110,18 @@ class zippedobject(models.Model):
     project = models.ForeignKey('project.Project', unique=True)
     filename = models.FileField(upload_to="projects/", blank=True, null=True)
     def save(self, generate=True, *args, **kwargs):
-        from filemanager.tasks import zippedTask
-        if generate==True:
-            if self.pk:
-                self.delete()
-            zippedTask.delay(self.project)
-            self.filename=fakefile()
-            return
-        else:
-            super(zippedobject, self,).save()
+        super(zippedobject, self).save()
+        if generate == True:
+            from filemanager.tasks import zippedTask
+            zippedTask(self, self.project)
 
-class zippedObjectProxy(zippedobject):
+    def delete(self, *args, **kwargs):
+        import warnings
+        try:
+            self.filename.delete()
+        except:
+            pass
 
-    class Meta:
-        proxy = True
-    def save(self, *args, **kwargs):
-        s = BytesIO()
-
-        data = zipfile.ZipFile(s,'a')
-
-        object_type = ContentType.objects.get_for_model(project)
-        projectfiles = fileobject.objects.filter(content_type=object_type,object_id=project.id)
-
-        for filedata in projectfiles:
-            filed = filedata.filename.read()
-            pathAndName = str(self.project.title)+filedata.subfolder+os.path.split(str(filedata.filename))[1] #### this is where subfolders will be added to inside the zip file.
-            data.writestr(pathAndName, filed)
-        data.close()
-        s.seek(0)
-        filedata = UploadedFile(s)
-        filedata.name = self.project.title+".zip"
-        self.filename = filedata
-        super(zippedObjectProxy, self,).save(generate=False, *args, **kwargs)
 
 import thumbnailer.shadowbox
 import markdown
