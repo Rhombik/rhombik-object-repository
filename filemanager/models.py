@@ -112,7 +112,7 @@ class zippedobject(models.Model):
         super(zippedobject, self).save()
         if generate == True:
             from filemanager.tasks import zippedTask
-            zippedTask(self, self.project)
+            zippedTask.delay(self, self.project)
 
     def delete(self, *args, **kwargs):
         import warnings
