@@ -20,8 +20,12 @@ class window.searchDrop
 
     #Only close if all the forms in formlist are empy. Attached to the main content.
     close: () ->
-        formlistcontent = false
-        if formlistcontent != true
-            for i in [0...this.dropdownlist.length]
+        for i in [0...this.dropdownlist.length]
+            if this.formlistEmpty(i)
                 $(this.dropdownlist[i]).slideUp()
+
+    formlistEmpty: (listId) ->
+        eles = this.dropdownlist[listId].getElementsByClassName("tagit-choice");
+        return (eles.length==0)
+
 
