@@ -99,11 +99,13 @@
      	{% rating_by_request request on project.rating as vote %}
 
      	Score:
+        <span id="projectScore">
      	{% if not project.ratingCount %}
      	0
      	{% else %}
      	{{ project.ratingCount }}
      	{% endif %}
+        </span>
      	{#user vote. Null means no vote. 1 means downvote. 2 means upvote. #}
      	{# You can remove your vote by voting 0 #}
      	{% if not vote  %}
@@ -116,6 +118,60 @@
      	<a href="vote/0/"><i class="fi-like votebutton upvote active"></i></a>
      	<a href="vote/1/"><i class="fi-dislike votebutton downvote"></i></a>
      	{% endif %}
+
+<!-- Ehhh!!! I wrote so much javascript, I'm so sorry. -->
+<script>
+function incrementScore(inc)
+{
+    score = document.getElementById("projectScore")
+    var value = parseInt(score.innerHTML, 10);
+    value = isNaN(value) ? 0 : value;
+    value = value + inc;
+    score.innerHTML = value;
+}
+$( ".votebutton" ).parent().click(function(e){
+
+    e.preventDefault();
+
+    if ($(e.target).hasClass("active")){
+        if ( $(e.target).hasClass("upvote") ){
+            incrementScore(-1);
+            $.get("vote/0/");
+            e.target.classList.remove("active");
+        }else if ( $(e.target).hasClass("downvote") ){
+            incrementScore(1);
+            $.get("vote/0/");
+            e.target.classList.remove("active");
+        }
+    }else{
+        e.target.classList.add("active");
+        if ( $(e.target).hasClass("upvote") ){
+            $.get("vote/2/");
+            downvote = document.getElementsByClassName("votebutton downvote")[0]
+            console.log("BLEE");
+            console.log(downvote);
+            if ( $(downvote).hasClass("active") ){
+                incrementScore(2);
+                downvote.classList.remove("active");
+            }else{
+                incrementScore(1);
+            }
+        }else if ( $(e.target).hasClass("downvote") ){
+            $.get("vote/1/");
+            upvote = document.getElementsByClassName("votebutton upvote")[0]
+            console.log("BLEE");
+            console.log(upvote);
+            if ( $(upvote).hasClass("active") ){
+                incrementScore(-2);
+                upvote.classList.remove("active");
+            }else{
+                incrementScore(-1);
+            }
+        }
+    }
+});
+</script>
+
      	{#Or you can just call {{Vote}} if you want the value for javascript.#}
      	<br>
      	{#Both of these will be null if no one has voted/downloaded. So you can use the "if not" template tag. #}
