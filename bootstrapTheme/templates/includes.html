@@ -34,7 +34,16 @@
 	<script src="{% static "" %}rhombik/js/customScript.js" type="text/javascript"></script>
 
 <script>
-    //Thinkgs to do when the dom is loaded
+   var head = document.getElementsByTagName("head")[0];
+   if (head) {
+       var scriptStyles = document.createElement("link");
+       scriptStyles.rel = "stylesheet";
+       scriptStyles.type = "text/css";
+       scriptStyles.href = "{% static "" %}{% scss "rhombik/css/js-enabled.scss"%}";
+       head.appendChild(scriptStyles);
+   }
+    
+
     jQuery(document).ready(function () {
                     thumbloader.wakeUp();
                  // I am the sanest man alive!
@@ -48,17 +57,8 @@
                     }
                     sleep(500, kill, tabletSearchDrop);
                 });
+
     //Include css/js-enabled.css if js is enabled.
-    (function () {
-        var head = document.getElementsByTagName("head")[0];
-        if (head) {
-            var scriptStyles = document.createElement("link");
-            scriptStyles.rel = "stylesheet";
-            scriptStyles.type = "text/css";
-            scriptStyles.href = "{% static "" %}{% scss "rhombik/css/js-enabled.scss"%}";
-            head.appendChild(scriptStyles);
-        }
-    }());
 </script>
 
 <script src="{% static "script/trier/src/trier.js"%}"></script>
