@@ -99,11 +99,13 @@
      	{% rating_by_request request on project.rating as vote %}
 
      	Score:
+        <span id="projectScore">
      	{% if not project.ratingCount %}
      	0
      	{% else %}
      	{{ project.ratingCount }}
      	{% endif %}
+        </span>
      	{#user vote. Null means no vote. 1 means downvote. 2 means upvote. #}
      	{# You can remove your vote by voting 0 #}
      	{% if not vote  %}
@@ -116,10 +118,67 @@
      	<a href="vote/0/"><i class="fi-like votebutton upvote active"></i></a>
      	<a href="vote/1/"><i class="fi-dislike votebutton downvote"></i></a>
      	{% endif %}
+
+<!-- Ehhh!!! I wrote so much javascript, I'm so sorry. -->
+<script>
+function incrementScore(inc, id)
+{
+    score = document.getElementById(id)
+    var value = parseInt(score.innerHTML, 10);
+    value = isNaN(value) ? 0 : value;
+    value = value + inc;
+    score.innerHTML = value;
+}
+$( ".votebutton" ).parent().click(function(e){
+
+    e.preventDefault();
+
+    if ($(e.target).hasClass("active")){
+        if ( $(e.target).hasClass("upvote") ){
+            incrementScore(-1, "projectScore");
+            $.get("vote/0/");
+            e.target.classList.remove("active");
+        }else if ( $(e.target).hasClass("downvote") ){
+            incrementScore(1, "projectScore");
+            $.get("vote/0/");
+            e.target.classList.remove("active");
+        }
+    }else{
+        e.target.classList.add("active");
+        if ( $(e.target).hasClass("upvote") ){
+            $.get("vote/2/");
+            downvote = document.getElementsByClassName("votebutton downvote")[0]
+            console.log("BLEE");
+            console.log(downvote);
+            if ( $(downvote).hasClass("active") ){
+                incrementScore(2, "projectScore");
+                downvote.classList.remove("active");
+            }else{
+                incrementScore(1, "projectScore");
+            }
+        }else if ( $(e.target).hasClass("downvote") ){
+            $.get("vote/1/");
+            upvote = document.getElementsByClassName("votebutton upvote")[0]
+            console.log("BLEE");
+            console.log(upvote);
+            if ( $(upvote).hasClass("active") ){
+                incrementScore(-2, "projectScore");
+                upvote.classList.remove("active");
+            }else{
+                incrementScore(-1, "projectScore");
+            }
+        }
+    }
+});
+</script>
+
      	{#Or you can just call {{Vote}} if you want the value for javascript.#}
      	<br>
      	{#Both of these will be null if no one has voted/downloaded. So you can use the "if not" template tag. #}
-     	Downloads: {{ project.downloadcount.score }}
+        Downloads: 
+        <span id="downloadsScore">
+     	{{ project.downloadcount.score }}
+        </span>
         <br>
         Published: <span title="{{project.created}}" > {{ project.created|timesince }} ago </span>
 
@@ -128,7 +187,31 @@
      </div>
      <a href="download/" class="btn btn-default fullwidth">Download Files</a>
      {% if downloadurl %}
-     <a href="{{downloadurl}}" class="btn btn-default fullwidth">Download All</a>
+     <a href="{{downloadurl}}" class="btn btn-default fullwidth downloadAll">Download All</a>
+
+   <!-- This aweful snippit prevents the normal download all click, sends a "I downloaded this" vote, and then when it succeeds, follows the normal download link -->
+    <script>
+    $( ".downloadAll" ).click(function(e){
+        e.preventDefault();
+        var voted = false;
+        var voteGet = $.get( "downloadCountIncrement/1/", function( data ) {
+            if ( data == "Vote recorded." ){
+            voted = true;
+            }
+        })
+        .done(function() {
+        })
+        .fail(function() {
+        })
+        .always(function() {
+            window.location = e.currentTarget.href;
+            if (voted){
+                incrementScore(1, "downloadsScore");
+            }
+        });
+    });
+    </script>
+
      {% endif %}
 
 

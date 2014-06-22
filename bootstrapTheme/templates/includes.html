@@ -37,6 +37,16 @@
     //Thinkgs to do when the dom is loaded
     jQuery(document).ready(function () {
                     thumbloader.wakeUp();
+                 // I am the sanest man alive!
+                    function kill(tag) {
+                        tag.close();
+                    }
+                    function sleep(millis, callback, arg) {
+                        setTimeout(function()
+                                { callback(arg); }
+                        , millis);
+                    }
+                    sleep(500, kill, tabletSearchDrop);
                 });
     //Include css/js-enabled.css if js is enabled.
     (function () {
