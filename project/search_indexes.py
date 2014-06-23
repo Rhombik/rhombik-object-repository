@@ -15,7 +15,6 @@ class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
         return Project
 
     def prepare_tags(self, obj):
-        print ([tag.name for tag in obj.tags.all()])
         return [tag.name for tag in obj.tags.all()]
 
 
