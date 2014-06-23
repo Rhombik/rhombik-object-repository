@@ -1,7 +1,7 @@
 from django import template
 from django.conf import settings
 from django.template import Context
-from searchsettings.forms import DateRangeSearchForm
+from searchsettings.forms import objectSearchForm
 
 register = template.Library()
 
@@ -9,10 +9,10 @@ register = template.Library()
 def searchform(context):
     try:
         request = context['request']
-        form = DateRangeSearchForm(request.GET)
+        form = objectSearchForm(request.GET)
     except:
         "meh"
-        form = DateRangeSearchForm()
+        form = objectSearchForm()
 
     return {'searchform': form}
 
