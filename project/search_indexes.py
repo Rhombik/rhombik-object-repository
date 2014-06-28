@@ -11,12 +11,18 @@ class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
     author = indexes.CharField(model_attr='author')
     created = indexes.DateTimeField(model_attr='created')
     tags = indexes.MultiValueField(boost=1.125)
+
+    downloadcount = indexes.FloatField()
+    ratingSortBest = indexes.FloatField(model_attr='ratingSortBest')
+
     def get_model(self):
         return Project
 
     def prepare_tags(self, obj):
         return [tag.name for tag in obj.tags.all()]
 
+    def prepare_downloadcount(self, obj):
+        return int(obj.downloadcount.score)
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
