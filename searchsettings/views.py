@@ -8,8 +8,14 @@ class SearchView(SearchView):
 #        listdata = project_list_get(self.results)
         paginator, page = self.build_page()
 
+        objectList=[]
+        for i in page.object_list:
+            objectList.append(i.object)
+        
+        print(objectList)
 
-        print(page)
+        listdata=project_list_get(objectList)
+        print(listdata)
         return {
-            'yourValue': "yourValue",
+            'listdata': listdata,
         }
