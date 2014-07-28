@@ -114,6 +114,10 @@ def project(request, pk):
     from comments.forms import commentForm
     commentform = commentForm()
     commentform.fields['parent'].queryset = nodes
+    if download.filename:
+        downloadurl=download.filename.url
+    else:
+        downloadurl=None
 
     c = RequestContext(request, dict(project=project, 
 				user=request.user,
@@ -130,7 +134,7 @@ def project(request, pk):
 				texts=texts,
 				galleryname="base", 
 				mainthumb=[mainthumb],
-                                downloadurl=download.filename.url))
+                                downloadurl=downloadurl))
     return render(request, "article.html", c)
 
 
