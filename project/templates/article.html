@@ -3,7 +3,11 @@
 {% block head %}
 <meta property="og:title" content="{{project.title}} - On rhombik.com" />
 {# AHAHAHAHA LOOKAT AT MY STRING #}
+
+{% if mainthumb.0.0.filename %}
 <meta property="og:image" content="{{mainthumb.0.0.filename.url}}" />
+{% else %}
+{% endif %}
 <title>{{project.title}} - Rhombik</title>
 {% endblock head %}
 

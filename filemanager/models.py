@@ -93,11 +93,7 @@ class thumbobject(models.Model):
             thumbTask.delay(self, self.fileobject)
 
     def delete(self, *args, **kwargs):
-        import warnings
-        try:
-            self.filename.delete()
-        except:
-            pass
+        self.filename.delete()
         super(thumbobject, self).delete(*args, **kwargs)
 
 
@@ -120,6 +116,7 @@ class zippedobject(models.Model):
             self.filename.delete()
         except:
             pass
+        super(zippedobject, self).delete(*args, **kwargs)
 
 
 import thumbnailer.shadowbox
