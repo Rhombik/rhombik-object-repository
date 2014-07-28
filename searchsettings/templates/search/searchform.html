@@ -10,7 +10,6 @@
 		    <span class="input-group-btn">
 			<button type="submit" id="searchSubmit" class="btn btn-default"><i class="fi-magnifying-glass"></i></button>
 		    </span>
-		    </input>
 		</div>
         </fieldset>
      </form>
@@ -20,5 +19,12 @@
 
 <div class="clearfix"></div>
 
-<div class="jshidden searchDrop searchTagBox">{{ searchform.tags }}</div>
+
+<div class="jshidden searchDrop searchTagBox">
+
+<ul class="nav navbar-nav">
+<li style="margin-top:-1.2em;"><a>Search Filters:</a></li>
+</ul>
+{{ searchform.tags }}
+</div>
 

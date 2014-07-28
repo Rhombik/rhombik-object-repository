@@ -1,6 +1,25 @@
 {% extends "includes.html" %}
 
 {% block content %}
+
+<div class="warning panel" style="background-color: #b0c4de;">
+  <div class="panel-body">
+<b>Warning- Rhombik is pre-alpha software</b>
+<br>
+Some things may not work properly. We're probably already aware of it, but just haven't had the time to fix it yet. 
+
+If you think we aren't aware of it, or if it's a site breaking problem, you can take a look at our <a href="https://github.com/Rhombik/rhombik-object-repository/issues?state=open"><b>feature requests/bug reports</b></a>. 
+<br>
+Rhombik is open-source. One way you could speed up development is to donate your time and energy improving our code base. We use a python web framework called django, but there's plenty of room for html/css improvements as well. If you can't code, you can always <a href="https://github.com/Rhombik/rhombik-object-repository#donate"><b>donate</b></a> money. Every little bit helps.
+<br>
+
+Keep a backup of all your files, and don't be too suprised if we go under. The source code will always be available, but unless donations pick up we probably won't be able to continue running this forever.
+
+Thanks.
+</div>
+
+</div>
+
 <h2>New projects</h2>
         <!-- Projects-->
         {% include "list/userpref.html" with listdata=listdata %}
