@@ -13,7 +13,7 @@ class loadinglooper
                 if (myID==thumbloader.loadinglooper.loopID and thumbloader.alive())
                     thumbloader.comparifier()
             ,
-            interval: 4000,
+            interval:3000,
             limit: 6
         });
 
