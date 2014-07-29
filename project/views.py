@@ -18,7 +18,7 @@ from project.forms import ProjectForm, createForm, defaulttag
 from django import forms
 
 from django.contrib.contenttypes.models import ContentType
-
+from django.http import Http404
 
 
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
@@ -62,7 +62,7 @@ def project(request, pk):
     try:
         project = Project.objects.exclude(draft=True).get(pk=pk)
     except:
-        return HttpResponse(status=404)
+        raise Http404
 
 
     object_type = ContentType.objects.get_for_model(project)
