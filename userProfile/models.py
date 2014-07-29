@@ -17,7 +17,7 @@ class userProfile(models.Model):
 
     userpic= models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL , related_name='userpic')
 
-    bio = models.CharField(max_length=256, blank=True,  default="I didn't really care to tell you about myself, so the developers wrote this.")
+    bio = models.CharField(max_length=256, blank=True,  default="")
 
     listpref = models.SmallIntegerField(max_length=256, blank=True, null=True,)
 
