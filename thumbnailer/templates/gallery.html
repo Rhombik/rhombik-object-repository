@@ -1,11 +1,27 @@
 {% for thumbnail,fullpath,renderer in images %}
 {% if renderer == "browser" %}
-	<span  class="thumbloader pk={{thumbnail.pk}}"><a class="imageSwitch browser" href="{{fullpath.filename.url}}" rel="{{ fullpath.filename.url }}"><img src="{{ thumbnail.filename.url  }}" alt="sample image"></a></span>
+	<span  class="thumbloader pk={{thumbnail.pk}}"><a class="imageSwitch browser" href="{{fullpath.filename.url}}" rel="{{ fullpath.filename.url }}"><img src="{{ thumbnail.filename.url  }}"></a></span>
 {% endif %}
+
 {% if renderer == "jsc3d" %}
-	<span  class="thumbloader pk={{thumbnail.pk}}"><a class="imageSwitch iframe jsc3d" href="/preview/jsc3d/{{fullpath.pk}}" rel="/preview/jsc3d/{{ fullpath.pk }}"><img src="{{ thumbnail.filename.url }}" alt="sample image"></a></span>
+	<span  class="thumbloader pk={{thumbnail.pk}}"><a class="imageSwitch iframe jsc3d" href="/preview/jsc3d/{{fullpath.pk}}" rel="/preview/jsc3d/{{ fullpath.pk }}"><img src="{{ thumbnail.filename.url }}"></a></span>
 {% endif %}
 {% if renderer == "ajax" %}
-         <a class="thumbloader pk={{thumbnail.pk}}"><script>thumbloader.register("{{thumbnail.pk}}", "gallery-{{ galleryname }}")</script></a>
+<a class="thumbloader pk={{thumbnail.pk}}">
+<script>thumbloader.register("{{thumbnail.pk}}", "gallery-{{ galleryname }}")</script>
+
+<span>
+
+<div style="background-color:#dddddd; height:{{thumbnail.filey}}px; min-width:{{thumbnail.filex}}px; text-align:center; vertical-align: middle; line-height: {{thumbnail.filey}}px;">
+
+<div class="spinner">
+  <div class="bounce1"></div>
+  <div class="bounce2"></div>
+  <div class="bounce3"></div>
+</div>
+
+</div></span>
+
+</a>
 {% endif %}
 {% endfor %}
