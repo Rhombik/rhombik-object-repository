@@ -36,6 +36,7 @@
         <li><a href="/register/"><i class="fi-lock"></i> Log In</a></li>
         {% elif user.is_authenticated %}
         <li><a href="/userProfile/{{user.id}}"><span class="fi-torso"></span> Profile</a></li>
+        <li><a href="/logout/"><span class="fi-unlock"></span> Log Out</a></li>
         <li><a href="{% url "project.views.create" %}"><span class="fi-plus"></span> Create</a></li>
         {% endif %}
         {% searchform %}
