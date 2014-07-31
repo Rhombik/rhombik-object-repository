@@ -48,8 +48,8 @@ def edit(request):
             profile.bio = profileform.cleaned_data["bio"]
 
             #Create users picture.
-            if pictureform.cleaned_data["filename"]:
-                
+            #if pictureform.cleaned_data["filename"]:
+            if False:    
                   ## if they don't have a userpic yet we can't delete it.
                 try:
                     profile.userpic.delete()

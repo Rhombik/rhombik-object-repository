@@ -13,12 +13,13 @@ class UserProfileForm(ModelForm):
         fields = ["bio"]
 
 class UserPictureForm(forms.Form):
+    filename = None
 #    filename = forms.ImageField(
 #            label='Select a file',
 #            help_text='This will be your profile pic',
 #            required=False
 #    )
-    pass        
+#    pass        
 class UserEmail(forms.Form):
     email = forms.EmailField(
             label='Email',
