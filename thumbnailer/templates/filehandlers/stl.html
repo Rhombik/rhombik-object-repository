@@ -6,23 +6,23 @@
   <META NAME="Author" CONTENT="JSC3D">
  </HEAD>
 
- <BODY>
-        <div id="main_frame" style="font-size: 9pt; color: #777777;">
+ <BODY style="overflow:hidden;">
+        <div id="main_frame" style="font-size: 9pt; color: #ffffff;">
                 <canvas id="cv" style="border: 1px solid;" ></canvas>
                 <div id="control_panel" style="display:block; color:#000000; padding:5px; position:absolute; top:30%; background-color:#ffffff; height:22px; width:128px; border-radius:5px; border:1px solid #777777; font-family:Arial,sans-serif; opacity:0.6;">
                         <input type="radio" name="operate" value="rotate" onclick="viewer.setMouseUsage('rotate');" checked="true">Rotate</input>
                         <input type="radio" name="operate" value="zoom" onclick="viewer.setMouseUsage('zoom');">Zoom</input>
                 </div>
-                <div style="float:left;">
+                <div style="float:left; display:block;">
                 <select id="model_list" style="display: none;">
                 </select>
                 <!-- <button id="load" onclick="loadModel();">Load</button> -->
                 </div>
-                <div style="float:right;">
+                <div style="position: absolute; bottom: 10px; right: 20px; z-index: 10;">
                 Quality:
                 <select id="render_quality_list">
                 <option>low</option>
-                <option>standard</option>
+                <option selected="selected">standard</option>
                 <option>high</option>
                 </select>
                 Mode:
@@ -36,13 +36,13 @@
                 </div>
         </div>
         <script type="text/javascript" src="{% static ""%}jsc3d.min.js"></script>
-        <script type="text/javascript" src="{% static ""%}jsc3d.console.js"></script>
+{#        <script type="text/javascript" src="{% static ""%}jsc3d.console.js"></script> #}
         <script type="text/javascript">
-        JSC3D.console.setup('main_frame', '30px');
+{#        JSC3D.console.setup('main_frame', '30px'); #}
 
         var canvas = document.getElementById('cv');
-	canvas.width  = (window.innerWidth-25);
-	canvas.height = (window.innerHeight-90);
+	canvas.width  = (window.innerWidth-20);
+	canvas.height = (window.innerHeight);
         var viewer = new JSC3D.Viewer(canvas);
         var logoTimerID = 0;
         viewer.setParameter('SceneUrl', '{{ path }}');
@@ -51,9 +51,9 @@
         viewer.setParameter('InitRotationZ', 0);
         viewer.setParameter('ModelColor', '#AA0000');
         viewer.setParameter('BackgroundColor1', '#FFFFFF');
-        viewer.setParameter('BackgroundColor2', '#584D5C');
+        viewer.setParameter('BackgroundColor2', '#382D3C');
         viewer.setParameter('RenderMode', 'flat');
-        viewer.setParameter('Definition', 'low');
+        viewer.setParameter('Definition', 'standard');
         viewer.init();
         viewer.update();
 
@@ -92,8 +92,8 @@
 
         //Dynamically rsize the canvas.
         window.addEventListener("resize",function(){
-	        canvas.width  = (window.innerWidth-25);
-	        canvas.height = (window.innerHeight-90);
+	        canvas.width  = (window.innerWidth-20);
+	        canvas.height = (window.innerHeight);
                 viewer.init();
                 viewer.update();
         });
