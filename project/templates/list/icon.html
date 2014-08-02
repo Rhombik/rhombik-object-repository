@@ -5,9 +5,22 @@
         <div class="col-xs-6 col-md-3">
             <a href="/project/{{ project.id }}" class="thumbnail projecthumb">
                 {% include "thumbview.html" with thumbnail=thumb %}
-                <div class="caption">
+{% comment %}
+                    <span href="/userProfile/{{ project.author.pk }}">{{ project.author }}</span>
+<span style="float:right;">
+        <i class="fi-like"></i>
+        {% if not project.ratingCount %}
+        0
+        {% else %}
+        {{ project.ratingCount }}
+        {% endif %}
+        <i class="fi-download"></i>
+        {{ project.downloadcount.score }}
+
+</span>
+{% endcomment %}
+
                     <h3>{{ project.title }}</h3>
-                </div>
             </a>
         </div>
     {% endfor %}
