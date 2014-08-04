@@ -3,7 +3,7 @@
     <!-- Projects-->
     {% for project, thumb in listdata %}
         <div class="col-xs-6 col-md-3">
-            <a href="/project/{{ project.id }}" class="thumbnail projecthumb">
+            <a href="/project/{{ project.id }}" class="projecthumb">
                 {% include "thumbview.html" with thumbnail=thumb %}
 {% comment %}
                     <span href="/userProfile/{{ project.author.pk }}">{{ project.author }}</span>
@@ -23,6 +23,8 @@
                     <h3>{{ project.title }}</h3>
             </a>
         </div>
+{% cycle '' '' '' '<div class="clearfix visible-xs-block"></div>'%}
+
     {% endfor %}
 
     <!-- Next/Prev page links-->
@@ -42,4 +44,5 @@
         </div>
     {% endif %}
 
-</div>
+
+ </div>

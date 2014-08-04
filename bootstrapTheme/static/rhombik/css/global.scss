@@ -1,8 +1,7 @@
 @import 'settings';
-
+@import 'projectList';
 @import 'navbar-icon';
 @import 'spin';
-
 body {background-color:$backround-color;}
 
 #TextsMain{
@@ -64,5 +63,3 @@ hr {
     border-radius: 3px;
     background-color: #FFF;
 }
-
-
