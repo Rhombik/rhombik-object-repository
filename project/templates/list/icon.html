@@ -2,27 +2,32 @@
 <div class="row">
     <!-- Projects-->
     {% for project, thumb in listdata %}
-        <div class="col-xs-6 col-md-3">
-            <a href="/project/{{ project.id }}" class="projecthumb">
+<div class="col-xs-6 col-md-3">
+<div class="projecthumb">
+            <a href="/project/{{ project.id }}">
                 {% include "thumbview.html" with thumbnail=thumb %}
-{% comment %}
-                    <span href="/userProfile/{{ project.author.pk }}">{{ project.author }}</span>
-<span style="float:right;">
-        <i class="fi-like"></i>
+<h3>{{ project.title }}</h3>
+</a>
+<div class="thumbMetaBox">
+    <span><a  href="/userProfile/{{ project.author.pk }}">{{ project.author }}</a></span>
+    <span style="float:right;">
+        <span title="Rating"><i class="fi-like"></i>
         {% if not project.ratingCount %}
         0
         {% else %}
         {{ project.ratingCount }}
         {% endif %}
+        </span>
+        <span title="Downloads">
         <i class="fi-download"></i>
         {{ project.downloadcount.score }}
+        </span>
 
-</span>
-{% endcomment %}
+    </span>
+</div>
 
-                    <h3>{{ project.title }}</h3>
-            </a>
-        </div>
+</div>
+ </div>
 {% cycle '' '' '' '<div class="clearfix visible-xs-block"></div>'%}
 
     {% endfor %}
