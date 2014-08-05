@@ -5,24 +5,13 @@
 
 <div class="container_12">
 
-{% include "list/userpref.html" with listdata=listdata  %}
 
         {% if page.object_list %}
-            <h3>Results</h3>
-            <div class="container_12">
+            <h2>Results</h2>
+            {% include "list/userpref.html" with listdata=listdata %}
             {% for result in page.object_list %}
-            <div class="grid_3">
-<div class=""><h2><a href="/project/{{ project.title }}"><img src="{{ project.thumbnailpath }}" class="bigthumb"></a></h2></div>
-            </div>
-                <p>
-            <div class="grid_9">
-                    <a href="/project/{{ result.object.pk }}">{{ result.object.title }}</a>
-                    {{ result.object.body_rendered|safe|truncatewords_html:20 }}
-            </div>
-
-                </p>
             {% empty %}
-                <p>No results found.</p>
+            <p>No results found.</p>
             {% endfor %}
             </div>
             {% if page.has_previous or page.has_next %}
