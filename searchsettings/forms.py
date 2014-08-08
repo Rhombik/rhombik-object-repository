@@ -44,11 +44,16 @@ class objectSearchForm(SearchForm):
             sqs = sqs.filter(tags=parse_tags(self.cleaned_data['tags']))
 
 
-        if 'start_date' in self.cleaned_data:
-            sqs = sqs.filter(created__gte=self.cleaned_data['start_date'])
+#        if 'start_date' in self.cleaned_data:
+#            sqs = sqs.filter(created__gte=self.cleaned_data['start_date'])
 
         # Check to see if an end_date was chosen.
-        if 'end_date' in self.cleaned_data:
-            sqs = sqs.filter(created=self.cleaned_data['end_date'])
+#        if 'end_date' in self.cleaned_data:
+#            sqs = sqs.filter(created=self.cleaned_data['end_date'])
+
+        if not self.cleaned_data['sort'] or self.cleaned_data['sort'] == "votes":
+            sqs = sqs.order_by('-ratingSortBest')
+        elif self.cleaned_data['sort'] == "new":
+            sqs = sqs.order_by('-created')
 
         return sqs

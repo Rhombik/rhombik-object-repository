@@ -11,6 +11,7 @@ class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
     author = indexes.CharField(model_attr='author')
     created = indexes.DateTimeField(model_attr='created')
     tags = indexes.MultiValueField(boost=1.125)
+    ratingSortBest = indexes.FloatField(model_attr='ratingSortBest')
     def get_model(self):
         return Project
 
