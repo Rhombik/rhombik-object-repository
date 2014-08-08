@@ -5,9 +5,34 @@
 
 <div class="container_12">
 
-
-        {% if page.object_list %}
             <h2>Results</h2>
+
+Showing projects from
+<span class="dropdown">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    {{ fromtime.current|last }} <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" >
+  {% for data,text in fromtime.options %}
+  <li role="presentation"><a href="/search/?{{cleaned_url}}&sort={{ordersort.current|first}}&From={{data}}">{{text}}</a></li>
+  {% endfor %}
+  </ul>
+</span>
+  sorted by
+<span class="dropdown">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    {{ ordersort.current|last }} <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" >
+  {% for data,text in ordersort.options %}
+  <li role="presentation"><a href="/search/?{{cleaned_url}}&From={{fromtime.current|first}}&sort={{data}}">{{text}}</a></li>
+  {% endfor %}
+  </ul>
+</span>.
+
+<p>
+        {% if page.object_list %}
+
             {% include "list/userpref.html" with listdata=listdata %}
             {% for result in page.object_list %}
             {% empty %}
