@@ -18,7 +18,7 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 BROKER_URL = 'django://'
 #Makes debugging easier. Don't use in production
 CELERY_ALWAYS_EAGER = True
-#CELERY_EAGER_PROPAGATES_EXCEPTIONS =True
+CELERY_EAGER_PROPAGATES_EXCEPTIONS =True
 
 MANAGERS = ADMINS
 
@@ -41,7 +41,7 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SIGNAL_PROCESSOR = 'searchsettings.celeryHaystack.celerySignalProcessor'
 
 #HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 

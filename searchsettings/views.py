@@ -8,7 +8,6 @@ class SearchView(SearchView):
         projects = []
         for i in self.results:
             projects += [i.object]
-            print(i.object)
         data = project_list_get(projects)
         return {
             'listdata': data,
