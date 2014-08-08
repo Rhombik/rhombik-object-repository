@@ -41,8 +41,8 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-#HAYSTACK_SIGNAL_PROCESSOR = 'searchsettings.celeryHaystack.celerySignalProcessor'
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.BaseSignalProcessor'
+HAYSTACK_SIGNAL_PROCESSOR = 'searchsettings.celeryHaystack.celerySignalProcessor'
+#HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.BaseSignalProcessor'
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
