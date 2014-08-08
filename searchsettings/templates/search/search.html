@@ -7,6 +7,7 @@
 
             <h2>Results</h2>
 
+{% comment %}
 Showing projects from
 <span class="dropdown">
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -17,8 +18,10 @@ Showing projects from
   <li role="presentation"><a href="/search/?{{cleaned_url}}&sort={{ordersort.current|first}}&From={{data}}">{{text}}</a></li>
   {% endfor %}
   </ul>
-</span>
-  sorted by
+</span>  
+{% endcomment %}
+
+sorted by
 <span class="dropdown">
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     {{ ordersort.current|last }} <span class="caret"></span>
