@@ -1,0 +1,28 @@
+@import 'settings';
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 140px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 100px;
+  color: $light-text;
+  padding-top: 8px;
+  background-color: $primary-color;
+}
+
+.footer h3{
+ font-size: 15px;
+ margin-top: 0;
+ margin-bottom: 5px;
+}
