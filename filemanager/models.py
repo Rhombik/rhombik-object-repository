@@ -1,4 +1,5 @@
 from django.db import models
+from django.dispatch import receiver
 from thumbnailer import thumbnailer2
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -6,7 +7,6 @@ from django.conf import settings
 from io import BytesIO
 import os.path
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
@@ -96,9 +96,11 @@ class thumbobject(models.Model):
             thumbTask.delay(self, self.fileobject)
 
     def delete(self, *args, **kwargs):
-        self.filename.delete()
         super(thumbobject, self).delete(*args, **kwargs)
 
+@receiver(models.signals.post_delete, sender=thumbobject)
+def delete_thumbdata(**kwargs):
+    instance.filename.delete()
 
 class zippedobject(models.Model):
 
