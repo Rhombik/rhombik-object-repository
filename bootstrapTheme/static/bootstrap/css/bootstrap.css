@@ -739,6 +739,9 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+.container h1, h2, h3, h4 , h5, h6 {
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
 @media (min-width: 768px) {
   .container {
     width: 750px;
@@ -3118,6 +3121,10 @@ input[type="button"].btn-block {
   bottom: 100%;
   margin-bottom: 1px;
 }
+.navbar_container {
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
 @media (min-width: 768px) {
   .navbar-right .dropdown-menu {
     right: 0;
