@@ -6,9 +6,9 @@
   <META NAME="Author" CONTENT="JSC3D">
  </HEAD>
 
- <BODY style="overflow:hidden;">
-        <div id="main_frame" style="font-size: 9pt; color: #ffffff;">
-                <canvas id="cv" style="border: 1px solid; color: #000000;" ></canvas>
+ <BODY style="overflow:hidden; background-color: #7a9a65;">
+        <div id="jsc3d_main_frame" style="font-size: 9pt; color: #ffffff;">
+                <canvas id="cv" style="" ></canvas>
                 <div id="control_panel" style="display:block; color:#000000; padding:5px; position:absolute; top:30%; background-color:#ffffff; height:22px; width:128px; border-radius:5px; border:1px solid #777777; font-family:Arial,sans-serif; opacity:0.6;">
                         <input type="radio" name="operate" value="rotate" onclick="viewer.setMouseUsage('rotate');" checked="true">Rotate</input>
                         <input type="radio" name="operate" value="zoom" onclick="viewer.setMouseUsage('zoom');">Zoom</input>
@@ -22,8 +22,8 @@
                 Quality:
                 <select id="render_quality_list">
                 <option>low</option>
-                <option selected="selected">standard</option>
-                <option>high</option>
+                <option>standard</option>
+                <option selected="selected">high</option>
                 </select>
                 Mode:
                 <select id="render_mode_list">
@@ -49,11 +49,11 @@
         viewer.setParameter('InitRotationX', 20);
         viewer.setParameter('InitRotationY', 20);
         viewer.setParameter('InitRotationZ', 00);
-        viewer.setParameter('ModelColor', '#AA0000');
-        viewer.setParameter('BackgroundColor1', '#FFFFFF');
-        viewer.setParameter('BackgroundColor2', '#382D3C');
+        viewer.setParameter('ModelColor', '#615864');
+        viewer.setParameter('BackgroundColor1', '#7a9a65');
+        viewer.setParameter('BackgroundColor2', '#7a9a65');
         viewer.setParameter('RenderMode', 'flat');
-        viewer.setParameter('Definition', 'standard');
+        viewer.setParameter('Definition', 'high');
         viewer.init();
         viewer.update();
 
@@ -70,7 +70,7 @@
 
         var ctx = canvas.getContext('2d');
         ctx.font = '12px Courier New';
-        ctx.fillStyle = '#FF0000';
+        ctx.fillStyle = '#FFffff';
         viewer.afterupdate = function() {
 
                 if(logoTimerID > 0)

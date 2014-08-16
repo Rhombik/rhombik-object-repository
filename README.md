@@ -2,7 +2,7 @@ rhombik-object-repository
 =============
 
 
-This is all development information. The site isn't up to par yet, but you can see an example at [testing.rhombik.com](http://testing.rhombik.com)
+This is all development information. The site isn't up to par yet, but you can see an example at [rhombik.com](http://testing.rhombik.com)
 
 rhombik-object-repository is an AGPL licensed object repository, competing in the same sphere as [thingiverse](http://thingiverse.com), [cubehero](http://cubehero.com), [youMagine](http://www.youmagine.com)
 , and [bld3r](http://bld3r.com).
