@@ -96,13 +96,12 @@ class thumbobject(models.Model):
             thumbTask.delay(self, self.fileobject)
 
     def delete(self, *args, **kwargs):
-        self.filename.delete()
+#        self.filename.delete()
         super(thumbobject, self).delete(*args, **kwargs)
 
 @receiver(models.signals.post_delete, sender=thumbobject)
-def delete_thumbdata(**kwargs):
-    pass
-#    self.instance.filename.delete()
+def delete_thumbdata(sender,instance,using, **kwargs):
+    instance.filename.delete()
 
 class zippedobject(models.Model):
 
