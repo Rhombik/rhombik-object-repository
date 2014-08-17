@@ -9,6 +9,8 @@ import os.path
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
+import warnings
+
 
 class fakefile():
     url = ""
@@ -101,7 +103,10 @@ class thumbobject(models.Model):
 
 @receiver(models.signals.post_delete, sender=thumbobject)
 def delete_thumbdata(sender,instance,using, **kwargs):
-    instance.filename.delete()
+    try:
+        instance.filename.delete()
+    except Exception as e:
+        warnings.warn(e)
 
 class zippedobject(models.Model):
 
