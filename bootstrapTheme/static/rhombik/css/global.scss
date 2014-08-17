@@ -10,7 +10,33 @@ body {background-color:$backround-color;}
     position: relative;
     top: -10px;
     padding: 25px;
+    border-style: solid; /* There should be no border between the active tab and the infobox, need to fix */
+    border-width: 1px;
+    border-color: #dddddd; 
 }
+
+.#TextsMain a:link {
+    font-weight: bold;
+    color: #66357F;
+}
+
+.TextsMain a:visited {
+    font-weight: bold;
+    color: #800080;
+}
+
+/*This highlights all links, including the profile and reply one.
+Once the comments section is cleaned up a bit more we should fix that */
+.comments a:link {
+    font-weight: bold;
+    color: #66357F;
+}
+
+.comments a:visited {
+    font-weight: bold;
+    color: #800080;
+}
+
 .fullwidth{
     display: block; 
     width: 100%;
