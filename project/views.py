@@ -42,13 +42,16 @@ def searchtest(*args, **kwargs):
 ## -a thumbnail object for the project.
 ## -the project.
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
-def project_list_get(projects):
+def project_list_get(projects, purge=True):
 
     listdata = []
     for project in projects:
-        if project.enf_consistancy() == True:
+        if project.enf_consistancy() == True or purge == False:
             object_type = ContentType.objects.get_for_model(project)
-            thumbnail = project.thumbnail.get_thumb(300,200)
+            if project.thumbnail:
+                thumbnail = project.thumbnail.get_thumb(300,200)
+            else:
+                thumbnail = [None]
             listdata += [[project, thumbnail[0]]]
 
     return listdata

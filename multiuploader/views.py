@@ -35,15 +35,13 @@ from django.template.loader import render_to_string
 from project.views import project_list_get
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 def draftview(request):
-   
-    projects =Project.objects.filter(author=request.user, draft=True)
+    projects = Project.objects.filter(author=int(request.user.id), draft=True)
     paginator = Paginator(projects, 8)
     try: page = int(request.GET.get("page", '1'))
     except ValueError: page = 1
-
     try:
         #only get thumbnails for projects on the current page.
-        listdata = project_list_get(paginator.page(page))
+        listdata = project_list_get(paginator.page(page), purge=False)
     except (InvalidPage, EmptyPage):
         listdata = paginator.page(paginator.num_pages)
     return render_to_response("front.html", dict(listdata=listdata, user=request.user, active="home"))
