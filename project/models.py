@@ -63,7 +63,7 @@ class Project(models.Model):
         #http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
         if(votes == 0):
             #Set to 2 by default, to encourage people to look at/vote on new content. 
-            self.ratingSortBest = 2 
+            self.ratingSortBest = 1 
         else: 
             r=1.0*upvotes/votes
             z=1.95 
