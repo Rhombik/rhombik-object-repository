@@ -26,25 +26,30 @@ import os.path
 from multiuploader.forms import MultiuploaderImage
 from project.models import *
 from filemanager.models import fileobject, thumbobject
-
 from django.contrib.contenttypes.models import ContentType
-
 from django.template.loader import render_to_string
-
-
+from django.shortcuts import redirect
 from project.views import project_list_get
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 def draftview(request):
     projects = Project.objects.filter(author=int(request.user.id), draft=True)
-    paginator = Paginator(projects, 8)
+    toomanydrafts = False
+    if projects > 7:
+        toomanydrafts = True
+    paginator = Paginator(projects, 7)
+    page = request.GET.get('page')
     try: page = int(request.GET.get("page", '1'))
     except ValueError: page = 1
     try:
         #only get thumbnails for projects on the current page.
-        listdata = project_list_get(paginator.page(page), purge=False)
+        paginate = paginator.page(page)
     except (InvalidPage, EmptyPage):
-        listdata = paginator.page(paginator.num_pages)
-    return render_to_response("front.html", dict(listdata=listdata, user=request.user, active="home"))
+        paginate = paginator.page(paginator.num_pages)
+    listdata= project_list_get(paginate.object_list, purge=False)
+    if projects:
+        return render_to_response("drafts.html", dict(paginate=paginate, toomanydrafts = toomanydrafts, listdata=listdata, user=request.user, active="home"))
+    else:
+        return redirect("/create/")
 
 
 @csrf_exempt

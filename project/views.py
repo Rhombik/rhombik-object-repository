@@ -27,14 +27,9 @@ from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf_token
 from django.core.context_processors import csrf
 
-
-
 def searchtest(*args, **kwargs):
     project = Project.objects.filter(pk=1)[0:1].get()
     return render_to_response('search/indexes/project/project_text.txt', dict(object=project))
-
-
-
 
 
 """______________________________"""
@@ -51,7 +46,7 @@ def project_list_get(projects, purge=True):
             if project.thumbnail:
                 thumbnail = project.thumbnail.get_thumb(300,200)
             else:
-                thumbnail = [None]
+                thumbnail = [""]
             listdata += [[project, thumbnail[0]]]
 
     return listdata
@@ -154,9 +149,9 @@ def list(request):
     """Main listing."""
 
 ###   get all the projects!   ###
-    projects = Project.objects.exclude(draft=True).order_by("-created")
+    newprojects = Project.objects.exclude(draft=True).order_by("-created")
 
-    paginator = Paginator(projects, 8)
+    paginator = Paginator(newprojects, 8)
 
     try: page = int(request.GET.get("page", '1'))
     except ValueError: page = 1
@@ -166,7 +161,7 @@ def list(request):
         listdata = project_list_get(paginator.page(page))
     except (InvalidPage, EmptyPage):
         listdata = paginator.page(paginator.num_pages)
-    return render_to_response("front.html", dict(listdata=listdata, user=request.user, active="home"))
+    return render_to_response("front.html", dict(listdata=listdata, projectcount=newprojects.count(), user=request.user, active="home"))
 
 
 from django.utils import simplejson
@@ -199,7 +194,7 @@ def editOrCreateStuff(project, request, creating):
             if form.is_valid() and str(project.author) == str(request.user):
                 formValid=True
        ## if the form is valid make the changes to the project!
-        if formValid:
+        if formValid or creating:
 
           # Editing the Readme.md file stuff.
 
@@ -215,7 +210,6 @@ def editOrCreateStuff(project, request, creating):
 
            # Save body as file
             bodyText = fileobject()
-
             bodyText.parent = project
 
             from django.core.files.uploadedfile import UploadedFile
@@ -252,12 +246,18 @@ def editOrCreateStuff(project, request, creating):
                     project.tags.add(i)
 
          # This may be redundant, but either way, this post is not a draft past this point.
-            project.draft=False
-
+            if form.cleaned_data["publish"]:
+                project.draft=False
+                print("publishing form")
+            else:
+                print("saving form")
             project.save()
 
-            return HttpResponseRedirect('/project/'+str(project.pk))
-
+            if form.cleaned_data["publish"]:
+                project.draft=False
+                return HttpResponseRedirect('/project/'+str(project.pk))
+            else:
+                return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2, project=project))
      #### If the form data was NOT valid
         else:
             if creating:
@@ -274,7 +274,10 @@ def editOrCreateStuff(project, request, creating):
     elif creating and request.user.is_authenticated():
         form = createForm("",project)
         form2 = defaulttag()
-        return render_to_response('create.html', dict(user=request.user, form=form, form2=form2, project=project))
+        if Project.objects.filter(author=int(request.user.id), draft=True) > 10:
+            return render_to_response('create.html', dict(user=request.user, form=form, form2=form2, project=project))
+        else:
+            return HttpResponse(status=403)
 
 ##### EDIT
     elif (not creating) and str(project.author) == str(request.user):
@@ -303,7 +306,7 @@ def edit(request, pk):
 
 ## Get the project the user wishes to edit.
     try:
-        project=Project.objects.filter(pk=pk)[0:1].get()
+        project=Project.objects.filter(pk=pk)[0].get()
     except:
         return HttpResponse(status=404)
 
@@ -313,11 +316,9 @@ def edit(request, pk):
 
 @csrf_exempt
 def create(request):
-
-## get the draft or draft a new empty project.
-    try:
+    if Project.objects.filter(author=request.user).filter(draft=True).count() > 10:
         project=Project.objects.filter(author=request.user).filter(draft=True)[0]
-    except:
+    else:
         project = Project()
         project.title = None
         project.draft=True
