@@ -1,0 +1,114 @@
+{% extends "includes.html" %}
+
+{% block content %}
+<h2>Drafts</h2>
+
+<style>
+{#AHAHAHAHAHAHAHA#}
+.box{
+	position: relative;
+	width: 100%;
+}
+.box:after{
+	content: "";
+	display: block;
+	padding-top: 66%; 
+}
+
+.newbox:after{
+        content: "";
+        display: block;
+        padding-top: 25%;
+}
+{# The publish and delete stuff http://csswizardry.com/2011/02/css-powered-ribbons-the-clean-way/ http://jsfiddle.net/bXuY8/5/#}
+.newbox:before{
+        content: "";
+        display: block;
+        padding-top: 25%;
+}
+.bigredx{
+    position: absolute;
+    color:#b44;
+    right: 25px;
+    font-size: 200%;
+    z-index:10000;
+    text-shadow: -2px 0 #eee, 0 2px #eee, 2px 0 #eee, 0 -2px #eee;
+}
+.bigredx:hover{
+    color:#b11;
+}
+
+.stripe-1 {
+  background: -webkit-repeating-linear-gradient(45deg, #eee, #eee 10px, #3e3e3e 10px, #3e3e3e 20px);
+  background: repeating-linear-gradient(45deg, #eee, #eee 10px, #e3e3e3 10px, #e3e3e3 20px);
+}
+
+.center {
+    text-align:center;
+    width: 100%;
+    color: #000;
+    font-size: 150%;
+}
+
+.fi-plus .center{
+    font-size: 150%;
+}
+
+</style>
+
+<div class="row">
+    <!-- Projects-->
+    {% for project, thumb in listdata %}
+<div class="col-xs-6 col-md-3">
+{#  <a href="publish"><h2 class="ribbon">publish</h2></a> #}
+{#  <div class="ribbonedge"></div> #}
+  <div class="projecthumb">
+    <a href="delete"><i class="fi-x bigredx"></i></a>
+    <a href="/edit/{{ project.id }}">
+    {% if thumb %}
+    {% include "thumbview.html" with thumbnail=thumb %}
+    {% else %}
+    <div class="box stripe-1 module">
+    </div>
+    {% endif %}
+    <h3>{{ project.title }}</h3>
+  </a>
+  </div>
+</div>
+{% cycle '' '' '' '<div class="clearfix visible-xs-block"></div>'%}
+{% endfor %}
+
+{% if not toomanydrafts %}
+<a href="/create/">
+  <div class="col-xs-6 col-md-3">
+    <div class="projecthumb newbox stripe-1">
+      <div class="center">
+         <i class="fi-plus"></i><p>
+         Create new project
+      </div>
+    </div>
+  </div>
+</a>
+{% else %}
+<div class="clearfix visible-xs-block"></div>
+<h2>Too many drafts. Publish or delete some to free up space.</h2>
+
+{% endif %}
+<div class="clearfix visible-xs-block"></div>
+    {% if paginate.object_list and paginate.paginator.num_pages > 1 %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if paginate.has_previous %}
+                    <a href= "?page={{ paginate.previous_page_number }}">newer entries &lt;&lt; </a>
+                {% endif %}
+                <span class="current">
+                    &nbsp;Page {{ paginate.number }} of {{ paginate.paginator.num_pages }}
+                </span>
+                {% if paginate.has_next %}
+                    <a href="?page={{ paginate.next_page_number }}"> &gt;&gt; older entries</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+{% endblock content %}
+
