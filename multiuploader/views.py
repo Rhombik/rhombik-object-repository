@@ -34,20 +34,11 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 def draftview(request):
     projects = Project.objects.filter(author=int(request.user.id), draft=True)
     toomanydrafts = False
-    if projects > 7:
+    if projects.count() > 8:
         toomanydrafts = True
-    paginator = Paginator(projects, 7)
-    page = request.GET.get('page')
-    try: page = int(request.GET.get("page", '1'))
-    except ValueError: page = 1
-    try:
-        #only get thumbnails for projects on the current page.
-        paginate = paginator.page(page)
-    except (InvalidPage, EmptyPage):
-        paginate = paginator.page(paginator.num_pages)
-    listdata= project_list_get(paginate.object_list, purge=False)
+    listdata = project_list_get(projects, purge=False)
     if projects:
-        return render_to_response("drafts.html", dict(paginate=paginate, toomanydrafts = toomanydrafts, listdata=listdata, user=request.user, active="home"))
+        return render_to_response("drafts.html", dict(toomanydrafts = toomanydrafts, listdata=listdata, user=request.user, active="home"))
     else:
         return redirect("/create/")
 

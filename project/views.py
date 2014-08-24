@@ -240,24 +240,23 @@ def editOrCreateStuff(project, request, creating):
          # Done with editing the README.md textfile.
 
          # 
-            list_to_tags(form.cleaned_data["tags"], project.tags)
-            if creating:
-                for i in form2.cleaned_data["categories"]:
-                    project.tags.add(i)
+#            list_to_tags(form.cleaned_data["tags"], project.tags)
+#            if creating:
+#                for i in form2.cleaned_data["categories"]:
+#                    project.tags.add(i)
 
          # This may be redundant, but either way, this post is not a draft past this point.
-            if form.cleaned_data["publish"]:
-                project.draft=False
-                print("publishing form")
-            else:
-                print("saving form")
+#            if form.cleaned_data["publish"]:
+            project.draft=False
+#                print("publishing form")
+#            else:
+#                print("saving form")
             project.save()
 
-            if form.cleaned_data["publish"]:
-                project.draft=False
-                return HttpResponseRedirect('/project/'+str(project.pk))
-            else:
-                return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2, project=project))
+            #if form.cleaned_data["publish"]:
+            return HttpResponseRedirect('/project/'+str(project.pk))
+            #else:
+            #    return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2, project=project))
      #### If the form data was NOT valid
         else:
             if creating:
