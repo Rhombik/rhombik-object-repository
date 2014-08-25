@@ -14,7 +14,7 @@ import thumbnailer.thumbnailer as thumbnailer
 from filemanager.models import fileobject, thumbobject, htmlobject, zippedobject 
 
 from project.models import Project
-from project.forms import ProjectForm, createForm, defaulttag
+from project.forms import ProjectForm
 from django import forms
 
 from django.contrib.contenttypes.models import ContentType
@@ -172,7 +172,7 @@ from django.utils import simplejson
  Here lives stuff for the edit and create a project pages.
 '''
 
-def editOrCreateStuff(project, request, creating):
+def editOrCreateStuff(project, request):
 
 ## Note: if creating == true this is a post being created.
 #Because there are so many similarities in creating a post vs editing a post we are using this method, and using creating when we need to do something different for editing vs creating.
@@ -181,30 +181,22 @@ def editOrCreateStuff(project, request, creating):
     if request.method == 'POST':
     ## get the forms and check that they are valid
         formValid=False
-        if creating:
-            form = createForm(request.POST, project)
-            form2 = defaulttag(request.POST)
-            if form.is_valid() and form2.is_valid() and request.user.is_authenticated():
-                formValid=True
-               # If we are creating the post we need to set the author and title.
-                project.author = request.user
-                project.title = form.cleaned_data["title"]
-        else:
-            form = ProjectForm(request.POST, project)
-            if form.is_valid() and str(project.author) == str(request.user):
-                formValid=True
+        form = ProjectForm(request.POST, project)
+        if form.is_valid() and request.user.is_authenticated() and str(project.author) == str(request.user):
+            formValid=True
+
        ## if the form is valid make the changes to the project!
-        if formValid or creating:
+        if formValid:
 
           # Editing the Readme.md file stuff.
 
-            if not creating:
+            if project.bodyFile:
           # Delete the old body text file... cause I'm a bad person and I don't know how to just open and write to the old one easily.
 	        readme = project.bodyFile
                 try:
                     readme = project.bodyFile
                     readmename = path.split(str(readme.filename))[1]
-                    readme.delete()
+                    #readme.delete()
                 except:
                     pass
 
@@ -259,38 +251,40 @@ def editOrCreateStuff(project, request, creating):
             #    return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2, project=project))
      #### If the form data was NOT valid
         else:
-            if creating:
-                return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2, project=project))
+          ##if creating:
+          ##    return render_to_response('create.html', dict(user=request.user,  form=form, project=project))
+          ##else:
+            if str(project.author) == str(request.user):
+                return render_to_response('edit.html', dict(project=project, user=request.user, form=form, ))
             else:
-                if str(project.author) == str(request.user):
-                    return render_to_response('edit.html', dict(project=project, user=request.user, form=form, ))
-                else:
-                    return HttpResponse(status=403)
+                return HttpResponse(status=403)
 
    #### Not POSTmode! We are setting up the form for the user to fill in. We are not getting form data from the user.
 
 ##### CREATE
-    elif creating and request.user.is_authenticated():
-        form = createForm("",project)
-        form2 = defaulttag()
-        if Project.objects.filter(author=int(request.user.id), draft=True) > 10:
-            return render_to_response('create.html', dict(user=request.user, form=form, form2=form2, project=project))
-        else:
-            return HttpResponse(status=403)
+ ###elif creating and request.user.is_authenticated():
+ ###    if Project.objects.filter(author=int(request.user.id), draft=True) > 10:
+ ###        return render_to_response('create.html', dict(user=request.user, form=form, project=project))
+ ###    else:
+ ###        return HttpResponse(status=403)
 
 ##### EDIT
-    elif (not creating) and str(project.author) == str(request.user):
+    elif request.user.is_authenticated() and str(project.author) == str(request.user):
         if project.bodyFile:
             readme = project.bodyFile.filename.read()
         else:
-            readme = project.body
+            readme = ""
 
         taglist = []
         for i in project.tags.names():
            taglist.append(i)
         taglist = ",".join(taglist)
 
-        thumbnailstring = "/"+path.split(project.thumbnail.filename.url)[1]
+        if project.thumbnail:
+            thumbnailstring = "/"+path.split(project.thumbnail.filename.url)[1]
+        else:
+            thumbnailstring = ""
+
         form = ProjectForm({'body': readme, 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, project)
         return render_to_response('edit.html', dict(project=project, user=request.user, form=form,))
         #return HttpResponse(response_data, mimetype="application/json")
@@ -304,13 +298,9 @@ def editOrCreateStuff(project, request, creating):
 def edit(request, pk):
 
 ## Get the project the user wishes to edit.
-    try:
-        project=Project.objects.filter(pk=pk)[0].get()
-    except:
-        return HttpResponse(status=404)
+    project=Project.objects.filter(pk=pk)[0]
 
-    return editOrCreateStuff(project, request, creating=False)
-######## MURDER MURDER MURDER MURDER MURDER MURDER MURDER MURDER #############
+    return editOrCreateStuff(project, request)
 
 
 @csrf_exempt
@@ -324,8 +314,7 @@ def create(request):
         project.author = request.user
         project.save()
 
-    return editOrCreateStuff(project, request, creating=True)
-######## MURDER MURDER MURDER MURDER MURDER MURDER MURDER MURDER #############
+    return editOrCreateStuff(project, request)
 
 
 def tag(request,tag):

@@ -117,9 +117,10 @@ class zippedobject(models.Model):
     filename = models.FileField(upload_to="projects/", blank=True, null=True)
     def save(self, generate=True, *args, **kwargs):
         super(zippedobject, self).save()
-        if generate == True:
-            from filemanager.tasks import zippedTask
-            zippedTask.delay(self, self.project)
+    #### this is disabled because alex said so. if you find this still disabled it's not my fault, it is his.
+     ###if generate == True:
+     ###    from filemanager.tasks import zippedTask
+     ###    zippedTask.delay(self, self.project)
 
     def delete(self, *args, **kwargs):
         import warnings

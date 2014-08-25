@@ -51,27 +51,10 @@ class ProjectForm(ModelForm):
 
     def __init__(self, request, project):
         self.project = project
-        super(ProjectForm, self).__init__(request)
-
-    class Meta:
-        model = Project
-        fields = []
-    body = forms.CharField(widget = forms.Textarea, required=False)
-    thumbnail = forms.CharField(required=False)
-    tags = forms.CharField(widget=TagAutocomplete(attrs={'id': 'uploadTag'}),required=False)
-
-    def clean(self):
-        return cleanify(self, ProjectForm)
-
-
-class createForm(ModelForm):
-
-    def __init__(self, request, project):
-        self.project = project
         if request:
-            super(createForm, self).__init__(request)
+            super(ProjectForm, self).__init__(request)
         else:
-            super(createForm, self).__init__()
+            super(ProjectForm, self).__init__()
 
     class Meta:
         model = Project
@@ -88,18 +71,6 @@ class createForm(ModelForm):
     tags = forms.CharField(widget=TagAutocomplete(attrs={'id': 'uploadTag'}),required=False)
 
     def clean(self):
-        return cleanify(self, createForm)
+        return cleanify(self, ProjectForm)
 
 
-class defaulttag(forms.Form):
-    OPTIONS = []
-
-    #I am horribly lazy, vbut cpu time is cheap.
-    tmpoptions = "kitchen,math,sculpture,household,functional,parametric,abstract,tool,case".split(',')
-    for i in tmpoptions:
-        OPTIONS.append((i,i))
-
-
-
-    categories = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                         choices=OPTIONS)
