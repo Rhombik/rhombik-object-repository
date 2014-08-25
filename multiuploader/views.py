@@ -20,6 +20,7 @@ from django.core.files.base import ContentFile
 import thumbnailer.thumbnailer as thumbnailer
 
 import logging
+log = logging.getLogger(__name__)
 import os.path
 from multiuploader.forms import MultiuploaderImage
 from project.models import *
