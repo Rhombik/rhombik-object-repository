@@ -45,8 +45,8 @@ def delete(RequestContext, pk):
         return HttpResponse(response_data, mimetype=mimetype)
     return redirect("/mydrafts/")
 
-def publish(RequestContext, pk):
-    request=RequestContext
+## this function is for the mydrafts page to publish things. It relies on the project.valid bool, which should be set within editOrCreateStuff.
+def publish(request, pk):
     project = Project.objects.get(pk=pk)
     response_data = False
     if str(project.author) == str(request.user) and project.valid == True:
@@ -213,70 +213,71 @@ def editOrCreateStuff(project, request):
             return HttpResponseRedirect('/mydrafts/')
 
     ## get the forms and check that they are valid
-        formValid=False
         form = ProjectForm(request.POST, project)
         if form.is_valid() and request.user.is_authenticated() and str(project.author) == str(request.user):
-            formValid=True
+            project.valid=True
 
-       ## if the form is valid make the changes to the project!
-        if formValid:
+      # Editing the Readme.md file stuff.
 
-          # Editing the Readme.md file stuff.
-
-            if project.bodyFile:
-          # Delete the old body text file... cause I'm a bad person and I don't know how to just open and write to the old one easily.
-	        readme = project.bodyFile
-                try:
-                    readme = project.bodyFile
-                    readmename = path.split(str(readme.filename))[1]
-                    #readme.delete()
-                except:
-                    pass
-
-           # Save body as file
+        if project.bodyFile:
+            readme = project.bodyFile
+            try:
+                readmename = path.split(str(readme.filename))[1]
+            except:
+                pass
+        else:
             bodyText = fileobject()
             bodyText.parent = project
-
-            from django.core.files.uploadedfile import UploadedFile
-            import base64
-            from io import BytesIO
-            from io import TextIOWrapper
-            from io import StringIO
-
-           #io = TextIOWrapper(TextIOBase(form.cleaned_data["body"]))
-            io = StringIO(form.cleaned_data["body"])
-            txfl = UploadedFile(io)
-
-
-            #editfield may be renaming your readme to readme.md every time. That's not good.
-            try:
-                bodyText.filename.save(readmename, txfl)
-            except:
-                bodyText.filename.save('README.md', txfl)
-
-            txfl.close()
-            io.close()
-
-            bodyText.save()
-
-     #### this did not appear to be happening in the create.... but I think it should have been?
             project.bodyFile = bodyText
 
-         # Done with editing the README.md textfile.
+        from django.core.files.uploadedfile import UploadedFile
+        import base64
+        from io import BytesIO
+        from io import TextIOWrapper
+        from io import StringIO
+
+       #io = TextIOWrapper(TextIOBase(form.cleaned_data["body"]))
+        io = StringIO(form.cleaned_data["body"])
+        txfl = UploadedFile(io)
 
 
-            project.draft=False
+        #editfield may be renaming your readme to readme.md every time. That's not good.
+        try:
+            project.bodyFile.filename.save(readmename, txfl)
+        except:
+            project.bodyFile.filename.save('README.md', txfl)
 
-            project.save()
+        txfl.close()
+        io.close()
 
-            return HttpResponseRedirect('/project/'+str(project.pk))
+        project.bodyFile.save()
 
-     #### If the form data was NOT valid
-        else:
-            if str(project.author) == str(request.user):
-                return render_to_response('edit.html', dict(project=project, user=request.user, form=form, ))
+
+     # Done with editing the README.md textfile.
+
+   #### All this fun stuff is handeling what happens for trying to publish vs trying to save the project.
+        if(request.POST['action']=="Publish"):
+            if project.valid:
+                project.draft=False
+                project.save()
+                return HttpResponseRedirect('/project/'+str(project.pk))
             else:
-                return HttpResponse(status=403)
+                if str(project.author) == str(request.user):
+                    return render_to_response('edit.html', dict(project=project, user=request.user, form=form, ))
+                else:
+                    return HttpResponse(status=403)
+        elif(request.POST['action']=="Save"):
+            if project.valid:
+                project.save()
+                return HttpResponseRedirect('/mydrafts/')
+            else:
+                project.save()
+                print(form.errors)
+                draftSaved = True## is this hacky? I don't know. Its not an error, but this does what I want.
+                if str(project.author) == str(request.user):
+                    return render_to_response('edit.html', dict(project=project, user=request.user, form=form, draftSaved=draftSaved, ))
+                else:
+                    return HttpResponse(status=403)
 
    #### Not POSTmode! We are setting up the form for the user to fill in. We are not getting form data from the user.
 
