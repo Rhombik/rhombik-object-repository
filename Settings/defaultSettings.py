@@ -182,11 +182,9 @@ INSTALLED_APPS = (
     'thumbnailer',
     'project',
     'multiuploader',
-
     # disabling example theme, including instead boostrapTheme
     #'exampleTheme',
     'bootstrapTheme',
-
     'userProfile',
     'captcha',
     'filemanager',
@@ -209,7 +207,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'south',
 )
 
 COMMENTS_APP = 'threadedcomments'
