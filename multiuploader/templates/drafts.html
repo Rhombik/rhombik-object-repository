@@ -76,7 +76,12 @@
     <div class="box stripe-1 module">
     </div>
     {% endif %}
+    {% if project.title %}
     <h3>{{ project.title }}</h3>
+    {% else %}
+    <h3>Untitled</h3>
+    {% endif %}
+
   </a>
   </div>
 </div>
