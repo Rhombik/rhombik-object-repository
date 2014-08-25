@@ -106,7 +106,7 @@ def delete_thumbdata(sender,instance,using, **kwargs):
     try:
         instance.filename.delete()
     except Exception as e:
-        warnings.warn(e)
+        warnings.warn("delete_thumbdata couldn't delete thumbdata")
 
 class zippedobject(models.Model):
 
