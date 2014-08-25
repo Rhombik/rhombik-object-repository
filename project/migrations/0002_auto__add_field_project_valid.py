@@ -8,31 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Project'
-        db.create_table(u'project_project', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=60, unique=True, null=True, blank=True)),
-            ('thumbnail', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='thumbnail', null=True, on_delete=models.SET_NULL, to=orm['filemanager.fileobject'])),
-            ('body', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('bodyFile', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='readme', null=True, to=orm['filemanager.fileobject'])),
-            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('author', self.gf('django.db.models.fields.related.ForeignKey')(default=orm['auth.User'], related_name='author', to=orm['auth.User'])),
-            ('allow_html', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('draft', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('ratingSortBest', self.gf('django.db.models.fields.FloatField')(default=1)),
-            ('ratingCount', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
-            ('rating_votes', self.gf('django.db.models.fields.PositiveIntegerField')(default=0, blank=True)),
-            ('rating_score', self.gf('django.db.models.fields.IntegerField')(default=0, blank=True)),
-            ('downloadcount_votes', self.gf('django.db.models.fields.PositiveIntegerField')(default=0, blank=True)),
-            ('downloadcount_score', self.gf('django.db.models.fields.IntegerField')(default=0, blank=True)),
-        ))
-        db.send_create_signal(u'project', ['Project'])
+        # Adding field 'Project.valid'
+        db.add_column(u'project_project', 'valid',
+                      self.gf('django.db.models.fields.BooleanField')(default=False),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'Project'
-        db.delete_table(u'project_project')
+        # Deleting field 'Project.valid'
+        db.delete_column(u'project_project', 'valid')
 
 
     models = {
@@ -98,7 +82,8 @@ class Migration(SchemaMigration):
             'rating_votes': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0', 'blank': 'True'}),
             'thumbnail': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'thumbnail'", 'null': 'True', 'on_delete': 'models.SET_NULL', 'to': u"orm['filemanager.fileobject']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '60', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
-            'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
+            'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            'valid': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
         }
     }
 

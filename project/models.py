@@ -40,7 +40,7 @@ class Project(models.Model):
     ##only used internally, don't set
    #body_rendered = models.TextField('Entry body as HTML', blank=True, null=True)
 #    tags = TaggableManager(blank=True)
-#    draft = models.BooleanField(default=False)
+    draft = models.BooleanField(default=False)
     valid = models.BooleanField(default=False)
 
     downloadcount = RatingField(range=1,allow_delete = False,allow_anonymous = True,) 
