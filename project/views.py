@@ -32,6 +32,22 @@ def searchtest(*args, **kwargs):
     return render_to_response('search/indexes/project/project_text.txt', dict(object=project))
 
 
+def delete(RequestContext, pk):
+    request=RequestContext
+    project = Project.objects.get(pk=pk)
+    response_data = False
+    if str(project.author) == str(request.user):
+        project.delete()
+        response_data = True
+
+    if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
+        mimetype = 'application/json'
+    else:
+        mimetype = 'text/plain'
+    return HttpResponse(response_data, mimetype=mimetype)
+
+
+
 """______________________________"""
 ## project_list_get takes a list of projects and returns a list of lists containing:
 ## -a thumbnail object for the project.

@@ -20,8 +20,6 @@ from django.core.files.base import ContentFile
 import thumbnailer.thumbnailer as thumbnailer
 
 import logging
-log = logging
-
 import os.path
 from multiuploader.forms import MultiuploaderImage
 from project.models import *
@@ -31,14 +29,20 @@ from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from project.views import project_list_get
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-def draftview(request):
+
+from django.core.context_processors import csrf
+
+def draftview(RequestContext):
+    request = RequestContext
     projects = Project.objects.filter(author=int(request.user.id), draft=True)
     toomanydrafts = False
     if projects.count() > 8:
         toomanydrafts = True
     listdata = project_list_get(projects, purge=False)
+    c = dict(toomanydrafts = toomanydrafts, listdata=listdata, user=request.user, active="home",)
+    c.update(csrf(request))
     if projects:
-        return render_to_response("drafts.html", dict(toomanydrafts = toomanydrafts, listdata=listdata, user=request.user, active="home"))
+        return render_to_response("drafts.html", c)
     else:
         return redirect("/create/")
 

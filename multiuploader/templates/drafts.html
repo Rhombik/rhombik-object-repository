@@ -33,6 +33,8 @@
     font-size: 200%;
     z-index:10000;
     text-shadow: -2px 0 #eee, 0 2px #eee, 2px 0 #eee, 0 -2px #eee;
+    background: transparent;
+    border: none;
 }
 .bigredx:hover{
     color:#b11;
@@ -63,7 +65,9 @@
 {#  <a href="publish"><h2 class="ribbon">publish</h2></a> #}
 {#  <div class="ribbonedge"></div> #}
   <div class="projecthumb">
-    <a href="delete"><i class="fi-x bigredx"></i></a>
+<form action="/project/{{ project.id }}/delete/" method="post">{% csrf_token %}
+    <button type="submit" class="fi-x bigredx"></button>
+</form>
     <a href="/edit/{{ project.id }}">
     {% if thumb %}
     {% include "thumbview.html" with thumbnail=thumb %}
