@@ -70,9 +70,10 @@ def project_list_get(projects, purge=True):
     for project in projects:
         if project.enf_consistancy() == True or purge == False:
             object_type = ContentType.objects.get_for_model(project)
-            if project.thumbnail:
+            try: 
+                project.thumbnail
                 thumbnail = project.thumbnail.get_thumb(300,200)
-            else:
+            except:
                 thumbnail = [""]
             listdata += [[project, thumbnail[0]]]
 
@@ -292,9 +293,10 @@ def editOrCreateStuff(project, request):
            taglist.append(i)
         taglist = ",".join(taglist)
 
-        if project.thumbnail:
+        try:
+            project.thumbnail
             thumbnailstring = "/"+path.split(project.thumbnail.filename.url)[1]
-        else:
+        except:
             thumbnailstring = ""
 
         form = ProjectForm({'body': readme, 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, project)
