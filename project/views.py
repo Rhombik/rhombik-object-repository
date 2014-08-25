@@ -225,7 +225,7 @@ def editOrCreateStuff(project, request):
                     readme = project.bodyFile
                     readmename = path.split(str(readme.filename))[1]
                     #readme.delete()
-                except:
+                except ValueError:
                     pass
 
            # Save body as file
