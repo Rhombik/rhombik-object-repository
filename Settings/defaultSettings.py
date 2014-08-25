@@ -182,11 +182,9 @@ INSTALLED_APPS = (
     'thumbnailer',
     'project',
     'multiuploader',
-
     # disabling example theme, including instead boostrapTheme
     #'exampleTheme',
     'bootstrapTheme',
-
     'userProfile',
     'captcha',
     'filemanager',

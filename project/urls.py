@@ -24,6 +24,7 @@ urlpatterns = patterns("",
     (r'^project/(?P<pk>\d+)/comment/(?P<comment_id>\d+)/$', 'comments.views.comment', {'content_type':'project'}),
     (r'^project/(?P<pk>\d+)/comment/$', 'comments.views.comment', {'content_type':'project'}),
 
+    (r'^project/(.*)/delete/$', 'project.views.delete'),
 
     (r'^project/(.*)/thingtracker/$', 'project.views.thingtracker'),
 

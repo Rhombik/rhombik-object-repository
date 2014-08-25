@@ -32,7 +32,6 @@ class Project(models.Model):
 
     #This exists soley so that we can find prohects that don't have a readme.
     bodyFile = models.ForeignKey('filemanager.fileobject', blank=True, null=True, related_name='readme')
-  # bodyFile = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL , related_name='readme')
 
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
@@ -40,8 +39,9 @@ class Project(models.Model):
     allow_html = models.BooleanField(default=False)
     ##only used internally, don't set
    #body_rendered = models.TextField('Entry body as HTML', blank=True, null=True)
-    tags = TaggableManager(blank=True)
+#    tags = TaggableManager(blank=True)
     draft = models.BooleanField(default=False)
+    valid = models.BooleanField(default=False)
 
     downloadcount = RatingField(range=1,allow_delete = False,allow_anonymous = True,) 
 

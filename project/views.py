@@ -31,6 +31,22 @@ def searchtest(*args, **kwargs):
     project = Project.objects.filter(pk=1)[0:1].get()
     return render_to_response('search/indexes/project/project_text.txt', dict(object=project))
 
+from django.shortcuts import redirect
+def delete(RequestContext, pk):
+    request=RequestContext
+    project = Project.objects.get(pk=pk)
+    response_data = False
+    if str(project.author) == str(request.user):
+        project.delete()
+        response_data = True
+
+    if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
+        mimetype = 'application/json'
+        return HttpResponse(response_data, mimetype=mimetype)
+
+    else:
+        mimetype = 'text/plain'
+    return redirect("/mydrafts/")
 
 """______________________________"""
 ## project_list_get takes a list of projects and returns a list of lists containing:
