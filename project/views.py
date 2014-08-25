@@ -217,9 +217,20 @@ def editOrCreateStuff(project, request):
         form = ProjectForm(request.POST, project)
         if form.is_valid() and request.user.is_authenticated() and str(project.author) == str(request.user):
             project.valid=True
+
         sameTitle = False
         if project.title == form.cleaned_data["title"]:
             sameTitle = True
+
+            if project.bodyFile:
+          # Delete the old body text file... cause I'm a bad person and I don't know how to just open and write to the old one easily.
+	        readme = project.bodyFile
+                try:
+                    readme = project.bodyFile
+                    readmename = path.split(str(readme.filename))[1]
+                    #readme.delete()
+                except ValueError:
+                    pass
         project.title = form.cleaned_data["title"]
 
       # Editing the Readme.md file stuff.
