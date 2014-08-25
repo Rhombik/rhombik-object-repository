@@ -10,11 +10,18 @@
 <h1>Untitled Project</h1>
 {% endif %}
 
+{% if draftSaved %}
+<h2>Draft Saved Successfully!</h2>
+{% endif %}
+
 <form action="/edit/{{ project.pk}}/" method="post">{% csrf_token %}
 {{ form.as_p }}
-<input type="submit" value="Submit" />
+<br>
+<input type="submit" name="action" value="Save" />
+<input type="submit" name="action" value="Publish" />
+<input style="float:right;" type="submit" name="action" value="Delete" />
 </form>
-
+<hr><br>
 <script>
 { var JSONObject= {{ json_files }} }
 </script>
