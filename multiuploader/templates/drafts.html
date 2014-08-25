@@ -62,8 +62,16 @@
     <!-- Projects-->
     {% for project, thumb in listdata %}
 <div class="col-xs-6 col-md-3">
-{#  <a href="publish"><h2 class="ribbon">publish</h2></a> #}
-{#  <div class="ribbonedge"></div> #}
+{% if project.valid %}
+{% comment %}
+<form action="/project/{{ project.id }}/publish/" method="post">{% csrf_token %}
+    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' />
+    <button type="submit" class="ribbon"></button>
+</form>
+{% endcomment %}
+<a href="publish"><h2 class="ribbon">publish</h2></a>
+<div class="ribbonedge"></div>
+{% endif %}
   <div class="projecthumb">
 <form action="/project/{{ project.id }}/delete/" method="post">{% csrf_token %}
     <input type='hidden' name='redirect' value='{{ request.get_full_path }}' />

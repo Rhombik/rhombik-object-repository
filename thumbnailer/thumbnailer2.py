@@ -37,8 +37,9 @@ def thumbnailify(filebit, sizebit):
 
   if ext in browser_kind:
     import StringIO
+    filebit.filename.open()
     stream = StringIO.StringIO(filebit.filename.read())
-    print(str(stream.len)+" stream length")
+    filebit.filename.close()
     img = Image.open(stream)
     img.convert('RGB')
     img.thumbnail(sizebit, Image.ANTIALIAS)

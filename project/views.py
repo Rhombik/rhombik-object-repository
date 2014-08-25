@@ -48,6 +48,23 @@ def delete(RequestContext, pk):
         mimetype = 'text/plain'
     return redirect("/mydrafts/")
 
+def publish(RequestContext, pk):
+    request=RequestContext
+    project = Project.objects.get(pk=pk)
+    response_data = False
+    if str(project.author) == str(request.user):
+        project.valid = True
+        project.save()
+        response_data = True
+
+    if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
+        mimetype = 'application/json'
+        return HttpResponse(response_data, mimetype=mimetype)
+
+    else:
+        mimetype = 'text/plain'
+    return redirect("/mydrafts/")
+
 """______________________________"""
 ## project_list_get takes a list of projects and returns a list of lists containing:
 ## -a thumbnail object for the project.
