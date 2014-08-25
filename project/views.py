@@ -319,8 +319,10 @@ def editOrCreateStuff(project, request):
             thumbnailstring = ""
 
         form = ProjectForm({'body': readme, 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, project)
+        form.errors['title'] = ""#form['body'].error_class()
+        form.errors['thumbnail'] = ""#form['body'].error_class()
+        form.errors['body'] = ""#form['body'].error_class()
         return render_to_response('edit.html', dict(project=project, user=request.user, form=form,))
-        #return HttpResponse(response_data, mimetype="application/json")
     else:
         return HttpResponse(status=403)
 
