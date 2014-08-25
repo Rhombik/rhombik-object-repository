@@ -190,11 +190,17 @@ from django.utils import simplejson
 
 def editOrCreateStuff(project, request):
 
-## Note: if creating == true this is a post being created.
-#Because there are so many similarities in creating a post vs editing a post we are using this method, and using creating when we need to do something different for editing vs creating.
+    project.valid=False
+    project.save()
+
 
   ## postmode! We are getting pretty post data from the user!!!
     if request.method == 'POST':
+
+        if(request.POST['action']=="Delete"):
+            project.delete()
+            return HttpResponseRedirect('/mydrafts/')
+
     ## get the forms and check that they are valid
         formValid=False
         form = ProjectForm(request.POST, project)
@@ -247,29 +253,15 @@ def editOrCreateStuff(project, request):
 
          # Done with editing the README.md textfile.
 
-         # 
-#            list_to_tags(form.cleaned_data["tags"], project.tags)
-#            if creating:
-#                for i in form2.cleaned_data["categories"]:
-#                    project.tags.add(i)
 
-         # This may be redundant, but either way, this post is not a draft past this point.
-#            if form.cleaned_data["publish"]:
             project.draft=False
-#                print("publishing form")
-#            else:
-#                print("saving form")
+
             project.save()
 
-            #if form.cleaned_data["publish"]:
             return HttpResponseRedirect('/project/'+str(project.pk))
-            #else:
-            #    return render_to_response('create.html', dict(user=request.user,  form=form, form2=form2, project=project))
+
      #### If the form data was NOT valid
         else:
-          ##if creating:
-          ##    return render_to_response('create.html', dict(user=request.user,  form=form, project=project))
-          ##else:
             if str(project.author) == str(request.user):
                 return render_to_response('edit.html', dict(project=project, user=request.user, form=form, ))
             else:
@@ -277,14 +269,6 @@ def editOrCreateStuff(project, request):
 
    #### Not POSTmode! We are setting up the form for the user to fill in. We are not getting form data from the user.
 
-##### CREATE
- ###elif creating and request.user.is_authenticated():
- ###    if Project.objects.filter(author=int(request.user.id), draft=True) > 10:
- ###        return render_to_response('create.html', dict(user=request.user, form=form, project=project))
- ###    else:
- ###        return HttpResponse(status=403)
-
-##### EDIT
     elif request.user.is_authenticated() and str(project.author) == str(request.user):
         if project.bodyFile:
             readme = project.bodyFile.filename.read()
