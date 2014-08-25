@@ -218,6 +218,7 @@ def editOrCreateStuff(project, request):
         if form.is_valid() and request.user.is_authenticated() and str(project.author) == str(request.user):
             project.valid=True
 
+        project.title = form.cleaned_data["title"]
       # Editing the Readme.md file stuff.
 
         if project.bodyFile:
@@ -274,7 +275,7 @@ def editOrCreateStuff(project, request):
             else:
                 project.save()
                 print(form.errors)
-                draftSaved = True## is this hacky? I don't know. Its not an error, but this does what I want.
+                draftSaved = True
                 if str(project.author) == str(request.user):
                     return render_to_response('edit.html', dict(project=project, user=request.user, form=form, draftSaved=draftSaved, ))
                 else:
@@ -283,6 +284,12 @@ def editOrCreateStuff(project, request):
    #### Not POSTmode! We are setting up the form for the user to fill in. We are not getting form data from the user.
 
     elif request.user.is_authenticated() and str(project.author) == str(request.user):
+
+        if project.title:
+            title = project.title
+        else:
+            title = ""
+
         if project.bodyFile:
             readme = project.bodyFile.filename.read()
         else:
@@ -299,7 +306,7 @@ def editOrCreateStuff(project, request):
         except:
             thumbnailstring = ""
 
-        form = ProjectForm({'body': readme, 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, project)
+        form = ProjectForm({'title':title, 'body': readme, 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, project)
         form.errors['title'] = ""#form['body'].error_class()
         form.errors['thumbnail'] = ""#form['body'].error_class()
         form.errors['body'] = ""#form['body'].error_class()
