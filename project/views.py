@@ -217,8 +217,11 @@ def editOrCreateStuff(project, request):
         form = ProjectForm(request.POST, project)
         if form.is_valid() and request.user.is_authenticated() and str(project.author) == str(request.user):
             project.valid=True
-
+        sameTitle = False
+        if project.title == form.cleaned_data["title"]:
+            sameTitle = True
         project.title = form.cleaned_data["title"]
+
       # Editing the Readme.md file stuff.
 
         if project.bodyFile:
@@ -277,6 +280,8 @@ def editOrCreateStuff(project, request):
                 print(form.errors)
                 draftSaved = True
                 if str(project.author) == str(request.user):
+                    if sameTitle:
+                        form.errors['title'] = ""#form['body'].error_class()
                     return render_to_response('edit.html', dict(project=project, user=request.user, form=form, draftSaved=draftSaved, ))
                 else:
                     return HttpResponse(status=403)
