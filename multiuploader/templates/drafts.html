@@ -66,6 +66,7 @@
 {#  <div class="ribbonedge"></div> #}
   <div class="projecthumb">
 <form action="/project/{{ project.id }}/delete/" method="post">{% csrf_token %}
+    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' />
     <button type="submit" class="fi-x bigredx"></button>
 </form>
     <a href="/edit/{{ project.id }}">
