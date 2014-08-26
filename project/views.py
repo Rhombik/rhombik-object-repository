@@ -218,9 +218,6 @@ def editOrCreateStuff(project, request):
         if form.is_valid() and request.user.is_authenticated() and str(project.author) == str(request.user):
             project.valid=True
 
-        sameTitle = False
-        if project.title == form.cleaned_data["title"]:
-            sameTitle = True
 
             if project.bodyFile:
           # Delete the old body text file... cause I'm a bad person and I don't know how to just open and write to the old one easily.
@@ -231,7 +228,9 @@ def editOrCreateStuff(project, request):
                     #readme.delete()
                 except ValueError:
                     pass
-        project.title = form.cleaned_data["title"]
+
+        if form.cleaned_data["title"]:
+            project.title = form.cleaned_data["title"]
 
       # Editing the Readme.md file stuff.
 
@@ -291,8 +290,6 @@ def editOrCreateStuff(project, request):
                 print(form.errors)
                 draftSaved = True
                 if str(project.author) == str(request.user):
-                    if sameTitle:
-                        form.errors['title'] = ""#form['body'].error_class()
                     return render_to_response('edit.html', dict(project=project, user=request.user, form=form, draftSaved=draftSaved, ))
                 else:
                     return HttpResponse(status=403)
