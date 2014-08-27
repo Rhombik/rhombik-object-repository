@@ -214,7 +214,7 @@ def editOrCreateStuff(project, request):
             return HttpResponseRedirect('/mydrafts/')
 
     ## get the forms and check that they are valid
-        form = ProjectForm(request.POST, project)
+        form = ProjectForm(request.POST.copy(), project)
         if form.is_valid() and request.user.is_authenticated() and str(project.author) == str(request.user):
             project.valid=True
 
@@ -229,8 +229,10 @@ def editOrCreateStuff(project, request):
                 except ValueError:
                     pass
 
-        if form.cleaned_data["title"]:
-            project.title = form.cleaned_data["title"]
+        if "title" in form.cleaned_data and form.cleaned_data["title"]: # if that data is not a blank string
+            project.title = form.cleaned_data["title"] # than we do change the title
+        else:
+            form.data['title'] = project.title
 
       # Editing the Readme.md file stuff.
 
@@ -287,7 +289,6 @@ def editOrCreateStuff(project, request):
                 return HttpResponseRedirect('/mydrafts/')
             else:
                 project.save()
-                print(form.errors)
                 draftSaved = True
                 if str(project.author) == str(request.user):
                     return render_to_response('edit.html', dict(project=project, user=request.user, form=form, draftSaved=draftSaved, ))
