@@ -57,8 +57,6 @@ To set up a development enviroment simply
     pip install -r requirements.txt
     #follow the prompts to add a new devleoper superuser account to the test DB.
     python manage.py syncdb
-    ##Run the server.
-    python manage.py runserver
 
 Unfortunately django-static-precompiler requires the nodejs coffee command, which means we can't just rely on pip for all of our dependencies. Install nodejs and run.
 
@@ -68,12 +66,17 @@ We also need sass. Run
 
     gem install sass
 
+
+Run the server.
+
+    python manage.py runserver
+
 Then navigate to http://localhost:8000
 
 
 ---
 
-Neither of us are proffesional programmers. If you want to know how we did something, please drop us a line. The code is probably pretty skitty, but we're here to explain anything that doesn't make sense.
+If you want to know how we did something, please drop us a line. The code is probably pretty gnarly, and not the good kind of gnarly. The bad kind, where things are gnarled., but we're here to explain anything that doesn't make sense.
 
 We would love to restructure this at some point.
 
