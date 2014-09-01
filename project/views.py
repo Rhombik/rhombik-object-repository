@@ -84,7 +84,7 @@ def project_list_get(projects, purge=True):
 
 def project(request, pk):
 
-## If the post doesn't exist 404 them
+## Try to get the project from the database. If this fails than return 404.
     try:
         project = Project.objects.exclude(draft=True).get(pk=pk)
     except:
@@ -101,6 +101,7 @@ def project(request, pk):
         mainthumb = project.thumbnail.get_thumb(650,500)
 
     images=[]# Images in the project; will be handed to template
+
    # Get readme as first item in the list of texts to hand to the template.
     try:
         #Thus is in a try statement becouse the file backend might name the readme "ReadMe_1.md" or similar. Need to switch it out for "bodyfile" forighnkey at some point.
@@ -202,6 +203,12 @@ from django.utils import simplejson
 
 def editOrCreateStuff(project, request):
 
+  if request.user.is_authenticated() and str(project.author) == str(request.user):
+
+    print("DATA 1")
+    print(project.title)
+    print(project.bodyFile)
+
     project.valid=False
     project.save()
 
@@ -215,33 +222,39 @@ def editOrCreateStuff(project, request):
 
     ## get the forms and check that they are valid
         form = ProjectForm(request.POST.copy(), project)
-        if form.is_valid() and request.user.is_authenticated() and str(project.author) == str(request.user):
+        if form.is_valid():
             project.valid=True
 
+        print("DATA 2")
+        print(project.title)
+        print(project.bodyFile)
 
-            if project.bodyFile:
-          # Delete the old body text file... cause I'm a bad person and I don't know how to just open and write to the old one easily.
-	        readme = project.bodyFile
-                try:
-                    readme = project.bodyFile
-                    readmename = path.split(str(readme.filename))[1]
-                    #readme.delete()
-                except ValueError:
-                    pass
+   ##       if project.bodyFile:
+   ##     # Delete the old body text file... cause I'm a bad person and I don't know how to just open and write to the old one easily.
+   ##           readme = project.bodyFile
+   ##           try:
+   ##               readme = project.bodyFile
+   ##               readmename = path.split(str(readme.filename))[1]
+   ##               #readme.delete()
+   ##           except ValueError:
+   ##               pass
 
         if "title" in form.cleaned_data and form.cleaned_data["title"]: # if that data is not a blank string
             project.title = form.cleaned_data["title"] # than we do change the title
         else:
             form.data['title'] = project.title
 
+        print("DATA 3")
+        print(project.title)
+        print(project.bodyFile)
       # Editing the Readme.md file stuff.
 
         if project.bodyFile:
             readme = project.bodyFile
-            try:
-                readmename = path.split(str(readme.filename))[1]
-            except:
-                pass
+       #    try:
+            readmename = path.split(str(readme.filename))[1]
+       #    except:
+       #        pass
         else:
             bodyText = fileobject()
             bodyText.parent = project
@@ -255,19 +268,24 @@ def editOrCreateStuff(project, request):
 
        #io = TextIOWrapper(TextIOBase(form.cleaned_data["body"]))
         io = StringIO(form.cleaned_data["body"])
+
         txfl = UploadedFile(io)
 
 
-        #editfield may be renaming your readme to readme.md every time. That's not good.
-        try:
+      # print(readmename)
+        if "readmename" in globals():
             project.bodyFile.filename.save(readmename, txfl)
-        except:
+        else:
             project.bodyFile.filename.save('README.md', txfl)
 
         txfl.close()
         io.close()
 
         project.bodyFile.save()
+        project.save()
+        print("DATA 4")
+        print(project.title)
+        print(project.bodyFile)
 
 
      # Done with editing the README.md textfile.
@@ -279,10 +297,7 @@ def editOrCreateStuff(project, request):
                 project.save()
                 return HttpResponseRedirect('/project/'+str(project.pk))
             else:
-                if str(project.author) == str(request.user):
-                    return render_to_response('edit.html', dict(project=project, user=request.user, form=form, ))
-                else:
-                    return HttpResponse(status=403)
+                return render_to_response('edit.html', dict(project=project, user=request.user, form=form, ))
         elif(request.POST['action']=="Save"):
             if project.valid:
                 project.save()
@@ -290,14 +305,11 @@ def editOrCreateStuff(project, request):
             else:
                 project.save()
                 draftSaved = True
-                if str(project.author) == str(request.user):
-                    return render_to_response('edit.html', dict(project=project, user=request.user, form=form, draftSaved=draftSaved, ))
-                else:
-                    return HttpResponse(status=403)
+                return render_to_response('edit.html', dict(project=project, user=request.user, form=form, draftSaved=draftSaved, ))
 
    #### Not POSTmode! We are setting up the form for the user to fill in. We are not getting form data from the user.
 
-    elif request.user.is_authenticated() and str(project.author) == str(request.user):
+    else:
 
         if project.title:
             title = project.title
@@ -325,9 +337,9 @@ def editOrCreateStuff(project, request):
         form.errors['thumbnail'] = ""#form['body'].error_class()
         form.errors['body'] = ""#form['body'].error_class()
         return render_to_response('edit.html', dict(project=project, user=request.user, form=form,))
-    else:
-        return HttpResponse(status=403)
 
+  else:
+      return HttpResponse(status=403)
 
 
 @csrf_exempt
