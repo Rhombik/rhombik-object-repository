@@ -234,7 +234,9 @@ def editOrCreateStuff(project, request):
 
       # Editing the Readme.md file stuff.
 
-        if not project.bodyFile:
+        try:
+            readmename = str(project.bodyFile.filename)
+        except:
             bodyText = fileobject()
             bodyText.parent = project
             bodyText.save()
