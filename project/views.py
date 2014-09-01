@@ -237,6 +237,7 @@ def editOrCreateStuff(project, request):
         if not project.bodyFile:
             bodyText = fileobject()
             bodyText.parent = project
+            bodyText.save()
             project.bodyFile = bodyText
 
         from django.core.files.uploadedfile import UploadedFile
