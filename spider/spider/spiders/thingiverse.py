@@ -27,7 +27,8 @@ class ThingiverseSpider(CrawlSpider):
 
     def project(self,response):
         projectObject=ProjectItem()
-        hxs = response.selector.xpath('//*[contains(@class,\'thing-file\')]')
-        hxs.pop(0)
-        print(projectObject)
+        projectObject['title']=response.selector.xpath('//*[contains(@class,\'thing-header-data\')]/h1/text()').extract()[0].strip()
+
+        filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]')
+        filelist.pop(0)
         pass
