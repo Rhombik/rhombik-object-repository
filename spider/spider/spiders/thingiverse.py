@@ -31,7 +31,8 @@ class ThingiverseSpider(CrawlSpider):
 
         #Grab only raw images.        
         imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]').extract()
-        print(imagelist)
-        filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]')
+        filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]').extract()
         filelist.pop(0)
-        pass
+        for i in filelist:
+            print(str(i))
+
