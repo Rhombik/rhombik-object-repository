@@ -4,12 +4,14 @@ from scrapy.contrib.spiders import CrawlSpider, Rule
 from spider.items import ProjectItem, fileObjectItem
 from scrapy.contrib.linkextractors import LinkExtractor
 import re
+import urlparse
 
 class ThingiverseSpider(CrawlSpider):
     name = "thingiverse"
     allowed_domains = ["thingiverse.com"]
     start_urls = (
-        'http://www.thingiverse.com/thing:446851',
+#        'http://www.thingiverse.com/thing:446851',
+        'http://www.thingiverse.com/zheng3/about',
     )
     ##Find the links.
     def parse(self, response):
@@ -21,6 +23,11 @@ class ThingiverseSpider(CrawlSpider):
 
 
     def projectGet(self, response):
+        ##Get next pages. We can be really lazy due to the scrapy dedupe
+        paginatorlinks=response.selector.xpath('//*[contains(@class,\'pagination\')]/ul/li/a/@href').extract()
+        for i in paginatorlinks:
+            yield scrapy.http.Request(url=urlparse.urljoin(response.url, i), callback=self.projectGet)
+
         objects = LinkExtractor(allow=('thing:\d\d+')).extract_links(response)
         for i in objects:
             yield scrapy.http.Request(url=i.url, callback=self.project)
@@ -31,8 +38,10 @@ class ThingiverseSpider(CrawlSpider):
 
         #Grab only raw images.        
         imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]').extract()
-        filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]').extract()
-        filelist.pop(0)
+        filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]/a')
         for i in filelist:
-            print(str(i))
+            url = urlparse.urljoin(response.url, i.xpath('./@href').extract()[0])
+
+    def item(self,response):
+        print("--------")
 
