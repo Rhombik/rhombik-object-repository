@@ -35,13 +35,15 @@ class ThingiverseSpider(CrawlSpider):
     def project(self,response):
         projectObject=ProjectItem()
         projectObject['title']=response.selector.xpath('//*[contains(@class,\'thing-header-data\')]/h1/text()').extract()[0].strip()
-
+        yield projectObject
         #Grab only raw images.        
         imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]').extract()
-        filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]/a')
+        filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]/a/@href')
         for i in filelist:
-            url = urlparse.urljoin(response.url, i.xpath('./@href').extract()[0])
+            yield scrapy.http.Request(url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})
 
     def item(self,response):
-        print("--------")
-
+        item=fileObjectItem()
+        item['parent'] = response.meta['parent']
+        item['filename']=response.body
+        yield(item)

@@ -18,5 +18,10 @@ BOT_NAME = 'spider'
 SPIDER_MODULES = ['spider.spiders']
 NEWSPIDER_MODULE = 'spider.spiders'
 
+ITEM_PIPELINES = {
+    'spider.pipelines.saveProject': 500,
+    'spider.pipelines.saveThing': 550
+}
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'spider (+http://www.yourdomain.com)'
+#USER_AGENT = 'rhombik-object-repository public spider #please configure with your own name.'

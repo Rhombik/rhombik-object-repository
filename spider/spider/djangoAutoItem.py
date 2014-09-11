@@ -1,19 +1,20 @@
 ##Like the sandard djangoItem, but with an auto-incrementing "sid" field, and code to map sid's to pk's once the item has been saved.
 import itertools
 import scrapy
-import scrapy.contrib.djangoitem
+from scrapy.contrib.djangoitem import DjangoItem
 
 SIDcount = itertools.count()
 SIDmap = {}
 
-class CountedItem(djangoitem.DjangoItem):
+class CountedItem(DjangoItem):
     def __init__(self):
         super(CountedItem, self).__init__()
         self['SID'] = next(SIDcount)
-        SID[self['SID']] = {}
+        SIDmap[self['SID']] = {}
     #scrapy ID
-    SID = scrapy.fields()
+    SID = scrapy.Field()
     def save(self):
         super(countedItem, self).save()
-        SID[self['SID']]['django_model']=self.django_model
-        SID[self['SID']]['pk']=self.pk
+        SIDmap[self['SID']]['django_model']=self.django_model
+        SIDmap[self['SID']]['pk']=self.pk
+        print(str(SIDmap[self['SID']])+"-------sidmap")

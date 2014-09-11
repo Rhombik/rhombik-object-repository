@@ -8,10 +8,12 @@
 import scrapy
 from scrapy.contrib.djangoitem import DjangoItem
 from project.models import *
+from spider.djangoAutoItem import CountedItem
 
-class ProjectItem(DjangoItem):
+class ProjectItem(CountedItem):
     django_model = Project
-    files = scrapy.Field()
+
 class fileObjectItem(DjangoItem):
     django_model = fileobject
+    parent = scrapy.Field()
 
