@@ -62,6 +62,8 @@ Unfortunately django-static-precompiler requires the nodejs coffee command, whic
 
     sudo npm install coffee-script -g
 
+Note that npm can have errors installing coffee on some distributions. If you notice javascript breaking you can try reinstalling coffee script using your distro's package manager.
+
 We also need sass. Run 
 
     gem install sass
