@@ -12,6 +12,7 @@ from spider.djangoAutoItem import CountedItem
 
 class ProjectItem(CountedItem):
     django_model = Project
+    readme = scrapy.Field()
 
 class fileObjectItem(DjangoItem):
     django_model = fileobject
