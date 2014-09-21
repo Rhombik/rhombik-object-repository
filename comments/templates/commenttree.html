@@ -13,17 +13,17 @@ Hopefully somebody with design taste will redo it as soon as possible.
 {{ node.level }}
         -->
         <div class="comment={{ node.id }}" >
-            <ul>
+            <div>
             <b><a href="/userProfile/{{node.commenter.pk}}">{{ node.commenter }}</a></b> <font size="1" title="{{node.created}}">{{ node.created|timesince }} ago</font>
             <br>
             {{ node.commenttext }}
             <br>
             {% if user.is_authenticated %}
                 <a class="commentReply" href="/project/{{ projectpk }}/comment/{{ node.id }}/">
-                <font size="1">reply?</font>
+                <font size="1">reply</font>
                 </a>
             {% endif %}
-            </ul>
+            </div>
             {% if not node.is_leaf_node %}
                 <ul class="children">
                     {{ children }}

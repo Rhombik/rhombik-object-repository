@@ -10,7 +10,8 @@ class ThingiverseSpider(CrawlSpider):
     allowed_domains = ["thingiverse.com"]
     start_urls = (
 #        'http://www.thingiverse.com/thing:446851',
-        'http://www.thingiverse.com/zheng3/about',
+#        'http://www.thingiverse.com/zheng3/about',
+        'http://www.thingiverse.com/thing:19104',
     )
     ##Find the links.
     def parse(self, response):
@@ -39,11 +40,14 @@ class ThingiverseSpider(CrawlSpider):
         projectObject['readme']=response.selector.xpath("//*[@id = 'description']/text()").extract()[0].strip()
         yield projectObject
         #Grab only raw images.        
-        imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url').extract()
+        imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')
         filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]/a/@href')
         for i in filelist:
             pass
-#            yield scrapy.http.Request(url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})
+            yield scrapy.http.Request(url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})
+        for i in imagelist:
+            yield scrapy.http.Request(url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})
+
 
     def item(self,response):
         item=fileObjectItem()
