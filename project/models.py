@@ -31,7 +31,7 @@ class Project(models.Model):
     body = models.TextField(blank=True, null=True)
 
     #This exists soley so that we can find prohects that don't have a readme.
-    bodyFile = models.ForeignKey('filemanager.fileobject', blank=True, null=True, related_name='readme')
+    bodyFile = models.ForeignKey('filemanager.fileobject', blank=True, null=True, related_name='readme', on_delete=models.SET_NULL)
 
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
