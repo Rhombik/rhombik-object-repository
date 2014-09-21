@@ -10,7 +10,7 @@ body {background-color:$backround-color;}
 #TextsMain{
     background-color:$foreground-color;
     position: relative;
-    top: -10px;
+    top: -1px;
     padding: 25px;
     border-style: solid; /* There should be no border between the active tab and the infobox, need to fix */
     border-width: 1px;
@@ -114,3 +114,8 @@ border:none;
 .comments{
 padding-left:10px;
 }
+
+.nav .active{
+     z-index: 10;
+}
+
