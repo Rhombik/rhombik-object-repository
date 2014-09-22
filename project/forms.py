@@ -22,7 +22,7 @@ def cleanify(self, formName):
 
    ###	make certain the selected thumbnail is valid	##
     try:
-        thumb = cleaned_data["thumbnail"]
+        thumb = cleaned_data["thumbnail"].strip()
     except:
         thumb = ""
  
@@ -33,7 +33,8 @@ def cleanify(self, formName):
         noThumb = True
         for fl in files:
             print(str(self.project.pk)+thumb)
-            if "uploads/"+str(self.project.pk)+thumb == str(fl.filename) and fl.filetype != "norender" and fl.filetype != "text":
+	    print(fl.filename)
+            if "uploads/project/"+str(self.project.pk)+thumb == str(fl.filename) and fl.filetype != "norender" and fl.filetype != "text":
                 noThumb = False
                 self.project.thumbnail = fl
                 break

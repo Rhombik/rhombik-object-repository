@@ -233,31 +233,8 @@ def editOrCreateStuff(project, request):
 
 
       # Editing the Readme.md file stuff.
+        project.saveReadme(form.cleaned_data["body"])
 
-        try:
-            project.bodyFile.filename
-        except:
-            bodyText = fileobject()
-            bodyText.parent = project
-            bodyText.save()
-            project.bodyFile = bodyText
-
-        from django.core.files.uploadedfile import UploadedFile
-        from io import StringIO
-
-        io = StringIO(form.cleaned_data["body"])
-        txfl = UploadedFile(io)
-
-        if "readmename" in globals():
-            project.bodyFile.filename.save(readmename, txfl)
-        else:
-            project.bodyFile.filename.save('README.md', txfl)
-
-        txfl.close()
-        io.close()
-
-        project.bodyFile.save()
-        project.save()
 
      # Done with editing the README.md textfile.
 
