@@ -222,9 +222,9 @@ $( ".votebutton" ).parent().click(function(e){
      <h3>Tags</h3>
      <hr>
      <div class="thumbnail">
-             <div class="containerContent">
+             <div class="containerContent taglist">
                      {% for tag in project.tags.all %}
-                             <span class="tagrank=({{tag.num_times}}) btn btn-default"> <a href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
+                             <span class="tagrank=({{tag.num_times}}) tag btn btn-default"> <a href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
                      {% endfor %}
              </div>
      </div>
