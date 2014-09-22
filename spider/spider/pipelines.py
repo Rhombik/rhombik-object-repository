@@ -8,11 +8,13 @@ from spider.items import *
 import project.models as project
 import filemanager.models as files
 import djangoAutoItem
-
+from django.contrib.auth.models import User
 class saveProject(object):
-    def processs_item(self, item, spider):
-        print("save project")
+    def process_item(self, item, spider):
+        print("save project 1 ----------\n\n\n\n")
         if type(item) == type(ProjectItem()):
+            if not hasattr(item, 'author'):
+                item['author']= User.objects.filter(pk=1)
             item.save()
             print(str(djangoAutoItem.SIDmap)+"----sidmap")
         return item

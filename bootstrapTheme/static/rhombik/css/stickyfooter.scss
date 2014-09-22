@@ -10,19 +10,32 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 140px;
 }
+
+.footer:above{
+
+}
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 100px;
+  min-height: 100px;
   color: $light-text;
   padding-top: 8px;
   background-color: $primary-color;
+  z-index: -100;
 }
 
-.footer h3{
+.footer h2{
+ font-size: 20px;
+ margin:0;
+ padding:0;
+}
+.footer p{
+ margin-bottom:0;
+}
+
+.footer a{
+ color: #fff;
  font-size: 15px;
- margin-top: 0;
- margin-bottom: 5px;
 }

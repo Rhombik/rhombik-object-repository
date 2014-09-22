@@ -52,15 +52,16 @@
     jQuery(document).ready(function () {
                     thumbloader.wakeUp();
                  // I am the sanest man alive!
-                    function kill(tag) {
-                        tag.close();
+                 //me too. I don't know if writing a paragraph here about how fucked this is would be useful. I think JS is bad, and I am probably bad in parrellel. There needs to be a better way to do this.
+                    function Init(argument) {
+                        argument.init();
                     }
                     function sleep(millis, callback, arg) {
                         setTimeout(function()
                                 { callback(arg); }
                         , millis);
                     }
-                    sleep(500, kill, tabletSearchDrop);
+                    sleep(70, Init, tabletSearchDrop);
                 });
 
     //Include css/js-enabled.css if js is enabled.
@@ -102,8 +103,20 @@
 <div class="footer">
 <div class="container">
 <div class="row">
-<div class="col-md-8"> {#<h3>Sponsors</h3>#}</div>
-<div class="col-md-4"> </div>
+<div class="col-md-8"><h2>Sponsors</h2>
+</div>
+<div class="col-md-4">
+<h2>info</h2>
+<p>
+<a href="https://github.com/Rhombik/rhombik-object-repository">Source Code</a>
+</p>
+<p>
+<a href="https://github.com/Rhombik/rhombik-object-repository/issues">Contact</a>
+</p>
+<p>
+{#<a href="">IRC</a>#}
+</p>
+</div>
 </div>
 </div>
 </div>
