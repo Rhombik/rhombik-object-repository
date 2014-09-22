@@ -231,36 +231,11 @@ def editOrCreateStuff(project, request):
         else:
             form.data['title'] = project.title
 
-
       # Editing the Readme.md file stuff.
-
-        try:
-            project.bodyFile.filename
-        except:
-            bodyText = fileobject()
-            bodyText.parent = project
-            bodyText.save()
-            project.bodyFile = bodyText
-
-        from django.core.files.uploadedfile import UploadedFile
-        from io import StringIO
-
-        io = StringIO(form.cleaned_data["body"])
-        txfl = UploadedFile(io)
-
-        if "readmename" in globals():
-            project.bodyFile.filename.save(readmename, txfl)
-        else:
-            project.bodyFile.filename.save('README.md', txfl)
-
-        txfl.close()
-        io.close()
-
-        project.bodyFile.save()
-        project.save()
-
+        project.saveReadme(form.cleaned_data["body"])
      # Done with editing the README.md textfile.
 
+        list_to_tags(form.cleaned_data["tags"], project.tags)
 
    #### All this fun stuff is handeling what happens for trying to publish vs trying to save the project.
         if(request.POST['action']=="Publish"):
@@ -361,14 +336,13 @@ def tagcloud(request):
     return render(request, "tagcloud.html")
 
 
+## I take a csv and add it to a taggit manager.
 def list_to_tags(data, tags, clear=True):
             data=data.split(',')
             if clear:
                 tags.clear()
             for tag in data:
                 tags.add(tag)
-
-
 
 
 from djangoratings.views import AddRatingFromModel

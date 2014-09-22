@@ -71,14 +71,37 @@ class Project(models.Model):
 
         super(Project, self).save()
 
-    def __unicode__(self):
-        if self.title:
-             return self.title
-        else:
-             return "Untitled Project (A Draft..?)"
     def save(self):
         super(Project, self).save()
         self.enf_consistancy()
+
+    def saveReadme(self, readmeText):
+	from django.core.exceptions import ObjectDoesNotExist
+	try:
+	    self.bodyFile.filename.delete()
+	    self.bodyFile.delete()
+	except AttributeError:
+		pass
+	except ObjectDoesNotExist:
+		pass
+
+        bodyText = fileobject()
+        bodyText.parent = self
+        bodyText.save()
+        self.bodyFile = bodyText
+
+        from django.core.files.uploadedfile import UploadedFile
+        from io import StringIO
+
+        io = StringIO(readmeText)
+        txfl = UploadedFile(io)
+
+        self.bodyFile.filename.save('README.md', txfl)
+
+        txfl.close()
+        io.close()
+
+        self.bodyFile.save()
 
     def enf_consistancy(self):
         #checks if there's a thumbnail.
@@ -105,4 +128,10 @@ class Project(models.Model):
             return False
         else:
             return True
+
+    def __unicode__(self):
+        if self.title:
+             return self.title
+        else:
+             return "Untitled Project (A Draft..?)"
 
