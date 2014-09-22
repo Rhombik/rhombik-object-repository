@@ -76,9 +76,13 @@ class Project(models.Model):
         self.enf_consistancy()
 
     def saveReadme(self, readmeText):
+	from django.core.exceptions import ObjectDoesNotExist
 	try:
 	    self.bodyFile.filename.delete()
+	    self.bodyFile.delete()
 	except AttributeError:
+		pass
+	except ObjectDoesNotExist:
 		pass
 
         bodyText = fileobject()
@@ -92,18 +96,12 @@ class Project(models.Model):
         io = StringIO(readmeText)
         txfl = UploadedFile(io)
 
-      # THis is for renaming readmes, I think it will be kill
-      # if "readmename" in globals():
-      #     project.bodyFile.filename.save(readmename, txfl)
-      # else:
-      #     project.bodyFile.filename.save('README.md', txfl)
         self.bodyFile.filename.save('README.md', txfl)
 
         txfl.close()
         io.close()
 
         self.bodyFile.save()
-        self.save()
 
     def enf_consistancy(self):
         #checks if there's a thumbnail.
