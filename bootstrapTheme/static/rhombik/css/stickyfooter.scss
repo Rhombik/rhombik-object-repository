@@ -21,8 +21,15 @@ body {
   background-color: $primary-color;
 }
 
-.footer h3{
+.footer h2{
+ font-size: 20px;
+ margin:0;
+ padding:0;
+}
+.footer a{
+ color: #fff;
  font-size: 15px;
  margin-top: 0;
  margin-bottom: 5px;
+ margin-left: 5px;
 }
