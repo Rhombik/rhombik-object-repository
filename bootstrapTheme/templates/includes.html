@@ -52,15 +52,16 @@
     jQuery(document).ready(function () {
                     thumbloader.wakeUp();
                  // I am the sanest man alive!
-                    function kill(tag) {
-                        tag.close();
+                 //me too. I don't know if writing a paragraph here about how fucked this is would be useful. I think JS is bad, and I am probably bad in parrellel. There needs to be a better way to do this.
+                    function Init(argument) {
+                        argument.init();
                     }
                     function sleep(millis, callback, arg) {
                         setTimeout(function()
                                 { callback(arg); }
                         , millis);
                     }
-                    sleep(500, kill, tabletSearchDrop);
+                    sleep(70, Init, tabletSearchDrop);
                 });
 
     //Include css/js-enabled.css if js is enabled.
