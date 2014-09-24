@@ -112,6 +112,7 @@
         </span>
      	{#user vote. Null means no vote. 1 means downvote. 2 means upvote. #}
      	{# You can remove your vote by voting 0 #}
+
      	{% if not vote  %}
      	<a href="vote/2/"><i class="fi-like votebutton upvote"></i></a>
      	<a href="vote/1/"><i class="fi-dislike votebutton downvote"></i></a>
@@ -189,6 +190,25 @@ $( ".votebutton" ).parent().click(function(e){
      	{# end ratings #}
 
      </div>
+{% comment %}
+
+<div class="btn-group btn-group-justified bodycontainer">
+        {% if not vote  %}
+        <a href="vote/2/" class="btn btn-default"><i class="fi-like votebutton upvote"></i></a>
+        <a href="vote/1/" class="btn btn-default"><i class="fi-dislike votebutton downvote"></i></a>
+        {% elif vote == 1 %}
+        <a href="vote/2/" class="btn btn-default"><i class="fi-like votebutton upvote"></i></a>
+        <a href="vote/0/" class="btn btn-default"><i class="fi-dislike votebutton downvote active"></i></a>
+        {% elif vote == 2 %}
+        <a href="vote/0/" class="btn btn-default"><i class="fi-like votebutton upvote active"></i></a>
+        <a href="vote/1/" class="btn btn-default"><i class="fi-dislike votebutton downvote"></i></a>
+        {% endif %}
+</div>
+{% endcomment %}
+
+<!-- :/ I am not a clever man. -->
+<h3></h3>
+
      <a href="download/" class="btn btn-default fullwidth">Download Files</a>
      {% if downloadurl %}
      <a href="{{downloadurl}}" class="btn btn-default fullwidth downloadAll">Download All</a>
