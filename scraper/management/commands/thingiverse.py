@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from optparse import make_option
 from django.contrib.auth.models import User
+from scraper.spider.spiders import thingiverse
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (

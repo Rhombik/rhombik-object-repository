@@ -8,7 +8,7 @@
 import scrapy
 from scrapy.contrib.djangoitem import DjangoItem
 from project.models import *
-from spider.djangoAutoItem import CountedItem
+from scraper.spider.djangoAutoItem import CountedItem
 
 class ProjectItem(CountedItem):
     django_model = Project

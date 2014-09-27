@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.contrib.spiders import CrawlSpider, Rule
-from spider.items import ProjectItem, fileObjectItem
+from scraper.spider.items import ProjectItem, fileObjectItem
 from scrapy.contrib.linkextractors import LinkExtractor
 import re
 import urlparse
