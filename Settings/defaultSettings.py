@@ -195,6 +195,7 @@ INSTALLED_APPS = (
     'testcases',
     'djangoratings',
     'comments',
+    'spider',
     'mptt',
 #    'threadedcomments',
 #    'django.contrib.comments',
