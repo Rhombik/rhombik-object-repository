@@ -3,6 +3,7 @@
 {% block head %}
 <meta property="og:title" content="{{project.title}} - On rhombik.com" />
 {# AHAHAHAHA LOOKAT AT MY STRING #}
+{#Business cat wants to know if you can make it more wiggly#}
 
 {% if mainthumb.0.0.filename %}
 <meta property="og:image" content="{{mainthumb.0.0.filename.url}}" />
@@ -56,24 +57,26 @@
 					});
 
 				<!-- A function for canceling comment forms. -->
-					function commentCancel(el, replyEl)
+					function commentCancel(el,Reply)
 					{
-						replyEl.hidden=false;
-						el.parentNode.remove();
+						el.parentNode.parentNode.parentNode.remove();
+						Reply.hidden=false;
 					}
 				<!-- The function for adding the comment form when replying. -->
-					$('.commentReply').click(function(e){
+					$('.commentReply, .editComment').click(function(e){
+						var ReplyButton=e.currentTarget;
 						$.get(e.currentTarget.href,function(data,status){
-							var cancelButton = document.createElement('a');
-							cancelButton.innerHTML="Cancel";
-							cancelButton.className="commentCancel";
-							cancelButton.onclick=function() { commentCancel(this, e.currentTarget); };
 							var newdiv = document.createElement('div');
 							newdiv.innerHTML=data;
-							newdiv.insertBefore(cancelButton, null);
+							var cancelButton = $(newdiv).find("input[value='Cancel']");
+							cancelButton.on("click",function(e){
+								    commentCancel(this, ReplyButton);
+								    e.preventDefault;
+								    });
 							e.currentTarget.parentNode.insertBefore(newdiv, e.currentTarget.nextSibling);
 							e.currentTarget.hidden=true;
 						});
+						//This is the reply and edit defalt prevent.
 						e.preventDefault();
 					});
 				});

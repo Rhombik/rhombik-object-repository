@@ -12,13 +12,18 @@ Hopefully somebody with design taste will redo it as soon as possible.
         <li class="comment={{ node.id }}" style="text-indent:{{ node.level }}em;">
 {{ node.level }}
         -->
-        <div class="comment={{ node.id }}" >
+        <div id="comment={{ node.id }}" >
             <div>
             <b><a href="/userProfile/{{node.commenter.pk}}">{{ node.commenter }}</a></b> <font size="1" title="{{node.created}}">{{ node.created|timesince }} ago</font>
             <br>
             {{ node.commenttext }}
             <br>
             {% if user.is_authenticated %}
+            {% if user == node.commenter %}
+                <a class="editComment" href="/project/{{ projectpk }}/editComment/{{ node.id }}/">
+                <font size="1">edit</font>
+                </a>
+            {% endif %}
                 <a class="commentReply" href="/project/{{ projectpk }}/comment/{{ node.id }}/">
                 <font size="1">reply</font>
                 </a>
