@@ -9,6 +9,8 @@ import project.models as project
 import filemanager.models as files
 import djangoAutoItem
 from django.contrib.auth.models import User
+from twisted.internet import reactor
+
 class saveProject(object):
     def process_item(self, item, spider):
         print("save project 1 ----------\n\n\n\n")

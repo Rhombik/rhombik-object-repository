@@ -22,4 +22,4 @@ class Command(BaseCommand):
             user = User.objects.get(username=options['user'])
         if options['user_id']:
             user = User.objects.get(pk=options['user_id'])
-        print(user)
+        thingiverse.runScraper(urls=args)

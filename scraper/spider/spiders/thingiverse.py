@@ -5,22 +5,34 @@ from scraper.spider.items import ProjectItem, fileObjectItem
 from scrapy.contrib.linkextractors import LinkExtractor
 import re
 import urlparse
+
+from twisted.internet import reactor
+from scrapy.crawler import Crawler
+from scrapy.settings import Settings
+from scrapy import log, signals
+
+def runScraper(urls):
+    spider = ThingiverseSpider(start_urls=urls)
+    crawler = Crawler(Settings())
+    crawler.signals.connect(reactor.stop, signal=signals.spider_closed)
+    crawler.configure()
+    crawler.crawl(spider)
+    crawler.start()
+    log.start()
+    reactor.run()
+
 class ThingiverseSpider(CrawlSpider):
     name = "thingiverse"
     allowed_domains = ["thingiverse.com"]
-    start_urls = (
-#        'http://www.thingiverse.com/thing:446851',
-#        'http://www.thingiverse.com/zheng3/about',
-        'http://www.thingiverse.com/thing:19104',
-    )
     ##Find the links.
+    print(start_urls)
     def parse(self, response):
+        print(response)
         design = LinkExtractor(allow=('design')).extract_links(response)
         if design:
             yield scrapy.http.Request(url=design[0].url, callback=self.projectGet)
         if re.search('thing:\d\d+',response.url):
             yield scrapy.http.Request(url=response.url, callback=self.project)
-
 
     def projectGet(self, response):
         ##Get next pages. We can be really lazy due to the scrapy dedupe
@@ -55,3 +67,4 @@ class ThingiverseSpider(CrawlSpider):
         item['parent'] = response.meta['parent']
         item['filename']=response.body
         yield(item)
+
