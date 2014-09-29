@@ -12,7 +12,7 @@ from scrapy.settings import Settings
 from scrapy import log, signals
 
 def runScraper(urls):
-    spider = ThingiverseSpider(start_urls=urls)
+    spider = ThingiverseSpider(urls)
     crawler = Crawler(Settings())
     crawler.signals.connect(reactor.stop, signal=signals.spider_closed)
     crawler.configure()
@@ -25,9 +25,20 @@ class ThingiverseSpider(CrawlSpider):
     name = "thingiverse"
     allowed_domains = ["thingiverse.com"]
     ##Find the links.
-    print(start_urls)
+    start_urls = None
+    def __init__(self, start_urls, *args, **kwargs):
+        self.start_urls = start_urls
+        super(ThingiverseSpider, self).__init__(*args, **kwargs)
+
+    def start_requests(self):
+        requests=[]
+        for i in self.start_urls:
+            requests.append(scrapy.http.Request(url=i, callback=self.parse))
+        print(requests)
+        return requests
+
     def parse(self, response):
-        print(response)
+        print(str(response)+" -----------------------")
         design = LinkExtractor(allow=('design')).extract_links(response)
         if design:
             yield scrapy.http.Request(url=design[0].url, callback=self.projectGet)
