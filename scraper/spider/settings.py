@@ -17,10 +17,11 @@ BOT_NAME = 'spider'
 
 SPIDER_MODULES = ['spider.spiders']
 NEWSPIDER_MODULE = 'spider.spiders'
+LOG_LEVEL = 'DEBUG'
 
 ITEM_PIPELINES = {
-    'spider.pipelines.saveProject': 500,
-    'spider.pipelines.saveThing': 550
+    'scraper.spider.pipelines.saveProject': 500,
+    'scraper.spider.pipelines.saveThing': 550
 }
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
