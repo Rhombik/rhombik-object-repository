@@ -12,12 +12,10 @@ from django.contrib.auth.models import User
 
 class saveProject(object):
     def process_item(self, item, spider):
-        print("save project 1 ----------\n\n\n\n")
         if type(item) == type(ProjectItem()):
             if not hasattr(item, 'author'):
                 item['author']= User.objects.filter(pk=1)[0]
             item.save()
-            print(str(djangoAutoItem.SIDmap)+"----sidmap")
         return item
 
 class saveThing(object):
@@ -25,6 +23,13 @@ class saveThing(object):
         if type(item) == type(fileObjectItem()):
            print(item['parent'])
            item['parent']=djangoAutoItem.SIDmap[item['parent']]
-           print(str(item['parent'])+" item parent")
            item.save()
         return item
+
+class saveProjectAgain(object):
+    def process_item(self, item, spider):
+        if type(item) == type(ProjectItem()):
+            newitem = djangoAutoItem.SIDmap[item['SID']]
+            newitem.save()
+        return item
+

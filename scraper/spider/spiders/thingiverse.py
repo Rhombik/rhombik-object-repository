@@ -15,6 +15,7 @@ from scraper.spider.settings import ITEM_PIPELINES
 def runScraper(urls):
     spider = ThingiverseSpider(urls)
     settings = get_project_settings()
+    settings.set('LOG_ENABLED', False)
     settings.set('ITEM_PIPELINES', ITEM_PIPELINES)
     crawler = Crawler(settings)
     crawler.signals.connect(reactor.stop, signal=signals.spider_closed)

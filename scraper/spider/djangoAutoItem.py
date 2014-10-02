@@ -17,4 +17,3 @@ class CountedItem(DjangoItem):
         super(CountedItem, self).save()
         SIDmap[self['SID']]['django_model']=self.django_model
         SIDmap[self['SID']]['pk']=self
-        print(str(SIDmap[self['SID']])+"-------sidmap")
