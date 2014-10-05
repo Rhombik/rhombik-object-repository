@@ -14,6 +14,7 @@ class saveProject(object):
     def process_item(self, item, spider):
         if type(item) == type(ProjectItem()):
             if not hasattr(item, 'author'):
+                # author defaulting to first user
                 item['author']= User.objects.filter(pk=1)[0]
             item.save()
         return item
