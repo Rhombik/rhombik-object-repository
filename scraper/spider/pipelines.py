@@ -16,6 +16,7 @@ class saveProject(object):
             if not hasattr(item, 'author'):
                 # author defaulting to first user
                 item['author']= User.objects.filter(pk=1)[0]
+            item['draft']=True
             item.save()
         return item
 
