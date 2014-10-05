@@ -67,8 +67,6 @@ class ThingiverseSpider(CrawlSpider):
         imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')
         filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]/a/@href')
         for i in filelist:
-		print("filelist file:")
-		print(i.extract())
 		yield scrapy.http.Request(url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})
         for i in imagelist:
             yield scrapy.http.Request(url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})

@@ -22,6 +22,8 @@ class saveProject(object):
 class saveThing(object):
     def process_item(self, item, spider):
         if type(item) == type(fileObjectItem()):
+           print("THE SIDmap:::")
+           print(djangoAutoItem.SIDmap)
            item['parent']=djangoAutoItem.SIDmap[item['parent']]
            item.save()
         return item
