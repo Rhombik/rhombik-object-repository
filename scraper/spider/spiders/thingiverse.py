@@ -67,9 +67,11 @@ class ThingiverseSpider(CrawlSpider):
         imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')
         filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]/a/@href')
         for i in filelist:
-		yield scrapy.http.Request(url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})
+        	yield scrapy.http.Request(url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})
         for i in imagelist:
-            yield scrapy.http.Request(url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})
+	    print("IMAGE:::")
+	    print(urlparse.urljoin(response.url, i.extract()))
+            yield scrapy.http.Request(dont_filter=True, url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})
 
 
     def item(self,response):
@@ -78,6 +80,7 @@ class ThingiverseSpider(CrawlSpider):
         ## warning stupid preasent here.
 	# splitting and grabing from urlparse for filename may not be best.
         item['name']=urlparse.urlparse(response.url)[2].split("/")[-1]
+	item['name']=item['name'].replace("_display_large","")
 
         item['parent'] = response.meta['parent']
         item['filename']=response.body
