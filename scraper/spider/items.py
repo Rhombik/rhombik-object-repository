@@ -14,6 +14,17 @@ from scraper.spider.djangoAutoItem import CountedItem
 class ProjectItem(CountedItem):
     django_model = Project
     readme = scrapy.Field()
+    def save(self):
+        project=Project()
+        project.valid=False
+        project.title=self['title']
+        project.author=self['author']
+        project.save()
+        project.saveReadme(self['readme'])
+        project.save()
+        print("this is def happening")
+        super(ProjectItem, self).save()
+
 
 class fileObjectItem(DjangoItem):
     django_model = fileobject
