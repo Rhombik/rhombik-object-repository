@@ -244,6 +244,7 @@ def editOrCreateStuff(project, request):
                 project.save()
                 return HttpResponseRedirect('/project/'+str(project.pk))
             else:
+                project.save()
                 return render_to_response('edit.html', dict(project=project, user=request.user, form=form, ))
         elif(request.POST['action']=="Save"):
             if project.valid:
