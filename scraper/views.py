@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect#, HttpResponse
-from spider.spiders.thingiverse import runScraper
 from scraper.forms import ImportForm
+from scraper.tasks import scrapeTask
+
 
 def importer(request):
     ###Write a scraper dispatcher here.
@@ -11,6 +12,6 @@ def importer(request):
             print("THE USER IS:::")
             print(user)
             urls=[form.cleaned_data['url']]
-            runScraper(urls, user=user)
+            scrapeTask.delay(urls, user)
     return HttpResponseRedirect('/mydrafts/')
 
