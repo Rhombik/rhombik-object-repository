@@ -8,15 +8,13 @@ from scraper.spider.items import *
 import project.models as project
 import filemanager.models as files
 import djangoAutoItem
-from django.contrib.auth.models import User
 import datetime
 from project.models import Project
 class saveProject(object):
     def process_item(self, item, spider):
         if type(item) == type(ProjectItem()):
-            if not hasattr(item, 'author'):
-                # author defaulting to first user
-                item['author']= User.objects.filter(pk=1)[0]
+	    print("user is ::::::::::::::::")
+	    print(item['author'])
             item['draft']=True
             if not Project.objects.filter(title=item['title']):
                 item.save()

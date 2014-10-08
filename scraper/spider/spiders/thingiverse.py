@@ -12,8 +12,11 @@ from scrapy import log, signals
 from scrapy.utils.project import get_project_settings
 from scraper.spider.settings import ITEM_PIPELINES
 
-def runScraper(urls):
-    spider = ThingiverseSpider(urls)
+from django.contrib.auth.models import User
+
+def runScraper(urls, user):
+    userID=user.pk
+    spider = ThingiverseSpider(urls, user=user)
     settings = get_project_settings()
     settings.set('LOG_ENABLED', False)
     settings.set('ITEM_PIPELINES', ITEM_PIPELINES)
@@ -29,8 +32,11 @@ class ThingiverseSpider(CrawlSpider):
     allowed_domains = ["thingiverse.com"]
     ##Find the links.
     start_urls = None
-    def __init__(self, start_urls, *args, **kwargs):
+    def __init__(self, start_urls, user=None, *args, **kwargs):
         self.start_urls = start_urls
+	if not user:
+            user = User.objects.filter(pk=1)[0]
+	self.user_id=user.pk
         super(ThingiverseSpider, self).__init__(*args, **kwargs)
 
     def start_requests(self):
@@ -60,6 +66,7 @@ class ThingiverseSpider(CrawlSpider):
 
     def project(self,response):
         projectObject=ProjectItem()
+        projectObject['author']=User.objects.get(pk=self.user_id)
         projectObject['title']=response.selector.xpath('//*[contains(@class,\'thing-header-data\')]/h1/text()').extract()[0].strip()
         projectObject['readme']=response.selector.xpath("//*[@id = 'description']/text()").extract()[0].strip()
         yield projectObject

@@ -23,6 +23,7 @@ import logging
 log = logging.getLogger(__name__)
 import os.path
 from multiuploader.forms import MultiuploaderImage
+from scraper.forms import ImportForm
 from project.models import *
 from filemanager.models import fileobject, thumbobject
 from django.contrib.contenttypes.models import ContentType
@@ -37,10 +38,11 @@ def draftview(RequestContext):
     request = RequestContext
     projects = Project.objects.filter(author=int(request.user.id), draft=True)
     toomanydrafts = False
-    if projects.count() > 8:
+    if projects.count() >= 8:
         toomanydrafts = True
     listdata = project_list_get(projects, purge=False)
-    c = dict(toomanydrafts = toomanydrafts, listdata=listdata, user=request.user, active="home",)
+    importForm=ImportForm()
+    c = dict(toomanydrafts = toomanydrafts, listdata=listdata, user=request.user, active="home", importerForm=importForm)
     c.update(csrf(request))
     if projects:
         return render_to_response("drafts.html", c)
