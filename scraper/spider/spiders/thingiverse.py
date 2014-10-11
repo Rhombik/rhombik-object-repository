@@ -46,11 +46,16 @@ class ThingiverseSpider(CrawlSpider):
         return requests
 
     def parse(self, response):
-        design = LinkExtractor(allow=('design')).extract_links(response)
-        if design:
-            yield scrapy.http.Request(url=design[0].url, callback=self.projectGet)
+        ## if it's a thing it's not a project.
         if re.search('thing:\d\d+',response.url):
+            print("SCRAPING THING : "+response.url)
             yield scrapy.http.Request(url=response.url, callback=self.project)
+        else:
+            ## sometimes thing pages link to other things with the 'design' tag. I haven't seen this on a user page.
+            design = LinkExtractor(allow=('design')).extract_links(response)
+            if design:  
+                print("GOING TO "+design[0].url+" TO SCRAPE SOME STUFF!!!")
+                yield scrapy.http.Request(url=design[0].url, callback=self.projectGet)
 
     def projectGet(self, response):
         ##Get next pages. We can be really lazy due to the scrapy dedupe
