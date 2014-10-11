@@ -61,7 +61,15 @@ class ThingiverseSpider(CrawlSpider):
         ##Get next pages. We can be really lazy due to the scrapy dedupe
         paginatorlinks=response.selector.xpath('//*[contains(@class,\'pagination\')]/ul/li/a/@href').extract()
         #:/ I guess this makes sense.
-        paginatorlinks.pop(0)
+        from exceptions import IndexError
+        try:
+            paginatorlinks.pop(0)
+        except IndexError as e:
+            # e.message is dep, I guess using str(e) returning the message now is the thing.
+            if str(e) == "pop from empty list":
+                print("paginator returned empty... s'all good.")
+            else:
+                raise
         for i in paginatorlinks:
             yield scrapy.http.Request(url=urlparse.urljoin(response.url, i), callback=self.projectGet)
 
