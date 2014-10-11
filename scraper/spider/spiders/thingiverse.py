@@ -67,7 +67,7 @@ class ThingiverseSpider(CrawlSpider):
         except IndexError as e:
             # e.message is dep, I guess using str(e) returning the message now is the thing.
             if str(e) == "pop from empty list":
-                print("paginator returned empty... s'all good.")
+                print("paginator returned empty. S'all good though.")
             else:
                 raise
         for i in paginatorlinks:
@@ -75,6 +75,9 @@ class ThingiverseSpider(CrawlSpider):
 
         objects = LinkExtractor(allow=('thing:\d\d+')).extract_links(response)
         for i in objects:
+            # Teh hax! scrapy's dupefilter sees "foo.bar" and "foo.bar/" as different sites. This is bad. Maybe this should be pushed to scrapy proper...
+            if i.url[-1] == '/':
+                i.url=i.url[:-1]
             yield scrapy.http.Request(url=i.url, callback=self.project)
 
     def project(self,response):
