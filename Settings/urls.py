@@ -53,6 +53,7 @@ urlpatterns = patterns('',
     url(r'', include('multiuploader.urls')),
     url(r'', include('filemanager.urls')),
     url(r'', include('project.urls')),
+    url(r'', include('scraper.urls')),
 
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

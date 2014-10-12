@@ -238,48 +238,24 @@ def editOrCreateStuff(project, request):
         list_to_tags(form.cleaned_data["tags"], project.tags)
 
    #### All this fun stuff is handeling what happens for trying to publish vs trying to save the project.
-        if(request.POST['action']=="Publish"):
-            if project.valid:
+        if project.valid:
+            if(request.POST['action']=="Publish"):
                 project.draft=False
                 project.save()
                 return HttpResponseRedirect('/project/'+str(project.pk))
-            else:
-                return render_to_response('edit.html', dict(project=project, user=request.user, form=form, ))
-        elif(request.POST['action']=="Save"):
-            if project.valid:
+            elif(request.POST['action']=="Save"):
                 project.save()
                 return HttpResponseRedirect('/mydrafts/')
-            else:
-                project.save()
-                draftSaved = True
-                return render_to_response('edit.html', dict(project=project, user=request.user, form=form, draftSaved=draftSaved, ))
+        else:
+            project.save()
+            draftSaved = True
+            return render_to_response('edit.html', dict(project=project, user=request.user, form=form, draftSaved=draftSaved, ))
 
    #### Not POSTmode! We are setting up the form for the user to fill in. We are not getting form data from the user.
 
     else:
 
-        if project.title:
-            title = project.title
-        else:
-            title = ""
-
-        try:
-            readme = project.bodyFile.filename.read()
-        except:
-            readme = ""
-
-        taglist = []
-        for i in project.tags.names():
-           taglist.append(i)
-        taglist = ",".join(taglist)
-
-        try:
-            project.thumbnail
-            thumbnailstring = "/"+path.split(project.thumbnail.filename.url)[1]
-        except:
-            thumbnailstring = ""
-
-        form = ProjectForm({'title':title, 'body': readme, 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, project)
+	form = project.get_form()## this gets a form filled with the projects data
         form.errors['title'] = ""#form['body'].error_class()
         form.errors['thumbnail'] = ""#form['body'].error_class()
         form.errors['body'] = ""#form['body'].error_class()

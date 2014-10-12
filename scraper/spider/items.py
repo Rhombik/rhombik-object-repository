@@ -10,10 +10,23 @@ from scrapy.contrib.djangoitem import DjangoItem
 from project.models import *
 from filemanager.models import *
 from scraper.spider.djangoAutoItem import CountedItem
+from django.contrib.auth.models import User
 
 class ProjectItem(CountedItem):
     django_model = Project
     readme = scrapy.Field()
+    def save(self):
+        project=Project()
+        project.valid=False
+        project.author=self['author']
+        project.title=self['title']
+        project.save()
+        project.saveReadme(self['readme'])
+        project.save()
+        print("this is def happening")
+        super(ProjectItem, self).save()
+
+
 
 class fileObjectItem(DjangoItem):
     django_model = fileobject
@@ -35,5 +48,5 @@ class fileObjectItem(DjangoItem):
         io.close()
 
 	fobj.save()
-	
+
 
