@@ -255,28 +255,7 @@ def editOrCreateStuff(project, request):
 
     else:
 
-        if project.title:
-            title = project.title
-        else:
-            title = ""
-
-        try:
-            readme = project.bodyFile.filename.read()
-        except:
-            readme = ""
-
-        taglist = []
-        for i in project.tags.names():
-           taglist.append(i)
-        taglist = ",".join(taglist)
-
-        try:
-            project.thumbnail
-            thumbnailstring = "/"+path.split(project.thumbnail.filename.url)[1]
-        except:
-            thumbnailstring = ""
-
-        form = ProjectForm({'title':title, 'body': readme, 'thumbnail': thumbnailstring, 'tags' : str(taglist)}, project)
+	form = project.get_form()## this gets a form filled with the projects data
         form.errors['title'] = ""#form['body'].error_class()
         form.errors['thumbnail'] = ""#form['body'].error_class()
         form.errors['body'] = ""#form['body'].error_class()

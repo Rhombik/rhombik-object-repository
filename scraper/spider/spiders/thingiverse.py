@@ -96,6 +96,22 @@ class ThingiverseSpider(CrawlSpider):
 	    print(urlparse.urljoin(response.url, i.extract()))
             yield scrapy.http.Request(dont_filter=True, url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})
 
+    def closed(self, *args, **kwargs):
+        print("HI I EXIST, I AM THE CLOSE METHOD!!!")
+        from scraper.spider import djangoAutoItem
+        from project.models import Project
+        from exceptions import KeyError
+        for key in djangoAutoItem.SIDmap:
+            try:
+                project=Project.objects.get(title=djangoAutoItem.SIDmap[key]['title'])
+                print("saving "+str(project)+" again.")
+                project.save(enf_valid=True)
+            except KeyError as e:
+                if str(e)=="'title'":
+                    print("This SIDmap thing has no title. therefore we are not going to save it again.")
+                else:
+                    raise
+
 
     def item(self,response):
         item=fileObjectItem()
@@ -108,3 +124,4 @@ class ThingiverseSpider(CrawlSpider):
         item['parent'] = response.meta['parent']
         item['filename']=response.body
         yield(item)
+

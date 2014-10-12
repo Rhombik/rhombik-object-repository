@@ -27,6 +27,7 @@ class ProjectItem(CountedItem):
         super(ProjectItem, self).save()
 
 
+
 class fileObjectItem(DjangoItem):
     django_model = fileobject
     name = scrapy.Field()
@@ -47,5 +48,5 @@ class fileObjectItem(DjangoItem):
         io.close()
 
 	fobj.save()
-	
+
 

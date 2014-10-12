@@ -13,8 +13,6 @@ from project.models import Project
 class saveProject(object):
     def process_item(self, item, spider):
         if type(item) == type(ProjectItem()):
-	    print("user is ::::::::::::::::")
-	    print(item['author'])
             item['draft']=True
             if not Project.objects.filter(title=item['title']):
                 item.save()

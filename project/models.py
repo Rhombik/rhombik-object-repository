@@ -71,9 +71,52 @@ class Project(models.Model):
 
         super(Project, self).save()
 
-    def save(self):
+    def save(self, enf_valid=False):
         super(Project, self).save()
         self.enf_consistancy()
+        if enf_valid:
+            self.enf_validity()
+
+    def get_form(self):
+        from os import path
+        from project.forms import ProjectForm
+        if self.title:
+            title = self.title
+        else:
+            title = ""
+
+        try:
+            readme = self.bodyFile.filename.read()
+        except AttributeError as e:
+            if str(e) == "'NoneType' object has no attribute 'filename'":
+                print("The filename does not yet exist. It's fine.")
+                readme = ""
+            else:
+                raise
+
+        taglist = []
+        for i in self.tags.names():
+           taglist.append(i)
+        tags = ",".join(taglist)
+
+        try:
+            thumbnailstring = "/"+path.split(self.thumbnail.filename.url)[1]
+        except AttributeError as e:
+            if str(e) == "'NoneType' object has no attribute 'filename'":
+                print("There was no thumbnail. This is to be expected sometimes.")
+                thumbnailstring = ""
+
+        return ProjectForm({'title':self.title, 'body': readme, 'thumbnail': thumbnailstring, 'tags' : tags}, self)
+
+    def enf_validity(self):
+        form = self.get_form()
+        print("CHECKING IF VALID")
+        if form.is_valid():
+            print("IS VALID")
+            self.valid=True
+            super(Project, self).save()
+        else:
+            print(form.errors)
 
     def saveReadme(self, readmeText):
 	from django.core.exceptions import ObjectDoesNotExist
