@@ -84,7 +84,12 @@ class ThingiverseSpider(CrawlSpider):
         projectObject=ProjectItem()
         projectObject['author']=User.objects.get(pk=self.user_id)
         projectObject['title']=response.selector.xpath('//*[contains(@class,\'thing-header-data\')]/h1/text()').extract()[0].strip()
-        projectObject['readme']=response.selector.xpath("//*[@id = 'description']/text()").extract()[0].strip()
+
+        import html2text
+        h2t = html2text.HTML2Text()
+        h2t.ignore_links = True
+        readme =  h2t.handle(response.selector.xpath("//*[@id = 'description']").extract()[0].strip())
+        projectObject['readme'] = readme
         yield projectObject
         #Grab only raw images.        
         imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')
