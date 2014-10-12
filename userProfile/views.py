@@ -84,14 +84,16 @@ def index(request, pk):
     
     """bleh blebh bhel bleh, IM GOING INSANE.... I mean; user profile display stuff."""
     #I hate this vampire head ~alex
-    """THE VAMPIRE HEAD FIXES ALL OF YOUR BROKEN CODE!!!, that is to say, as long as you never look at this code, it could be anything. We guarantee that whatever you imaging is better written then what actually is written."""
+    """THE VAMPIRE HEAD FIXES ALL OF YOUR BROKEN CODE!!!, that is to say, as long as you never look at this code, it could be anything. We guarantee that whatever you imaging is better written then what actually is written*."""
+    """*because what you are imagining has not yet been forced through the harsh filter of clarification"""
+
 
     # userdata is the user data who's page we are viewing.
     userdata=User.objects.filter(pk = pk).get()
 
     profile = userProfile.objects.filter(user=userdata)[0]
 
-    projects=Project.objects.filter(author=userdata).order_by("-created") #'''~this needs to get the users projects.... not just you know, all the projects.... and now it does!''' YAY!  And now it gets no projects? wtf.. ok, so it is getting the list.. it is just not getting displayed...
+    projects=Project.objects.filter(author=userdata).exclude(draft=True).order_by("-created") #'''~this needs to get the users projects.... not just you know, all the projects.... and now it does!''' YAY!  And now it gets no projects? wtf.. ok, so it is getting the list.. it is just not getting displayed...
 
     #  paginator is neat!
     # It takes the list of projects and breaks them up into different pages.
