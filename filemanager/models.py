@@ -55,7 +55,6 @@ class fileobject(models.Model):
         super(fileobject, self).save()
 
     def delete(self, *args, **kwargs):
-        from project.tasks import ThumbnailEnforcer
         self.filename.delete()
         super(fileobject, self).delete(*args, **kwargs)
         #parent does not need to implement an enf_consistancy method. It is optional.
