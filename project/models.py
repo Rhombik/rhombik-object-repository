@@ -8,7 +8,7 @@ from filemanager.models import fileobject
 from djangoratings.fields import RatingField
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-
+import project.tasks
 ##Does this actuall work? I don't think it does.... It seems to always return(SET_NULL)
 ##I've disabled it. Now whenever a fileobject gets deleted, it starts a task checking for null fields.
 def select_thumbnail(instance):
@@ -74,6 +74,11 @@ class Project(models.Model):
     def save(self, enf_valid=False):
         super(Project, self).save()
         self.enf_consistancy()
+<<<<<<< HEAD
+    def delete(self):
+        project.tasks.fileEnforcer.delay(self)
+        super(Project, self).delete()
+=======
         if enf_valid:
             self.enf_validity()
 
@@ -117,6 +122,7 @@ class Project(models.Model):
             super(Project, self).save()
         else:
             print(form.errors)
+>>>>>>> 5f66b19d364e99056ba36c305754f760996ff0fd
 
     def saveReadme(self, readmeText):
 	from django.core.exceptions import ObjectDoesNotExist
