@@ -18,7 +18,7 @@ def cleanify(self, formName):
       if self.project.title == cleaned_data["title"]:
         cleaned_data["title"]=""
     else:
-        self._errors['title'] = [u"Title can't be empty."]
+	pass
 
    ###	make certain the selected thumbnail is valid	##
     try:
