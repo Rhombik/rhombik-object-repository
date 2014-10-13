@@ -92,12 +92,14 @@
 
 <div class="">
 <div class="span12">
-<form id="itemSelectForm" method="get" action="something.php">
+<form id="itemSelectForm" method="post" action="/api/project/">
+ {% csrf_token %}
  <input class="selectAllBox" type="checkbox" value="True" id="select-all" name="all"/>
  <label for="select-all">Select All</label>
- <button type="submit" class="jsonly" onClick="">Clear Selection</button>
+{# <button type="submit" class="jsonly" onClick="">Clear Selection</button>#}
  <button type="submit" name="action" value="Publish" >Publish Selected</button>
  <button type="submit" name="action" value="Delete" />Delete Selected</button>
+ <input type="hidden" name="redirect" value="/mydrafts/">
 </form>
 </div>
 </div>

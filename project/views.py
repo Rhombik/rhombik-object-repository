@@ -32,6 +32,23 @@ def searchtest(*args, **kwargs):
     return render_to_response('search/indexes/project/project_text.txt', dict(object=project))
 
 from django.shortcuts import redirect
+def api(request):
+    projects=[]
+    for i in request.POST.getlist('p'):
+        ##This query is all we need for authentication! But I am sleep deprived.
+        projects.append(Project.objects.filter(pk=i,author=request.user))
+    if request.POST['action'] == "Publish":
+        ##These should ideally just pass it on to one or more specific functions
+        pass
+    if request.POST['action'] == "Delete":
+        pass
+    if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
+        mimetype = 'application/json'
+        return HttpResponse(response_data, mimetype=mimetype)
+    return redirect(request.POST['redirect'])
+
+
+
 def delete(RequestContext, pk):
     request=RequestContext
     project = Project.objects.get(pk=pk)
