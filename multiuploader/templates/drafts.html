@@ -101,7 +101,7 @@
 </form>
 {% endif %}
 <div>
-	<input class="selectBox" type="checkbox" form="itemSelectForm" value="{{ project.id }}" id="select-{{ project.id }}"/>
+	<input class="selectBox" type="checkbox" form="itemSelectForm" value="{{ project.id }}" id="select-{{ project.id }}" name="p"/>
 	<label for="select-{{ project.id }}"><i class="fi-checkbox"></i></label>
 		<div class="projecthumb">
 			<form action="/project/{{ project.id }}/delete/" method="post">{% csrf_token %}
