@@ -28,7 +28,7 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf
 from django.core.context_processors import csrf
 
 def searchtest(*args, **kwargs):
-    project = Project.objects.filter(pk=1)[0:1].get()
+    project = Project.objects.filter(pk=1).get()
     return render_to_response('search/indexes/project/project_text.txt', dict(object=project))
 
 from django.shortcuts import redirect
