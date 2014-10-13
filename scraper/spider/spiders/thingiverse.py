@@ -30,6 +30,7 @@ def runScraper(urls, user):
 class ThingiverseSpider(CrawlSpider):
     name = "thingiverse"
     allowed_domains = ["thingiverse.com"]
+    download_delay = 0.4
     ##Find the links.
     start_urls = None
     def __init__(self, start_urls, user=None, *args, **kwargs):
