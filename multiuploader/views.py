@@ -76,7 +76,7 @@ def multiuploader_delete(request, pk):
 @csrf_exempt
 def multiuploader(request, pk):
 
-    project=Project.objects.filter(pk=pk)[0]
+    project=Project.objects.get(pk=pk)
     """
     Main Multiuploader module.
     Parses data from jQuery plugin and makes database changes.
