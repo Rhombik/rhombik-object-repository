@@ -128,6 +128,11 @@
     {% endif %}
 
 <h3>Import</h3>
+<form action="/import/" method="post">{% csrf_token %}
+{{ importerForm }}
+<input type="submit" name="action" value="Import" />
+<input type="submit" name="action" value="Cancel" />
+</form>
 
 {% endblock content %}
 

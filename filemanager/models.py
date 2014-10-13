@@ -29,7 +29,7 @@ class fileobject(models.Model):
     parent = generic.GenericForeignKey('content_type', 'object_id')
 
     subfolder = models.CharField(max_length=256, default="/")
-    filename = models.FileField(upload_to=uploadpath,null=True)
+    filename = models.FileField(upload_to=uploadpath)
     filetype = models.CharField(max_length=16, blank=True, null=True, default="norender")
 
 

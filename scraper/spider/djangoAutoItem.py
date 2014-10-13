@@ -11,6 +11,7 @@ class CountedItem(DjangoItem):
     def __init__(self):
         super(CountedItem, self).__init__()
         self['SID'] = next(SIDcount)
+	print("created sid ::: "+str(self['SID']))
         SIDmap[self['SID']] = {}
     #scrapy ID
     SID = scrapy.Field()

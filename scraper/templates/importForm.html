@@ -1,0 +1,11 @@
+
+{% block content %}
+<div class="importForm">
+<form action="/import/" method="post">
+{{ form.as_p }}
+<input type="submit" name="action" value="Import" />
+<input type="submit" name="action" value="Cancel" />
+</form>
+
+</div>
+{% endblock content %}
