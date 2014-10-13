@@ -90,10 +90,18 @@
 
 </style>
 
+<div class="">
+<div class="span12">
 <form id="itemSelectForm" method="get" action="something.php">
- <input type="submit" value="Submit">
+ <input class="selectAllBox" type="checkbox" value="True" id="select-all" name="all"/>
+ <label for="select-all">Select All</label>
+ <button type="submit" class="jsonly" onClick="">Clear Selection</button>
+ <button type="submit" name="action" value="Publish" >Publish Selected</button>
+ <button type="submit" name="action" value="Delete" />Delete Selected</button>
 </form>
-
+</div>
+</div>
+<h3></h3>
 <div class="row">
     <!-- Projects-->
     {% for project, thumb in listdata %}
