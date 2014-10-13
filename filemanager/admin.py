@@ -1,10 +1,13 @@
 from filemanager.models import *
 from django.contrib import admin
+from django.contrib.contenttypes import generic
 
+class fileobjectInline(generic.GenericTabularInline):
+    model = fileobject
+    extra = 0
 
 class fileobjectAdmin(admin.ModelAdmin):
     search_fields = ["project"]
-
 
 admin.site.register(fileobject,fileobjectAdmin)
 
