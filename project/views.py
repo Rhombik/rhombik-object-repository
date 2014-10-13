@@ -277,7 +277,7 @@ def edit(request, pk):
 
 @csrf_exempt
 def create(request):
-    if Project.objects.filter(author=request.user).filter(draft=True).count() > 10:
+    if Project.objects.filter(author=request.user).filter(draft=True).count() >= 12:#cause it's funny
         project=Project.objects.filter(author=request.user).filter(draft=True)[0]
     else:
         project = Project()
@@ -289,6 +289,7 @@ def create(request):
     return editOrCreateStuff(project, request)
 
 
+## This view is moribund. It may be reserected or exercised at some point.
 def tag(request,tag):
     projects = Project.objects.filter(tags__name__in=[tag]).order_by("-created")
     paginator = Paginator(projects, 15)
