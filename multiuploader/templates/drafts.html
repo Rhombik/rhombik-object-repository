@@ -26,6 +26,32 @@
         display: block;
         padding-top: 25%;
 }
+.selectBox + label{
+    position: absolute;
+    z-index:10000;
+    top:-8px;
+    left:25px;
+    margin:0;
+    padding:0;
+    position: absolute;
+    color:#222;
+    font-size: 300%;
+    text-shadow: -2px 0 #eee, 0 2px #eee, 2px 0 #eee, 0 -2px #eee;
+    background: transparent;
+    border: none;
+}
+.selectBox:checked + label{
+    color:#5A8A45;
+    text-shadow: -2px 0 #fff, 0 2px #fff, 2px 0 #fff, 0 -2px #fff;
+}
+.selectBox:checked + label + div{
+  box-shadow: 0px 0px 6px 6px #5A8A45;
+}
+
+.selectBox{
+    display:none;
+}
+
 .bigredx{
     position: absolute;
     color:#b44;
@@ -58,6 +84,10 @@
 
 </style>
 
+<form id="itemSelectForm" method="get" action="something.php">
+ <input type="submit" value="Submit">
+</form>
+
 <div class="row">
     <!-- Projects-->
     {% for project, thumb in listdata %}
@@ -70,26 +100,30 @@
 
 </form>
 {% endif %}
-  <div class="projecthumb">
-<form action="/project/{{ project.id }}/delete/" method="post">{% csrf_token %}
-{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' />#}
-    <button type="submit" class="fi-x bigredx"></button>
-</form>
-    <a href="/edit/{{ project.id }}">
-    {% if thumb %}
-    {% include "thumbview.html" with thumbnail=thumb %}
-    {% else %}
-    <div class="box stripe-1 module">
-    </div>
-    {% endif %}
-    {% if project.title %}
-    <h3>{{ project.title }}</h3>
-    {% else %}
-    <h3>Untitled</h3>
-    {% endif %}
+<div>
+	<input class="selectBox" type="checkbox" form="itemSelectForm" value="{{ project.id }}" id="select-{{ project.id }}"/>
+	<label for="select-{{ project.id }}"><i class="fi-checkbox"></i></label>
+		<div class="projecthumb">
+			<form action="/project/{{ project.id }}/delete/" method="post">{% csrf_token %}
+				{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' />#}
+				<button type="submit" class="fi-x bigredx"></button>
+			</form>
 
-  </a>
-  </div>
+			<a href="/edit/{{ project.id }}">
+			{% if thumb %}
+			{% include "thumbview.html" with thumbnail=thumb %}
+			{% else %}
+			<div class="box stripe-1 module">
+			</div>
+			{% endif %}
+			{% if project.title %}
+			<h3>{{ project.title }}</h3>
+			{% else %}
+			<h3>Untitled</h3>
+			{% endif %}
+		  </a>
+		</div>
+	</div>
 </div>
 {% cycle '' '' '' '<div class="clearfix visible-xs-block"></div>'%}
 {% endfor %}
