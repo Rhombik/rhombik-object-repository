@@ -34,14 +34,26 @@ def searchtest(*args, **kwargs):
 from django.shortcuts import redirect
 def api(request):
     projects=[]
-    for i in request.POST.getlist('p'):
-        ##This query is all we need for authentication! But I am sleep deprived.
-        projects.append(Project.objects.filter(pk=i,author=request.user))
+    ##Get all the project drafts if "selectAll" is selected
+    if request.POST.get('all'):
+        projects=Project.objects.filter(author=request.user,draft=True)
+    else:
+        ##Get selected projects.
+        projects = []
+        for i in request.POST.getlist('p'):
+            ##This query is all we need for authentication! But I am sleep deprived.
+            projects.append(Project.objects.filter(pk=i,author=request.user)[0])
+    response_data=""   
+    ##These should ideally just pass it on to one or more specific functions. 
+    #It would be nice if they returned JSON data, and put it into response_data. So we can at least pretend this is a real api.
     if request.POST['action'] == "Publish":
-        ##These should ideally just pass it on to one or more specific functions
-        pass
+        for i in projects:
+            i.draft=False
+            i.save()
     if request.POST['action'] == "Delete":
-        pass
+        for i in projects:
+            i.delete()
+
     if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
         mimetype = 'application/json'
         return HttpResponse(response_data, mimetype=mimetype)
