@@ -74,13 +74,13 @@ class Project(models.Model):
     def save(self, enf_valid=False):
         super(Project, self).save()
         self.enf_consistancy()
-<<<<<<< HEAD
+
+        if enf_valid:
+            self.enf_validity()
+
     def delete(self):
         project.tasks.fileEnforcer.delay(self)
         super(Project, self).delete()
-=======
-        if enf_valid:
-            self.enf_validity()
 
     def get_form(self):
         from os import path
@@ -122,7 +122,6 @@ class Project(models.Model):
             super(Project, self).save()
         else:
             print(form.errors)
->>>>>>> 5f66b19d364e99056ba36c305754f760996ff0fd
 
     def saveReadme(self, readmeText):
 	from django.core.exceptions import ObjectDoesNotExist
