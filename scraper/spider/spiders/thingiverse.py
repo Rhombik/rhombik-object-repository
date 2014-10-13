@@ -90,6 +90,7 @@ class ThingiverseSpider(CrawlSpider):
         h2t.ignore_links = True
         readme =  h2t.handle(response.selector.xpath("//*[@id = 'description']").extract()[0].strip())
         projectObject['readme'] = readme
+        print("PROJECT OBJECT "+projectObject['title']+" getting yielded")
         yield projectObject
         #Grab only raw images.        
         imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')
