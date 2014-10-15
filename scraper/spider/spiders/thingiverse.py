@@ -94,7 +94,10 @@ class ThingiverseSpider(CrawlSpider):
         print("PROJECT OBJECT "+projectObject['title']+" getting yielded")
         yield projectObject
         #also a markdown file I guess we'd want.
-        instructions =  h2t.handle(response.selector.xpath("//*[@id = 'instructions']").extract()[0].strip())
+        try:
+            instructions =  h2t.handle(response.selector.xpath("//*[@id = 'instructions']").extract()[0].strip())
+        except IndexError:
+            print("xpath to get the instructions IndexError'd")
         licenseurl =response.selector.xpath("//*[contains(@class,\'license-text\')]/a/@href")[2].extract()
         tags = response.selector.xpath("//*[contains(@class,\'thing-info-content thing-detail-tags-container\')]/a/text()").extract()
         #Grab only raw images.        
