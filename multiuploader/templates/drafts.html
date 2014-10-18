@@ -17,15 +17,26 @@
 </script>
 
 {% if scraperMessage %}
-Hi! It looks like you're importing some things from thingiverse!
+<div id="aboutPage">
+<p>Hi, it looks like you're importing some content from thingiverse! Hopefully it works! 
+This is a fairly new feature, and it might just not work. The thingiverse API explicitly dissallows "using the Thingiverse API for any application that replicates or attempts to replace the essential user experience of Thingiverse.com or that competes with the services of Thingiverse".</p>
 
-Depending on how many things you are importing, and a myriad of other things, this could take some time.
+<p>
+Thanksfully simply scraping the content off of their public facing website seems entirely legel. But we will need to change our code base any time the public facing thingiverse content changes.
+</p>
 
-You can hit refresh every now and again to see how it's going. Also, feel free to email one of us devs if you're experiencing troubles.
+<p>Depending on how many things you are importing, and a myriad of other factors, this could take some time. 
+Tracking the imports progress is something we're working on. 
+For now you can hit refresh every now and again to see how it's going. 
+Objects and projects will appear as soon as we've downloaded them, so you may see a project that looks half imported. 
+Don't panic, this rest will probably appear later.
+</p>
 
+<p>If you run into any issues, <strike>don't hesitate to</strike> please <a href= "https://github.com/Rhombik/rhombik-object-repository/issues">open a bug report</a>. We appreciate it, even if we probably won't have time to get to it right away.</p>
+</div>
 {% endif %}
 
-<h3>Import</h3>
+<h3>Thingiverse import</h3>
 <form action="/import/" method="post">{% csrf_token %}
 {{ importerForm }}
 <input type="submit" name="action" value="Import" />
