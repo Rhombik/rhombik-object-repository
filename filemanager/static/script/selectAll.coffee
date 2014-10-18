@@ -4,46 +4,41 @@
 
 # (by this, I mean the writing of a script for pretty selection)
 
-setElementsSelected = (array,select) ->
-    console.log("hi")
-    console.log(array)
-    if select
-        for element in array
-            element.checked=true
-    else
-        for element in array
-            element.checked=false
         
-toggleGlobalSelect: (array,targetboxes, value) ->
-        console.log("got here")
-        if selected
-            @selected=false
-            setElementsSelected(array,targetboxes, true)
-        else
-            @selected=true
-            setElementsSelected(array,targetboxes, false)
-
 class window.selectAllTool
-    oldbox=null
-    selected=null
-    targetboxes=null
-    newbox=null
 
-    constructor: () ->
+    oldbox: null
+    selected: null
+    targetboxes: []
+    newbox: null
+
+    selectBoxes: () ->
+        console.log("hi")
+        console.log(this.targetboxes)
+        console.log("hi")
+        if this.selected
+            console.log("hi")
+            this.selected=false
+            for element in this.targetboxes
+                element.checked=true
+        else
+            this.selected=true
+            for element in this.targetboxes
+                element.checked=false
 
     startup: (allbox, targetboxes) ->
-        @selected=false
-        @targetboxes = document.getElementsByClassName(targetboxes)
-        console.log(@targetboxes)
+        this.selected=true
+        this.targetboxes = document.getElementsByClassName(targetboxes)
+        console.log(this.targetboxes)
         div = $ "<div>BleeBloo</div>"
         div.addClass "coffee-selectAllBox"
-        @oldbox = $(allbox)
-        console.log(@oldbox)
-        @oldbox.hide()
+        this.oldbox = $(allbox)
+        console.log(this.oldbox)
+        this.oldbox.hide()
         div.click ->
           console.log("MURB")
-          setElementsSelected(@targetboxes,@selected)
-          @selected.toggle
-        @newbox = div
-        @oldbox.after(@newbox)
+          allBox.selectBoxes()
+          this.selectBoxes()
+        this.newbox = div
+        this.oldbox.after(this.newbox)
 
