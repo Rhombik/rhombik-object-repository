@@ -34,7 +34,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from django.core.context_processors import csrf
 
-def draftview(RequestContext):
+def draftview(RequestContext, scraperMessage=False):
     request = RequestContext
     projects = Project.objects.filter(author=int(request.user.id), draft=True)
     toomanydrafts = False
@@ -42,7 +42,7 @@ def draftview(RequestContext):
         toomanydrafts = True
     listdata = project_list_get(projects, purge=False)
     importForm=ImportForm()
-    c = dict(toomanydrafts = toomanydrafts, listdata=listdata, user=request.user, active="home", importerForm=importForm)
+    c = dict(toomanydrafts = toomanydrafts, listdata=listdata, user=request.user, active="home", importerForm=importForm, scraperMessage=scraperMessage)
     c.update(csrf(request))
     if projects:
         return render_to_response("drafts.html", c)

@@ -15,6 +15,23 @@
 <script>
     allBox = new selectAllTool();
 </script>
+
+{% if scraperMessage %}
+Hi! It looks like you're importing some things from thingiverse!
+
+Depending on how many things you are importing, and a myriad of other things, this could take some time.
+
+You can hit refresh every now and again to see how it's going. Also, feel free to email one of us devs if you're experiencing troubles.
+
+{% endif %}
+
+<h3>Import</h3>
+<form action="/import/" method="post">{% csrf_token %}
+{{ importerForm }}
+<input type="submit" name="action" value="Import" />
+<input type="submit" name="action" value="Cancel" />
+</form>
+
 <h2>Drafts</h2>
 
 <style>
@@ -204,13 +221,6 @@
             </span>
         </div>
     {% endif %}
-
-<h3>Import</h3>
-<form action="/import/" method="post">{% csrf_token %}
-{{ importerForm }}
-<input type="submit" name="action" value="Import" />
-<input type="submit" name="action" value="Cancel" />
-</form>
 
 {% endblock content %}
 
