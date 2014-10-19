@@ -1,3 +1,7 @@
+.jsonly{
+    display: none;
+}
+
 input#navHack {
 	display: block;
 	position: absolute;
