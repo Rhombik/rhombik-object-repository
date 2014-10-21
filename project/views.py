@@ -97,7 +97,7 @@ def project_list_get(projects, purge=True):
 
     listdata = []
     for project in projects:
-        if project.enf_consistancy() == True or purge == False:
+        if project and (project.enf_consistancy() == True or purge == False):
             object_type = ContentType.objects.get_for_model(project)
             try: 
                 project.thumbnail

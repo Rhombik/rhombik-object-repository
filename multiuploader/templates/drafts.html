@@ -82,14 +82,35 @@ Don't panic, this rest will probably appear later.
     background: transparent;
     border: none;
 }
+{# Change css content #}
+.selectBox + label .on{
+     visibility: hidden;
+     display:none;
+     font-size:90%;
+     left:8px;
+     top:-3px;
+}
+
+.selectBox:checked + label .on{
+     visibility: visible;
+     position: absolute;
+     display:inline;
+}
+.selectBox + label .off{
+     position: absolute;
+}
+
+
+{# Normal css stuff, mostly #}
 
 .selectBox:checked + label{
     color:#3A6A25;
 }
-
-
 .selectBox + label:hover{
     color:#3A5A25;
+}
+.selectBox:checked + label:hover{
+    color:#1A4A05;
 }
 
 .selectBox:checked + label + div{
@@ -174,7 +195,7 @@ Don't panic, this rest will probably appear later.
 {% endif %}
 <div>
 	<input class="selectBox" type="checkbox" form="itemSelectForm" value="{{ project.id }}" id="select-{{ project.id }}" name="p"/>
-	<label for="select-{{ project.id }}"><i class="fi-checkbox"></i></label>
+	<label for="select-{{ project.id }}"><i class="fi-annotate off"></i><i class="fi-check on"></i></label>
 		<div class="projecthumb">
 			<form action="/project/{{ project.id }}/delete/" method="post">{% csrf_token %}
 				{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' />#}
