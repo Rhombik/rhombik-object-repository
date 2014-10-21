@@ -157,21 +157,7 @@ Don't panic, this rest will probably appear later.
 <div class="span12">
 <form id="itemSelectForm" method="post" action="/api/project/">
  {% csrf_token %}
- <input class="selectAllBox" type="checkbox" value="True" id="select-all" name="all"
-          onclick="
-//	    //all the checkboxes on the page
-//	    var boxes = document.getElementsByClassName('selectBox');
-//	    //this checkbox, the select all box.
-//	    var allbox = document.getElementsByClassName('selectAllBox')[0];
-//	    //We don't really want to delete all.
-//	    //so set the value false
-//	    allbox.value='';
-//	    //set all the boxes to be as checked as the allbox
-//	    for (i=0; i<boxes.length; i++){
-//	        boxes[i].checked=allbox.checked;
-//		}
-"
-	    />
+ <input class="selectAllBox" type="checkbox" value="True" id="select-all" name="all"/>
  <label for="select-all">Select All</label>
 {# <button type="submit" class="jsonly" onClick="">Clear Selection</button>#}
  <button type="submit" name="action" value="Publish" >Publish Selected</button>
