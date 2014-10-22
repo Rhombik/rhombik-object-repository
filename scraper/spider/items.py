@@ -27,6 +27,7 @@ class ProjectItem(CountedItem):
         project.save()
         print("this is def happening")
         super(ProjectItem, self).save()
+	print(self['license'])
 
 
 

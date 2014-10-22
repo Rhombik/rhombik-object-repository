@@ -92,15 +92,15 @@ class ThingiverseSpider(CrawlSpider):
         readme =  h2t.handle(response.selector.xpath("//*[@id = 'description']").extract()[0].strip())
         projectObject['readme'] = readme
         print("PROJECT OBJECT "+projectObject['title']+" getting yielded")
-        yield projectObject
         #also a markdown file I guess we'd want.
         try:
             instructions =  h2t.handle(response.selector.xpath("//*[@id = 'instructions']").extract()[0].strip())
         except IndexError:
             print("xpath to get the instructions IndexError'd")
         licenseurl =response.selector.xpath("//*[contains(@class,\'license-text\')]/a/@href")[2].extract()
-	projectObject['license']=licenseurl
+	projectObject['license']=h2t.handle(licenseurl)
         tags = response.selector.xpath("//*[contains(@class,\'thing-info-content thing-detail-tags-container\')]/a/text()").extract()
+        yield projectObject
         #Grab only raw images.        
         imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')
         filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]/a/@href')
