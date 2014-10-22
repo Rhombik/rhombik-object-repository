@@ -123,33 +123,36 @@ class Project(models.Model):
         else:
             print(form.errors)
 
-    def saveReadme(self, readmeText):
-	from django.core.exceptions import ObjectDoesNotExist
-	try:
-	    self.bodyFile.filename.delete()
-	    self.bodyFile.delete()
-	except AttributeError:
-		pass
-	except ObjectDoesNotExist:
-		pass
+    def saveTextFile(self, title, text, isReadme=False):
 
-        bodyText = fileobject()
-        bodyText.parent = self
-        bodyText.save()
-        self.bodyFile = bodyText
+        textFile = fileobject()
+        textFile.parent = self
+        textFile.save()
 
         from django.core.files.uploadedfile import UploadedFile
         from io import StringIO
 
-        io = StringIO(readmeText)
+        io = StringIO(text)
         txfl = UploadedFile(io)
 
-        self.bodyFile.filename.save('README.md', txfl)
+        textFile.filename.save(title, txfl)
 
         txfl.close()
         io.close()
 
-        self.bodyFile.save()
+
+        if isReadme:
+		from django.core.exceptions import ObjectDoesNotExist
+		try:
+		    self.bodyFile.filename.delete()
+		    self.bodyFile.delete()
+		except AttributeError:
+			pass
+		except ObjectDoesNotExist:
+			pass
+        
+                self.bodyFile = textFile
+                #self.bodyFile.save()
 
     def enf_consistancy(self):
         #checks if there's a thumbnail.

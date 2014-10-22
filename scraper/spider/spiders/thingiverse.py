@@ -99,6 +99,7 @@ class ThingiverseSpider(CrawlSpider):
         except IndexError:
             print("xpath to get the instructions IndexError'd")
         licenseurl =response.selector.xpath("//*[contains(@class,\'license-text\')]/a/@href")[2].extract()
+	projectObject['license']=licenseurl
         tags = response.selector.xpath("//*[contains(@class,\'thing-info-content thing-detail-tags-container\')]/a/text()").extract()
         #Grab only raw images.        
         imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')
