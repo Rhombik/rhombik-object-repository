@@ -16,6 +16,7 @@ class ProjectItem(CountedItem):
     django_model = Project
     readme = scrapy.Field()
     license = scrapy.Field()
+    instructions = scrapy.Field()
     def save(self):
         project=Project()
         project.valid=False
@@ -23,11 +24,12 @@ class ProjectItem(CountedItem):
         project.title=self['title']
         project.save()
         project.saveTextFile("README.md",self['readme'], isReadme=True)
-	project.saveTextFile("License.txt",self['license'])
+        if 'instructions' in self:
+            project.saveTextFile("Instructions.txt",self['instructions'])
+        project.saveTextFile("License.txt",self['license'])
         project.save()
         print("this is def happening")
         super(ProjectItem, self).save()
-	print(self['license'])
 
 
 

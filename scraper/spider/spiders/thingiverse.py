@@ -89,16 +89,24 @@ class ThingiverseSpider(CrawlSpider):
         h2t = html2text.HTML2Text()
         h2t.ignore_links = True
         #Get the reame file, do stuff to it.
-        readme =  h2t.handle(response.selector.xpath("//*[@id = 'description']").extract()[0].strip())
-        projectObject['readme'] = readme
+        readme = h2t.handle(response.selector.xpath("//*[@id = 'description']").extract()[0].strip())
+	import unicodedata
+        projectObject['readme'] = u""+unicodedata.normalize('NFKD',readme).encode('ascii','ignore')
         print("PROJECT OBJECT "+projectObject['title']+" getting yielded")
         #also a markdown file I guess we'd want.
         try:
-            instructions =  h2t.handle(response.selector.xpath("//*[@id = 'instructions']").extract()[0].strip())
+            instructions = u""+h2t.handle(response.selector.xpath("//*[@id = 'instructions']").extract()[0].strip())
+            projectObject['instructions']=instructions
         except IndexError:
             print("xpath to get the instructions IndexError'd")
-        licenseurl =response.selector.xpath("//*[contains(@class,\'license-text\')]/a/@href")[2].extract()
-	projectObject['license']=h2t.handle(licenseurl)
+	## now, because the format of the license on thingi is always the same, we can pull this off.
+	## but I expect it is rather fragile.
+        licenseurl =response.selector.xpath("//*[contains(@class,\'license-text\')]/a/@href")[2].extract().strip()
+	licensetext = response.selector.xpath("//*[contains(@class,\'license-text\')]/a/text()")[1].extract().strip()
+	print("THE LICENSE TEXT IS::: ")
+	print(licensetext)
+	projectObject['license']="["+licensetext+"]("+licenseurl+")"
+	#projectObject['license']=h2t.handle(licenseurl)
         tags = response.selector.xpath("//*[contains(@class,\'thing-info-content thing-detail-tags-container\')]/a/text()").extract()
         yield projectObject
         #Grab only raw images.        
