@@ -17,7 +17,8 @@ class zippedobjectAdmin(admin.ModelAdmin):
 admin.site.register(zippedobject,zippedobjectAdmin)
 
 class thumbobjectAdmin(admin.ModelAdmin):
-   list_display = ["fileobject",'filename', 'filex', 'filey'] 
+    list_filter = ('filetype',)
+    list_display = ["fileobject",'filename', 'filetype', 'filex', 'filey'] 
 
 admin.site.register(thumbobject,thumbobjectAdmin)
 
