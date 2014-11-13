@@ -7,6 +7,7 @@ class fileobjectInline(generic.GenericTabularInline):
     extra = 0
 
 class fileobjectAdmin(admin.ModelAdmin):
+    list_filter = ('filetype',)
     search_fields = ["project"]
 
 admin.site.register(fileobject,fileobjectAdmin)
