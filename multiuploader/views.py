@@ -44,10 +44,7 @@ def draftview(RequestContext, scraperMessage=False):
     importForm=ImportForm()
     c = dict(toomanydrafts = toomanydrafts, listdata=listdata, user=request.user, active="home", importerForm=importForm, scraperMessage=scraperMessage)
     c.update(csrf(request))
-    if projects:
-        return render_to_response("drafts.html", c)
-    else:
-        return redirect("/create/")
+    return render_to_response("drafts.html", c)
 
 
 @csrf_exempt

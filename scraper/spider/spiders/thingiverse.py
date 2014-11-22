@@ -10,16 +10,12 @@ from twisted.internet import reactor
 from scrapy.crawler import Crawler
 from scrapy import log, signals
 from scrapy.utils.project import get_project_settings
-from scraper.spider.settings import ITEM_PIPELINES
-
 from django.contrib.auth.models import User
 
 def runScraper(urls, user):
     userID=user.pk
     spider = ThingiverseSpider(urls, user=user)
     settings = get_project_settings()
-    settings.set('LOG_ENABLED', False)
-    settings.set('ITEM_PIPELINES', ITEM_PIPELINES)
     crawler = Crawler(settings)
     crawler.signals.connect(reactor.stop, signal=signals.spider_closed)
     crawler.configure()
