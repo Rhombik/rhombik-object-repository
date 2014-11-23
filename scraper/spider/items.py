@@ -39,7 +39,7 @@ class fileObjectItem(DjangoItem):
     parent = scrapy.Field()
     def save(self):
         fobj=fileobject()
-	fobj.parent=Project.objects.get(title=self['parent']['title'])
+        fobj.parent=Project.objects.get(title=self['parent']['title'])
 
         from django.core.files.uploadedfile import UploadedFile
         from io import BytesIO

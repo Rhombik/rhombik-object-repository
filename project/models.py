@@ -12,7 +12,6 @@ import project.tasks
 ##Does this actuall work? I don't think it does.... It seems to always return(SET_NULL)
 ##I've disabled it. Now whenever a fileobject gets deleted, it starts a task checking for null fields.
 def select_thumbnail(instance):
-   #project=Project.objects.filter(title=title)
     files=fileobject.objects.filter(pk=instance)###  This gets a list of files from the project
     for fl in files:
         if fl.filetype != 'norender' and fl.filetype != "text" and fl.filename != project.thumbnail:### Look for thumbnailable pic.
@@ -30,7 +29,7 @@ class Project(models.Model):
     thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_DEFAULT, related_name='thumbnail', default=None)
     body = models.TextField(blank=True, null=True)
 
-    #This exists soley so that we can find prohects that don't have a readme.
+    #This exists soley so that we can find projects that don't have a readme.
     bodyFile = models.ForeignKey('filemanager.fileobject', blank=True, null=True, related_name='readme', on_delete=models.SET_NULL)
 
     created = models.DateTimeField(auto_now_add = True)
