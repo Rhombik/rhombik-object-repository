@@ -9,8 +9,8 @@
 #
 BOT_NAME = 'spider'
 
-SPIDER_MODULES = ['spider.spiders']
-NEWSPIDER_MODULE = 'spider.spiders'
+SPIDER_MODULES = ['scraper.spider.spiders']
+NEWSPIDER_MODULE = 'scraper.spider.spiders'
 LOG_LEVEL = 'DEBUG'
 
 ITEM_PIPELINES = {
