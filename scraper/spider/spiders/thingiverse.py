@@ -43,7 +43,7 @@ class ThingiverseSpider(CrawlSpider):
         return requests
 
     def parse(self, response):
-        ## if it's a thing it's not a project.
+        ## if it's a thing it's not a profile.
         if re.search('thing:\d\d+',response.url):
             print("SCRAPING THING : "+response.url)
             yield scrapy.http.Request(url=response.url, callback=self.project)
@@ -76,6 +76,8 @@ class ThingiverseSpider(CrawlSpider):
             if i.url[-1] == '/':
                 i.url=i.url[:-1]
             yield scrapy.http.Request(url=i.url, callback=self.project)
+
+###This is where we get items. Everything else is just URL handling.
 
     def project(self,response):
         projectObject=ProjectItem()

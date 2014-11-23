@@ -19,11 +19,11 @@ body {
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  min-height: 100px;
+  height: 100px;
   color: $light-text;
   padding-top: 8px;
   background-color: $primary-color;
-  z-index: -100;
+  z-index: 100;
 }
 
 .footer h2{

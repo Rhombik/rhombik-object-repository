@@ -1,122 +1,124 @@
 <!DOCTYPE HTML>
 <html lang="en">
-{% load static %}
-{% load scss %}
+	{% load static %}
+	{% load scss %}
 
-<head>
-	<meta charset="utf-8">
-	<meta name="description" content="">
-	<link rel='shortcut icon' type='image/x-icon' href='{% static "" %}/rhombik/img/favicon.ico' />
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<link rel='shortcut icon' type='image/x-icon' href='{% static "" %}/rhombik/img/favicon.ico' />
 
-    {% comment %}
-    %%%%%%%%%%%%%%%%%%%% Boostrap core CSS
-    {% endcomment %}
-    <link href="{% static "" %}bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="{% static "" %}bootstrap_theme/css/rhombik_magic_bootstrap.css" rel="stylesheet" type="text/css" />
+		{% comment %}
+		%%%%%%%%%%%%%%%%%%%% Boostrap core CSS
+		{% endcomment %}
+		<link href="{% static "" %}bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="{% static "" %}bootstrap_theme/css/rhombik_magic_bootstrap.css" rel="stylesheet" type="text/css" />
 
-    {% comment %}
-    %%%%%%%%%%%%%%%%%%%% Old Rhombik CSS
-    {% endcomment %}
+		{% comment %}
+		%%%%%%%%%%%%%%%%%%%% Old Rhombik CSS
+		{% endcomment %}
 
-    <link href="{% static "" %}{% scss "rhombik/css/global.scss"%}" media="screen, projection" rel="stylesheet" type="text/css">
-    <link href="{% static "" %}{% scss "rhombik/css/spin.scss"%}" media="screen, projection" rel="stylesheet" type="text/css"> 
- 
-    <noscript><link href="{% static ""%}rhombik/css/noscript.css" media="screen" rel="stylesheet" type="text/css"></noscript>
-    <link href="{% static ""%}rhombik/css/foundation-icons.css" media="screen, projection" rel="stylesheet" type="text/css">
+		<link href="{% static "" %}{% scss "rhombik/css/global.scss"%}" media="screen, projection" rel="stylesheet" type="text/css">
+		<link href="{% static "" %}{% scss "rhombik/css/spin.scss"%}" media="screen, projection" rel="stylesheet" type="text/css"> 
 
-    {% comment %}
-    %%%%%%%%%%%%%%%%%%%% jQuery UI CSS
-    {% endcomment %}
-    <link href="{% static "" %}taggit_autocomplete/css/jquery.tagit.css" rel="stylesheet" type="text/css">
-    <link href="{% static "" %}rhombik/css/rhombikPurple/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css">
+		<noscript><link href="{% static ""%}rhombik/css/noscript.css" media="screen" rel="stylesheet" type="text/css"></noscript>
+		<link href="{% static ""%}rhombik/css/foundation-icons.css" media="screen, projection" rel="stylesheet" type="text/css">
 
-	<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-    <script src="{% static "" %}bootstrap/js/bootstrap.min.js" type="text/javascript" /></script>
+		{% comment %}
+		%%%%%%%%%%%%%%%%%%%% jQuery UI CSS
+		{% endcomment %}
+		<link href="{% static "" %}taggit_autocomplete/css/jquery.tagit.css" rel="stylesheet" type="text/css">
+		<link href="{% static "" %}rhombik/css/rhombikPurple/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css">
 
-    <script src="{% static "" %}rhombik/js/jquery-ui-1.10.4.min.js" type="text/javascript"></script>
-    <script src="{% static "" %}taggit_autocomplete/js/tag-it.min.js" type="text/javascript"></script>
-	<script src="{% static "" %}rhombik/js/modernizr.js" type="text/javascript"></script>
-	<script src="{% static "" %}rhombik/js/customScript.js" type="text/javascript"></script>
+		<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+		<script src="{% static "" %}bootstrap/js/bootstrap.min.js" type="text/javascript" /></script>
 
-<script>
-   var head = document.getElementsByTagName("head")[0];
-   if (head) {
-       var scriptStyles = document.createElement("link");
-       scriptStyles.rel = "stylesheet";
-       scriptStyles.type = "text/css";
-       scriptStyles.href = "{% static "" %}{% scss "rhombik/css/js-enabled.scss"%}";
-       head.appendChild(scriptStyles);
-   }
-    
+		<script src="{% static "" %}rhombik/js/jquery-ui-1.10.4.min.js" type="text/javascript"></script>
+		<script src="{% static "" %}taggit_autocomplete/js/tag-it.min.js" type="text/javascript"></script>
+		<script src="{% static "" %}rhombik/js/modernizr.js" type="text/javascript"></script>
+		<script src="{% static "" %}rhombik/js/customScript.js" type="text/javascript"></script>
 
-    jQuery(document).ready(function () {
-                    thumbloader.wakeUp();
-                 // I am the sanest man alive!
-                 //me too. I don't know if writing a paragraph here about how fucked this is would be useful. I think JS is bad, and I am probably bad in parrellel. There needs to be a better way to do this.
-                    function Init(argument) {
-                        argument.init();
-                    }
-                    function sleep(millis, callback, arg) {
-                        setTimeout(function()
-                                { callback(arg); }
-                        , millis);
-                    }
-                    sleep(70, Init, tabletSearchDrop);
-                });
-
-    //Include css/js-enabled.css if js is enabled.
-</script>
-
-<script src="{% static "script/trier/src/trier.js"%}"></script>
-
-{% load coffeescript %}
-<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/thumbloader.coffee" %}"></script>
-<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/dropwDownSearch.coffee" %}"></script>
-
-<script>
-    thumbloader = new thumbloader("thumblist")
-    tabletSearchDrop = new searchDrop()
-    tabletSearchDrop.registerClass("searchDrop")
-</script>
-
-{% block head %}
-<title>Rhombik - 3D printable files</title>
-{% endblock %}
+		<script>
+var head = document.getElementsByTagName("head")[0];
+if (head) {
+	var scriptStyles = document.createElement("link");
+	scriptStyles.rel = "stylesheet";
+	scriptStyles.type = "text/css";
+	scriptStyles.href = "{% static "" %}{% scss "rhombik/css/js-enabled.scss"%}";
+	head.appendChild(scriptStyles);
+}
 
 
-</head>
+jQuery(document).ready(function () {
+	thumbloader.wakeUp();
+	// I am the sanest man alive!
+	//me too. I don't know if writing a paragraph here about how fucked this is would be useful. I think JS is bad, and I am probably bad in parrellel. There needs to be a better way to do this.
+	function Init(argument) {
+		argument.init();
+	}
+	function sleep(millis, callback, arg) {
+		setTimeout(function()
+				{ callback(arg); }
+				, millis);
+	}
+	sleep(70, Init, tabletSearchDrop);
+});
 
-<div id="wrap">
+//Include css/js-enabled.css if js is enabled.
+		</script>
 
-{% load menu %}
-{% menu  %}
+		<script src="{% static "script/trier/src/trier.js"%}"></script>
 
-<div id="pageContent" onClick="tabletSearchDrop.close()">
-    <div class="container">
-        {% block content %}
-        {% endblock %}
-    </div>
-</div>
+		{% load coffeescript %}
+		<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/thumbloader.coffee" %}"></script>
+		<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/dropwDownSearch.coffee" %}"></script>
 
-</div>
+		<script>
+thumbloader = new thumbloader("thumblist")
+tabletSearchDrop = new searchDrop()
+	tabletSearchDrop.registerClass("searchDrop")
+		</script>
 
-<div class="footer">
-<div class="container">
-<div class="row">
-<div class="col-md-8"><h2>Sponsors</h2>
-</div>
-<div class="col-md-4">
-<h2>info</h2>
-<p>
-<a href="https://github.com/Rhombik/rhombik-object-repository">Source Code</a>
-</p>
-<p>
-<a href="https://github.com/Rhombik/rhombik-object-repository/issues">Contact</a>
-</p>
-<p>
-{#<a href="">IRC</a>#}
-</p>
-</div>
-</div>
-</div>
-</div>
+		{% block head %}
+		<title>Rhombik - 3D printable files</title>
+		{% endblock %}
+
+
+	</head>
+	<body>
+		<div id="wrap">
+
+			{% load menu %}
+			{% menu  %}
+
+			<div id="pageContent" onClick="tabletSearchDrop.close()">
+				<div class="container">
+					{% block content %}
+					{% endblock %}
+				</div>
+			</div>
+
+		</div>
+
+		<div class="footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8"><h2>Sponsors</h2>
+					</div>
+					<div class="col-md-4">
+						<h2>info</h2>
+						<p>
+						<a href="https://github.com/Rhombik/rhombik-object-repository">Source Code</a>
+						</p>
+						<p>
+						<a href="https://github.com/Rhombik/rhombik-object-repository/issues">Contact</a>
+						</p>
+						<p>
+						{#<a href="">IRC</a>#}
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
