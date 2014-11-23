@@ -55,10 +55,6 @@ class fileobject(models.Model):
         super(fileobject, self).save()
 
     def delete(self, *args, **kwargs):
-<<<<<<< HEAD
-=======
-        from project.tasks import ThumbnailEnforcer
->>>>>>> cc53053b8c4eb3d68d6855baf6e80fe3cd7df1a6
         try:
             self.filename.delete()
         except:
