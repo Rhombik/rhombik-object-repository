@@ -25,7 +25,7 @@ class window.selectAllTool
     startup: (allbox, targetboxes) ->
         this.selected=true
         this.targetboxes = document.getElementsByClassName(targetboxes)
-        div = $ "<input type='checkbox'/>"
+        div = $ "<input id='nullSelectAll' type='checkbox'/>"
         div.addClass "coffee-selectAllBox"
         this.oldbox = $(allbox)
         this.oldbox.hide()

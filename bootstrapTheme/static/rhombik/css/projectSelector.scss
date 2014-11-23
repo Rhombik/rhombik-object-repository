@@ -1,0 +1,101 @@
+.box{   
+	position: relative;
+	width: 100%;
+}
+.box:after{
+	content: "";
+	display: block;
+	padding-top: 66%;
+}
+
+.newbox:after{
+	content: "";
+	display: block;
+	padding-top: 25%;
+}
+.newbox:before{
+	content: "";
+	display: block;
+	padding-top: 25%;
+}
+.selectBox + label{
+	position: absolute;
+	z-index:10000;
+	top:-8px;
+	left:25px;
+	margin:0;
+	padding:0;
+	position: absolute;
+	color:#222;
+	font-size: 300%;
+	text-shadow: -2px 0 #eee, 0 2px #eee, 2px 0 #eee, 0 -2px #eee;
+	background: transparent;
+	border: none;
+}
+.selectBox + label .on{
+	visibility: hidden;
+	display:none;
+	font-size:90%;
+	left:8px;
+	top:-3px;
+}
+
+.selectBox:checked + label .on{
+	visibility: visible;
+	position: absolute;
+	display:inline;
+}
+
+.selectBox + label .off{
+	position: absolute;
+}
+
+.selectBox:checked + label{
+	color:#3A6A25;
+}
+.selectBox + label:hover{
+	color:#3A5A25;
+}
+.selectBox:checked + label:hover{
+	color:#1A4A05;
+}
+
+.selectBox:checked + label + div{
+	box-shadow: 0px 0px 6px 6px #5A8A45;
+}
+
+.selectBox{
+	display:none;
+}
+
+.bigredx{
+	position: absolute;
+	color:#b44;
+	right: 25px;
+	font-size: 200%;
+	z-index:10000;
+	text-shadow: -2px 0 #eee, 0 2px #eee, 2px 0 #eee, 0 -2px #eee;
+	background: transparent;
+	border: none;
+}
+.bigredx:hover{
+	color:#b11;
+}
+
+.stripe-1 {
+	background: -webkit-repeating-linear-gradient(45deg, #eee, #eee 10px, #3e3e3e 10px, #3e3e3e 20px);
+	background: repeating-linear-gradient(45deg, #eee, #eee 10px, #e3e3e3 10px, #e3e3e3 20px);
+}
+
+.center {
+	text-align:center;
+	width: 100%;
+	color: #000;
+	font-size: 150%;
+}
+
+
+.fi-plus .center{
+	font-size: 150%;
+}
+
