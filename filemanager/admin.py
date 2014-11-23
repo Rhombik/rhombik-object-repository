@@ -7,6 +7,7 @@ class fileobjectInline(generic.GenericTabularInline):
     extra = 0
 
 class fileobjectAdmin(admin.ModelAdmin):
+    list_filter = ('filetype',)
     search_fields = ["project"]
 
 admin.site.register(fileobject,fileobjectAdmin)
@@ -17,7 +18,8 @@ class zippedobjectAdmin(admin.ModelAdmin):
 admin.site.register(zippedobject,zippedobjectAdmin)
 
 class thumbobjectAdmin(admin.ModelAdmin):
-   list_display = ["fileobject",'filename', 'filex', 'filey'] 
+    list_filter = ('filetype',)
+    list_display = ["fileobject",'filename', 'filetype', 'filex', 'filey'] 
 
 admin.site.register(thumbobject,thumbobjectAdmin)
 

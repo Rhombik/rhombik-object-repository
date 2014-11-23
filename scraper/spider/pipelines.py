@@ -23,7 +23,7 @@ class saveProject(object):
 
 class saveThing(object):
     def process_item(self, item, spider):
-        if type(item) == type(fileObjectItem()):
+        if type(item) == fileObjectItem:
            print("THE SIDmap:::")
            print(djangoAutoItem.SIDmap)
            item['parent']=djangoAutoItem.SIDmap[item['parent']]
@@ -32,7 +32,7 @@ class saveThing(object):
 
 class saveProjectAgain(object):
     def process_item(self, item, spider):
-        if type(item) == type(ProjectItem()):
+        if type(item) == ProjectItem:
             newitem = djangoAutoItem.SIDmap[item['SID']]
             newitem.save()
         return item

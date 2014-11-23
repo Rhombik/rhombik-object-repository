@@ -4,6 +4,7 @@ import sys
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Settings.settings")
+    os.environ.setdefault("SCRAPY_SETTINGS_MODULE", "scraper.spider.settings")
 
     from django.core.management import execute_from_command_line
 

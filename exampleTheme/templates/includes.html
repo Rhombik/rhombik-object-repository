@@ -27,6 +27,7 @@
 
 //Thinkgs to do when the dom is loaded
 jQuery(document).ready(function () {
+// thumbloader checks to see if thumbnails are finished generating every few secs until it loads them all.
                 thumbloader.wakeUp();
             });
 //Include css/js-enabled.css if js is enabled.
@@ -42,15 +43,18 @@ jQuery(document).ready(function () {
 }());
 </script>
 
+<!-- import custom scripts. Most are coffeescript! -->
 <script src="{% static "script/trier/src/trier.js"%}"></script>
 {% load coffeescript %}
 <script type="text/javascript"  src="{% static "" %}{% coffeescript "script/thumbloader.coffee" %}"></script>
 <script type="text/javascript"  src="{% static "" %}{% coffeescript "script/dropwDownSearch.coffee" %}"></script>
 
+<!-- initialize stuff that can be initialized before the document finishes loading -->
 <script>
     thumbloader = new thumbloader("thumblist")
     tabletSearchDrop = new searchDrop()
     tabletSearchDrop.registerClass("searchDrop")
+    
 </script>
 
 </head>

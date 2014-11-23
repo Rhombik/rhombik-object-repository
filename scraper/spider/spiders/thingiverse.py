@@ -10,22 +10,18 @@ from twisted.internet import reactor
 from scrapy.crawler import Crawler
 from scrapy import log, signals
 from scrapy.utils.project import get_project_settings
-from scraper.spider.settings import ITEM_PIPELINES
-
 from django.contrib.auth.models import User
 
 def runScraper(urls, user):
     userID=user.pk
     spider = ThingiverseSpider(urls, user=user)
     settings = get_project_settings()
-    settings.set('LOG_ENABLED', False)
-    settings.set('ITEM_PIPELINES', ITEM_PIPELINES)
     crawler = Crawler(settings)
     crawler.signals.connect(reactor.stop, signal=signals.spider_closed)
     crawler.configure()
     crawler.crawl(spider)
     crawler.start()
-    reactor.run()
+    reactor.run(installSignalHandlers=0)
 
 class ThingiverseSpider(CrawlSpider):
     name = "thingiverse"
@@ -89,9 +85,26 @@ class ThingiverseSpider(CrawlSpider):
         import html2text
         h2t = html2text.HTML2Text()
         h2t.ignore_links = True
-        readme =  h2t.handle(response.selector.xpath("//*[@id = 'description']").extract()[0].strip())
-        projectObject['readme'] = readme
+        #Get the reame file, do stuff to it.
+        readme = h2t.handle(response.selector.xpath("//*[@id = 'description']").extract()[0].strip())
+	import unicodedata
+        projectObject['readme'] = u""+unicodedata.normalize('NFKD',readme).encode('ascii','ignore')
         print("PROJECT OBJECT "+projectObject['title']+" getting yielded")
+        #also a markdown file I guess we'd want.
+        try:
+            instructions = u""+h2t.handle(response.selector.xpath("//*[@id = 'instructions']").extract()[0].strip())
+            projectObject['instructions']=instructions
+        except IndexError:
+            print("xpath to get the instructions IndexError'd")
+	## now, because the format of the license on thingi is always the same, we can pull this off.
+	## but I expect it is rather fragile.
+        licenseurl =response.selector.xpath("//*[contains(@class,\'license-text\')]/a/@href")[2].extract().strip()
+	licensetext = response.selector.xpath("//*[contains(@class,\'license-text\')]/a/text()")[1].extract().strip()
+	print("THE LICENSE TEXT IS::: ")
+	print(licensetext)
+	projectObject['license']="["+licensetext+"]("+licenseurl+")"
+	#projectObject['license']=h2t.handle(licenseurl)
+        tags = response.selector.xpath("//*[contains(@class,\'thing-info-content thing-detail-tags-container\')]/a/text()").extract()
         yield projectObject
         #Grab only raw images.        
         imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')

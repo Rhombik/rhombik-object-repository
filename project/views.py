@@ -28,10 +28,39 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf
 from django.core.context_processors import csrf
 
 def searchtest(*args, **kwargs):
-    project = Project.objects.filter(pk=1)[0:1].get()
+    project = Project.objects.filter(pk=1).get()
     return render_to_response('search/indexes/project/project_text.txt', dict(object=project))
 
 from django.shortcuts import redirect
+def api(request):
+    projects=[]
+    ##Get all the project drafts if "selectAll" is selected
+    if request.POST.get('all'):
+        projects=Project.objects.filter(author=request.user,draft=True)
+    else:
+        ##Get selected projects.
+        projects = []
+        for i in request.POST.getlist('p'):
+            ##This query is all we need for authentication! But I am sleep deprived.
+            projects.append(Project.objects.filter(pk=i,author=request.user)[0])
+    response_data=""   
+    ##These should ideally just pass it on to one or more specific functions. 
+    #It would be nice if they returned JSON data, and put it into response_data. So we can at least pretend this is a real api.
+    if request.POST['action'] == "Publish":
+        for i in projects:
+            i.draft=False
+            i.save()
+    if request.POST['action'] == "Delete":
+        for i in projects:
+            i.delete()
+
+    if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
+        mimetype = 'application/json'
+        return HttpResponse(response_data, mimetype=mimetype)
+    return redirect(request.POST['redirect'])
+
+
+
 def delete(RequestContext, pk):
     request=RequestContext
     project = Project.objects.get(pk=pk)
@@ -68,7 +97,7 @@ def project_list_get(projects, purge=True):
 
     listdata = []
     for project in projects:
-        if project.enf_consistancy() == True or purge == False:
+        if project and (project.enf_consistancy() == True or purge == False):
             object_type = ContentType.objects.get_for_model(project)
             try: 
                 project.thumbnail
@@ -232,7 +261,7 @@ def editOrCreateStuff(project, request):
             form.data['title'] = project.title
 
       # Editing the Readme.md file stuff.
-        project.saveReadme(form.cleaned_data["body"])
+        project.saveTextFile("README.md", form.cleaned_data["body"], isReadme=True)
      # Done with editing the README.md textfile.
 
         list_to_tags(form.cleaned_data["tags"], project.tags)
