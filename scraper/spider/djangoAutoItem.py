@@ -16,9 +16,8 @@ class CountedItem(DjangoItem):
     #scrapy ID
     SID = scrapy.Field()
     def save(self):
-        print("I AM A PROJECTOBJECT getting saved")
-        print(self['title'])
-        #super(CountedItem, self).save()
+        print("I AM A CountedItem getting saved")
+        project = super(CountedItem, self).save()
         SIDmap[self['SID']]['django_model']=self.django_model
-        SIDmap[self['SID']]['title']=self['title']
+        SIDmap[self['SID']]['pk']=project.pk
         #super(CountedItem, self).save()

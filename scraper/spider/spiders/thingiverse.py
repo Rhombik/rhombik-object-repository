@@ -78,39 +78,59 @@ class ThingiverseSpider(CrawlSpider):
             yield scrapy.http.Request(url=i.url, callback=self.project)
 
     def project(self,response):
+	
+	## Get the project info proper.
         projectObject=ProjectItem()
         projectObject['author']=User.objects.get(pk=self.user_id)
         projectObject['title']=response.selector.xpath('//*[contains(@class,\'thing-header-data\')]/h1/text()').extract()[0].strip()
+        print("PROJECT OBJECT "+projectObject['title']+" getting yielded")
+        tags = response.selector.xpath("//*[contains(@class,\'thing-info-content thing-detail-tags-container\')]/a/text()").extract()
+        yield projectObject
 
+	## get special text files. (readme, instructions, license)
         import html2text
         h2t = html2text.HTML2Text()
         h2t.ignore_links = True
         #Get the reame file, do stuff to it.
         readme = h2t.handle(response.selector.xpath("//*[@id = 'description']").extract()[0].strip())
 	import unicodedata
-        projectObject['readme'] = u""+unicodedata.normalize('NFKD',readme).encode('ascii','ignore')
-        print("PROJECT OBJECT "+projectObject['title']+" getting yielded")
+	readmeItem=fileObjectItem()
+	readmeItem["name"]="README.md"
+	readmeItem["parent"]=projectObject['SID']
+	readmeItem["filename"]=u""+unicodedata.normalize('NFKD',readme).encode('ascii','ignore')
+        readmeItem['isReadme'] = True
+        yield readmeItem
+        #projectObject['readme'] = u""+unicodedata.normalize('NFKD',readme).encode('ascii','ignore')
         #also a markdown file I guess we'd want.
         try:
-            instructions = u""+h2t.handle(response.selector.xpath("//*[@id = 'instructions']").extract()[0].strip())
-            projectObject['instructions']=instructions
+            instructions = u""+h2t.handle(response.selector.xpath("//*[@id = 'instructions']").extract()[0].strip()).encode('ascii','ignore')
+            instructionItem=fileObjectItem()
+            instructionItem["name"]="Instructions.md"
+            instructionItem["parent"]=projectObject['SID']
+            instructionItem["filename"]=instructions
+            yield instructionItem
         except IndexError:
             print("xpath to get the instructions IndexError'd")
-	## now, because the format of the license on thingi is always the same, we can pull this off.
-	## but I expect it is rather fragile.
+
+        ## now, because the format of the license on thingi is always the same, we can pull this off.
+        ## but I expect it is rather fragile.
         licenseurl =response.selector.xpath("//*[contains(@class,\'license-text\')]/a/@href")[2].extract().strip()
-	licensetext = response.selector.xpath("//*[contains(@class,\'license-text\')]/a/text()")[1].extract().strip()
-	print("THE LICENSE TEXT IS::: ")
-	print(licensetext)
-	projectObject['license']="["+licensetext+"]("+licenseurl+")"
-	#projectObject['license']=h2t.handle(licenseurl)
-        tags = response.selector.xpath("//*[contains(@class,\'thing-info-content thing-detail-tags-container\')]/a/text()").extract()
-        yield projectObject
-        #Grab only raw images.        
-        imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')
+        licensetext = response.selector.xpath("//*[contains(@class,\'license-text\')]/a/text()")[1].extract().strip()
+        print("THE LICENSE TEXT IS::: ")
+        print(licensetext)
+        licenceItem=fileObjectItem()
+        licenceItem["name"]="License.md"
+        licenceItem["parent"]=projectObject['SID']
+        licenceItem["filename"]="["+licensetext+"]("+licenseurl+")"
+        yield licenceItem
+
+	## get all the projects image and file objects
         filelist = response.selector.xpath('//*[contains(@class,\'thing-file\')]/a/@href')
         for i in filelist:
         	yield scrapy.http.Request(url=urlparse.urljoin(response.url, i.extract()), callback=self.item, meta={'parent':projectObject['SID']})
+
+        #Grab only raw images.        
+        imagelist = response.selector.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')
         for i in imagelist:
 	    print("IMAGE:::")
 	    print(urlparse.urljoin(response.url, i.extract()))
@@ -121,16 +141,12 @@ class ThingiverseSpider(CrawlSpider):
         from scraper.spider import djangoAutoItem
         from project.models import Project
         from exceptions import KeyError
+	from pprint import pprint
+	pprint(djangoAutoItem.SIDmap)
         for key in djangoAutoItem.SIDmap:
-            try:
-                project=Project.objects.get(title=djangoAutoItem.SIDmap[key]['title'])
-                print("saving "+str(project)+" again.")
-                project.save(enf_valid=True)
-            except KeyError as e:
-                if str(e)=="'title'":
-                    print("This SIDmap thing has no title. therefore we are not going to save it again.")
-                else:
-                    raise
+            project=Project.objects.get(pk=djangoAutoItem.SIDmap[key]['pk'])
+            print("saving "+str(project)+" again.")
+            project.save(enf_valid=True)
 
 
     def item(self,response):
