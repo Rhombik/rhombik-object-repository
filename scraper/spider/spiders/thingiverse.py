@@ -79,7 +79,7 @@ class ThingiverseSpider(CrawlSpider):
         projectObject=ProjectItem()
         projectObject['author']=User.objects.get(pk=self.user_id)
         projectObject['title']=response.selector.xpath('//*[contains(@class,\'thing-header-data\')]/h1/text()').extract()[0].strip()
-        tags = response.selector.xpath("//*[contains(@class,\'thing-info-content thing-detail-tags-container\')]/a/text()").extract()
+        projectObject['tags'] = response.selector.xpath("//*[contains(@class,\'thing-info-content thing-detail-tags-container\')]/div/a/text()").extract()
         yield projectObject
 
 	## get special text files. (readme, instructions, license)

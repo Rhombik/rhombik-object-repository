@@ -19,3 +19,4 @@ class CountedItem(DjangoItem):
         SIDmap[self['SID']]['django_model']=self.django_model
         SIDmap[self['SID']]['pk']=project.pk
         #super(CountedItem, self).save()
+	return project

@@ -14,6 +14,12 @@ from django.contrib.auth.models import User
 
 class ProjectItem(CountedItem):
     django_model = Project
+    tags = scrapy.Field()
+    def save(self):
+            project=super(ProjectItem, self).save()
+            for tag in self['tags']:
+		    print("adding tag: {}".format(tag))
+                    project.tags.add(tag)
 
 
 class fileObjectItem(DjangoItem):
