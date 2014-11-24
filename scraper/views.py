@@ -10,8 +10,6 @@ def importer(request):
         form = ImportForm(request.POST.copy())
         if form.is_valid() and request.user.is_authenticated():
             user=request.user
-            print("THE USER IS:::")
-            print(user)
             urls=[form.cleaned_data['url']]
             scrapeTask.delay(urls, user)
     return draftview(request, scraperMessage=True)

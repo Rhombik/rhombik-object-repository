@@ -23,8 +23,6 @@ class fileObjectItem(DjangoItem):
     isReadme = scrapy.Field()
     def save(self):
         fobj=fileobject()
-        print("fileObjectItem self  :")
-        print([key for key in self])
 	project=Project.objects.get(pk=self['parent']['pk'])
         fobj.parent=project
 

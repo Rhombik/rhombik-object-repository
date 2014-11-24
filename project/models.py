@@ -90,12 +90,9 @@ class Project(models.Model):
             title = ""
 
         try:
-            print("1")
             readme = self.bodyFile.filename.read()
-            print("2")
         except AttributeError as e:
             if str(e) == "'NoneType' object has no attribute 'filename'":
-                print("The filename does not yet exist. It's fine.")
                 readme = ""
             else:
                 raise
@@ -109,20 +106,17 @@ class Project(models.Model):
             thumbnailstring = "/"+path.split(self.thumbnail.filename.url)[1]
         except AttributeError as e:
             if str(e) == "'NoneType' object has no attribute 'filename'":
-                print("There was no thumbnail. This is to be expected sometimes.")
                 thumbnailstring = ""
 
         return ProjectForm({'title':self.title, 'body': readme, 'thumbnail': thumbnailstring, 'tags' : tags}, self)
 
     def enf_validity(self):
         form = self.get_form()
-        print("CHECKING IF VALID")
         if form.is_valid():
-            print("IS VALID")
             self.valid=True
             super(Project, self).save()
         else:
-            print(form.errors)
+            pass#print(form.errors)
 
     def enf_consistancy(self):
         #checks if there's a thumbnail.

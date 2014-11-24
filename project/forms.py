@@ -32,8 +32,6 @@ def cleanify(self, formName):
     if thumb:
         noThumb = True
         for fl in files:
-            print(str(self.project.pk)+thumb)
-	    print(fl.filename)
             if "uploads/project/"+str(self.project.pk)+thumb == str(fl.filename) and fl.filetype != "norender" and fl.filetype != "text":
                 noThumb = False
                 self.project.thumbnail = fl

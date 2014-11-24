@@ -17,7 +17,6 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 def fileEnforcer(item):
    from filemanager.models import fileobject
    from django.contrib.contenttypes.models import ContentType
-   print(item)
    files = fileobject.objects.filter(object_id=item.id, content_type=ContentType.objects.get_for_model(item))
    for fileItem in files:
       fileItem.delete()
