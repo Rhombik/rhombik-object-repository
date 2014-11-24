@@ -261,7 +261,18 @@ def editOrCreateStuff(project, request):
             form.data['title'] = project.title
 
       # Editing the Readme.md file stuff.
-        project.saveTextFile("README.md", form.cleaned_data["body"], isReadme=True)
+      	if project.bodyFile:
+		project.bodyFile.filename.file.close()
+		project.bodyFile.filename.file.open("w")
+		project.bodyFile.filename.file.write(form.cleaned_data["body"])
+		project.bodyFile.filename.file.close()
+	else:
+		readme=fileobject()
+		readme.parent=project
+		readme.fromText("README.md",form.cleaned_data["body"])
+		readme.save()
+		project.bodyFile=readme
+        #project.setReadme(form.cleaned_data["body"])#.saveTextFile("README.md", form.cleaned_data["body"], isReadme=True)
      # Done with editing the README.md textfile.
 
         list_to_tags(form.cleaned_data["tags"], project.tags)

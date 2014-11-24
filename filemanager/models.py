@@ -48,6 +48,13 @@ class fileobject(models.Model):
         else:
             return
 
+    def fromText(self, title, text):
+
+        from django.core.files.base import ContentFile
+
+        self.filename = ContentFile(text)
+        self.filename.name=title
+
 
     def save(self):
         super(fileobject, self).save()

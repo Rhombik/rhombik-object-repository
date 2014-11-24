@@ -93,7 +93,6 @@ class Project(models.Model):
             readme = self.bodyFile.filename.read()
         except AttributeError as e:
             if str(e) == "'NoneType' object has no attribute 'filename'":
-                print("The filename does not yet exist. It's fine.")
                 readme = ""
             else:
                 raise
@@ -107,51 +106,17 @@ class Project(models.Model):
             thumbnailstring = "/"+path.split(self.thumbnail.filename.url)[1]
         except AttributeError as e:
             if str(e) == "'NoneType' object has no attribute 'filename'":
-                print("There was no thumbnail. This is to be expected sometimes.")
                 thumbnailstring = ""
 
         return ProjectForm({'title':self.title, 'body': readme, 'thumbnail': thumbnailstring, 'tags' : tags}, self)
 
     def enf_validity(self):
         form = self.get_form()
-        print("CHECKING IF VALID")
         if form.is_valid():
-            print("IS VALID")
             self.valid=True
             super(Project, self).save()
         else:
-            print(form.errors)
-
-    def saveTextFile(self, title, text, isReadme=False):
-
-        textFile = fileobject()
-        textFile.parent = self
-        textFile.save()
-
-        from django.core.files.uploadedfile import UploadedFile
-        from io import StringIO
-
-        io = StringIO(text)
-        txfl = UploadedFile(io)
-
-        textFile.filename.save(title, txfl)
-
-        txfl.close()
-        io.close()
-
-
-        if isReadme:
-		from django.core.exceptions import ObjectDoesNotExist
-		try:
-		    self.bodyFile.filename.delete()
-		    self.bodyFile.delete()
-		except AttributeError:
-			pass
-		except ObjectDoesNotExist:
-			pass
-        
-                self.bodyFile = textFile
-                #self.bodyFile.save()
+            pass#print(form.errors)
 
     def enf_consistancy(self):
         #checks if there's a thumbnail.

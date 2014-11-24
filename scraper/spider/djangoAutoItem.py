@@ -11,14 +11,11 @@ class CountedItem(DjangoItem):
     def __init__(self):
         super(CountedItem, self).__init__()
         self['SID'] = next(SIDcount)
-	print("created sid ::: "+str(self['SID']))
         SIDmap[self['SID']] = {}
     #scrapy ID
     SID = scrapy.Field()
     def save(self):
-        print("I AM A PROJECTOBJECT getting saved")
-        print(self['title'])
-        #super(CountedItem, self).save()
+        project = super(CountedItem, self).save()
         SIDmap[self['SID']]['django_model']=self.django_model
-        SIDmap[self['SID']]['title']=self['title']
+        SIDmap[self['SID']]['pk']=project.pk
         #super(CountedItem, self).save()

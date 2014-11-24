@@ -14,44 +14,25 @@ from django.contrib.auth.models import User
 
 class ProjectItem(CountedItem):
     django_model = Project
-    readme = scrapy.Field()
-    license = scrapy.Field()
-    instructions = scrapy.Field()
-    def save(self):
-        project=Project()
-        project.valid=False
-        project.author=self['author']
-        project.title=self['title']
-        project.save()
-        project.saveTextFile("README.md",self['readme'], isReadme=True)
-        if 'instructions' in self:
-            project.saveTextFile("Instructions.txt",self['instructions'])
-        project.saveTextFile("License.txt",self['license'])
-        project.save()
-        print("this is def happening")
-        super(ProjectItem, self).save()
-
 
 
 class fileObjectItem(DjangoItem):
     django_model = fileobject
     name = scrapy.Field()
     parent = scrapy.Field()
+    isReadme = scrapy.Field()
     def save(self):
         fobj=fileobject()
-        fobj.parent=Project.objects.get(title=self['parent']['title'])
+	project=Project.objects.get(pk=self['parent']['pk'])
+        fobj.parent=project
 
-        from django.core.files.uploadedfile import UploadedFile
-        from io import BytesIO
-
-        io = BytesIO(self['filename'])
-        fl = UploadedFile(io)
-
-        fobj.filename.save(self['name'], fl)
-
-        fl.close()
-        io.close()
+        fobj.fromText(self['name'],self['filename'])
 
 	fobj.save()
+
+	if 'isReadme' in self:
+	    if self['isReadme']:
+	        project.bodyFile=fobj
+	        project.save()
 
 
