@@ -5,242 +5,134 @@
 <!-- coffeescript is fun -->
 {% load static %}
 <script>
-  $(document).ready(function(){
-    console.log("did that");
-    allBox.startup("#select-all","selectBox");
-  });
+$(document).ready(function(){
+	console.log("did that");
+	allBox.startup("#select-all","selectBox");
+});
 </script>
 {% load coffeescript %}
 <script type="text/javascript"  src="{% static "" %}{% coffeescript "script/selectAll.coffee" %}"></script>
 <script>
-    allBox = new selectAllTool();
+allBox = new selectAllTool();
 </script>
 
 {% if scraperMessage %}
 <div id="aboutPage">
-<p>Hi, it looks like you're importing some content from thingiverse! Hopefully it works! 
-This is a fairly new feature, and it might just not work. The thingiverse API explicitly dissallows "using the Thingiverse API for any application that replicates or attempts to replace the essential user experience of Thingiverse.com or that competes with the services of Thingiverse".</p>
+	<p>Hi, it looks like you're importing some content from thingiverse! Hopefully it works! 
+	This is a fairly new feature, and it might just not work. The thingiverse API explicitly dissallows "using the Thingiverse API for any application that replicates or attempts to replace the essential user experience of Thingiverse.com or that competes with the services of Thingiverse".</p>
 
-<p>
-Thanksfully simply scraping the content off of their public facing website seems entirely legel. But we will need to change our code base any time the public facing thingiverse content changes.
-</p>
+	<p>
+	Thanksfully simply scraping the content off of their public facing website seems entirely legel. But we will need to change our code base any time the public facing thingiverse content changes.
+	</p>
 
-<p>Depending on how many things you are importing, and a myriad of other factors, this could take some time. 
-Tracking the imports progress is something we're working on. 
-For now you can hit refresh every now and again to see how it's going. 
-Objects and projects will appear as soon as we've downloaded them, so you may see a project that looks half imported. 
-Don't panic, this rest will probably appear later.
-</p>
+	<p>Depending on how many things you are importing, and a myriad of other factors, this could take some time. 
+	Tracking the imports progress is something we're working on. 
+	For now you can hit refresh every now and again to see how it's going. 
+	Objects and projects will appear as soon as we've downloaded them, so you may see a project that looks half imported. 
+	Don't panic, this rest will probably appear later.
+	</p>
 
-<p>If you run into any issues, <strike>don't hesitate to</strike> please <a href= "https://github.com/Rhombik/rhombik-object-repository/issues">open a bug report</a>. We appreciate it, even if we probably won't have time to get to it right away.</p>
+	<p>If you run into any issues, <strike>don't hesitate to</strike> please <a href= "https://github.com/Rhombik/rhombik-object-repository/issues">open a bug report</a>. We appreciate it, even if we probably won't have time to get to it right away.</p>
 </div>
 {% endif %}
 
 <h3>Thingiverse import</h3>
 <form action="/import/" method="post">{% csrf_token %}
-{{ importerForm }}
-<input type="submit" name="action" value="Import" />
-<input type="submit" name="action" value="Cancel" />
+	{{ importerForm }}
+	<input type="submit" name="action" value="Import" />
+	<input type="submit" name="action" value="Cancel" />
 </form>
 
 <h2>Drafts</h2>
 
-<style>
-{#AHAHAHAHAHAHAHA#}
-.box{
-	position: relative;
-	width: 100%;
-}
-.box:after{
-	content: "";
-	display: block;
-	padding-top: 66%; 
-}
-
-.newbox:after{
-        content: "";
-        display: block;
-        padding-top: 25%;
-}
-{# The publish and delete stuff http://csswizardry.com/2011/02/css-powered-ribbons-the-clean-way/ http://jsfiddle.net/bXuY8/5/#}
-.newbox:before{
-        content: "";
-        display: block;
-        padding-top: 25%;
-}
-.selectBox + label{
-    position: absolute;
-    z-index:10000;
-    top:-8px;
-    left:25px;
-    margin:0;
-    padding:0;
-    position: absolute;
-    color:#222;
-    font-size: 300%;
-    text-shadow: -2px 0 #eee, 0 2px #eee, 2px 0 #eee, 0 -2px #eee;
-    background: transparent;
-    border: none;
-}
-{# Change css content #}
-.selectBox + label .on{
-     visibility: hidden;
-     display:none;
-     font-size:90%;
-     left:8px;
-     top:-3px;
-}
-
-.selectBox:checked + label .on{
-     visibility: visible;
-     position: absolute;
-     display:inline;
-}
-.selectBox + label .off{
-     position: absolute;
-}
-
-
-{# Normal css stuff, mostly #}
-
-.selectBox:checked + label{
-    color:#3A6A25;
-}
-.selectBox + label:hover{
-    color:#3A5A25;
-}
-.selectBox:checked + label:hover{
-    color:#1A4A05;
-}
-
-.selectBox:checked + label + div{
-  box-shadow: 0px 0px 6px 6px #5A8A45;
-}
-
-.selectBox{
-    display:none;
-}
-
-.bigredx{
-    position: absolute;
-    color:#b44;
-    right: 25px;
-    font-size: 200%;
-    z-index:10000;
-    text-shadow: -2px 0 #eee, 0 2px #eee, 2px 0 #eee, 0 -2px #eee;
-    background: transparent;
-    border: none;
-}
-.bigredx:hover{
-    color:#b11;
-}
-
-.stripe-1 {
-  background: -webkit-repeating-linear-gradient(45deg, #eee, #eee 10px, #3e3e3e 10px, #3e3e3e 20px);
-  background: repeating-linear-gradient(45deg, #eee, #eee 10px, #e3e3e3 10px, #e3e3e3 20px);
-}
-
-.center {
-    text-align:center;
-    width: 100%;
-    color: #000;
-    font-size: 150%;
-}
-
-.fi-plus .center{
-    font-size: 150%;
-}
-
-</style>
-
 <div class="">
-<div class="span12">
-<form id="itemSelectForm" method="post" action="/api/project/">
- {% csrf_token %}
- <input class="selectAllBox" type="checkbox" value="True" id="select-all" name="all"/>
- <label for="select-all">Select All</label>
-{# <button type="submit" class="jsonly" onClick="">Clear Selection</button>#}
- <button type="submit" name="action" value="Publish" >Publish Selected</button>
- <button type="submit" name="action" value="Delete" />Delete Selected</button>
- <input type="hidden" name="redirect" value="/mydrafts/">
-</form>
-</div>
+	<div class="span12">
+		<form id="itemSelectForm" method="post" action="/api/project/">
+			{% csrf_token %}
+			<input class="selectAllBox" type="checkbox" value="True" id="select-all" name="all"/>
+			<label for="select-all"><label for="nullSelectAll">Select All</label></label>
+			{# <button type="submit" class="jsonly" onClick="">Clear Selection</button>#}
+			<button type="submit" name="action" value="Publish" >Publish Selected</button>
+			<button type="submit" name="action" value="Delete" />Delete Selected</button>
+			<input type="hidden" name="redirect" value="/mydrafts/">
+		</form>
+	</div>
 </div>
 <h3></h3>
 <div class="row">
-    <!-- Projects-->
-    {% for project, thumb in listdata %}
-<div class="col-xs-6 col-md-3">
-{% if project.valid %}
-<form action="/project/{{ project.id }}/publish/" method="post">{% csrf_token %}
-{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' /> #}
-    <button type="submit" class="buttonless ribbon">Publish</button>
-    <div class="ribbonedge"></div>
+	<!-- Projects-->
+	{% for project, thumb in listdata %}
+	<div class="col-xs-6 col-md-3">
+		{% if project.valid %}
+		<form action="/project/{{ project.id }}/publish/" method="post">{% csrf_token %}
+			{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' /> #}
+			<button type="submit" class="buttonless ribbon">Publish</button>
+			<div class="ribbonedge"></div>
 
-</form>
-{% endif %}
-<div>
-	<input class="selectBox" type="checkbox" form="itemSelectForm" value="{{ project.id }}" id="select-{{ project.id }}" name="p"/>
-	<label for="select-{{ project.id }}"><i class="fi-annotate off"></i><i class="fi-check on"></i></label>
-		<div class="projecthumb">
-			<form action="/project/{{ project.id }}/delete/" method="post">{% csrf_token %}
-				{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' />#}
-				<button type="submit" class="fi-x bigredx"></button>
-			</form>
+		</form>
+		{% endif %}
+		<div>
+			<input class="selectBox" type="checkbox" form="itemSelectForm" value="{{ project.id }}" id="select-{{ project.id }}" name="p"/>
+			<label for="select-{{ project.id }}"><i class="fi-annotate off"></i><i class="fi-check on"></i></label>
+			<div class="projecthumb">
+				<form action="/project/{{ project.id }}/delete/" method="post">{% csrf_token %}
+					{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' />#}
+					<button type="submit" class="fi-x bigredx"></button>
+				</form>
 
-			<a href="/edit/{{ project.id }}">
-			{% if thumb %}
-			{% include "thumbview.html" with thumbnail=thumb %}
-			{% else %}
-			<div class="box stripe-1 module">
+				<a href="/edit/{{ project.id }}">
+					{% if thumb %}
+					{% include "thumbview.html" with thumbnail=thumb %}
+					{% else %}
+					<div class="box stripe-1 module">
+					</div>
+					{% endif %}
+					{% if project.title %}
+					<h3>{{ project.title }}</h3>
+					{% else %}
+					<h3>Untitled</h3>
+					{% endif %}
+				</a>
 			</div>
-			{% endif %}
-			{% if project.title %}
-			<h3>{{ project.title }}</h3>
-			{% else %}
-			<h3>Untitled</h3>
-			{% endif %}
-		  </a>
 		</div>
 	</div>
-</div>
-{% cycle '' '' '' '<div class="clearfix visible-xs-block"></div>'%}
-{% endfor %}
+	{% cycle '' '' '' '<div class="clearfix visible-xs-block"></div>'%}
+	{% endfor %}
 
-{% if not toomanydrafts %}
-<a href="/create/">
-  <div class="col-xs-6 col-md-3">
-    <div class="projecthumb newbox stripe-1">
-      <div class="center">
-         <i class="fi-plus"></i><p>
-         Create new project
-      </div>
-    </div>
-  </div>
-</a>
-{% else %}
-<div class="clearfix visible-xs-block"></div>
-<h2>Too many drafts. Publish or delete some to free up space.</h2>
+	{% if not toomanydrafts %}
+	<a href="/create/">
+		<div class="col-xs-6 col-md-3">
+			<div class="projecthumb newbox stripe-1">
+				<div class="center">
+					<i class="fi-plus"></i><p>
+					Create new project
+				</div>
+			</div>
+		</div>
+	</a>
+	{% else %}
+	<div class="clearfix visible-xs-block"></div>
+	<h2>Too many drafts. Publish or delete some to free up space.</h2>
 
-{% endif %}
-<div class="clearfix visible-xs-block"></div>
-    {% if paginate.object_list and paginate.paginator.num_pages > 1 %}
-        <div class="pagination">
-            <span class="step-links">
-                {% if paginate.has_previous %}
-                    <a href= "?page={{ paginate.previous_page_number }}">newer entries &lt;&lt; </a>
-                {% endif %}
-                <span class="current">
-                    &nbsp;Page {{ paginate.number }} of {{ paginate.paginator.num_pages }}
-                </span>
-                {% if paginate.has_next %}
-                    <a href="?page={{ paginate.next_page_number }}"> &gt;&gt; older entries</a>
-                {% endif %}
-            </span>
-        </div>
-    {% endif %}
+	{% endif %}
+	<div class="clearfix visible-xs-block"></div>
+	{% if paginate.object_list and paginate.paginator.num_pages > 1 %}
+	<div class="pagination">
+		<span class="step-links">
+			{% if paginate.has_previous %}
+			<a href= "?page={{ paginate.previous_page_number }}">newer entries &lt;&lt; </a>
+			{% endif %}
+			<span class="current">
+				&nbsp;Page {{ paginate.number }} of {{ paginate.paginator.num_pages }}
+			</span>
+			{% if paginate.has_next %}
+			<a href="?page={{ paginate.next_page_number }}"> &gt;&gt; older entries</a>
+			{% endif %}
+		</span>
+	</div>
+	{% endif %}
 
-{% endblock content %}
+	{% endblock content %}
 
 
 

@@ -18,251 +18,251 @@
 {% load gallerfy %}
 
 <div class="col-md-9">
-                        <h1 class="title">{{ project.title }}</h1>
-                        <div class="thumbnail printableImageContainer">
-                        {% include "gallery.html" with images=mainthumb %}
-                        </div>    
+	<h1 class="title">{{ project.title }}</h1>
+	<div class="thumbnail printableImageContainer">
+		{% include "gallery.html" with images=mainthumb %}
+	</div>    
 
-                        <div class="printableThumbs">
-                        	{% include "gallery.html" %}
-                        {% if moreobjects != 0 %}
-                        <span><a href="download/">+{{moreobjects }}<br> others</a></span>
-                        {% endif  %}
-                        </div>
+	<div class="printableThumbs">
+		{% include "gallery.html" %}
+		{% if moreobjects != 0 %}
+		<span><a href="download/">+{{moreobjects }}<br> others</a></span>
+		{% endif  %}
+	</div>
 
-                        <div class="clearfix"></div>
+	<div class="clearfix"></div>
 
-                        {% include "texttabs.html" %}
+	{% include "texttabs.html" %}
 
-                        <h2>Comments</h2>
-			{% include "commenttree.html" with user=user projectpk=project.pk nodes=nodes %}
+	<h2>Comments</h2>
+	{% include "commenttree.html" with user=user projectpk=project.pk nodes=nodes %}
 
-			{% if user.is_authenticated %}
+	{% if user.is_authenticated %}
 
-				{% include "commentform.html" with projectpk=project.pk form=commentform %}
+	{% include "commentform.html" with projectpk=project.pk form=commentform %}
 
-			<!-- look it is my pretty comment javascript! -->
-                                <script>$(document).ready(function(){
-					console.log($('.commentForm'));
-					$('.commentForm')[0].innerHTML="<a href=\"/project/{{ project.pk }}/comment/{{ commentRootId }}/\">New Comment</a>";
-					$('.commentForm')[0].href="/project/{{ project.pk }}/comment/{{ commentRootId }}/";
-					$('.commentForm').click(function(e){
-						$.get(e.currentTarget.href,function(data,status){
-							var newdiv = document.createElement('div');
-							newdiv.innerHTML=data;
-							e.currentTarget.parentNode.insertBefore(newdiv, e.currentTarget.nextSibling);
-							e.currentTarget.hidden=true;
-						});
-						e.preventDefault();
-					});
+	<!-- look it is my pretty comment javascript! -->
+	<script>$(document).ready(function(){
+console.log($('.commentForm'));
+$('.commentForm')[0].innerHTML="<a href=\"/project/{{ project.pk }}/comment/{{ commentRootId }}/\">New Comment</a>";
+$('.commentForm')[0].href="/project/{{ project.pk }}/comment/{{ commentRootId }}/";
+$('.commentForm').click(function(e){
+	$.get(e.currentTarget.href,function(data,status){
+		var newdiv = document.createElement('div');
+		newdiv.innerHTML=data;
+		e.currentTarget.parentNode.insertBefore(newdiv, e.currentTarget.nextSibling);
+		e.currentTarget.hidden=true;
+	});
+	e.preventDefault();
+});
 
-				<!-- A function for canceling comment forms. -->
-					function commentCancel(el,Reply)
-					{
-						el.parentNode.parentNode.parentNode.remove();
-						Reply.hidden=false;
-					}
-				<!-- The function for adding the comment form when replying. -->
-					$('.commentReply, .editComment').click(function(e){
-						var ReplyButton=e.currentTarget;
-						$.get(e.currentTarget.href,function(data,status){
-							var newdiv = document.createElement('div');
-							newdiv.innerHTML=data;
-							var cancelButton = $(newdiv).find("input[value='Cancel']");
-							cancelButton.on("click",function(e){
-								    commentCancel(this, ReplyButton);
-								    e.preventDefault;
-								    });
-							e.currentTarget.parentNode.insertBefore(newdiv, e.currentTarget.nextSibling);
-							e.currentTarget.hidden=true;
-						});
-						//This is the reply and edit defalt prevent.
-						e.preventDefault();
-					});
-				});
-				</script>
+<!-- A function for canceling comment forms. -->
+function commentCancel(el,Reply)
+{
+	el.parentNode.parentNode.parentNode.remove();
+	Reply.hidden=false;
+}
+<!-- The function for adding the comment form when replying. -->
+	$('.commentReply, .editComment').click(function(e){
+		var ReplyButton=e.currentTarget;
+		$.get(e.currentTarget.href,function(data,status){
+			var newdiv = document.createElement('div');
+			newdiv.innerHTML=data;
+			var cancelButton = $(newdiv).find("input[value='Cancel']");
+			cancelButton.on("click",function(e){
+				commentCancel(this, ReplyButton);
+				e.preventDefault;
+			});
+			e.currentTarget.parentNode.insertBefore(newdiv, e.currentTarget.nextSibling);
+			e.currentTarget.hidden=true;
+		});
+		//This is the reply and edit defalt prevent.
+		e.preventDefault();
+	});
+});
+	</script>
 
-			{% else %}
+	{% else %}
 
-				<a href="/register/">Sign up</a> or <a href="/login/">log in</a> to comment!
+	<a href="/register/">Sign up</a> or <a href="/login/">log in</a> to comment!
 
-			{% endif %}
+	{% endif %}
 
 </div>
 <div class="col-md-3">
-     <h3>Printable Info</h3>
-     <hr>
-     <div class="bodyContainer thumbnail">
-             <div class="containerContent">
-                     {% if user == project.author %}
-                             <a href="/edit/{{ project.pk }}" class="btn btn-default fullwidth">Edit</a>
-                             <hr>
-                     {% endif %}
-                     {% include "usertagcard.html" with user=author profile=authorprofile userpic=authorpic %}
-             </div>
+	<h3>Printable Info</h3>
+	<hr>
+	<div class="bodyContainer thumbnail">
+		<div class="containerContent">
+			{% if user == project.author %}
+			<a href="/edit/{{ project.pk }}" class="btn btn-default fullwidth">Edit</a>
+			<hr>
+			{% endif %}
+			{% include "usertagcard.html" with user=author profile=authorprofile userpic=authorpic %}
+		</div>
 
-     	{# The rating block #}
-     	{% load ratings %}
-     	{% rating_by_request request on project.rating as vote %}
+		{# The rating block #}
+		{% load ratings %}
+		{% rating_by_request request on project.rating as vote %}
 
-     	Score:
-        <span id="projectScore">
-     	{% if not project.ratingCount %}
-     	0
-     	{% else %}
-     	{{ project.ratingCount }}
-     	{% endif %}
-        </span>
-     	{#user vote. Null means no vote. 1 means downvote. 2 means upvote. #}
-     	{# You can remove your vote by voting 0 #}
+		Score:
+		<span id="projectScore">
+			{% if not project.ratingCount %}
+			0
+			{% else %}
+			{{ project.ratingCount }}
+			{% endif %}
+		</span>
+		{#user vote. Null means no vote. 1 means downvote. 2 means upvote. #}
+		{# You can remove your vote by voting 0 #}
 
-     	{% if not vote  %}
-     	<a href="vote/2/"><i class="fi-like votebutton upvote"></i></a>
-     	<a href="vote/1/"><i class="fi-dislike votebutton downvote"></i></a>
-     	{% elif vote == 1 %}
-     	<a href="vote/2/"><i class="fi-like votebutton upvote"></i></a>
-     	<a href="vote/0/"><i class="fi-dislike votebutton downvote active"></i></a>
-     	{% elif vote == 2 %}
-     	<a href="vote/0/"><i class="fi-like votebutton upvote active"></i></a>
-     	<a href="vote/1/"><i class="fi-dislike votebutton downvote"></i></a>
-     	{% endif %}
+		{% if not vote  %}
+		<a href="vote/2/"><i class="fi-like votebutton upvote"></i></a>
+		<a href="vote/1/"><i class="fi-dislike votebutton downvote"></i></a>
+		{% elif vote == 1 %}
+		<a href="vote/2/"><i class="fi-like votebutton upvote"></i></a>
+		<a href="vote/0/"><i class="fi-dislike votebutton downvote active"></i></a>
+		{% elif vote == 2 %}
+		<a href="vote/0/"><i class="fi-like votebutton upvote active"></i></a>
+		<a href="vote/1/"><i class="fi-dislike votebutton downvote"></i></a>
+		{% endif %}
 
-<!-- Ehhh!!! I wrote so much javascript, I'm so sorry. -->
-<script>
+		<!-- Ehhh!!! I wrote so much javascript, I'm so sorry. -->
+		<script>
 function incrementScore(inc, id)
 {
-    score = document.getElementById(id)
-    var value = parseInt(score.innerHTML, 10);
-    value = isNaN(value) ? 0 : value;
-    value = value + inc;
-    score.innerHTML = value;
+	score = document.getElementById(id)
+		var value = parseInt(score.innerHTML, 10);
+	value = isNaN(value) ? 0 : value;
+	value = value + inc;
+	score.innerHTML = value;
 }
 $( ".votebutton" ).parent().click(function(e){
 
-    e.preventDefault();
+	e.preventDefault();
 
-    if ($(e.target).hasClass("active")){
-        if ( $(e.target).hasClass("upvote") ){
-            incrementScore(-1, "projectScore");
-            $.get("vote/0/");
-            e.target.classList.remove("active");
-        }else if ( $(e.target).hasClass("downvote") ){
-            incrementScore(1, "projectScore");
-            $.get("vote/0/");
-            e.target.classList.remove("active");
-        }
-    }else{
-        e.target.classList.add("active");
-        if ( $(e.target).hasClass("upvote") ){
-            $.get("vote/2/");
-            downvote = document.getElementsByClassName("votebutton downvote")[0]
-            console.log("BLEE");
-            console.log(downvote);
-            if ( $(downvote).hasClass("active") ){
-                incrementScore(2, "projectScore");
-                downvote.classList.remove("active");
-            }else{
-                incrementScore(1, "projectScore");
-            }
-        }else if ( $(e.target).hasClass("downvote") ){
-            $.get("vote/1/");
-            upvote = document.getElementsByClassName("votebutton upvote")[0]
-            console.log("BLEE");
-            console.log(upvote);
-            if ( $(upvote).hasClass("active") ){
-                incrementScore(-2, "projectScore");
-                upvote.classList.remove("active");
-            }else{
-                incrementScore(-1, "projectScore");
-            }
-        }
-    }
+	if ($(e.target).hasClass("active")){
+		if ( $(e.target).hasClass("upvote") ){
+			incrementScore(-1, "projectScore");
+			$.get("vote/0/");
+			e.target.classList.remove("active");
+		}else if ( $(e.target).hasClass("downvote") ){
+			incrementScore(1, "projectScore");
+			$.get("vote/0/");
+			e.target.classList.remove("active");
+		}
+	}else{
+		e.target.classList.add("active");
+		if ( $(e.target).hasClass("upvote") ){
+			$.get("vote/2/");
+			downvote = document.getElementsByClassName("votebutton downvote")[0]
+				console.log("BLEE");
+			console.log(downvote);
+			if ( $(downvote).hasClass("active") ){
+				incrementScore(2, "projectScore");
+				downvote.classList.remove("active");
+			}else{
+				incrementScore(1, "projectScore");
+			}
+		}else if ( $(e.target).hasClass("downvote") ){
+			$.get("vote/1/");
+			upvote = document.getElementsByClassName("votebutton upvote")[0]
+				console.log("BLEE");
+			console.log(upvote);
+			if ( $(upvote).hasClass("active") ){
+				incrementScore(-2, "projectScore");
+				upvote.classList.remove("active");
+			}else{
+				incrementScore(-1, "projectScore");
+			}
+		}
+	}
 });
-</script>
+		</script>
 
-     	{#Or you can just call {{Vote}} if you want the value for javascript.#}
-     	<br>
-     	{#Both of these will be null if no one has voted/downloaded. So you can use the "if not" template tag. #}
-        Downloads: 
-        <span id="downloadsScore">
-     	{{ project.downloadcount.score }}
-        </span>
-        <br>
-        Published: <span title="{{project.created}}" > {{ project.created|timesince }} ago </span>
+		{#Or you can just call {{Vote}} if you want the value for javascript.#}
+		<br>
+		{#Both of these will be null if no one has voted/downloaded. So you can use the "if not" template tag. #}
+		Downloads: 
+		<span id="downloadsScore">
+			{{ project.downloadcount.score }}
+		</span>
+		<br>
+		Published: <span title="{{project.created}}" > {{ project.created|timesince }} ago </span>
 
-     	{# end ratings #}
+		{# end ratings #}
 
-     </div>
-{% comment %}
+	</div>
+	{% comment %}
 
-<div class="btn-group btn-group-justified bodycontainer">
-        {% if not vote  %}
-        <a href="vote/2/" class="btn btn-default"><i class="fi-like votebutton upvote"></i></a>
-        <a href="vote/1/" class="btn btn-default"><i class="fi-dislike votebutton downvote"></i></a>
-        {% elif vote == 1 %}
-        <a href="vote/2/" class="btn btn-default"><i class="fi-like votebutton upvote"></i></a>
-        <a href="vote/0/" class="btn btn-default"><i class="fi-dislike votebutton downvote active"></i></a>
-        {% elif vote == 2 %}
-        <a href="vote/0/" class="btn btn-default"><i class="fi-like votebutton upvote active"></i></a>
-        <a href="vote/1/" class="btn btn-default"><i class="fi-dislike votebutton downvote"></i></a>
-        {% endif %}
-</div>
-{% endcomment %}
+	<div class="btn-group btn-group-justified bodycontainer">
+		{% if not vote  %}
+		<a href="vote/2/" class="btn btn-default"><i class="fi-like votebutton upvote"></i></a>
+		<a href="vote/1/" class="btn btn-default"><i class="fi-dislike votebutton downvote"></i></a>
+		{% elif vote == 1 %}
+		<a href="vote/2/" class="btn btn-default"><i class="fi-like votebutton upvote"></i></a>
+		<a href="vote/0/" class="btn btn-default"><i class="fi-dislike votebutton downvote active"></i></a>
+		{% elif vote == 2 %}
+		<a href="vote/0/" class="btn btn-default"><i class="fi-like votebutton upvote active"></i></a>
+		<a href="vote/1/" class="btn btn-default"><i class="fi-dislike votebutton downvote"></i></a>
+		{% endif %}
+	</div>
+	{% endcomment %}
 
-<!-- :/ I am not a clever man. -->
-<h3></h3>
+	<!-- :/ I am not a clever man. -->
+	<h3></h3>
 
-     <a href="download/" class="btn btn-default fullwidth">Download Files</a>
-     {% if downloadurl %}
-     <a href="{{downloadurl}}" class="btn btn-default fullwidth downloadAll">Download All</a>
+	<a href="download/" class="btn btn-default fullwidth">Download Files</a>
+	{% if downloadurl %}
+	<a href="{{downloadurl}}" class="btn btn-default fullwidth downloadAll">Download All</a>
 
-   <!-- This aweful snippit prevents the normal download all click, sends a "I downloaded this" vote, and then when it succeeds, follows the normal download link -->
-    <script>
-    $( ".downloadAll" ).click(function(e){
-        e.preventDefault();
-        var voted = false;
-        var voteGet = $.get( "downloadCountIncrement/1/", function( data ) {
-            if ( data == "Vote recorded." ){
-            voted = true;
-            }
-        })
-        .done(function() {
-        })
-        .fail(function() {
-        })
-        .always(function() {
-            window.location = e.currentTarget.href;
-            if (voted){
-                incrementScore(1, "downloadsScore");
-            }
-        });
-    });
-    </script>
+	<!-- This aweful snippit prevents the normal download all click, sends a "I downloaded this" vote, and then when it succeeds, follows the normal download link -->
+	<script>
+$( ".downloadAll" ).click(function(e){
+	e.preventDefault();
+	var voted = false;
+	var voteGet = $.get( "downloadCountIncrement/1/", function( data ) {
+		if ( data == "Vote recorded." ){
+			voted = true;
+		}
+	})
+	.done(function() {
+	})
+	.fail(function() {
+	})
+	.always(function() {
+		window.location = e.currentTarget.href;
+		if (voted){
+			incrementScore(1, "downloadsScore");
+		}
+	});
+});
+	</script>
 
-     {% endif %}
+	{% endif %}
 
 
-     <h3>Tags</h3>
-     <hr>
-     <div class="thumbnail">
-             <div class="containerContent taglist">
-                     {% for tag in project.tags.all %}
-                             <span class="tagrank=({{tag.num_times}}) tag btn btn-default"> <a href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
-                     {% endfor %}
-             </div>
-     </div>
+	<h3>Tags</h3>
+	<hr>
+	<div class="thumbnail">
+		<div class="containerContent taglist">
+			{% for tag in project.tags.all %}
+			<span class="tagrank=({{tag.num_times}}) tag btn btn-default"> <a href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
+			{% endfor %}
+		</div>
+	</div>
 </div>
 
 
 
 {% comment %}
 Only uncomment to here. The rest is cruft.
-				{% load threadedcomments_tags %}
-				
-				<b>***This is the comments place.***</b>
-				
-				{% render_comment_list for project %}
-				{% render_comment_form for project %}
+{% load threadedcomments_tags %}
+
+<b>***This is the comments place.***</b>
+
+{% render_comment_list for project %}
+{% render_comment_form for project %}
 {%endcomment%}
 
 {% endblock content %}
