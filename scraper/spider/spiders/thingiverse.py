@@ -91,7 +91,6 @@ class ThingiverseSpider(CrawlSpider):
 	## get special text files. (readme, instructions, license)
         import html2text
         h2t = html2text.HTML2Text()
-        h2t.ignore_links = True
         #Get the reame file, do stuff to it.
         readme = h2t.handle(response.selector.xpath("//*[@id = 'description']").extract()[0].strip())
 	import unicodedata
