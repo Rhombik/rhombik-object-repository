@@ -18,7 +18,6 @@ class ProjectItem(CountedItem):
     def save(self):
             project=super(ProjectItem, self).save()
             for tag in self['tags']:
-		    print("adding tag: {}".format(tag))
                     project.tags.add(tag)
 
 
