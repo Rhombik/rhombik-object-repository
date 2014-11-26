@@ -12,6 +12,10 @@ from scrapy import log, signals
 from scrapy.utils.project import get_project_settings
 from django.contrib.auth.models import User
 
+import os
+os.environ.setdefault("SCRAPY_SETTINGS_MODULE", "scraper.spider.settings")
+
+
 def runScraper(urls, user):
     userID=user.pk
     spider = ThingiverseSpider(urls, user=user)
