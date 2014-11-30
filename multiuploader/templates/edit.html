@@ -1,6 +1,26 @@
 {% extends "includes.html" %}
 
 {% block content %}
+<script>
+var confirmOnPageExit = function (e) 
+{
+    // If we haven't been passed the event get the window.event
+    e = e || window.event;
+
+    var message = 'window.onbeforeunload = confirmOnPageExit;';
+
+    // For IE6-8 and Firefox prior to version 4
+    if (e) 
+    {
+        e.returnValue = message;
+    }
+
+    // For Chrome, Safari, IE8+ and Opera 12+
+    return message;
+};
+window.onbeforeunload = confirmOnPageExit;
+</script>
+
 
 <div class="container_12">
 <div class="grid_12">
@@ -14,7 +34,7 @@
 <h2>Draft Saved Successfully!</h2>
 {% endif %}
 
-<form action="/edit/{{ project.pk}}/" method="post">{% csrf_token %}
+<form action="/edit/{{ project.pk}}/" method="post" onsubmit="window.onbeforeunload = null;">{% csrf_token %}
 {{ form.as_p }}
 <br>
 <input type="submit" name="action" value="Save" />
