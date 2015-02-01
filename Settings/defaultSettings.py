@@ -120,6 +120,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'django.contrib.auth.context_processors.auth',
 )
 
+##Github OAuth stuff. 'fraid you'll have to generate it yourself
+
+GIT_CLIENT_ID="7228e16a274bba8d8487"
+GIT_CLIENT_SECRET="ba96e5cecb54a7ec3c269259712c679e24962cba"
+
 #Let's try and cache the inline javascript so you don't need to generate it
 
 CACHES = {
@@ -211,6 +216,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'gitHooks',
 )
 
 COMMENTS_APP = 'threadedcomments'
