@@ -11,7 +11,7 @@ def state_generator(size=20, chars=string.ascii_uppercase + string.digits):
 
 class githubAccount(models.Model):
     user = models.ForeignKey(User, related_name='user',default=User)
-    state = models.CharField(max_length=255 ,blank=True,)
+    scope = models.CharField(max_length=255 ,blank=True,)
     state = models.CharField(max_length=20 ,blank=True,)
     code = models.CharField(max_length=20 ,blank=True,)
     access_token = models.CharField(max_length=20 ,blank=True,)

@@ -209,9 +209,6 @@ INSTALLED_APPS = (
 #    'django.contrib.comments',
     #So we can inline coffeescript
     'static_precompiler',
-#    'djcelery',
-    'kombu.transport.django',
-#    'celery_haystack',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
