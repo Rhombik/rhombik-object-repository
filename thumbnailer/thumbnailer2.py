@@ -51,7 +51,7 @@ def thumbnailify(filebit, sizebit):
 #    thumb_io = BytesIO()
     thumb_io = BytesIO()
 #    print(str(thumb_io)+" thumb_io !")
-    backround.save( thumb_io, format='png')
+    backround.save( thumb_io, format='png', option='optimize')
 #    print(str(thumb_io.read())+" filled thumb_io !")
 
     thumb_file = ContentFile(thumb_io.getvalue())
@@ -83,7 +83,7 @@ def thumbnailify(filebit, sizebit):
     img = img.convert('RGB')
     img.thumbnail(sizebit, Image.ANTIALIAS)
     thumb_io = BytesIO()
-    img.save(thumb_io, format='png')
+    img.save(thumb_io, format='png', option='optimize')
 
     thumb_file = ContentFile(thumb_io.getvalue())
     thumb_file.name = str(sizebit)+"-"+str(filebit.filename)+".png"
