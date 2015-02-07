@@ -13,9 +13,8 @@ class githubAccount(models.Model):
     user = models.ForeignKey(User, related_name='user',default=User)
     scope = models.CharField(max_length=255 ,blank=True,)
     state = models.CharField(max_length=20 ,blank=True,)
-    code = models.CharField(max_length=20 ,blank=True,)
-    access_token = models.CharField(max_length=20 ,blank=True,)
-
+    access_token = models.CharField(max_length=60 ,blank=True,)
+    token_type = models.CharField(max_length=20 ,blank=True,)
 
     def save(self, *args, **kwargs):
         if not self.state:

@@ -1,9 +1,9 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-import urllib
+import urllib, urlparse
 from django.conf import settings
 from gitHooks.models import *
-
+import json
 @login_required
 def register(request):
     account = githubAccount.objects.create(user=request.user)
@@ -12,19 +12,24 @@ def register(request):
     url='https://github.com/login/oauth/authorize/?'
     queryString={
         'client_id':settings.GIT_CLIENT_ID,
-        'scope':"",
+        'scope':"admin:repo_hook,write:repo_hook",
         'state':account.state,
                  }
 
-    print(url + urllib.urlencode(queryString))
-    return
+    return(redirect(url + urllib.urlencode(queryString)))
 #    return redirect("/")
 
 def callback(request):
-    print(request.GET['state'])
     account = githubAccount.objects.get(state=request.GET['state'])
-    print(account)
-    account.code = request.GET['code']
-    account.scope = request.GET['scope']
+    queryString={
+        'client_id':settings.GIT_CLIENT_ID,
+        'client_secret':settings.GIT_CLIENT_SECRET,
+        'code':request.GET['code'],
+    }
+    accessToken = urllib.urlopen("https://github.com/login/oauth/access_token/?"+urllib.urlencode(queryString)).read()
+    accessToken = urlparse.parse_qs(accessToken)
+    account.scope=json.dumps(accessToken['scope'])
+    account.access_token=accessToken['access_token'][0]
+    account.token_type=accessToken['token_type'][0]
     account.save()
     return redirect("/mydrafts/")
