@@ -7,20 +7,26 @@ from jobtastic import JobtasticTask
 
 from spider.spiders.thingiverse import runScraper
 
-class Thingitask(JobtasticTask):
+
+
+class ThingiUserTask(JobtasticTask):
+    """
+    The user want's all of thier things.
+    """
+    def calculate_results(self, urls, user):
+        runScraper(urls, user=user)
+
+class ThingiProjectTask(JobtasticTask):
     """
     Things are there, but users want them here. Lets go get them!
     In due time.
     """
     def calculate_results(self, urls, user):
-        runScraper(urls, user=user)
-class add(JobtasticTask):
-    """
-    peanuts are good, when you want a simple food.
-    """
-    def calculate_results(self, x,y):
-        return(x+y)
 
+        runScraper(urls, user=user)
+
+class ThingiFileTask(JobtasticTast):
+    '''Get an individual file... AND SAVE IT! AH HA HA HA!!!'''
 
 app = Celery('tasks')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Settings.settings')
@@ -29,5 +35,5 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 @app.task()
 def scrapeTask(urls, user):
-    Thingitask().calculate_results(urls, user=user)
+        ThingiProjectTask().calculate_results(urls, user=user)
     #runScraper(urls, user=user)
