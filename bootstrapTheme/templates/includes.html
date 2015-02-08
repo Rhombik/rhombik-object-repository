@@ -6,30 +6,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="description" content="">
-		<link rel='shortcut icon' type='image/x-icon' href='{% static "" %}/rhombik/img/favicon.ico' />
-
-		{% comment %}
-		%%%%%%%%%%%%%%%%%%%% Boostrap core CSS
-		{% endcomment %}
-		<link href="{% static "" %}bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-		<link href="{% static "" %}bootstrap_theme/css/rhombik_magic_bootstrap.css" rel="stylesheet" type="text/css" />
-
-		{% comment %}
-		%%%%%%%%%%%%%%%%%%%% Old Rhombik CSS
-		{% endcomment %}
-
-		<link href="{% static "" %}{% scss "rhombik/css/global.scss"%}" media="screen, projection" rel="stylesheet" type="text/css">
-		<link href="{% static "" %}{% scss "rhombik/css/spin.scss"%}" media="screen, projection" rel="stylesheet" type="text/css"> 
-
-		<noscript><link href="{% static ""%}rhombik/css/noscript.css" media="screen" rel="stylesheet" type="text/css"></noscript>
-		<link href="{% static ""%}rhombik/css/foundation-icons.css" media="screen, projection" rel="stylesheet" type="text/css">
-
-		{% comment %}
-		%%%%%%%%%%%%%%%%%%%% jQuery UI CSS
-		{% endcomment %}
-		<link href="{% static "" %}taggit_autocomplete/css/jquery.tagit.css" rel="stylesheet" type="text/css">
-		<link href="{% static "" %}rhombik/css/rhombikPurple/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css">
-
+        <meta name=viewport content="width=device-width, initial-scale=1">
 		<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 		<script src="{% static "" %}bootstrap/js/bootstrap.min.js" type="text/javascript" /></script>
 
@@ -39,32 +16,32 @@
 		<script src="{% static "" %}rhombik/js/customScript.js" type="text/javascript"></script>
 
 		<script>
-var head = document.getElementsByTagName("head")[0];
-if (head) {
-	var scriptStyles = document.createElement("link");
-	scriptStyles.rel = "stylesheet";
-	scriptStyles.type = "text/css";
-	scriptStyles.href = "{% static "" %}{% scss "rhombik/css/js-enabled.scss"%}";
-	head.appendChild(scriptStyles);
-}
+			var head = document.getElementsByTagName("head")[0];
+			if (head) {
+				var scriptStyles = document.createElement("link");
+				scriptStyles.rel = "stylesheet";
+				scriptStyles.type = "text/css";
+				scriptStyles.href = "{% static "" %}{% scss "rhombik/css/js-enabled.scss"%}";
+				head.appendChild(scriptStyles);
+			}
 
 
-jQuery(document).ready(function () {
-	thumbloader.wakeUp();
-	// I am the sanest man alive!
-	//me too. I don't know if writing a paragraph here about how fucked this is would be useful. I think JS is bad, and I am probably bad in parrellel. There needs to be a better way to do this.
-	function Init(argument) {
-		argument.init();
-	}
-	function sleep(millis, callback, arg) {
-		setTimeout(function()
-				{ callback(arg); }
-				, millis);
-	}
-	sleep(70, Init, tabletSearchDrop);
-});
+			jQuery(document).ready(function () {
+				thumbloader.wakeUp();
+				// I am the sanest man alive!
+				//me too. I don't know if writing a paragraph here about how fucked this is would be useful. I think JS is bad, and I am probably bad in parrellel. There needs to be a better way to do this.
+				function Init(argument) {
+					argument.init();
+				}
+				function sleep(millis, callback, arg) {
+					setTimeout(function()
+							{ callback(arg); }
+							, millis);
+				}
+				sleep(70, Init, tabletSearchDrop);
+			});
 
-//Include css/js-enabled.css if js is enabled.
+			//Include css/js-enabled.css if js is enabled.
 		</script>
 
 		<script src="{% static "script/trier/src/trier.js"%}"></script>
@@ -120,5 +97,25 @@ tabletSearchDrop = new searchDrop()
 				</div>
 			</div>
 		</div>
+<div>
+  		<link rel='shortcut icon' type='image/x-icon' href='{% static "" %}/rhombik/img/favicon.ico' />
+
+		{# Boostrap core CSS #}
+		<link href="{% static "" %}bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="{% static "" %}bootstrap_theme/css/rhombik_magic_bootstrap.css" rel="stylesheet" type="text/css" />
+
+		{# Old Rhombik CSS #}
+
+		<link href="{% static "" %}{% scss "rhombik/css/global.scss"%}" media="screen, projection" rel="stylesheet" type="text/css">
+		<link href="{% static "" %}{% scss "rhombik/css/spin.scss"%}" media="screen, projection" rel="stylesheet" type="text/css"> 
+
+		<noscript><link href="{% static ""%}rhombik/css/noscript.css" media="screen" rel="stylesheet" type="text/css"></noscript>
+		<link href="{% static ""%}rhombik/css/foundation-icons.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+		{# jQuery UI CSS #}
+		<link href="{% static "" %}taggit_autocomplete/css/jquery.tagit.css" rel="stylesheet" type="text/css">
+		<link href="{% static "" %}rhombik/css/rhombikPurple/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css">
+</div>
+
 	</body>
 </html>

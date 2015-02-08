@@ -32,16 +32,16 @@
 {% load searchform %}
      <ul class="nav navbar-nav navbar-right">
         {% if not user.is_authenticated %}      
-        <li><a href="/register/"{% if active == "register" %} class="active"{% endif %}><span class="fi-torsos"></span> Sign Up</a></li>
-        <li><a href="/register/"><i class="fi-lock"></i> Log In</a></li>
+        <li><a href="/register/"{% if active == "register" %} class="active"{% endif %}><span class="fi-torsos"></span> Register</a></li>
+        <li><a href="/register/"><i class="fi-lock"></i> Sign In</a></li>
         {% elif user.is_authenticated %}
         <li><a href="/userProfile/{{user.id}}"><span class="fi-torso"></span> Profile</a></li>
-        <li><a href="/logout/"><span class="fi-x-circle"></span> Log Out</a></li>
+        <li><a href="/logout/"><span class="fi-x-circle"></span> Sign Out</a></li>
         <li><a href="{% url "multiuploader.views.draftview" %}"><span class="fi-plus"></span> Create</a></li>
         {% endif %}
         {% searchform %}
      {# </ul> #}
-{# the UL closes in searchform, because django forms are structured stupid. #}
+{# the UL closes in searchform, because my django forms are structured stupid. #}
 
     </div><!-- /.navbar-collapse -->
 
