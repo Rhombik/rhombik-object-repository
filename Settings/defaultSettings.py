@@ -205,6 +205,7 @@ INSTALLED_APPS = (
     'comments',
     'scraper',
     'mptt',
+    'kombu.transport.django',
 #    'threadedcomments',
 #    'django.contrib.comments',
     #So we can inline coffeescript

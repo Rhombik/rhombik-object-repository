@@ -27,9 +27,14 @@ def callback(request):
         'code':request.GET['code'],
     }
     accessToken = urllib.urlopen("https://github.com/login/oauth/access_token/?"+urllib.urlencode(queryString)).read()
+    print(accessToken)
     accessToken = urlparse.parse_qs(accessToken)
     account.scope=json.dumps(accessToken['scope'])
     account.access_token=accessToken['access_token'][0]
     account.token_type=accessToken['token_type'][0]
+    userInfo = urllib.urlopen('https://api.github.com/user?'+urllib.urlencode({'access_token':account.access_token})).read()
+    userInfo = json.loads(userInfo)
+    account.gitID=userInfo['id']
+    account.gitUser=userInfo['login']
     account.save()
     return redirect("/mydrafts/")

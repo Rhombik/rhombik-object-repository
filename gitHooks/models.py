@@ -15,7 +15,8 @@ class githubAccount(models.Model):
     state = models.CharField(max_length=20 ,blank=True,)
     access_token = models.CharField(max_length=60 ,blank=True,)
     token_type = models.CharField(max_length=20 ,blank=True,)
-
+    gitID = models.IntegerField(blank=True, null=True)
+    gitUser = models.CharField(max_length=255 ,blank=True,)
     def save(self, *args, **kwargs):
         if not self.state:
             self.state=state_generator()
