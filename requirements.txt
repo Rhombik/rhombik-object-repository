@@ -51,3 +51,4 @@ w3lib==1.10.0
 wsgiref==0.1.2
 zope.interface==4.1.1
 html2text
+html5lib==0.999

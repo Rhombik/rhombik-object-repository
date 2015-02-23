@@ -21,11 +21,14 @@ def importer(request):
     if request.method == 'POST':
         form = ImportForm(request.POST.copy())
         if form.is_valid() and request.user.is_authenticated():
-            user=request.user
+            userPK=request.user.pk
             url=form.cleaned_data['url']
-	    good,kind=parse(url)
+	    good,kind=parse(url)#get the kind of task to execute for a given url!
+	    print(url)
+	    print(userPK)
 	    if good:
-                kind.delay(url, user)
+                print(kind)
+                kind.delay(url=url,userPK=userPK)#delay(url=url, userPK=userPK)
 	    else:
 	        # neeto unknown site error! these should prolly get logged.
 		pass
