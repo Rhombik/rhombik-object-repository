@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.core.files.uploadedfile import UploadedFile
 
 #importing json parser to generate jQuery plugin friendly json response
-from django.utils import simplejson
+import json
 
 #for generating thumbnails
 #sorl-thumbnails must be installed and properly configured
@@ -110,7 +110,7 @@ def multiuploader(request, pk):
                        "thumbnail_url":thumburl,
                        "delete_url":"/multi_delete/"+str(projectfiles.pk)+"/", 
                        "delete_type":"POST",})
-        response_data = simplejson.dumps(result)
+        response_data = json.dumps(result)
         
         #checking for json data type
         #big thanks to Guy Shapiro
@@ -135,7 +135,7 @@ def multiuploader(request, pk):
                        "thumbnail_url":thumburl,
                        "delete_url":"/multi_delete/"+str(image.pk)+"/",
                        "delete_type":"POST",})
-        response_data = simplejson.dumps(result)
+        response_data = json.dumps(result)
         if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
             mimetype = 'application/json'
         else:

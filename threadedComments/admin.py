@@ -1,5 +1,5 @@
 
-from comments.models import *
+from threadedComments.models import *
 from mptt.admin import MPTTModelAdmin
 from django.contrib import admin
 

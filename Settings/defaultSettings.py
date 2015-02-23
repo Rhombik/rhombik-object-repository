@@ -202,7 +202,7 @@ INSTALLED_APPS = (
     'taggit_autocomplete',
     'testcases',
     'djangoratings',
-    'comments',
+    'threadedComments',
     'scraper',
     'mptt',
     'kombu.transport.django',
