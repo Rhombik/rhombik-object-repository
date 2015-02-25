@@ -1,6 +1,7 @@
 rhombik-object-repository
 =============
 
+*Hand crafted small-batch artisanal code poetry made with heirloom libraries.*
 
 This is all development information. The site isn't up to par yet, but you can see an example at [rhombik.com](http://alpha.rhombik.com)
 

@@ -19,9 +19,11 @@ class fakefile():
 
 # Create your models here.
 
+def uploadpath(instance, filename):
+    return ("uploads/"+str(instance.content_type.name)+"/"+str(instance.object_id)+instance.subfolder+filename)
+
+
 class fileobject(models.Model):
-    def uploadpath(instance, filename):
-        return ("uploads/"+str(instance.content_type.name)+"/"+str(instance.object_id)+instance.subfolder+filename)
 
 ## These attributes point to the object/project/userProfile that this file belongs to.
     content_type = models.ForeignKey(ContentType)

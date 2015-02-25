@@ -162,12 +162,12 @@ def project(request, pk):
         authorpic=False
 
     ## get the root comment of the project and use it to get all the projects comments.
-    from comments.models import CommentRoot
+    from threadedComments.models import CommentRoot
     object_type = ContentType.objects.get(model="project")
     commentRoot = CommentRoot.objects.get_or_create(commenter=project.author, content_type=object_type, object_id=project.pk)[0]
     nodes = commentRoot.get_descendants(include_self=False)
     ## Put the comments in the comment form. Then users can only use this form to reply to comments on this project.
-    from comments.forms import commentForm
+    from threadedComments.forms import commentForm
     commentform = commentForm()
     commentform.fields['parent'].queryset = nodes
     if download.filename:
@@ -222,9 +222,7 @@ def list(request):
     return render_to_response("front.html", dict(listdata=listdata, projectcount=newprojects.count(), user=request.user, active="home"))
 
 
-from django.utils import simplejson
-
-
+import json
 
 '''
  Here lives stuff for the edit and create a project pages.
@@ -261,10 +259,10 @@ def editOrCreateStuff(project, request):
 
       # Editing the Readme.md file stuff.
       	if project.bodyFile:
+                from django.core.files.base import ContentFile
 		project.bodyFile.filename.file.close()
-		project.bodyFile.filename.file.open("w")
-		project.bodyFile.filename.file.write(form.cleaned_data["body"])
-		project.bodyFile.filename.file.close()
+                content = ContentFile(form.cleaned_data["body"])
+		project.bodyFile.filename.write(content.read())
 	else:
 		readme=fileobject()
 		readme.parent=project

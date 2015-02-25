@@ -21,7 +21,6 @@ from io import StringIO, BytesIO
 def thumbnailify(filebit, sizebit):
   from PIL import Image
   from os.path import splitext
-  from django.http import HttpResponseRedirect, HttpResponse
   from io import BytesIO
   from django.core.files.uploadedfile import UploadedFile
   import sys
@@ -30,10 +29,8 @@ def thumbnailify(filebit, sizebit):
   browser_kind = [  ".png",".jpg",".gif" ]
   jsc3d_kind = [  ".stl",".obj" ]
   text_kind = [".md",".txt"]
-# text_kind = [ ".txt" ]
   ##ext os the file extension, forced into lowercase becouse people are insane.
   ext = str(splitext(str(filebit.filename))[1].lower())
-  response = HttpResponse(mimetype="image/png")
 
   if ext in browser_kind:
     import StringIO

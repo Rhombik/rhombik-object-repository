@@ -1,9 +1,9 @@
 
-from comments.models import *
+from threadedComments.models import *
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.contenttypes.models import ContentType
-from comments.forms import commentForm
+from threadedComments.forms import commentForm
 
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 ##obviously ignoring csrf is a bad thing. Get this fixedo.

@@ -65,6 +65,6 @@ def ajaxthumblist(request,csv,template):
         mimetype = 'application/json'
     else:
         mimetype = 'text/plain'
-    return HttpResponse(response_data, mimetype=mimetype)
+    return HttpResponse(response_data, content_type=mimetype)
 
 
