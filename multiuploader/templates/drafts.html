@@ -36,101 +36,129 @@ allBox = new selectAllTool();
 </div>
 {% endif %}
 
-<h3>Thingiverse import</h3>
-<form action="/import/" method="post">{% csrf_token %}
-	{{ importerForm }}
-	<input type="submit" name="action" value="Import" />
-	<input type="submit" name="action" value="Cancel" />
-</form>
+<div role="tabpanel">
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#drafts" aria-controls="drafts" role="tab" data-toggle="tab">Drafts</a></li>
+    <li role="presentation"><a href="#import" aria-controls="import" role="tab" data-toggle="tab">Import</a></li>
+    <li role="presentation"><a href="#github" aria-controls="github" role="tab" data-toggle="tab">Github</a></li>
+  </ul>
 
-<h2>Drafts</h2>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="drafts">
+	<h1>Drafts</h1>
 
-<div class="">
-	<div class="span12">
-		<form id="itemSelectForm" method="post" action="/api/project/">
-			{% csrf_token %}
-			<input class="selectAllBox" type="checkbox" value="True" id="select-all" name="all"/>
-			<label for="select-all"><label for="nullSelectAll">Select All</label></label>
-			{# <button type="submit" class="jsonly" onClick="">Clear Selection</button>#}
-			<button type="submit" name="action" value="Publish" >Publish Selected</button>
-			<button type="submit" name="action" value="Delete" />Delete Selected</button>
-			<input type="hidden" name="redirect" value="/mydrafts/">
-		</form>
-	</div>
-</div>
-<h3></h3>
-<div class="row">
-	<!-- Projects-->
-	{% for project, thumb in listdata %}
-	<div class="col-xs-6 col-md-3">
-		{% if project.valid %}
-		<form action="/project/{{ project.id }}/publish/" method="post">{% csrf_token %}
-			{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' /> #}
-			<button type="submit" class="buttonless ribbon">Publish</button>
-			<div class="ribbonedge"></div>
-
-		</form>
-		{% endif %}
-		<div>
-			<input class="selectBox" type="checkbox" form="itemSelectForm" value="{{ project.id }}" id="select-{{ project.id }}" name="p"/>
-			<label for="select-{{ project.id }}"><i class="fi-annotate off"></i><i class="fi-check on"></i></label>
-			<div class="projecthumb">
-				<form action="/project/{{ project.id }}/delete/" method="post">{% csrf_token %}
-					{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' />#}
-					<button type="submit" class="fi-x bigredx"></button>
-				</form>
-
-				<a href="/edit/{{ project.id }}">
-					{% if thumb %}
-					{% include "thumbview.html" with thumbnail=thumb %}
-					{% else %}
-					<div class="box stripe-1 module">
-					</div>
-					{% endif %}
-					{% if project.title %}
-					<h3>{{ project.title }}</h3>
-					{% else %}
-					<h3>Untitled</h3>
-					{% endif %}
-				</a>
-			</div>
+	<div class="">
+		<div class="span12">
+			<form id="itemSelectForm" method="post" action="/api/project/">
+				{% csrf_token %}
+				<input class="selectAllBox" type="checkbox" value="True" id="select-all" name="all"/>
+				<label for="select-all"><label for="nullSelectAll">Select All</label></label>
+				{# <button type="submit" class="jsonly" onClick="">Clear Selection</button>#}
+				<button type="submit" name="action" value="Publish" >Publish Selected</button>
+				<button type="submit" name="action" value="Delete" />Delete Selected</button>
+				<input type="hidden" name="redirect" value="/mydrafts/">
+			</form>
 		</div>
 	</div>
-	{% cycle '' '' '' '<div class="clearfix visible-xs-block"></div>'%}
-	{% endfor %}
-
-	{% if not toomanydrafts %}
-	<a href="/create/">
+	<h3></h3>
+	<div class="row">
+		<!-- Projects-->
+		{% for project, thumb in listdata %}
 		<div class="col-xs-6 col-md-3">
-			<div class="projecthumb newbox stripe-1">
-				<div class="center">
-					<i class="fi-plus"></i><p>
-					Create new project
+			{% if project.valid %}
+			<form action="/project/{{ project.id }}/publish/" method="post">{% csrf_token %}
+				{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' /> #}
+				<button type="submit" class="buttonless ribbon">Publish</button>
+				<div class="ribbonedge"></div>
+
+			</form>
+			{% endif %}
+			<div>
+				<input class="selectBox" type="checkbox" form="itemSelectForm" value="{{ project.id }}" id="select-{{ project.id }}" name="p"/>
+				<label for="select-{{ project.id }}"><i class="fi-annotate off"></i><i class="fi-check on"></i></label>
+				<div class="projecthumb">
+					<form action="/project/{{ project.id }}/delete/" method="post">{% csrf_token %}
+						{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' />#}
+						<button type="submit" class="fi-x bigredx"></button>
+					</form>
+
+					<a href="/edit/{{ project.id }}">
+						{% if thumb %}
+						{% include "thumbview.html" with thumbnail=thumb %}
+						{% else %}
+						<div class="box stripe-1 module">
+						</div>
+						{% endif %}
+						{% if project.title %}
+						<h3>{{ project.title }}</h3>
+						{% else %}
+						<h3>Untitled</h3>
+						{% endif %}
+					</a>
 				</div>
 			</div>
 		</div>
-	</a>
-	{% else %}
-	<div class="clearfix visible-xs-block"></div>
-	<h2>Too many drafts. Publish or delete some to free up space.</h2>
+		{% cycle '' '' '' '<div class="clearfix visible-xs-block"></div>'%}
+		{% endfor %}
 
-	{% endif %}
-	<div class="clearfix visible-xs-block"></div>
-	{% if paginate.object_list and paginate.paginator.num_pages > 1 %}
-	<div class="pagination">
-		<span class="step-links">
-			{% if paginate.has_previous %}
-			<a href= "?page={{ paginate.previous_page_number }}">newer entries &lt;&lt; </a>
-			{% endif %}
-			<span class="current">
-				&nbsp;Page {{ paginate.number }} of {{ paginate.paginator.num_pages }}
+		{% if not toomanydrafts %}
+		<a href="/create/">
+			<div class="col-xs-6 col-md-3">
+				<div class="projecthumb newbox stripe-1">
+					<div class="center">
+						<i class="fi-plus"></i><p>
+						Create new project
+					</div>
+				</div>
+			</div>
+		</a>
+		{% else %}
+		<div class="clearfix visible-xs-block"></div>
+		<h2>Too many drafts. Publish or delete some to free up space.</h2>
+
+		{% endif %}
+		<div class="clearfix visible-xs-block"></div>
+		{% if paginate.object_list and paginate.paginator.num_pages > 1 %}
+		<div class="pagination">
+			<span class="step-links">
+				{% if paginate.has_previous %}
+				<a href= "?page={{ paginate.previous_page_number }}">newer entries &lt;&lt; </a>
+				{% endif %}
+				<span class="current">
+					&nbsp;Page {{ paginate.number }} of {{ paginate.paginator.num_pages }}
+				</span>
+				{% if paginate.has_next %}
+				<a href="?page={{ paginate.next_page_number }}"> &gt;&gt; older entries</a>
+				{% endif %}
 			</span>
-			{% if paginate.has_next %}
-			<a href="?page={{ paginate.next_page_number }}"> &gt;&gt; older entries</a>
-			{% endif %}
-		</span>
-	</div>
-	{% endif %}
+		</div>
+		{% endif %}
+
+    </div>
+   </div>
+
+
+    <div role="tabpanel" class="tab-pane" id="import">
+		<h3>Thingiverse Import</h3>
+		<form action="/import/" method="post">{% csrf_token %}
+		{{ importerForm }}
+		<input type="submit" name="action" value="Import" />
+		<input type="submit" name="action" value="Cancel" />
+		</form>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="github">
+		{% for key, value in accounts.iteritems %}
+		<div class="panel panel-default">
+		<div class="panel-heading">{{ value.name }}</div>
+		<div class="panel-body">
+		<p> {{ value.html_url }}</p>
+		</div>
+		</div>
+		{% endfor %}
+    </div>
+  </div>
+
+</div>
 
 	{% endblock content %}
 

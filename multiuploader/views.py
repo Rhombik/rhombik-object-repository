@@ -31,18 +31,35 @@ from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from project.views import project_list_get
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-
+from gitHooks.models import githubAccount
 from django.core.context_processors import csrf
+import urllib, urlparse
+import json
 
 def draftview(RequestContext, scraperMessage=False):
     request = RequestContext
     projects = Project.objects.filter(author=int(request.user.id), draft=True)
     toomanydrafts = False
+
+    github = githubAccount.objects.filter(user=request.user)
+    accounts={}
+    for i in github:
+        apicall = json.loads(urllib.urlopen("https://api.github.com/users/{user}/repos".format(user=i.gitUser)).read())
+        accounts.update({item['id']: item for item in apicall})
+
     if projects.count() >= 8:
         toomanydrafts = True
     listdata = project_list_get(projects, purge=False)
     importForm=ImportForm()
-    c = dict(toomanydrafts = toomanydrafts, listdata=listdata, user=request.user, active="home", importerForm=importForm, scraperMessage=scraperMessage)
+    c = {
+    'toomanydrafts':toomanydrafts,
+    'listdata':listdata,
+    'user':request.user,
+    'active':"home",
+    'importerForm':importForm,
+    'scraperMessage':scraperMessage,
+    'accounts':accounts,
+    }
     c.update(csrf(request))
     return render_to_response("drafts.html", c)
 

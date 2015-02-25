@@ -19,7 +19,7 @@ from django import forms
 
 from django.contrib.contenttypes.models import ContentType
 from django.http import Http404
-
+from gitHooks.models import githubAccount
 
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 ##obviously ignoring csrf is a bad thing. Get this fixedo.
@@ -237,7 +237,6 @@ def editOrCreateStuff(project, request):
 
     project.valid=False
     project.save()
-
 
   ## postmode! We are getting pretty post data from the user!!!
 
