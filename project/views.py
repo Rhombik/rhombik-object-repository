@@ -260,10 +260,10 @@ def editOrCreateStuff(project, request):
 
       # Editing the Readme.md file stuff.
       	if project.bodyFile:
+                from django.core.files.base import ContentFile
 		project.bodyFile.filename.file.close()
-		project.bodyFile.filename.file.open("w")
-		project.bodyFile.filename.file.write(form.cleaned_data["body"])
-		project.bodyFile.filename.file.close()
+                content = ContentFile(form.cleaned_data["body"])
+		project.bodyFile.filename.write(content.read())
 	else:
 		readme=fileobject()
 		readme.parent=project

@@ -118,7 +118,7 @@ def multiuploader(request, pk):
             mimetype = 'application/json'
         else:
             mimetype = 'text/plain'
-        return HttpResponse(response_data, mimetype=mimetype)
+        return HttpResponse(response_data, content_type=mimetype)
     else: #GET
         object_type = ContentType.objects.get_for_model(project)
         projectfiles = fileobject.objects.filter(content_type=object_type,object_id=project.id)
@@ -140,6 +140,6 @@ def multiuploader(request, pk):
             mimetype = 'application/json'
         else:
             mimetype = 'text/plain'
-        return HttpResponse(response_data, mimetype=mimetype)
+        return HttpResponse(response_data, content_type=mimetype)
 
 

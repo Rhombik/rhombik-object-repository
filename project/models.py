@@ -25,7 +25,6 @@ def select_thumbnail(instance):
 class Project(models.Model):
 
     title = models.CharField(max_length=60,blank=True, null=True, unique=True)
-   #thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL , related_name='thumbnail')
     thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_DEFAULT, related_name='thumbnail', default=None)
     body = models.TextField(blank=True, null=True)
 
@@ -34,16 +33,14 @@ class Project(models.Model):
 
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
-    author = models.ForeignKey(User, related_name='author',default=User)
+    author = models.ForeignKey(User, related_name='author',)
     allow_html = models.BooleanField(default=False)
     ##only used internally, don't set
-   #body_rendered = models.TextField('Entry body as HTML', blank=True, null=True)
     tags = TaggableManager(blank=True)
     draft = models.BooleanField(default=False)
     valid = models.BooleanField(default=False)
 
     downloadcount = RatingField(range=1,allow_delete = False,allow_anonymous = True,) 
-
 
     rating = RatingField(range=2, can_change_vote = True,allow_delete = True,)
     ratingSortBest = models.FloatField(default=1)
