@@ -2,14 +2,13 @@ from os import path
 
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 
 from django.template import RequestContext
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 import thumbnailer.thumbnailer as thumbnailer 
-
 
 from filemanager.models import fileobject, thumbobject, htmlobject, zippedobject 
 
@@ -19,13 +18,17 @@ from django import forms
 
 from django.contrib.contenttypes.models import ContentType
 from django.http import Http404
-
+from gitHooks.models import githubAccount
 
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 ##obviously ignoring csrf is a bad thing. Get this fixedo.
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf_token
 from django.core.context_processors import csrf
+from django.contrib.auth.decorators import login_required
+
+from django.template import RequestContext
+from django.core.urlresolvers import reverse
 
 def searchtest(*args, **kwargs):
     project = Project.objects.filter(pk=1).get()
@@ -191,7 +194,7 @@ def project(request, pk):
 				galleryname="base", 
 				mainthumb=[mainthumb],
                                 downloadurl=downloadurl))
-    return render(request, "article.html", c)
+    return render_to_response('article.html', RequestContext(request, c))
 
 
 def front(request):
@@ -235,7 +238,6 @@ def editOrCreateStuff(project, request):
 
     project.valid=False
     project.save()
-
 
   ## postmode! We are getting pretty post data from the user!!!
 
@@ -288,7 +290,7 @@ def editOrCreateStuff(project, request):
         else:
             project.save()
             draftSaved = True
-            return render_to_response('edit.html', dict(project=project, user=request.user, form=form, draftSaved=draftSaved, ))
+            return render_to_response('edit.html', RequestContext(request,{'project':project, 'user':request.user, 'form':form, 'draftSaved':draftSaved,}))
 
    #### Not POSTmode! We are setting up the form for the user to fill in. We are not getting form data from the user.
 
@@ -298,23 +300,19 @@ def editOrCreateStuff(project, request):
         form.errors['title'] = ""#form['body'].error_class()
         form.errors['thumbnail'] = ""#form['body'].error_class()
         form.errors['body'] = ""#form['body'].error_class()
-        return render_to_response('edit.html', dict(project=project, user=request.user, form=form,))
+        return render_to_response('edit.html', RequestContext(request,{'project':project, 'user':request.user, 'form':form}))
 
   else:
       return HttpResponse(status=403)
 
 
-@csrf_exempt
-@requires_csrf_token
 def edit(request, pk):
-
-## Get the project the user wishes to edit.
+    ## Get the project the user wishes to edit.
     project=Project.objects.filter(pk=pk)[0]
 
     return editOrCreateStuff(project, request)
 
 
-@csrf_exempt
 def create(request):
     if Project.objects.filter(author=request.user).filter(draft=True).count() >= 12:#cause it's funny
         project=Project.objects.filter(author=request.user).filter(draft=True)[0]
@@ -325,7 +323,7 @@ def create(request):
         project.author = request.user
         project.save()
 
-    return editOrCreateStuff(project, request)
+    return(redirect('project.views.edit', project.pk))
 
 
 ## This view is moribund. It may be reserected or exercised at some point.
