@@ -2,14 +2,13 @@ from os import path
 
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 
 from django.template import RequestContext
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 import thumbnailer.thumbnailer as thumbnailer 
-
 
 from filemanager.models import fileobject, thumbobject, htmlobject, zippedobject 
 
@@ -29,7 +28,7 @@ from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 
 from django.template import RequestContext
-
+from django.core.urlresolvers import reverse
 
 def searchtest(*args, **kwargs):
     project = Project.objects.filter(pk=1).get()
@@ -323,7 +322,7 @@ def create(request):
         project.author = request.user
         project.save()
 
-    return editOrCreateStuff(project, request)
+    return(redirect('project.views.edit', project.pk))
 
 
 ## This view is moribund. It may be reserected or exercised at some point.

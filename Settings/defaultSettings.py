@@ -25,7 +25,7 @@ CELERYD_MAX_TASKS_PER_CHILD = 1
 
 MANAGERS = ADMINS
 
-lOGIN_URL="/legister/"
+LOGIN_URL="legister"
 
 DATABASES = {
     'default': {
