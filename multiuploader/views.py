@@ -35,7 +35,9 @@ from gitHooks.models import githubAccount
 from django.core.context_processors import csrf
 import urllib, urlparse
 import json
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def draftview(RequestContext, scraperMessage=False):
     request = RequestContext
     projects = Project.objects.filter(author=int(request.user.id), draft=True)
@@ -43,9 +45,9 @@ def draftview(RequestContext, scraperMessage=False):
 
     github = githubAccount.objects.filter(user=request.user)
     accounts={}
-    for i in github:
-        apicall = json.loads(urllib.urlopen("https://api.github.com/users/{user}/repos".format(user=i.gitUser)).read())
-        accounts.update({item['id']: item for item in apicall})
+#    for i in github:
+#        apicall = json.loads(urllib.urlopen("https://api.github.com/users/{user}/repos".format(user=i.gitUser)).read())
+#        accounts.update({item['id']: item for item in apicall})
 
     if projects.count() >= 8:
         toomanydrafts = True

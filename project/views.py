@@ -26,6 +26,10 @@ from gitHooks.models import githubAccount
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf_token
 from django.core.context_processors import csrf
+from django.contrib.auth.decorators import login_required
+
+from django.template import RequestContext
+
 
 def searchtest(*args, **kwargs):
     project = Project.objects.filter(pk=1).get()
@@ -286,7 +290,7 @@ def editOrCreateStuff(project, request):
         else:
             project.save()
             draftSaved = True
-            return render_to_response('edit.html', dict(project=project, user=request.user, form=form, draftSaved=draftSaved, ))
+            return render_to_response('edit.html', RequestContext(request,{'project':project, 'user':request.user, 'form':form, 'draftSaved':draftSaved,}))
 
    #### Not POSTmode! We are setting up the form for the user to fill in. We are not getting form data from the user.
 
@@ -296,23 +300,19 @@ def editOrCreateStuff(project, request):
         form.errors['title'] = ""#form['body'].error_class()
         form.errors['thumbnail'] = ""#form['body'].error_class()
         form.errors['body'] = ""#form['body'].error_class()
-        return render_to_response('edit.html', dict(project=project, user=request.user, form=form,))
+        return render_to_response('edit.html', RequestContext(request,{'project':project, 'user':request.user, 'form':form}))
 
   else:
       return HttpResponse(status=403)
 
 
-@csrf_exempt
-@requires_csrf_token
 def edit(request, pk):
-
-## Get the project the user wishes to edit.
+    ## Get the project the user wishes to edit.
     project=Project.objects.filter(pk=pk)[0]
 
     return editOrCreateStuff(project, request)
 
 
-@csrf_exempt
 def create(request):
     if Project.objects.filter(author=request.user).filter(draft=True).count() >= 12:#cause it's funny
         project=Project.objects.filter(author=request.user).filter(draft=True)[0]
