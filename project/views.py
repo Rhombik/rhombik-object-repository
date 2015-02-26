@@ -262,6 +262,7 @@ def editOrCreateStuff(project, request):
       	if project.bodyFile:
                 from django.core.files.base import ContentFile
 		project.bodyFile.filename.file.close()
+		project.bodyFile.filename.file.open(mode='w')
                 content = ContentFile(form.cleaned_data["body"])
 		project.bodyFile.filename.write(content.read())
 	else:
