@@ -194,7 +194,7 @@ def project(request, pk):
 				galleryname="base", 
 				mainthumb=[mainthumb],
                                 downloadurl=downloadurl))
-    return render(request, "article.html", c)
+    return render_to_response('article.html', RequestContext(request, c))
 
 
 def front(request):

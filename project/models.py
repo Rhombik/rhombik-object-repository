@@ -25,7 +25,7 @@ def select_thumbnail(instance):
 class Project(models.Model):
 
     title = models.CharField(max_length=60,blank=True, null=True, unique=True)
-    thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_DEFAULT, related_name='thumbnail', default=None)
+    thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL, related_name='thumbnail',)
     body = models.TextField(blank=True, null=True)
 
     #This exists soley so that we can find projects that don't have a readme.
