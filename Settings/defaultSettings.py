@@ -25,6 +25,8 @@ CELERYD_MAX_TASKS_PER_CHILD = 1
 
 MANAGERS = ADMINS
 
+lOGIN_URL="/legister/"
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
