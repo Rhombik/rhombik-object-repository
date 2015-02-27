@@ -152,9 +152,9 @@ class ThingiProjectTask(JobtasticTask):
         filelist = dom.xpath('//*[contains(@class,\'thing-file\')]/a/@href')
         #Grab only raw images.        
         imagelist = dom.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')
-        fileurls=[urlparse.urljoin('http://www.thingiverse.com/', fl) for fl in filelist+imagelist]
-        bundle_o_tasks=[ThingiFileTask().s(url=i,projectPK=project.pk) for i in fileurls]
-        filetask = chord(bundle_o_tasks)(ResaveProjectTask().s(projectPK=project.pk))
+        fileurls=[urlparse.urljoin('http://www.thingiverse.com/', fl) for fl in imagelist+filelist]
+        bundle_o_tasks=[ThingiFileTask().si(url=i,projectPK=project.pk) for i in fileurls]
+        filetask = chord(bundle_o_tasks)(ResaveProjectTask().si(projectPK=project.pk))
         return(project.title)
 
 
@@ -186,12 +186,11 @@ class ResaveProjectTask(JobtasticTask):
     herd_avoidance_timeout = 120
     ignore_result=True
 
-    def calculate_result(projectPK, **kwargs):
+    def calculate_result(self,projectPK, **kwargs):
         print("saveing project again")
         project=Project.objects.get(pk=projectPK)
         project.save(enf_valid=True)
         return("{} resaved".format(project))
-
 
 
 app = Celery('tasks')
