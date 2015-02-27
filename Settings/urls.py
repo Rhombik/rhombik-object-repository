@@ -37,7 +37,7 @@ urlpatterns = patterns('',
     (r'^login/$', 'userProfile.views.login_user'),
     (r'^logout/$', 'userProfile.views.logout_user'),
     (r'^register/$', 'userProfile.views.register'),
-    (r'^legister/$', 'userProfile.views.legister'),
+    url(r'^legister/$', 'userProfile.views.legister', name='legister'),
     (r'^editProfile/$', 'userProfile.views.edit'),
 
     #preview pages for the STL files.

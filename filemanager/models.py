@@ -75,12 +75,11 @@ class fileobject(models.Model):
         except:
             pass
 
+def uploadpath(instance, filename):
+    return ("thumbs/"+str(instance.fileobject.content_type.name)+"/"+str(instance.fileobject.object_id)+"/"+str(instance.pk)+os.path.split(filename)[1])
 
 
 class thumbobject(models.Model):
-
-    def uploadpath(instance, filename):
-        return ("thumbs/"+str(instance.fileobject.content_type.name)+"/"+str(instance.fileobject.object_id)+"/"+str(instance.pk)+os.path.split(filename)[1])
     #A pointer to the file this is a thumbnail of.
     fileobject = models.ForeignKey(fileobject)
     #This is the actual thumbnail, stored using django storage, whatever that may be.
