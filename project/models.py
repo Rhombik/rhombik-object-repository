@@ -45,6 +45,12 @@ class Project(models.Model):
     rating = RatingField(range=2, can_change_vote = True,allow_delete = True,)
     ratingSortBest = models.FloatField(default=1)
     ratingCount = models.IntegerField(blank=True, null=True)
+    class Meta:
+        permissions = (
+            ('view', 'View'),
+            ('edit', 'Edit'),
+        )
+
     #Pretends that 0 is -1 and 1 is 1.
     def calc_adjusted_rating(self):
         import math

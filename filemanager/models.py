@@ -19,7 +19,10 @@ class fakefile():
 
 # Create your models here.
 
-def uploadpath(instance, filename):
+def uploadpath(*args):
+    return None
+
+def fileuploadpath(instance, filename):
     return ("uploads/"+str(instance.content_type.name)+"/"+str(instance.object_id)+instance.subfolder+filename)
 
 
@@ -31,7 +34,7 @@ class fileobject(models.Model):
     parent = generic.GenericForeignKey('content_type', 'object_id')
 
     subfolder = models.CharField(max_length=256, default="/")
-    filename = models.FileField(upload_to=uploadpath)
+    filename = models.FileField(upload_to=fileuploadpath)
     filetype = models.CharField(max_length=16, blank=True, null=True, default="norender")
 
 
@@ -75,7 +78,7 @@ class fileobject(models.Model):
         except:
             pass
 
-def uploadpath(instance, filename):
+def thumbuploadpath(instance, filename):
     return ("thumbs/"+str(instance.fileobject.content_type.name)+"/"+str(instance.fileobject.object_id)+"/"+str(instance.pk)+os.path.split(filename)[1])
 
 
@@ -83,7 +86,7 @@ class thumbobject(models.Model):
     #A pointer to the file this is a thumbnail of.
     fileobject = models.ForeignKey(fileobject)
     #This is the actual thumbnail, stored using django storage, whatever that may be.
-    filename = models.FileField(upload_to=uploadpath, blank=True, null=True)
+    filename = models.FileField(upload_to=thumbuploadpath, blank=True, null=True)
     #What the file type is
     filetype = models.CharField(max_length=16, blank=True, null=True)
     #the size of the file.

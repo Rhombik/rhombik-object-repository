@@ -53,6 +53,11 @@ HAYSTACK_SIGNAL_PROCESSOR = 'searchsettings.celeryHaystack.celerySignalProcessor
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # default
+    'guardian.backends.ObjectPermissionBackend',
+)
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -70,7 +75,7 @@ URL = 'http://localhost:8000'
 #the path to the phantomjs binary, properly escaped.
 PHANTOMJSPATH = "phantomjs"
 
-
+ANONYMOUS_USER_ID=-1
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -122,7 +127,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'django.contrib.auth.context_processors.auth',
 )
 
-##Github OAuth stuff. 'fraid you'll have to generate it yourself
+##Github OAuth stuff. 'fraid you'll have to generate it yourself. These ones should work for debugging, but you'll have to edit your hosts file.
+##If you're going to be working on this, feel free to message me ~traverseda
 
 GIT_CLIENT_ID="7228e16a274bba8d8487"
 GIT_CLIENT_SECRET="ba96e5cecb54a7ec3c269259712c679e24962cba"
@@ -187,6 +193,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'guardian',
     'haystack',
     'searchsettings',
     'thumbnailer',
@@ -216,7 +223,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-#    'gitHooks',
+    'gitHooks',
 )
 
 COMMENTS_APP = 'threadedcomments'
