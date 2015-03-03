@@ -119,7 +119,44 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django.contrib.staticfiles.finders.DefaultStorageFinder',
-    'static_precompiler.finders.StaticPrecompilerFinder',
+    'pipeline.finders.PipelineFinder',
+)
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+PIPELINE_CSS_COMPRESSOR=None
+PIPELINE_JS_COMPRESSOR=None
+
+PIPELINE_CSS = {
+    'globalCSS': {
+        'source_filenames': (
+             'rhombik/css/global.scss',
+         ),
+        'output_filename': 'css/global.css',
+    },
+    'hasJS-css': {
+        'source_filenames': (
+             'rhombik/css/js-enabled.scss',
+         ),
+        'output_filename': 'css/hasJS.css',
+    }
+
+}
+
+PIPELINE_JS = {
+    'globalJS': {
+        'source_filenames': (
+            'script/thumbloader.coffee',
+            'script/dropwDownSearch.coffee',
+        ),
+        'output_filename': 'js/global.js',
+    }
+}
+
+PIPELINE_COMPILERS = (
+  'pipeline.compilers.coffee.CoffeeScriptCompiler',
+  'pipeline.compilers.sass.SASSCompiler',
+
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -140,11 +177,6 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': PROJECT_PATH+'/django_cache',
     },
-    'javascript': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': PROJECT_PATH+'/coffeecache',
-    }
-
 }
 
 
@@ -199,8 +231,6 @@ INSTALLED_APPS = (
     'thumbnailer',
     'project',
     'multiuploader',
-    # disabling example theme, including instead boostrapTheme
-    #'exampleTheme',
     'bootstrapTheme',
     'userProfile',
     'captcha',
@@ -215,14 +245,10 @@ INSTALLED_APPS = (
     'scraper',
     'mptt',
     'kombu.transport.django',
-#    'threadedcomments',
-#    'django.contrib.comments',
     #So we can inline coffeescript
-    'static_precompiler',
+    'pipeline',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
     'gitHooks',
 )
 

@@ -1,8 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
-	{% load static %}
-	{% load scss %}
-
+        {% load pipeline %}
+        {% load static %}
 	<head>
 		<meta charset="utf-8">
 		<meta name="description" content="">
@@ -18,11 +17,7 @@
 		<script>
 			var head = document.getElementsByTagName("head")[0];
 			if (head) {
-				var scriptStyles = document.createElement("link");
-				scriptStyles.rel = "stylesheet";
-				scriptStyles.type = "text/css";
-				scriptStyles.href = "{% static "" %}{% scss "rhombik/css/js-enabled.scss"%}";
-				head.appendChild(scriptStyles);
+				head.innerHTML='{% stylesheet 'hasJS-css' %}';
 			}
 
 
@@ -30,6 +25,7 @@
 				thumbloader.wakeUp();
 				// I am the sanest man alive!
 				//me too. I don't know if writing a paragraph here about how fucked this is would be useful. I think JS is bad, and I am probably bad in parrellel. There needs to be a better way to do this.
+                                //Not a bad way to learn I guess. We hurt no one but ourselves.
 				function Init(argument) {
 					argument.init();
 				}
@@ -41,19 +37,16 @@
 				sleep(70, Init, tabletSearchDrop);
 			});
 
-			//Include css/js-enabled.css if js is enabled.
 		</script>
 
 		<script src="{% static "script/trier/src/trier.js"%}"></script>
 
-		{% load coffeescript %}
-		<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/thumbloader.coffee" %}"></script>
-		<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/dropwDownSearch.coffee" %}"></script>
+		{% javascript 'globalJS' %}
 
 		<script>
-thumbloader = new thumbloader("thumblist")
-tabletSearchDrop = new searchDrop()
-	tabletSearchDrop.registerClass("searchDrop")
+                     thumbloader = new thumbloader("thumblist")
+                     tabletSearchDrop = new searchDrop()
+                     tabletSearchDrop.registerClass("searchDrop")
 		</script>
 
 		{% block head %}
@@ -105,9 +98,8 @@ tabletSearchDrop = new searchDrop()
 		<link href="{% static "" %}bootstrap_theme/css/rhombik_magic_bootstrap.css" rel="stylesheet" type="text/css" />
 
 		{# Old Rhombik CSS #}
-
-		<link href="{% static "" %}{% scss "rhombik/css/global.scss"%}" media="screen, projection" rel="stylesheet" type="text/css">
-		<link href="{% static "" %}{% scss "rhombik/css/spin.scss"%}" media="screen, projection" rel="stylesheet" type="text/css"> 
+                {% stylesheet 'globalCSS' %}
+		<link href="{% stylesheet "rhombik/css/spin.scss"%}" media="screen, projection" rel="stylesheet" type="text/css">
 
 		<noscript><link href="{% static ""%}rhombik/css/noscript.css" media="screen" rel="stylesheet" type="text/css"></noscript>
 		<link href="{% static ""%}rhombik/css/foundation-icons.css" media="screen, projection" rel="stylesheet" type="text/css">
