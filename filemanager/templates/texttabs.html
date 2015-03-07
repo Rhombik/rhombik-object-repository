@@ -1,7 +1,9 @@
 
 {% load static %}
-{% load coffeescript %}
-<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/tabbeler.coffee" %}"></script>
+
+{% load pipeline %}
+{% javascript 'globalJS' %}
+
 <script>
 $(document).ready(function(){
     texttabbeler = new tabbeler("texts")

@@ -148,6 +148,8 @@ PIPELINE_JS = {
         'source_filenames': (
             'script/thumbloader.coffee',
             'script/dropwDownSearch.coffee',
+            'script/selectAll.coffee',
+            'script/trier/src/trier.js',
         ),
         'output_filename': 'js/global.js',
     }
@@ -156,7 +158,7 @@ PIPELINE_JS = {
 PIPELINE_COMPILERS = (
   'pipeline.compilers.coffee.CoffeeScriptCompiler',
   'pipeline.compilers.sass.SASSCompiler',
-
+  'pipeline_rapydscript.RapydScript.RapydScriptCompiler',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -178,12 +180,6 @@ CACHES = {
         'LOCATION': PROJECT_PATH+'/django_cache',
     },
 }
-
-
-STATIC_PRECOMPILER_COMPILERS = (
-    'static_precompiler.compilers.CoffeeScript',
-    'static_precompiler.compilers.SCSS',
-)
 
 
 # List of callables that know how to import templates from various sources.
@@ -247,6 +243,7 @@ INSTALLED_APPS = (
     'kombu.transport.django',
     #So we can inline coffeescript
     'pipeline',
+    'pipeline_rapydscript',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'gitHooks',

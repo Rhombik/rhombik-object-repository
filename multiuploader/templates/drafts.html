@@ -4,15 +4,15 @@
 
 <!-- coffeescript is fun -->
 {% load static %}
+{% load pipeline %}
+
+{% javascript 'globalJS' %}
+
 <script>
 $(document).ready(function(){
 	console.log("did that");
 	allBox.startup("#select-all","selectBox");
 });
-</script>
-{% load coffeescript %}
-<script type="text/javascript"  src="{% static "" %}{% coffeescript "script/selectAll.coffee" %}"></script>
-<script>
 allBox = new selectAllTool();
 </script>
 
