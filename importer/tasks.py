@@ -44,16 +44,22 @@ class ThingiUserTask(JobtasticTask):
            ]
     herd_avoidance_timeout = 60
     def calculate_result(self, url="", userPK=None, **kwargs):
+        print("thingiusertask got called success!")
         response=get_response(url)
         dom=html.fromstring(response.read())
-        designLinkattempt = dom.xpath('//a[contains(.,"Designs") and contains(@href,"designs")]/@href')[0]
-        designsLink=urlparse.urljoin('http://www.thingiverse.com/',designLinkattempt[0]) # look with shame at how I did this before... /html/body/div[3]/div[1]/div/div/div[3]/div/div[2]/div[2]/a[2]/@href')[0])
+        designLinkattempt = dom.xpath('//a[contains(@href,"designs")]/@href')[0]
+        print("designLinkTail : {}".format(designLinkattempt))
+        designsLink=urlparse.urljoin('http://www.thingiverse.com/',designLinkattempt)
+        print("designslink : {}".format(designsLink))
         response=get_response(designsLink)
         dom=html.fromstring(response.read())
-        paginatorlinks=dom.xpath('//*[contains(@class,\'pagination\')]/ul/li/a/@href')
-        designsurls=[urlparse.urljoin('http://www.thingiverse.com/',lnk) for lnk in paginatorlinks]
-        for designsurl in designsurls:
-            GetThingiProjectTask.delay(url=designsurl,userPK=userPK)
+        paginationUrlTails=dom.xpath('//*[contains(@class,\'pagination\')]/ul/li/a/@href')
+        paginationUrls = set([urlparse.urljoin('http://www.thingiverse.com/',lnk) for lnk in paginationUrlTails])
+        paginationUrls.union(set(["{}/page:1".format(url.rstrip("/"))]))
+        print("paginationUrls : {}".format(paginationUrls))
+        for paginationUrl in paginationUrls:
+            print("Calling GetThingiProjectTask on {}".format(paginationUrl))
+            GetThingiProjectTask.delay(url=paginationUrl,userPK=userPK)
 class GetThingiProjectTask(JobtasticTask):
     significant_kwargs = [
                 ('url', str),
@@ -61,11 +67,14 @@ class GetThingiProjectTask(JobtasticTask):
            ]
     herd_avoidance_timeout = 60
     def calculate_result(self, url="", userPK=None, **kwargs):
+        print("reading thing links from {}".format(url))
         response=get_response(url)
         dom=html.fromstring(response.read())
         things=dom.xpath('//a[contains(@href,\'thing:\')]/@href')
         things=['http://www.thingiverse.com/'+t for t in things if ('#comments' not in t) and ('edit' not in t)]
+        print("things : {}".format(things))
         for projecturl in things:
+            print("Calling ThingiProjectTask on {}".format(projecturl))
             ThingiProjectTask.delay(url=projecturl,userPK=userPK)
 
 class ThingiProjectTask(JobtasticTask):
@@ -80,11 +89,11 @@ class ThingiProjectTask(JobtasticTask):
     herd_avoidance_timeout = 120
     ignore_result=True
     def calculate_result(self, url, userPK, **kwargs):
-        print("first")
+        print("importing project : {}".format(url))
         response=get_response(url)
         goo=response.read()
         dom=html.fromstring(goo)
-        print(dom.xpath('//*[contains(@class,\'thing-header-data\')]/h1/text()'))
+        #print(dom.xpath('//*[contains(@class,\'thing-header-data\')]/h1/text()'))
         
         # Getting some metadatas for the project.
         #this is probably fine. If you're confused, feel free to make it more verbose.
@@ -168,7 +177,7 @@ class ThingiFileTask(JobtasticTask):
     herd_avoidance_timeout = 120
     ignore_result=True
     def calculate_result(self, url, projectPK, **kwargs):
-        print("first")
+        print("downloading {}".format(url))
         response=get_response(url)
         flob=fileobject()
         flob.parent=Project.objects.get(pk=projectPK)

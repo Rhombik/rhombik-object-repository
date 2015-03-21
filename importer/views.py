@@ -9,12 +9,12 @@ import re
 def parse(url):
     if re.search('thingiverse\.com',url):
         #gee wiz, it's from thiniverse!
-	if re.search('thing:\d\d+',url):#it's a thing/project page
+        if re.search('thing:\d\d+',url):#it's a thing/project page
             return(True,ThingiProjectTask)
         else:
-	    return(True,ThingiUserTask)#it's probably a user page. or it's another page, but we aren't checking that here.
+            return(True,ThingiUserTask)#it's probably a user page. or it's another page, but we aren't checking that here.
     else:
-	return(False,"Unknown Domain")
+        return(False,"Unknown Domain")
 
 def importer(request):
     ###Write a scraper dispatcher here.
@@ -23,16 +23,16 @@ def importer(request):
         if form.is_valid() and request.user.is_authenticated():
             userPK=request.user.pk
             url=form.cleaned_data['url']
-	    good,kind=parse(url)#get the kind of task to execute for a given url!
-	    print(url)
-	    print(userPK)
-	    if good:
-                print(kind)
+            good,kind=parse(url)#get the kind of task to execute for a given url!
+            print("importer attempting to import from : {}".format(url))
+            print("for user : {}".format(userPK))
+            if good:
+                print("importing from {}".format(kind.__name__))
                 kind.delay(url=url,userPK=userPK)#delay(url=url, userPK=userPK)
-	    else:
-	        # neeto unknown site error! these should prolly get logged.
-		pass
-	##else we need to be giving them shiny errors as to why it isn't valid.
+            else:
+                # neeto unknown site error! these should prolly get logged.
+                pass
+        ##else we need to be giving them shiny errors as to why it isn't valid.
     return draftview(request, scraperMessage=True)
     #return HttpResponseRedirect('/mydrafts/', c)
 
