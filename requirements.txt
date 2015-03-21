@@ -54,3 +54,4 @@ html2text
 html5lib==0.999
 django_pipeline==1.4.6
 jobtastic==0.2.2
+django-pipeline-rapydscript==1.0.0
