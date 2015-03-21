@@ -46,7 +46,8 @@ class ThingiUserTask(JobtasticTask):
     def calculate_result(self, url="", userPK=None, **kwargs):
         response=get_response(url)
         dom=html.fromstring(response.read())
-        designsLink=urlparse.urljoin('http://www.thingiverse.com/',dom.xpath('/html/body/div[3]/div[1]/div/div/div[3]/div/div[2]/div[2]/a[2]/@href')[0])
+        designLinkattempt = dom.xpath('//a[contains(.,"Designs") and contains(@href,"designs")]/@href')[0]
+        designsLink=urlparse.urljoin('http://www.thingiverse.com/',designLinkattempt[0]) # look with shame at how I did this before... /html/body/div[3]/div[1]/div/div/div[3]/div/div[2]/div[2]/a[2]/@href')[0])
         response=get_response(designsLink)
         dom=html.fromstring(response.read())
         paginatorlinks=dom.xpath('//*[contains(@class,\'pagination\')]/ul/li/a/@href')
