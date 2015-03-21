@@ -234,11 +234,6 @@ import json
 def editOrCreateStuff(project, request):
 
   if request.user.is_authenticated() and str(project.author) == str(request.user):
-
-
-    project.valid=False
-    project.save()
-
   ## postmode! We are getting pretty post data from the user!!!
 
     if request.method == 'POST':

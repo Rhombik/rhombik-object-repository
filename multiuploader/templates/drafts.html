@@ -64,7 +64,7 @@ allBox = new selectAllTool();
 		<!-- Projects-->
 		{% for project, thumb in listdata %}
 		<div class="col-xs-6 col-md-3">
-			{% if project.valid %}
+			{% if project.checkValidity %}
 			<form action="/project/{{ project.id }}/publish/" method="post">{% csrf_token %}
 				{#    <input type='hidden' name='redirect' value='{{ request.get_full_path }}' /> #}
 				<button type="submit" class="buttonless ribbon">Publish</button>
