@@ -18,14 +18,6 @@ So where should they send your users? Most of the alternatives have the potentia
 
 We're commited to federation. If rhombik ever goes down or gets baught, you can just take our source and launch a new repo. It will be easy for users to migrate their projects. Don't bet on another horse you don't have control of.
 
-##Donate!
-
-I (traverseda) accept bitcoin at 147dJaeXj9sXcnRrGJ3Zpu7tSh2wyyj9Rw and have a gittip account [here](https://www.gittip.com/traverseda/).
-Other donations can be sent to traverse.da@gmail.com. 
-
-We don't have a proper donation system set up yet, so it's just going to me. Expect a proper rhombik donation system and transparency eventually. Right now we're mostly focused on moving to alpha.
-
-
 ###Developer information###
 
 Rhombik uses:
@@ -36,8 +28,6 @@ Rhombik uses:
  * Celery queueing
  * selenium for generating thumbnails of javascript previewers
  * ...A bunch more that aren't really important enough to list.
- * Coffeescript, and [django-static-precompiler](https://github.com/andreyfedoseev/django-static-precompiler) to make javascript less painful.
-
 
 Right now the code base is a bit of a mess. We're big believers in "release early, release often, hopefully get around to writing ~~better~~ some test cases". If you're interested in devloping for this, shoot me an [email](mailto://traverse.da@gmail.com) or visit our irc channel #rhombik on freenode. I can help get you up to speed on the code base. Take a look at the bug list for an idea of what needs doing.
 

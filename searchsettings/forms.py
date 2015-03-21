@@ -13,17 +13,17 @@ class objectSearchForm(SearchForm):
     tags = forms.CharField(widget=TagAutocomplete(attrs={'form':'searchForm'}),required=False)
 
     sortOPTIONS = (
-    ("votes", "Votes"),
-    ("new", "Newest"),
+        ("votes", "Votes"),
+        ("new", "Newest"),
     )
     sort = forms.ChoiceField(choices=sortOPTIONS, required=False)
 
     timeOPTIONS = (
-    ("everything", "all time"),
-    ("year", "this year"),
-    ("month", "this month"),
-    ("week", "this week"),
-    ("today", "today"),
+        ("everything", "all time"),
+        ("year", "this year"),
+        ("month", "this month"),
+        ("week", "this week"),
+        ("today", "today"),
     )
     From = forms.ChoiceField(choices=timeOPTIONS, required=False)
 

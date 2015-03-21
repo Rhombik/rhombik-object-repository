@@ -21,7 +21,7 @@ django-celery-transactions==0.1.3
 git+https://github.com/Rhombik/rhombik-django-cumulus.git
 django-debug-toolbar==0.11
 django-easy-maps==0.8.4
-django-haystack==2.1.0
+django-haystack==2.3.1
 django-mptt==0.6.1
 django-ratings==0.3.7
 django-reversion==1.8.0
@@ -53,4 +53,5 @@ django-guardian==1.2.5
 html2text
 html5lib==0.999
 django_pipeline==1.4.6
+django-pipeline-rapydscript
 jobtastic==0.2.2
