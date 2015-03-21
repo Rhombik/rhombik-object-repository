@@ -9,18 +9,6 @@ from djangoratings.fields import RatingField
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 import project.tasks
-##Does this actuall work? I don't think it does.... It seems to always return(SET_NULL)
-##I've disabled it. Now whenever a fileobject gets deleted, it starts a task checking for null fields.
-def select_thumbnail(instance):
-    files=fileobject.objects.filter(pk=instance)###  This gets a list of files from the project
-    for fl in files:
-        if fl.filetype != 'norender' and fl.filetype != "text" and fl.filename != project.thumbnail:### Look for thumbnailable pic.
-            project.thumbnail = fl
-            return (fl)
-    if noThumb:
-        #project.thumbnail = fileobject.objects.all()[0] ## !!!!! THIS SETS THE THUMBNAIL. It sets it to whatever the first uploaded image is. This should be something better asap.
-        return(SET_NULL)
-
 
 class Project(models.Model):
 
@@ -64,7 +52,6 @@ class Project(models.Model):
 
         #http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
         if(votes == 0):
-            #Set to 2 by default, to encourage people to look at/vote on new content. 
             self.ratingSortBest = 1 
         else: 
             r=1.0*upvotes/votes
@@ -113,27 +100,16 @@ class Project(models.Model):
 
         return ProjectForm({'title':self.title, 'body': readme, 'thumbnail': thumbnailstring, 'tags' : tags}, self)
 
+    def checkValidity(self):
+        return(self.get_form().is_valid())
+
     def enf_validity(self):
-        form = self.get_form()
-        if form.is_valid():
-            self.valid=True
-            super(Project, self).save()
-        else:
-            pass#print(form.errors)
+        print("enf_validity is depricated, asshole.")
+        pass
 
     def enf_consistancy(self):
         #checks if there's a thumbnail.
-
-        #Sometimes the "thumbnail = models.ForeignKey" key doesn't get set to null fast enough. This checks to see if the key points to a thumbobject that doesn't actually exist, or if the key is null.
-        try:
-            if self.thumbnail:
-                getnewthumb=False
-            else:
-                getnewthumb=True
-        except:
-            getnewthumb=True
-
-        if getnewthumb:
+        if self.thumbnail:
             object_type = ContentType.objects.get_for_model(self)
             files = fileobject.objects.filter(content_type=object_type,object_id=self.id)
             for fl in files:
@@ -141,8 +117,9 @@ class Project(models.Model):
                     self.thumbnail = fl
                     super(Project, self).save()
                     return True
-            self.draft = True
-            super(Project, self).save()
+            if not self.draft:
+                self.draft = True
+                super(Project, self).save()
             return False
         else:
             return True
@@ -151,5 +128,4 @@ class Project(models.Model):
         if self.title:
              return self.title
         else:
-             return "Untitled Project (A Draft..?)"
-
+             return "Untitled Project"

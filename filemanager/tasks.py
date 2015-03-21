@@ -10,16 +10,16 @@ from django.conf import settings
 from django.core.files.uploadedfile import UploadedFile
 from io import BytesIO
 from django.contrib.contenttypes.models import ContentType
-
+from django.db.models.signals import post_save
+from project.models import Project
 
 app = Celery('tasks')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Settings.settings')
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
-
 @app.task()
-def zippedTask(livezippedobject,project):
+def zippedTask(project):
    from filemanager.models import zippedobject,fileobject
    import zipfile
    from django.core.files.base import ContentFile
@@ -36,9 +36,7 @@ def zippedTask(livezippedobject,project):
    s.seek(0)
    filedata = ContentFile(s.getvalue())
    filedata.name = project.title+".zip"
-   livezippedobject.filename = filedata
-   livezippedobject.save(generate=False)
-
+   zippedobject.create(filename = filedata)
 
 #def thumbsave(thumbnail):
 #   import time
