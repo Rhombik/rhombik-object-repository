@@ -33,26 +33,40 @@ sorted by
   </ul>
 </span>.
 
-<p>
+<p></p>
         {% if page.object_list %}
-
             {% include "list/userpref.html" with listdata=listdata %}
-            {% for result in page.object_list %}
-            {% empty %}
-            <p>No results found.</p>
-            {% endfor %}
             </div>
-            {% if page.has_previous or page.has_next %}
-                <div>
-                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
-                    |
-                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
-                </div>
-            {% endif %}
+              {% if page.paginator.page_range.len > 1 %}
+				  <ul class="pagination">
+					{% if page.has_previous %}
+					<li>
+					  <a href="?page={{ page.previous_page_number }}&{{ request.GET.urlencode }}" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					  </a>
+					</li>
+					{% endif %}
+
+					{% for pagenum in page.paginator.page_range %}
+					{% ifequal pagenum page.number %}
+						<li class="active"><a href="?page={{ pagenum }}&{{ request.GET.urlencode }}">{{pagenum}}</a></li>
+					{% else %}
+						<li><a href="?page={{ pagenum }}&{{ request.GET.urlencode }}">{{pagenum}}</a></li>
+					{% endifequal %}
+					{% endfor %}
+					{% if page.has_next %}
+					<li>
+					  <a href=""?page={{ page.next_page_number }}&{{ request.GET.urlencode }}"" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					  </a>
+					</li>
+					{% endif %}
+				  </ul>
+              {% endif %}
+
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}
-            There were no results. <br>
-            Maybe try on of our exciting watermelon flavoured categories?
+            <p>No results found.</p>
         {% endif %}
 {% endblock %}
 </div>
