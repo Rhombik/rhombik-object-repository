@@ -130,7 +130,13 @@ PIPELINE_JS_COMPRESSOR=None
 PIPELINE_CSS = {
     'globalCSS': {
         'source_filenames': (
+             'bootstrap/css/bootstrap.min.css',
+             'bootstrap_theme/css/rhombik_magic_bootstrap.css',
              'rhombik/css/global.scss',
+             'rhombik/css/spin.scss',
+             'rhombik/css/foundation-icons.css',
+             'taggit_autocomplete/css/jquery.tagit.css',
+             'rhombik/css/rhombikPurple/jquery-ui-1.10.4.custom.min.css',
          ),
         'output_filename': 'css/global.css',
     },
@@ -146,6 +152,11 @@ PIPELINE_CSS = {
 PIPELINE_JS = {
     'globalJS': {
         'source_filenames': (
+            'bootstrap/js/bootstrap.min.js',
+            'taggit_autocomplete/js/tag-it.min.js',
+            'rhombik/js/modernizr.js',
+            'rhombik/js/customScript.js',
+            'rhombik/js/jquery-ui-1.10.4.min.js',
             'script/thumbloader.coffee',
             'script/dropwDownSearch.coffee',
             'script/selectAll.coffee',
