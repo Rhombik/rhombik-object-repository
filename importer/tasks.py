@@ -44,7 +44,6 @@ class ThingiUserTask(JobtasticTask):
            ]
     herd_avoidance_timeout = 60
     def calculate_result(self, url="", userPK=None, **kwargs):
-        print("thingiusertask got called success!")
         response=get_response(url)
         dom=html.fromstring(response.read())
         designLinkattempt = dom.xpath('//a[contains(@href,"designs")]/@href')[0]

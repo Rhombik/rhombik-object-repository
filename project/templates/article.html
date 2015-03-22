@@ -41,47 +41,6 @@
 
 	{% include "commentform.html" with projectpk=project.pk form=commentform %}
 
-	<!-- look it is my pretty comment javascript! -->
-	<script>$(document).ready(function(){
-console.log($('.commentForm'));
-$('.commentForm')[0].innerHTML="<a href=\"/project/{{ project.pk }}/comment/{{ commentRootId }}/\">New Comment</a>";
-$('.commentForm')[0].href="/project/{{ project.pk }}/comment/{{ commentRootId }}/";
-$('.commentForm').click(function(e){
-	$.get(e.currentTarget.href,function(data,status){
-		var newdiv = document.createElement('div');
-		newdiv.innerHTML=data;
-		e.currentTarget.parentNode.insertBefore(newdiv, e.currentTarget.nextSibling);
-		e.currentTarget.hidden=true;
-	});
-	e.preventDefault();
-});
-
-<!-- A function for canceling comment forms. -->
-function commentCancel(el,Reply)
-{
-	el.parentNode.parentNode.parentNode.remove();
-	Reply.hidden=false;
-}
-<!-- The function for adding the comment form when replying. -->
-	$('.commentReply, .editComment').click(function(e){
-		var ReplyButton=e.currentTarget;
-		$.get(e.currentTarget.href,function(data,status){
-			var newdiv = document.createElement('div');
-			newdiv.innerHTML=data;
-			var cancelButton = $(newdiv).find("input[value='Cancel']");
-			cancelButton.on("click",function(e){
-				commentCancel(this, ReplyButton);
-				e.preventDefault;
-			});
-			e.currentTarget.parentNode.insertBefore(newdiv, e.currentTarget.nextSibling);
-			e.currentTarget.hidden=true;
-		});
-		//This is the reply and edit defalt prevent.
-		e.preventDefault();
-	});
-});
-	</script>
-
 	{% else %}
 
 	<a href="/register/">Sign up</a> or <a href="/login/">log in</a> to comment!
@@ -127,59 +86,6 @@ function commentCancel(el,Reply)
 		<a href="vote/1/"><i class="fi-dislike votebutton downvote"></i></a>
 		{% endif %}
 
-		<!-- Ehhh!!! I wrote so much javascript, I'm so sorry. -->
-		<script>
-function incrementScore(inc, id)
-{
-	score = document.getElementById(id)
-		var value = parseInt(score.innerHTML, 10);
-	value = isNaN(value) ? 0 : value;
-	value = value + inc;
-	score.innerHTML = value;
-}
-$( ".votebutton" ).parent().click(function(e){
-
-	e.preventDefault();
-
-	if ($(e.target).hasClass("active")){
-		if ( $(e.target).hasClass("upvote") ){
-			incrementScore(-1, "projectScore");
-			$.get("vote/0/");
-			e.target.classList.remove("active");
-		}else if ( $(e.target).hasClass("downvote") ){
-			incrementScore(1, "projectScore");
-			$.get("vote/0/");
-			e.target.classList.remove("active");
-		}
-	}else{
-		e.target.classList.add("active");
-		if ( $(e.target).hasClass("upvote") ){
-			$.get("vote/2/");
-			downvote = document.getElementsByClassName("votebutton downvote")[0]
-				console.log("BLEE");
-			console.log(downvote);
-			if ( $(downvote).hasClass("active") ){
-				incrementScore(2, "projectScore");
-				downvote.classList.remove("active");
-			}else{
-				incrementScore(1, "projectScore");
-			}
-		}else if ( $(e.target).hasClass("downvote") ){
-			$.get("vote/1/");
-			upvote = document.getElementsByClassName("votebutton upvote")[0]
-				console.log("BLEE");
-			console.log(upvote);
-			if ( $(upvote).hasClass("active") ){
-				incrementScore(-2, "projectScore");
-				upvote.classList.remove("active");
-			}else{
-				incrementScore(-1, "projectScore");
-			}
-		}
-	}
-});
-		</script>
-
 		{#Or you can just call {{Vote}} if you want the value for javascript.#}
 		<br>
 		{#Both of these will be null if no one has voted/downloaded. So you can use the "if not" template tag. #}
@@ -216,29 +122,6 @@ $( ".votebutton" ).parent().click(function(e){
 	{% if downloadurl %}
 	<a href="{{downloadurl}}" class="btn btn-default fullwidth downloadAll">Download All</a>
 
-	<!-- This aweful snippit prevents the normal download all click, sends a "I downloaded this" vote, and then when it succeeds, follows the normal download link -->
-	<script>
-$( ".downloadAll" ).click(function(e){
-	e.preventDefault();
-	var voted = false;
-	var voteGet = $.get( "downloadCountIncrement/1/", function( data ) {
-		if ( data == "Vote recorded." ){
-			voted = true;
-		}
-	})
-	.done(function() {
-	})
-	.fail(function() {
-	})
-	.always(function() {
-		window.location = e.currentTarget.href;
-		if (voted){
-			incrementScore(1, "downloadsScore");
-		}
-	});
-});
-	</script>
-
 	{% endif %}
 
 
@@ -252,7 +135,6 @@ $( ".downloadAll" ).click(function(e){
 		</div>
 	</div>
 </div>
-
 
 
 {% comment %}
