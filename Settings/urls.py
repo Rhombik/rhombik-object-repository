@@ -10,14 +10,6 @@ urlpatterns = patterns('',
 
     url(r'^$', 'project.views.list', name='home'),
 
-    # Examples:
-    # url(r'^$', 'exampleSettings.views.home', name='home'),
-    # url(r'^exampleSettings/', include('exampleSettings.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     (r'^edit/(.*)/$', 'project.views.edit'),
     (r'^create/$', 'project.views.create'),
@@ -34,10 +26,7 @@ urlpatterns = patterns('',
     #captcha urls
     url(r'^captcha/', include('captcha.urls')),
 
-    (r'^login/$', 'userProfile.views.login_user'),
-    (r'^logout/$', 'userProfile.views.logout_user'),
-    (r'^register/$', 'userProfile.views.register'),
-    url(r'^legister/$', 'userProfile.views.legister', name='legister'),
+    url(r'', include('userProfile.urls')),
     (r'^editProfile/$', 'userProfile.views.edit'),
 
     #preview pages for the STL files.

@@ -22,7 +22,6 @@ CELERY_EAGER_PROPAGATES_EXCEPTIONS =True
 ##Bullshit to make scrapy+celery work. Probably hugely innefficient for twisted reasons I don't understand.
 CELERYD_MAX_TASKS_PER_CHILD = 1
 
-
 MANAGERS = ADMINS
 
 LOGIN_URL="legister"
@@ -123,9 +122,6 @@ STATICFILES_FINDERS = (
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
-PIPELINE_CSS_COMPRESSOR=None
-PIPELINE_JS_COMPRESSOR=None
-
 PIPELINE_CSS = {
     'globalCSS': {
         'source_filenames': (
@@ -201,8 +197,8 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
@@ -244,7 +240,7 @@ INSTALLED_APPS = (
     'organization',
     'avatarBot',
     'taggit',
-    'taggit_autocomplete',
+#    'taggit_autocomplete',
     'testcases',
     'djangoratings',
     'threadedComments',

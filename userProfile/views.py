@@ -18,6 +18,10 @@ from filemanager.models import fileobject
 from project.views import project_list_get
 
 
+##Delete the imports above this eventually
+##Imports bellow this were added after alex's great rewrite, or confirmed as nessecarry.
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.core.context_processors import csrf
 
 ### This Is the view for the user edit page.
 #it obviously ~~doesn't~~ Works... ~~But it's a good base to work from.~~
@@ -76,10 +80,6 @@ def edit(request):
         pictureform = UserPictureForm()#{"filename":profile.})
         return render_to_response('editProfile.html', dict( user=request.user, form2=profileform, form3=pictureform))
 
-
-
-
-
 def index(request, pk):
     
     """bleh blebh bhel bleh, IM GOING INSANE.... I mean; user profile display stuff."""
@@ -118,119 +118,16 @@ def index(request, pk):
     c = RequestContext(request, dict(thumbpic=thumbpic, user=request.user, owner=userdata, listdata = listdata))
     return render(request, "userProfile/index.html", c)
 
-
-
-
-
-### simple logout view, redirects users to the login page.
-def logout_user(request):
-    logout(request)
-    return redirect("/register")
-
-
-
-
-
-### This Is the view for the registration page.
-@csrf_exempt
-def register(request):
-    
-    from django.contrib.auth.forms import UserCreationForm
-
-    ## This if loop is true when user clicks the register button.
-    if request.method == 'POST':
-
-        #get data from the forms
-        form = UserCreationForm(request.POST)
-        email = UserEmail(request.POST)
-
-        ###Create the user if the for is valid
-        if form.is_valid() and email.is_valid():
-
-            data = User();
-            data.username = form.cleaned_data["username"]
-
-            if email.cleaned_data["email"]:
-                data.email = email.cleaned_data["email"]
-
-           #data.password = form.cleaned_data["password"]###this is NOT how you set a password! Passwords are hashed.
-            data.set_password(form.cleaned_data["password1"])# Yes. Good.
-            data.save()
-
-            ###Create user's profile
-            profile = userProfile()
-            profile.user = data
-            profile.save()
-
-
-            user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
-            login(request, user)
-            return redirect("/editProfile/")
-
-        #returns register form with error messages.
-        else:
-            return render_to_response('register.html', dict( user=request.user, form=form, email=email))
-    
-    ## redirect to legister.
-    else:
-        return redirect("/legister/")
-
-
-
-
-### Login page.
-@csrf_exempt
-def login_user(request):
-
-    state = "Please log in below..."##hmm... you can never see this message.
-    username = password = ''
-
-    if request.POST:
-
-        # get data from form
-        usernamedata = request.POST.get('username')
-        passworddata = request.POST.get('password')
-
-	# authenticate that user!
-        user = authenticate(username=usernamedata, password=passworddata)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                state = "You're success'd the log in!"# this message is also never seen...:(
-                ### right now logging in redirects you to home.
-                ### it would be nice to have it redirect to where a user was going.
-                ### like to the create page.
-                ### for example.
-                return redirect("/")
-
-            ## Right now accounts are active by default. So it is unlikely a user will ever encounter this.
-            else:
-                state = "Your account is not active, please contact the site admin. Also... I have no idea how that could have happened... so ... Good Job!"
-                return render_to_response('auth.html', {'state':state, 'username': usernamedata})
-
-        # if some data doesn't check out, let the user know they failed.
-        else:
-            state = "Your username and/or password were incorrect."
-            return render_to_response('auth.html', {'state':state, 'username': usernamedata})
-
-    # redirect to legister
-    else:
-        return redirect("/legister/")
-
-### Register/login page.
-@csrf_exempt ## <-- because alex is a terrible person
 def legister(request):
-    if request.method == "POST":
-        if request.POST['action'] == "login":
-            pass
-        elif request.POST['action'] == "register":
-            pass
+    if request.method == 'POST':
+        pass
 
-    else:
-        from django.contrib.auth.forms import UserCreationForm
-        form = UserCreationForm()
-        email = UserEmail()
-        return render_to_response('legister.html', dict( user=request.user, form=form, email=email))
-
-
-
+    if request.method == 'GET':
+        loginForm = AuthenticationForm()
+        registerForm = UserCreationForm()
+        c = {
+            "loginForm":loginForm,
+            "registerForm":registerForm
+        }
+        c.update(csrf(request))
+        return render_to_response("legister.html", c)

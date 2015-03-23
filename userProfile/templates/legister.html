@@ -5,28 +5,20 @@
 
 {{ msg }}
 
+{% csrf_token %}
+
 <div class="col-lg-6">
 <h2>Register</h2>
 <form enctype="multipart/form-data" action="/legister/" method="POST">{% csrf_token %}
-	{{ form.as_p }}
-        {{ email.as_p }}
-	<input type="submit" value="register" name="action"/>
+    {{registerForm}}
 </form>
 
  </div>
 
  <div class="col-lg-6">
 <h2>Login</h2>
-<form action="/legister/" method="POST">
-	{% if next %}
-	<input type="hidden" name="next" value="{{ next }}" />
-	{% endif %}
-	username:
-	<input type="text" name="username" value="{{ username }}" /><br />
-	password:
-	<input type="password" name="password" /><br />
-
-	<input type="submit" value="login" name="action" />
+<form action="/legister/" method="POST">{% csrf_token %}
+     {{loginForm}}
 </form>
 
  </div>
