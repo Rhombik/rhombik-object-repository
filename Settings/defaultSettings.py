@@ -24,7 +24,7 @@ CELERYD_MAX_TASKS_PER_CHILD = 1
 
 MANAGERS = ADMINS
 
-LOGIN_URL="legister"
+LOGIN_URL="/legister/"
 
 DATABASES = {
     'default': {
@@ -84,6 +84,8 @@ USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
@@ -167,7 +169,9 @@ PIPELINE_COMPILERS = (
   'pipeline_rapydscript.RapydScript.RapydScriptCompiler',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
   'django.core.context_processors.request',
   'django.contrib.auth.context_processors.auth',
 )
@@ -229,6 +233,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'guardian',
     'haystack',
+    'crispy_forms',
     'searchsettings',
     'thumbnailer',
     'project',

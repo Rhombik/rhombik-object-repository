@@ -56,3 +56,4 @@ django_pipeline==1.4.6
 django-pipeline-rapydscript
 jobtastic==0.2.2
 django-pipeline-rapydscript==1.0.0
+django-crispy-forms==1.4.0

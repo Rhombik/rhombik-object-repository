@@ -4,7 +4,19 @@ from userProfile.models import *
 
 from django.contrib.auth.models import *
 from captcha.fields import CaptchaField
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from crispy_forms.helper import FormHelper
 
+
+class crispyLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(crispyLoginForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+
+class crispyRegisterForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(crispyRegisterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
 
 
 class UserProfileForm(ModelForm):
@@ -36,10 +48,4 @@ class UserEmail(forms.Form):
     #    model = User
     #    fields = ["password"]
 
-class registerForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ["username","password"]
-        
-#    captcha = CaptchaField()###No no, it does work, but Its fucking annoying for testing.
 

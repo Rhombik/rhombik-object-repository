@@ -1,6 +1,5 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
-from django.shortcuts import render_to_response, render, redirect
 from django.contrib.auth.models import User
 from django.template import RequestContext, loader
 
@@ -10,7 +9,6 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 from userProfile.models import userProfile
-from userProfile.forms import *
 from django.contrib.auth.forms import PasswordChangeForm
 
 from filemanager.models import fileobject
@@ -20,8 +18,11 @@ from project.views import project_list_get
 
 ##Delete the imports above this eventually
 ##Imports bellow this were added after alex's great rewrite, or confirmed as nessecarry.
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.context_processors import csrf
+from django.contrib import messages
+from userProfile.forms import *
+from django.shortcuts import render_to_response, render, redirect
+from django.contrib.auth import authenticate, login
 
 ### This Is the view for the user edit page.
 #it obviously ~~doesn't~~ Works... ~~But it's a good base to work from.~~
@@ -120,14 +121,53 @@ def index(request, pk):
 
 def legister(request):
     if request.method == 'POST':
-        pass
+        user=None
+        loggedin=False 
+        if request.POST['action'] == 'Register':
+            loginForm = crispyLoginForm()
+            registerForm = crispyRegisterForm(request.POST)
+            if registerForm.is_valid():
+                user = User.objects.create_user(request.POST['username'],"",  password=request.POST['password1'])
+                user = authenticate(username=request.POST['username'], password=request.POST['password1'])
 
-    if request.method == 'GET':
-        loginForm = AuthenticationForm()
-        registerForm = UserCreationForm()
+        if request.POST['action'] == 'Login':
+            loginForm = crispyLoginForm(data=request.POST)
+            registerForm = crispyRegisterForm()
+            if loginForm.is_valid():
+                user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        else:#This should never get called, but it was breaking when I submitted the wrong data, and I did this to test, and it makes it fail gracefully.
+            loginForm = crispyLoginForm()
+            registerForm = crispyRegisterForm()
+
+        ##Logs the user in.
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                loggedin=True
+
         c = {
             "loginForm":loginForm,
             "registerForm":registerForm
         }
+
         c.update(csrf(request))
-        return render_to_response("legister.html", c)
+
+        if (loggedin or registerForm.is_valid()) and "next" in request.POST and  request.POST["next"]:
+            return redirect(request.POST['next'])
+        elif loggedin or registerForm.is_valid():
+            return redirect("/")
+
+        return render(request, "legister.html", c)
+
+
+
+    if request.method == 'GET':
+        loginForm = crispyLoginForm()
+        registerForm = crispyRegisterForm()
+        c = {
+            "loginForm":loginForm,
+            "registerForm":registerForm,
+            "next":getattr(request.GET, 'next', "")
+        }
+        c.update(csrf(request))
+        return render(request, "legister.html", c)

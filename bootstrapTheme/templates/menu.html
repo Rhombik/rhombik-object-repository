@@ -32,7 +32,7 @@
 {% load searchform %}
      <ul class="nav navbar-nav navbar-right">
         {% if not user.is_authenticated %}
-        <li><a href="/legister/"><i class="fi-lock"></i> Sign In</a></li>
+        <li><a href="/legister/?next={{ request.path }}"><i class="fi-lock"></i> Sign In</a></li>
         {% elif user.is_authenticated %}
         <li><a href="/userProfile/{{user.id}}"><span class="fi-torso"></span> Profile</a></li>
         <li><a href="/logout/"><span class="fi-x-circle"></span> Sign Out</a></li>

@@ -1,5 +1,6 @@
 
 {% extends "includes.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
@@ -7,10 +8,13 @@
 
 {% csrf_token %}
 
+
 <div class="col-lg-6">
 <h2>Register</h2>
 <form enctype="multipart/form-data" action="/legister/" method="POST">{% csrf_token %}
-    {{registerForm}}
+    <input type="hidden" name="next" value="{{ next }}" />
+    {{registerForm|crispy}}
+    <input type="submit" class="btn btn-info" value="Register" name="action">
 </form>
 
  </div>
@@ -18,7 +22,9 @@
  <div class="col-lg-6">
 <h2>Login</h2>
 <form action="/legister/" method="POST">{% csrf_token %}
-     {{loginForm}}
+    <input type="hidden" name="next" value="{{ next }}" /> 
+    {{loginForm|crispy}}
+    <input type="submit" class="btn btn-info" value="Login" name="action">
 </form>
 
  </div>
