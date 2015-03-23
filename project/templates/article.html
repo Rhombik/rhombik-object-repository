@@ -33,20 +33,6 @@
 	<div class="clearfix"></div>
 
 	{% include "texttabs.html" %}
-
-	<h2>Comments</h2>
-	{% include "commenttree.html" with user=user projectpk=project.pk nodes=nodes %}
-
-	{% if user.is_authenticated %}
-
-	{% include "commentform.html" with projectpk=project.pk form=commentform %}
-
-	{% else %}
-
-	<a href="/register/">Sign up</a> or <a href="/login/">log in</a> to comment!
-
-	{% endif %}
-
 </div>
 <div class="col-md-3">
 	<h3>Project Info</h3>
@@ -136,6 +122,21 @@
 	</div>
 </div>
 
+<div class="col-md-9">
+
+    <h2>Comments</h2>
+    {% include "commenttree.html" with user=user projectpk=project.pk nodes=nodes %}
+
+    {% if user.is_authenticated %}
+
+    {% include "commentform.html" with projectpk=project.pk form=commentform %}
+
+    {% else %}
+
+    <a href="/register/">Sign up</a> or <a href="/login/">log in</a> to comment!
+
+    {% endif %}
+</div>
 
 {% comment %}
 Only uncomment to here. The rest is cruft.

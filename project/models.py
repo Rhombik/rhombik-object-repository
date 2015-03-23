@@ -26,7 +26,9 @@ class Project(models.Model):
     ##only used internally, don't set
     tags = TaggableManager(blank=True)
     draft = models.BooleanField(default=False)
-    valid = models.BooleanField(default=False)
+
+    ##Depricated
+    valid = True
 
     downloadcount = RatingField(range=1,allow_delete = False,allow_anonymous = True,) 
 
@@ -109,19 +111,19 @@ class Project(models.Model):
 
     def enf_consistancy(self):
         #checks if there's a thumbnail.
-        if self.thumbnail:
+        if not self.thumbnail:
             object_type = ContentType.objects.get_for_model(self)
-            files = fileobject.objects.filter(content_type=object_type,object_id=self.id)
-            for fl in files:
-                if fl.filetype != 'norender' and fl.filetype != "text":### Look for thumbnailable pic.
-                    self.thumbnail = fl
-                    super(Project, self).save()
-                    return True
-            if not self.draft:
-                self.draft = True
+            files = fileobject.objects.filter(content_type=object_type,object_id=self.id).exclude(filetype='norender').exclude(filetype='text')
+            if files:
+                self.thumbnail = files[0]
                 super(Project, self).save()
-            return False
-        else:
+                return True
+            else:
+                if not self.draft:
+                    self.draft = True
+                    super(Project, self).save()
+                return False
+        elif self.thumbnail:
             return True
 
     def __unicode__(self):
