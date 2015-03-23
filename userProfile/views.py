@@ -22,7 +22,7 @@ from django.core.context_processors import csrf
 from django.contrib import messages
 from userProfile.forms import *
 from django.shortcuts import render_to_response, render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 ### This Is the view for the user edit page.
 #it obviously ~~doesn't~~ Works... ~~But it's a good base to work from.~~
@@ -116,8 +116,21 @@ def index(request, pk):
     except:
         thumbpic = False
 
-    c = RequestContext(request, dict(thumbpic=thumbpic, user=request.user, owner=userdata, listdata = listdata))
+    c = {"thumbpic":thumbpic, 
+        "user":request.user,
+        "owner":userdata,
+        "listdata":listdata
+        }
+
     return render(request, "userProfile/index.html", c)
+
+def logoutView(request):
+    logout(request)
+    if "next" in request.POST and request.POST["next"]:
+        return redirect(request.POST['next'])
+    return redirect("/")
+
+
 
 def legister(request):
     if request.method == 'POST':
@@ -152,7 +165,7 @@ def legister(request):
 
         c.update(csrf(request))
 
-        if (loggedin or registerForm.is_valid()) and "next" in request.POST and  request.POST["next"]:
+        if (loggedin or registerForm.is_valid()) and "next" in request.POST and request.POST["next"]:
             return redirect(request.POST['next'])
         elif loggedin or registerForm.is_valid():
             return redirect("/")
