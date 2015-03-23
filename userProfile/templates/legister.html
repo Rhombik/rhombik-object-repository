@@ -5,19 +5,19 @@
 
 {{ msg }}
 
- <div class="col-lg-6">
+<div class="col-lg-6">
 <h2>Register</h2>
-<form enctype="multipart/form-data" action="/register/" method="POST">{% csrf_token %}
+<form enctype="multipart/form-data" action="/legister/" method="POST">{% csrf_token %}
 	{{ form.as_p }}
         {{ email.as_p }}
-	<input type="submit" value="Register" />
+	<input type="submit" value="register" name="action"/>
 </form>
 
  </div>
 
  <div class="col-lg-6">
 <h2>Login</h2>
-<form action="/login/" method="POST">
+<form action="/legister/" method="POST">
 	{% if next %}
 	<input type="hidden" name="next" value="{{ next }}" />
 	{% endif %}
@@ -26,7 +26,7 @@
 	password:
 	<input type="password" name="password" /><br />
 
-	<input type="submit" value="Log In" />
+	<input type="submit" value="login" name="action" />
 </form>
 
  </div>

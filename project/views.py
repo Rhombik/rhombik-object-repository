@@ -152,8 +152,8 @@ def project(request, pk):
             images.append(thumb)
         if renderer == "norender":
             norenders +=1
-        if renderer == "text" and i != project.bodyFile :
-            htmlmodel=htmlobject.objects.get_or_create(fileobject = i )[0] 
+        if renderer == "text" and i != project.bodyFile:
+            htmlmodel=htmlobject.objects.get_or_create(fileobject = i)[0] 
             texts.append([htmlmodel, path.split(str(i.filename))[1]])
     download=zippedobject.objects.get_or_create(project=project)[0]
     author = project.author
@@ -228,52 +228,34 @@ def list(request):
 import json
 
 '''
- Here lives stuff for the edit and create a project pages.
+Here lives stuff for the edit and create a project pages.
 '''
 
 def editOrCreateStuff(project, request):
-
   if request.user.is_authenticated() and str(project.author) == str(request.user):
   ## postmode! We are getting pretty post data from the user!!!
-
     if request.method == 'POST':
-
-        if(request.POST['action']=="Delete"):
+        if (request.POST['action']=="Delete"):
             project.delete()
             return HttpResponseRedirect('/mydrafts/')
 
-    ## get the forms and check that they are valid
+        ## get the forms and check that they are valid
 
         form = ProjectForm(request.POST.copy(), project)
         if form.is_valid():
             project.valid=True
 
-    ## Title related stuff. Setting it, making sure it's still there, whatever.
+        ## Title related stuff. Setting it, making sure it's still there, whatever.
 
         if "title" in form.cleaned_data and form.cleaned_data["title"]: # if that data is not a blank string
             project.title = form.cleaned_data["title"] # than we do change the title
         else:
             form.data['title'] = project.title
 
-      # Editing the Readme.md file stuff.
-      	if project.bodyFile:
-                from django.core.files.base import ContentFile
-		project.bodyFile.filename.file.close()
-		project.bodyFile.filename.file.open(mode='w')
-                content = ContentFile(form.cleaned_data["body"])
-		project.bodyFile.filename.write(content.read())
-	else:
-		readme=fileobject()
-		readme.parent=project
-		readme.fromText("README.md",form.cleaned_data["body"])
-		readme.save()
-		project.bodyFile=readme
-        #project.setReadme(form.cleaned_data["body"])#.saveTextFile("README.md", form.cleaned_data["body"], isReadme=True)
-     # Done with editing the README.md textfile.
-
+        project.updateReadme(form.cleaned_data["body"])
         list_to_tags(form.cleaned_data["tags"], project.tags)
 
-   #### All this fun stuff is handeling what happens for trying to publish vs trying to save the project.
+        #### All this fun stuff is handeling what happens for trying to publish vs trying to save the project.
         if project.valid:
             if(request.POST['action']=="Publish"):
                 project.draft=False
@@ -287,17 +269,15 @@ def editOrCreateStuff(project, request):
             draftSaved = True
             return render_to_response('edit.html', RequestContext(request,{'project':project, 'user':request.user, 'form':form, 'draftSaved':draftSaved,}))
 
-   #### Not POSTmode! We are setting up the form for the user to fill in. We are not getting form data from the user.
-
+    #### Not a POST request. We are setting up the form for the user to fill in. We are not getting form data from the user.
     else:
-
-	form = project.get_form()## this gets a form filled with the projects data
+        form = project.get_form()## this gets a form filled with the projects data
         form.errors['title'] = ""#form['body'].error_class()
         form.errors['thumbnail'] = ""#form['body'].error_class()
         form.errors['body'] = ""#form['body'].error_class()
         return render_to_response('edit.html', RequestContext(request,{'project':project, 'user':request.user, 'form':form}))
 
-  else:
+  else: ##If the user isn't authenticated.
       return HttpResponse(status=403)
 
 

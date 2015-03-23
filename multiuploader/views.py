@@ -104,7 +104,7 @@ def multiuploader(request, pk):
 
         #getting file data for farther manipulations
         projectfiles = fileobject(parent=project)
-      # projectfiles.project = project # this is nonsense... is this not nonsense? Cruft.
+        # projectfiles.project = project # this is nonsense... is this not nonsense? Cruft.
         projectfiles.filename = request.FILES[u'files[]']
         projectfiles.save()
         projectfiles.filename.close()

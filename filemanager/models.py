@@ -11,19 +11,13 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 import warnings
 
-
-class fakefile():
-    url = ""
-#    def url():
-#        return("null")
-
-# Create your models here.
-
-def uploadpath(*args):
-    return None
+RECREATE_FILE_ON_UPDATE = getattr(settings, "RECREATE_FILE_ON_UPDATE", False)
 
 def fileuploadpath(instance, filename):
     return ("uploads/"+str(instance.content_type.name)+"/"+str(instance.object_id)+instance.subfolder+filename)
+
+def uploadpath(*args):
+    return None
 
 
 class fileobject(models.Model):
@@ -38,7 +32,7 @@ class fileobject(models.Model):
     filetype = models.CharField(max_length=16, blank=True, null=True, default="norender")
 
 
-### I don't know why __unicode__() broke, but unicode() fixed it... so now we have both.
+    ### I don't know why __unicode__() broke, but unicode() fixed it... so now we have both.
     def unicode(self):
         return str(self.filename)
     def __unicode__(self):
@@ -53,13 +47,26 @@ class fileobject(models.Model):
         else:
             return
 
-    def fromText(self, title, text):
+    def update(self,newFile, title=None):
+        if self.pk:
+            if RECREATE_FILE_ON_UPDATE:
+                print("recreating a file on update isn't implemented yet")
+            else:
+                self.filename.file.close()
+                self.filename.file.open("w+")
+                self.filename.write(newFile.read())
+                self.filename.close()
+        else:
+            self.filename.write(newFile)
+        if title:
+            self.filename.name=fileuploadpath(self,title)
 
+    def fromText(self, text, title=None):
         from django.core.files.base import ContentFile
-
-        self.filename = ContentFile(text)
-        self.filename.name=title
-
+        if self.pk:
+            self.update(ContentFile(text))
+            if title:
+                self.filename.name=fileuploadpath(self,title)
 
     def save(self):
         super(fileobject, self).save()

@@ -217,17 +217,20 @@ def login_user(request):
     else:
         return redirect("/legister/")
 
-
-
-
 ### Register/login page.
 @csrf_exempt ## <-- because alex is a terrible person
 def legister(request):
+    if request.method == "POST":
+        if request.POST['action'] == "login":
+            pass
+        elif request.POST['action'] == "register":
+            pass
 
-    from django.contrib.auth.forms import UserCreationForm
-    form = UserCreationForm()
-    email = UserEmail()
-    return render_to_response('legister.html', dict( user=request.user, form=form, email=email))
+    else:
+        from django.contrib.auth.forms import UserCreationForm
+        form = UserCreationForm()
+        email = UserEmail()
+        return render_to_response('legister.html', dict( user=request.user, form=form, email=email))
 
 
 

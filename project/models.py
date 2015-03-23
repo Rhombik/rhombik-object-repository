@@ -4,7 +4,7 @@ from datetime import datetime
 import thumbnailer.shadowbox
 from django.conf import settings
 from taggit.managers import TaggableManager
-from filemanager.models import fileobject
+from filemanager.models import fileobject, fileuploadpath
 from djangoratings.fields import RatingField
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
@@ -14,7 +14,7 @@ class Project(models.Model):
 
     title = models.CharField(max_length=60,blank=True, null=True, unique=True)
     thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL, related_name='thumbnail',)
-    body = models.TextField(blank=True, null=True)
+    body = models.TextField(blank=True, default="")
 
     #This exists soley so that we can find projects that don't have a readme.
     bodyFile = models.ForeignKey('filemanager.fileobject', blank=True, null=True, related_name='readme', on_delete=models.SET_NULL)
@@ -40,6 +40,16 @@ class Project(models.Model):
             ('view', 'View'),
             ('edit', 'Edit'),
         )
+
+    def updateReadme(self, text):
+        if self.bodyFile:
+            print(text)
+            self.bodyFile.fromText(text)
+        else:
+            newFileObject = fileobject.objects.create(parent=self)
+            newFileObject.fromText(text, title="README.md")
+            newFileObject.save()
+            newFileObject.filename.close()
 
     #Pretends that 0 is -1 and 1 is 1.
     def calc_adjusted_rating(self):
