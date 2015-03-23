@@ -8,14 +8,6 @@
 
 {% javascript 'globalJS' %}
 
-<script>
-$(document).ready(function(){
-	console.log("did that");
-	allBox.startup("#select-all","selectBox");
-});
-allBox = new selectAllTool();
-</script>
-
 {% if scraperMessage %}
 <div id="aboutPage">
 	<p>Hi, it looks like you're importing some content from thingiverse! Hopefully it works! 
