@@ -148,10 +148,10 @@ PIPELINE_JS = {
     'globalJS': {
         'source_filenames': (
             'bootstrap/js/bootstrap.min.js',
-            'taggit_autocomplete/js/tag-it.min.js',
             'rhombik/js/modernizr.js',
             'rhombik/js/customScript.js',
             'rhombik/js/jquery-ui-1.10.4.min.js',
+            'taggit_autocomplete/js/tag-it.min.js',
             'script/thumbloader.coffee',
             'script/dropwDownSearch.coffee',
             'script/selectAll.coffee',
@@ -240,7 +240,7 @@ INSTALLED_APPS = (
     'organization',
     'avatarBot',
     'taggit',
-#    'taggit_autocomplete',
+    'taggit_autocomplete',
     'testcases',
     'djangoratings',
     'threadedComments',
