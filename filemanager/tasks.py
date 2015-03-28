@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-
 #from exampleSettings.celery import app as celeryapp
 from django.db import models
 import os

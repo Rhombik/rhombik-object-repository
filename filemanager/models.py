@@ -38,7 +38,7 @@ class fileobject(models.Model):
     def __unicode__(self):
         return str(self.filename)
     def get_thumb(self, sizex, sizey):
-        thumbmodel=thumbobject.objects.get_or_create(fileobject = self, filex=sizex, filey=sizey )[0]
+        thumbmodel=thumbobject.objects.get_or_create(fileobject = self, filex=sizex, filey=sizey)[0]
         renderer = str(thumbmodel.filetype)
         if renderer != "ajax" or "norender" or "":
             return [thumbmodel,self,renderer]
@@ -47,8 +47,8 @@ class fileobject(models.Model):
         else:
             return
 
-    def update(self,newFile, title=None):
-        if self.pk:
+    def update(self,newFile):
+        if self.filename:
             if RECREATE_FILE_ON_UPDATE:
                 print("recreating a file on update isn't implemented yet")
             else:
@@ -57,21 +57,19 @@ class fileobject(models.Model):
                 self.filename.write(newFile.read())
                 self.filename.close()
         else:
-            self.filename.write(newFile)
-        if title:
-            self.filename.name=fileuploadpath(self,title)
+            self.filename.save(newFile.name, newFile)
+            self.filename.close()
+
 
     def fromText(self, text, title=None):
         from django.core.files.base import ContentFile
-        if self.pk:
-            self.update(ContentFile(text))
-            if title:
-                self.filename.name=fileuploadpath(self,title)
+        newFile = ContentFile(text)
+        newFile.name = title
+        self.update(newFile)
 
-    def save(self):
-        super(fileobject, self).save()
+    def save(self,*args, **kwargs):
         self.filetype = thumbnailer2.thumbnailify(self, (1,1))[1]
-        super(fileobject, self).save()
+        super(fileobject, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         try:

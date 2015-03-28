@@ -1,5 +1,6 @@
 
 {% block content %}
+<div id="newComment" ></div>
 <div class="commentForm jshidden">
     <form action="/project/{{ projectpk }}/comment/" method="post">
         {{ form.as_p }}
@@ -10,5 +11,10 @@
 <div class="jsonly">
     <a href="/project/{{ project.pk }}/comment/{{ commentRootId }}/">New Comment</a>
 </div>
+
+React.render(
+  <CommentBox data={data} />,
+  document.getElementById('newComment')
+);
 
 {% endblock content %}

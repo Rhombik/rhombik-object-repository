@@ -154,6 +154,7 @@ PIPELINE_JS = {
             'script/dropwDownSearch.coffee',
             'script/selectAll.coffee',
             'script/trier/src/trier.js',
+            'commentBox.js',
         ),
         'output_filename': 'js/global.js',
     }

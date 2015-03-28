@@ -43,13 +43,13 @@ class Project(models.Model):
 
     def updateReadme(self, text):
         if self.bodyFile:
-            print(text)
             self.bodyFile.fromText(text)
         else:
-            newFileObject = fileobject.objects.create(parent=self)
+            newFileObject = fileobject(parent=self)
             newFileObject.fromText(text, title="README.md")
             newFileObject.save()
-            newFileObject.filename.close()
+            print(newFileObject)
+            self.bodyFile = newFileObject
 
     #Pretends that 0 is -1 and 1 is 1.
     def calc_adjusted_rating(self):
