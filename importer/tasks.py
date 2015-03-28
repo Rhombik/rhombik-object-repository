@@ -33,7 +33,7 @@ def get_response(url):
     #    pass#print(e.fp.read())
     return(response)
 
-#from Settings.celery import app
+from Settings.celery import app
 from celery import Task,shared_task
 
 @shared_task
