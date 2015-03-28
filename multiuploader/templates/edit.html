@@ -1,4 +1,5 @@
 {% extends "includes.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
@@ -15,7 +16,7 @@
 {% endif %}
 
 <form action="/edit/{{ project.pk}}/" method="post" onsubmit="window.onbeforeunload = null;">{% csrf_token %}
-{{ form.as_p }}
+{{ form|crispy }}
 <br>
 <input type="submit" name="action" value="Save" />
 <input type="submit" name="action" value="Publish" />
