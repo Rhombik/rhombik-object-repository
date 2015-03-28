@@ -12,7 +12,7 @@ import project.tasks
 
 class Project(models.Model):
 
-    title = models.CharField(max_length=60,blank=True, null=True, unique=True)
+    title = models.CharField(max_length=60,blank=True, unique=True)
     thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL, related_name='thumbnail',)
     body = models.TextField(blank=True, default="")
 
@@ -26,7 +26,6 @@ class Project(models.Model):
     ##only used internally, don't set
     tags = TaggableManager(blank=True)
     draft = models.BooleanField(default=False)
-
     ##Depricated
     valid = True
 
@@ -35,6 +34,7 @@ class Project(models.Model):
     rating = RatingField(range=2, can_change_vote = True,allow_delete = True,)
     ratingSortBest = models.FloatField(default=1)
     ratingCount = models.IntegerField(blank=True, null=True)
+
     class Meta:
         permissions = (
             ('view', 'View'),

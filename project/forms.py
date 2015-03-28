@@ -7,9 +7,9 @@ from project.models import Project
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from taggit_autocomplete.widgets import TagAutocomplete
+from crispy_forms.helper import FormHelper
 
-
-###        This function validates the form for submitting projects. Excluding the title, thats only done in the createForm.
+###This function validates the form for submitting projects. Excluding the title, thats only done in the createForm.
 def cleanify(self, formName):
 
     cleaned_data = super(formName, self).clean()
@@ -53,25 +53,19 @@ def cleanify(self, formName):
 
 
 class ProjectForm(ModelForm):
-
     def __init__(self, request, project):
         self.project = project
         if request:
             super(ProjectForm, self).__init__(request)
         else:
             super(ProjectForm, self).__init__()
+        self.helper = FormHelper(self)
 
     class Meta:
         model = Project
         fields = ["title",]
 
-    def clean_title(self):
-       data=self.cleaned_data["title"]
-       if not data:
-           raise forms.ValidationError("There is no title! You gotta have a title.") 
-       return data
-
-    body = forms.CharField(widget = forms.Textarea, required=False)
+    body = forms.CharField(widget = forms.Textarea, required=False, label='Project Description')
     thumbnail = forms.CharField(required=False)
     tags = forms.CharField(widget=TagAutocomplete(attrs={'id': 'uploadTag'}),required=False)
 
