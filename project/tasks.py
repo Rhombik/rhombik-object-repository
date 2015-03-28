@@ -7,10 +7,7 @@ import os
 from celery import Celery
 from django.conf import settings
 
-app = Celery('tasks',)
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'exampleSettings.settings')
-app.config_from_object('django.conf:settings')
-app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+from Settings.celery import app
 
 ##This is the worst thing ever. I can't get it to run any real logic when a forighnkey gets deleted, so I suppose this will do.
 @app.task()
@@ -32,7 +29,3 @@ def ReadmeEnforcer():
        i.save()
    return
    #If no readme exists, create one using bodytext as template.
-
-   return
-
-

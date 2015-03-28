@@ -13,10 +13,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
 from project.models import Project
 
-app = Celery('tasks')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Settings.settings')
-app.config_from_object('django.conf:settings')
-app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+from Settings.celery import app
 
 @app.task()
 def zippedTask(project):
