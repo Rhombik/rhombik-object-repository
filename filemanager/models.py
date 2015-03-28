@@ -93,7 +93,7 @@ class thumbobject(models.Model):
     #A pointer to the file this is a thumbnail of.
     fileobject = models.ForeignKey(fileobject)
     #This is the actual thumbnail, stored using django storage, whatever that may be.
-    filename = models.FileField(upload_to=thumbuploadpath, blank=True, null=True)
+    filename = models.FileField(upload_to=thumbuploadpath,)
     #What the file type is
     filetype = models.CharField(max_length=16, blank=True, null=True)
     #the size of the file.

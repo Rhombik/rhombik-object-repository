@@ -12,7 +12,7 @@ import project.tasks
 
 class Project(models.Model):
 
-    title = models.CharField(max_length=60,blank=True, unique=True)
+    title = models.CharField(max_length=60,blank=True, unique=True, null=True)
     thumbnail = models.ForeignKey('filemanager.fileobject', blank=True, null=True, on_delete=models.SET_NULL, related_name='thumbnail',)
     body = models.TextField(blank=True, default="")
 
