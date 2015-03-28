@@ -66,6 +66,11 @@ Run the server.
 
 Then navigate to http://localhost:8000
 
+You might also want to actually run the task queue services, to get a better idea of what performance is actually like.
+
+    celery worker -A Settings
+
+And add "CELERY_ALWAYS_EAGER=False" to your "Settings/settings.py".
 
 ---
 

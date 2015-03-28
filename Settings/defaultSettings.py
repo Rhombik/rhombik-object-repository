@@ -12,15 +12,10 @@ import os
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 ### stuff for the celery task queue
-
-
-
 BROKER_URL = 'django://'
 #Makes debugging easier. Don't use in production
 CELERY_ALWAYS_EAGER = True
 CELERY_EAGER_PROPAGATES_EXCEPTIONS =True
-##Bullshit to make scrapy+celery work. Probably hugely innefficient for twisted reasons I don't understand.
-CELERYD_MAX_TASKS_PER_CHILD = 1
 
 MANAGERS = ADMINS
 
