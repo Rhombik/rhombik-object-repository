@@ -33,8 +33,11 @@ def get_response(url):
     #    pass#print(e.fp.read())
     return(response)
 
+#from Settings.celery import app
+from celery import Task,shared_task
 
-class ThingiUserTask(JobtasticTask):
+@shared_task
+class ThingiUserTask(JobtasticTask,Task):
     """
     The user want's all of thier things.
     """
@@ -59,7 +62,8 @@ class ThingiUserTask(JobtasticTask):
         for paginationUrl in paginationUrls:
             print("Calling GetThingiProjectTask on {}".format(paginationUrl))
             GetThingiProjectTask.delay(url=paginationUrl,userPK=userPK)
-class GetThingiProjectTask(JobtasticTask):
+@shared_task
+class GetThingiProjectTask(JobtasticTask,Task):
     significant_kwargs = [
                 ('url', str),
                 ('userPK', str),
@@ -76,7 +80,8 @@ class GetThingiProjectTask(JobtasticTask):
             print("Calling ThingiProjectTask on {}".format(projecturl))
             ThingiProjectTask.delay(url=projecturl,userPK=userPK)
 
-class ThingiProjectTask(JobtasticTask):
+@shared_task
+class ThingiProjectTask(JobtasticTask,Task):
     """
     Things are there, but users want them here. Lets go get them!
     In due time.
@@ -167,7 +172,8 @@ class ThingiProjectTask(JobtasticTask):
         return(project.title)
 
 
-class ThingiFileTask(JobtasticTask):
+@shared_task
+class ThingiFileTask(JobtasticTask,Task):
     '''Get an individual file... AND SAVE IT! AH HA HA HA!!!'''
     significant_kwargs = [
                 ('url', str),
@@ -187,7 +193,8 @@ class ThingiFileTask(JobtasticTask):
         flob.save()
         return(url,projectPK)
 
-class ResaveProjectTask(JobtasticTask):
+@shared_task
+class ResaveProjectTask(JobtasticTask,Task):
     '''goo'''
     significant_kwargs = [
                 ('projectPK', str),
@@ -202,12 +209,4 @@ class ResaveProjectTask(JobtasticTask):
         return("{} resaved".format(project))
 
 
-app = Celery('tasks')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Settings.settings')
-app.config_from_object('django.conf:settings')
-app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
-#@app.task()
-#def scrapeTask(urls, user):
-#        ThingiProjectTask().calculate_results(urls, user=user)
-#    #runScraper(urls, user=user)

@@ -1,11 +1,14 @@
 
 {% block content %}
-<div class="commentForm">
-<form action="/project/{{ projectpk }}/comment/" method="post">
-{{ form.as_p }}
-<input type="submit" name="action" value="Submit" />
-<input type="submit" name="action" value="Cancel" />
-</form>
-
+<div class="commentForm jshidden">
+    <form action="/project/{{ projectpk }}/comment/" method="post">
+        {{ form.as_p }}
+        <input type="submit" name="action" value="Submit" />
+        <input type="submit" name="action" value="Cancel" />
+    </form>
 </div>
+<div class="jsonly">
+    <a href="/project/{{ project.pk }}/comment/{{ commentRootId }}/">New Comment</a>
+</div>
+
 {% endblock content %}
