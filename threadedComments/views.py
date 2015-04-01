@@ -10,7 +10,7 @@ from threadedComments.forms import commentForm
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf_token
 from django.core.context_processors import csrf
-
+from django.shortcuts import redirect
 
 @csrf_exempt
 def comment(request, content_type, pk, comment_id=-1):
@@ -22,7 +22,6 @@ def comment(request, content_type, pk, comment_id=-1):
         objecty = object_type.get_object_for_this_type(pk=pk)
     except:
         return HttpResponse(status=404)
-
 
     if request.method == 'POST':
         form = commentForm(request.POST)
@@ -39,16 +38,19 @@ def comment(request, content_type, pk, comment_id=-1):
 
             commenter=request.user
             comment = Comment(
-			commenttext=commenttext,
-			commenter=commenter,
-			parent=parent
+				commenttext=commenttext,
+				commenter=commenter,
+				parent=parent
 			)
             comment.save()
    ########## I am so sorry. This redirect breaks the flexibility I was going for. This is very project.
-            return HttpResponseRedirect('/project/'+str(objecty.pk)+"#comment="+str(comment.pk))
+            if "next" in request.GET and request.GET["next"]:
+                return redirect(request.GET['next'])
+            return redirect("/")
+
         else:
             #Form errors
-            return render_to_response('commentform.html', dict(form=form, projectpk=pk))
+            return render(request, 'commentform.html', dict(form=form, projectpk=pk))
     else:
         #Make a new form
         form = commentForm()
@@ -58,7 +60,7 @@ def comment(request, content_type, pk, comment_id=-1):
             from django import forms
             form.fields['parent'].widget = forms.HiddenInput()
             form.fields['parent'].initial = Comment.objects.get(pk=comment_id)
-        return render_to_response('commentform.html', dict(form=form, projectpk=pk))
+        return render(request, 'commentform.html', dict(form=form, projectpk=pk))
 
 
 @csrf_protect

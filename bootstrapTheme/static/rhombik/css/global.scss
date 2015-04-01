@@ -18,26 +18,14 @@ body {background-color:$backround-color;}
     border-color: #dddddd; 
 }
 
-#TextsMain a:link {
-    font-weight: bold;
-    color: #66357F;
-}
-
-#TextsMain a:visited {
-    font-weight: bold;
-    color: #800080;
-}
-
 /*This highlights all links, including the profile and reply one.
 Once the comments section is cleaned up a bit more we should fix that */
-.comments a:link {
-    font-weight: bold;
-    color: #66357F;
+.texts a:link {
+    color: blue;
 }
 
-.comments a:visited {
-    font-weight: bold;
-    color: #800080;
+.texts a:visited {
+    color: purple;
 }
 
 .fullwidth{
@@ -71,12 +59,16 @@ border: none;
 
 //upvotes and downvotes
 .upvote.active{
-color: red;
-}
-.downvote.active{
-color: blue;
+    color: red;
 }
 
+.downvote.active{
+    color: blue;
+}
+
+.downvote{
+    color:black;
+}
 
 #aboutPage a {
     color: #B80015;

@@ -14,16 +14,16 @@ body {
 .footer:above{
 
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 100px;
-  color: $light-text;
-  padding-top: 8px;
-  background-color: $primary-color;
-  z-index: 100;
+ position: absolute;
+ bottom: 0;
+ width: 100%;
+ /* Set the fixed height of the footer here */
+ height: 100px;
+ padding-top: 8px;
+ z-index: 100;
+ color: #fff;
 }
 
 .footer h2{
@@ -36,6 +36,6 @@ body {
 }
 
 .footer a{
- color: #fff;
  font-size: 15px;
+ color: #fff;
 }

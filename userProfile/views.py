@@ -126,8 +126,8 @@ def index(request, pk):
 
 def logoutView(request):
     logout(request)
-    if "next" in request.POST and request.POST["next"]:
-        return redirect(request.POST['next'])
+    if "next" in request.GET and request.GET["next"]:
+        return redirect(request.GET['next'])
     return redirect("/")
 
 
@@ -165,8 +165,8 @@ def legister(request):
 
         c.update(csrf(request))
 
-        if (loggedin or registerForm.is_valid()) and "next" in request.POST and request.POST["next"]:
-            return redirect(request.POST['next'])
+        if (loggedin or registerForm.is_valid()) and "next" in request.GET and request.GET["next"]:
+            return redirect(request.GET['next'])
         elif loggedin or registerForm.is_valid():
             return redirect("/")
 
