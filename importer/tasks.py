@@ -1,9 +1,9 @@
 
 import os
+import re
 from django.contrib.auth.models import User
 from project.models import Project
 from filemanager.models import fileobject
-from celery import Celery, shared_task, chord,signature
 from django.conf import settings
 import urllib2
 import lxml
@@ -34,10 +34,9 @@ def get_response(url):
     return(response)
 
 from Settings.celery import app
-from celery import Task,shared_task
+from celery import Celery, shared_task, chord,signature
 
-@shared_task
-class ThingiUserTask(JobtasticTask,Task):
+class ThingiUserTask(JobtasticTask):
     """
     The user want's all of thier things.
     """
@@ -45,7 +44,7 @@ class ThingiUserTask(JobtasticTask,Task):
                 ('url', str),
                 ('userPK', str),
            ]
-    herd_avoidance_timeout = 60
+    herd_avoidance_timeout = 180
     def calculate_result(self, url="", userPK=None, **kwargs):
         response=get_response(url)
         dom=html.fromstring(response.read())
@@ -56,19 +55,21 @@ class ThingiUserTask(JobtasticTask,Task):
         response=get_response(designsLink)
         dom=html.fromstring(response.read())
         paginationUrlTails=dom.xpath('//*[contains(@class,\'pagination\')]/ul/li/a/@href')
-        paginationUrls = set([urlparse.urljoin('http://www.thingiverse.com/',lnk) for lnk in paginationUrlTails])
-        paginationUrls.union(set(["{}/page:1".format(url.rstrip("/"))]))
+        print(paginationUrlTails)
+        paginationNumbers = [int(re.search('page:(\d+?)\?', paginationUrl).group(1)) for paginationUrl in paginationUrlTails]
+        print("paginationNumbers : {}".format(paginationNumbers))
+        paginationTail = "/page:{0}?sort=recent&filter=&search="
+        paginationUrls = [designsLink+paginationTail.format(pgNum) for pgNum in range(1,sorted(paginationNumbers)[-1]+1)]
         print("paginationUrls : {}".format(paginationUrls))
         for paginationUrl in paginationUrls:
             print("Calling GetThingiProjectTask on {}".format(paginationUrl))
             GetThingiProjectTask.delay(url=paginationUrl,userPK=userPK)
-@shared_task
-class GetThingiProjectTask(JobtasticTask,Task):
+class GetThingiProjectTask(JobtasticTask):
     significant_kwargs = [
                 ('url', str),
                 ('userPK', str),
            ]
-    herd_avoidance_timeout = 60
+    herd_avoidance_timeout = 180
     def calculate_result(self, url="", userPK=None, **kwargs):
         print("reading thing links from {}".format(url))
         response=get_response(url)
@@ -80,8 +81,7 @@ class GetThingiProjectTask(JobtasticTask,Task):
             print("Calling ThingiProjectTask on {}".format(projecturl))
             ThingiProjectTask.delay(url=projecturl,userPK=userPK)
 
-@shared_task
-class ThingiProjectTask(JobtasticTask,Task):
+class ThingiProjectTask(JobtasticTask):
     """
     Things are there, but users want them here. Lets go get them!
     In due time.
@@ -90,7 +90,7 @@ class ThingiProjectTask(JobtasticTask,Task):
                 ('url', str),
                 ('userPK', str),
            ]
-    herd_avoidance_timeout = 120
+    herd_avoidance_timeout = 180
     ignore_result=True
     def calculate_result(self, url, userPK, **kwargs):
         print("importing project : {}".format(url))
@@ -129,7 +129,9 @@ class ThingiProjectTask(JobtasticTask,Task):
         readmeItem.isReadme = True
 	readmename="README.md"
 	readmefile=u""+unicodedata.normalize('NFKD',readme).encode('ascii','ignore')
-        readmeItem.fromText(readmename,readmefile)
+        print(readmename)
+        print(readmefile)
+        readmeItem.fromText(readmefile,readmename)
         readmeItem.save()
         project.bodyFile=readmeItem
         project.save()
@@ -144,7 +146,7 @@ class ThingiProjectTask(JobtasticTask,Task):
             instructionItem.parent=project#Object['SID']
             name="Instructions.md"
             filename=instructions
-            instructionItem.fromText(name,filename)
+            instructionItem.fromText(filename,name)
             instructionItem.save()
         except IndexError:
             pass
@@ -158,7 +160,7 @@ class ThingiProjectTask(JobtasticTask,Task):
         licenceItem.parent=project#Object['SID']
         lname="License.md"
         lfile="["+licensetext+"]("+licenseurl+")"
-        licenceItem.fromText(lname,lfile)
+        licenceItem.fromText(lfile,lname)
         licenceItem.save()
 
 	## get all the projects image and file objects
@@ -172,8 +174,7 @@ class ThingiProjectTask(JobtasticTask,Task):
         return(project.title)
 
 
-@shared_task
-class ThingiFileTask(JobtasticTask,Task):
+class ThingiFileTask(JobtasticTask):
     '''Get an individual file... AND SAVE IT! AH HA HA HA!!!'''
     significant_kwargs = [
                 ('url', str),
@@ -189,12 +190,11 @@ class ThingiFileTask(JobtasticTask,Task):
         name=urlparse.urlparse(response.url)[2].split("/")[-1]
         name=name.replace("_display_large","")
         fl=response.read()
-        flob.fromText(name,fl)
+        flob.fromText(fl,name)
         flob.save()
         return(url,projectPK)
 
-@shared_task
-class ResaveProjectTask(JobtasticTask,Task):
+class ResaveProjectTask(JobtasticTask):
     '''goo'''
     significant_kwargs = [
                 ('projectPK', str),

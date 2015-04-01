@@ -9,6 +9,12 @@ from django.conf import settings
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Settings.settings')
 
+import sys
+
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+sys.path.append(PROJECT_PATH+"/../../lib/python2.7/site-packages/")
+sys.path.append(PROJECT_PATH+"/..")
+
 app = Celery('tasks')
 
 # Using a string here means the worker will not have to
