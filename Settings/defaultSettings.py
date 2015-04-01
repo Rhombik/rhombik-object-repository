@@ -123,8 +123,8 @@ STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 PIPELINE_CSS = {
     'globalCSS': {
         'source_filenames': (
-             'bootstrap/css/bootstrap.min.css',
-             'bootstrap_theme/css/rhombik_magic_bootstrap.css',
+             'bootstrap-3.3.4/less/bootstrap.less',
+             'bootstrap_theme/css/magic-bootstrap.css',
              'rhombik/css/global.scss',
              'rhombik/css/spin.scss',
              'rhombik/css/foundation-icons.css',
@@ -139,13 +139,12 @@ PIPELINE_CSS = {
          ),
         'output_filename': 'css/hasJS.css',
     }
-
 }
 
 PIPELINE_JS = {
     'globalJS': {
         'source_filenames': (
-            'bootstrap/js/bootstrap.min.js',
+            'bootstrap-3.3.4/js/tab.js',
             'rhombik/js/modernizr.js',
             'rhombik/js/customScript.js',
             'rhombik/js/jquery-ui-1.10.4.min.js',
@@ -164,6 +163,7 @@ PIPELINE_COMPILERS = (
   'pipeline.compilers.coffee.CoffeeScriptCompiler',
   'pipeline.compilers.sass.SASSCompiler',
   'pipeline_rapydscript.RapydScript.RapydScriptCompiler',
+  'pipeline.compilers.less.LessCompiler',
 )
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP

@@ -169,10 +169,6 @@ def project(request, pk):
     object_type = ContentType.objects.get(model="project")
     commentRoot = CommentRoot.objects.get_or_create(commenter=project.author, content_type=object_type, object_id=project.pk)[0]
     nodes = commentRoot.get_descendants(include_self=False)
-    ## Put the comments in the comment form. Then users can only use this form to reply to comments on this project.
-    from threadedComments.forms import commentForm
-    commentform = commentForm()
-    commentform.fields['parent'].queryset = nodes
     if download.filename:
         downloadurl=download.filename.url
     else:
@@ -184,12 +180,10 @@ def project(request, pk):
 				author=author,
 				authorprofile=authorprofile,
 				authorpic=authorpic,
-
-                                commentRootId=commentRoot.id,
-                                nodes=nodes,
-				commentform=commentform,
-                                moreobjects=norenders,
-                                images=images, 
+                commentRootId=commentRoot.id,
+                nodes=nodes,
+                moreobjects=norenders,
+                images=images, 
 				texts=texts,
 				galleryname="base", 
 				mainthumb=[mainthumb],

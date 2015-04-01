@@ -1,17 +1,14 @@
 
-<h3>Author</h3>
-<div>
-        {% if userpic %}
-	<a href="/userProfile/{{ user.pk }}">
-	<img src="{{userpic.filename.url}}">
-	</a>
-        {% endif %}
-</div>
-<div>
-	<a href="/userProfile/{{ user.pk }}">
-		{{ user }}
-	</a>
+<span>
+       {% if userpic %}
+    <a href="/userProfile/{{ user.pk }}">
+    <img src="{{userpic.filename.url}}">
+    </a>
+       {% endif %}
+</span>
+<span>
+	Author: <a href="/userProfile/{{ user.pk }}">{{ user }}</a>
 	<br>
-</div>
+</span>
 
 

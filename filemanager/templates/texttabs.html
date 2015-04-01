@@ -6,24 +6,13 @@
 
 
 <div id="tabs">
-	<div class="sortCategories sortBody clearfix">
-		<ul class="nav nav-tabs">
-	      {% for html, name in texts %}
-	        <li><a href="#{{name}}">{{name}}</a></li>
-	      {%endfor%}
-		</ul>
-	</div>
-	<article class="Main bodyContainer" id="TextsMain">
-		<div class="Main body">
-		</div>
-	</article>
 	{% for html, name in texts %}
-	<article class="texts bodyContainer" id="{{name}}">
-		<h2>
-                <div class="texts title">{{name}}</div></h2>
-		<hr>
-		<div class="texts body">
-		<p>{{html.body_rendered | safe}}</p>
+	<article class="texts bodyContainer" id="{{name}}-textContent">
+		<div class="panel panel-default">
+		  <div class="panel-heading"><h3>{{ name }}</h3></div>
+		  <div class="panel-body">
+            <p>{{html.body_rendered | safe}}</p>
+		  </div>
 		</div>
 	</article>
 	{%endfor%}
