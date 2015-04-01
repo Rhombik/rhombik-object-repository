@@ -1,7 +1,7 @@
 {% load mptt_tags %}
 
 {% if user.is_authenticated %}
-    <div class="btn btn-default"><a href="/project/{{ project.pk }}/comment/{{ commentRootId }}/?next={{ request.path }}">New Comment</a></div><br>
+    <a href="/project/{{ project.pk }}/comment/{{ commentRootId }}/?next={{ request.path }}" class="btn btn-default">New Comment</a><br>
 {% endif %}
 <br>
 <div class="comments">

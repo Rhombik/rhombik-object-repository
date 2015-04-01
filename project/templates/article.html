@@ -35,6 +35,7 @@
 	{% include "texttabs.html" %}
 </div>
 <div class="col-md-3">
+
 	<h3>Project Info</h3>
 	<hr>
 	<div class="bodyContainer thumbnail">
@@ -116,7 +117,7 @@
 	<div class="thumbnail">
 		<div class="containerContent taglist">
 			{% for tag in project.tags.all %}
-			<span class="tagrank=({{tag.num_times}}) tag btn btn-default"> <a href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
+			<span class="tagrank=({{tag.num_times}}) tag"> <a class="btn btn-default" href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
 			{% endfor %}
 		</div>
 	</div>
