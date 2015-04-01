@@ -2,16 +2,15 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
-<form action="/project/{{ projectpk }}/comment/?next={{ request.GET.next }}" method="post">
-    {{ form|crispy }}
-
-    <input type="submit" class="btn btn-info" value="Submit" name="action">
-
-    <input type="submit" class="btn btn-info" value="Cancel" name="action">
-
-    <input type="submit" class="btn btn-info pull-right" value="Delete" name="action">
-
-</form>
+<div class="commentForm jshidden">
+    <form action="/project/{{ projectpk }}/comment/" method="post">
+        {{ form.as_p }}
+        <input type="submit" name="action" value="Submit" />
+        <input type="submit" name="action" value="Cancel" />
+    </form>
+</div>
+<div class="jsonly">
+    <a href="/project/{{ project.pk }}/comment/{{ commentRootId }}/">New Comment</a>
+</div>
 
 {% endblock content %}
