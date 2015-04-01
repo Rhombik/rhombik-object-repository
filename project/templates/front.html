@@ -4,7 +4,7 @@
 
 <h1>Rhombik - Designs for 3D printed objects</h1>
 
-<div class="warning panel" style="background-color: #b0c4de;">
+<div class="alert alert-warning">
 	<div class="panel-body">
 		<b>Warning- Rhombik is pre-alpha software</b>
 		<br>
@@ -20,10 +20,10 @@
 
 </div>
 
-<h2><a href=/search/?q=&tags=&sort=new>New projects    ></a></h2>
+<h2>New Projects <a href="/search/?q=&tags=&sort=new" class="btn btn-primary">View more</a></h2>
 <!-- Projects-->
-<div class="well">
 {% include "list/userpref.html" with listdata=listdata %}
-</div>
-<h2><a href=/search/?q=&tags=&sort=votes>Popular projects (all time)    ></a></h2></h2>
+
+<h2>All Time Popular Projects <a href="/search/?q=&tags=&sort=votes" class="btn btn-primary">View more</a></h2>
+
 {% endblock content %}
