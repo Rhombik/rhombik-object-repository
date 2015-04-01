@@ -12,7 +12,6 @@
 <title>{{project.title}} - Rhombik</title>
 {% endblock head %}
 
-
 {% block content %}
 
 {% load gallerfy %}
@@ -26,7 +25,7 @@
 	<div class="printableThumbs">
 		{% include "gallery.html" %}
 		{% if moreobjects != 0 %}
-		<span><a href="download/">+{{moreobjects }}<br> others</a></span>
+		<span><a href="download/">+{{ moreobjects }}<br> others</a></span>
 		{% endif  %}
 	</div>
 
@@ -38,7 +37,7 @@
 
 	<h3>Project Info</h3>
 	<hr>
-	<div class="bodyContainer thumbnail">
+	<div class="bodyContainer thumbnail panel">
 		<div class="containerContent">
 			{% if user == project.author %}
 			<a href="/edit/{{ project.pk }}" class="btn btn-default fullwidth">Edit</a>
@@ -114,10 +113,10 @@
 
 	<h3>Tags</h3>
 	<hr>
-	<div class="thumbnail">
+	<div class="thumbnail panel">
 		<div class="containerContent taglist">
 			{% for tag in project.tags.all %}
-			<span class="tagrank=({{tag.num_times}}) tag"> <a class="btn btn-default" href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
+			<span class="tagrank-{{tag.num_times}} tag"> <a class="btn btn-default" href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
 			{% endfor %}
 		</div>
 	</div>
@@ -127,12 +126,6 @@
 
     <h2>Comments</h2>
     {% include "commenttree.html" with user=user projectpk=project.pk nodes=nodes %}
-
-    {% if not user.is_authenticated %}
-
-    <a href="/legister/?next={{ request.path }}">Sign up or log in</a> to comment
-
-    {% endif %}
 </div>
 
 {% endblock content %}

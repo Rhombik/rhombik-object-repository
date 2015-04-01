@@ -1,106 +1,49 @@
 
 from threadedComments.models import *
-from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.contenttypes.models import ContentType
-from threadedComments.forms import commentForm
 
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 ##obviously ignoring csrf is a bad thing. Get this fixedo.
 """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
+from threadedComments.forms import commentForm
 from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf_token
 from django.core.context_processors import csrf
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404, render
+from django.http import HttpResponseForbidden
 
 @csrf_exempt
-def comment(request, content_type, pk, comment_id=-1):
+def comment(request, content_type, content_pk, parent_id=None, comment_id=None):
 
-    object_type = ContentType.objects.get(model=content_type)
+    if not request.user:
+        return HttpResponseForbidden
 
-## If the post doesn't exist 404 them
-    try:
-        objecty = object_type.get_object_for_this_type(pk=pk)
-    except:
-        return HttpResponse(status=404)
+    object_type = ContentType.objects.get(model=content_type).model_class()
+    if comment_id != "new":
+        objectInstance = get_object_or_404(object_type, pk=comment_id)
+    else:
+        objectInstance = object_type(parent=parent_id)
+
+    if objectInstance.pk and objectInstance.author != request.user:
+        return HttpResponseForbidden
 
     if request.method == 'POST':
         form = commentForm(request.POST)
-        if(request.POST['action']=="Cancel"):
-            return HttpResponseRedirect('/project/'+str(objecty.pk))
-        elif form.is_valid():
-            #Save comment.
-            commenttext = form.cleaned_data["commenttext"]
-            ## If the comment is replying to another comment, thats fine, otherwise we set the parent to the root comment.
-            if(form.cleaned_data["parent"]):
-                parent=form.cleaned_data["parent"]
-            else:
-                parent = CommentRoot.objects.get(content_type=object_type, object_id=objecty.pk)
+        if request.POST['action'] == "Submit":
+            if not form.is_valid():
+                return render(request, 'commentform.html', dict(form=form, content_pk=pk))
+            form.save()
+        if request.POST['action'] == "Delete":
+            form.delete() 
 
-            commenter=request.user
-            comment = Comment(
-				commenttext=commenttext,
-				commenter=commenter,
-				parent=parent
-			)
-            comment.save()
-   ########## I am so sorry. This redirect breaks the flexibility I was going for. This is very project.
-            if "next" in request.GET and request.GET["next"]:
-                return redirect(request.GET['next'])
-            return redirect("/")
+        if request.POST['action'] == "Cancel":
+            pass
 
-        else:
-            #Form errors
-            return render(request, 'commentform.html', dict(form=form, projectpk=pk))
+        if "next" in request.GET and request.GET["next"]:
+            return redirect(request.GET['next'])
+        return redirect("/")
+
     else:
-        #Make a new form
-        form = commentForm()
-        if comment_id==-1:
-            form.fields['parent'].queryset = CommentRoot.objects.get(content_type=object_type, object_id=objecty.pk).get_descendants(include_self=False)
-        else:
-            from django import forms
-            form.fields['parent'].widget = forms.HiddenInput()
-            form.fields['parent'].initial = Comment.objects.get(pk=comment_id)
-        return render(request, 'commentform.html', dict(form=form, projectpk=pk))
+        form = commentForm(objectInstance)
+        return render(request, 'commentform.html', dict(form=form, pk=content_pk))
 
-
-@csrf_protect
-def editComment(request, content_type, pk, comment_id=-1):
-
-    object_type = ContentType.objects.get(model=content_type)
-
-## If the post doesn't exist 404 them
-    try:
-        objecty = object_type.get_object_for_this_type(pk=pk)
-    except:
-        return HttpResponse(status=404)
-
-    editingComment = Comment.objects.get(pk=comment_id)
-    if not (request.user.is_authenticated() and str(editingComment.commenter) == str(request.user)):
-        return HttpResponse(status=404)
-    elif request.method == 'POST':
-        form = commentForm(request.POST)
-        if(request.POST['action']=="Delete"):
-            parent_pk=editingComment.parent
-            editingComment.delete()
-            return HttpResponseRedirect('/project/'+str(objecty.pk)+"#comment="+str(parent_pk))
-        elif(request.POST['action']=="Cancel"):
-            return HttpResponseRedirect('/project/'+str(objecty.pk)+"#comment="+str(editingComment.parent.pk))
-        elif form.is_valid():
-            editingComment.commenttext=form.cleaned_data["commenttext"]
-            editingComment.save()
-   ########## I am so sorry. This redirect breaks the flexibility I was going for. This is very project.
-   #### ( this is in reference to the general objecty get_object_for_this_type thing I had going ) ####
-            return HttpResponseRedirect('/project/'+str(objecty.pk)+"#comment="+str(editingComment.pk))
-        else:
-            #Form errors
-            return render_to_response('editcommentform.html', dict(form=form, projectpk=pk, comment_id=editingComment.pk))
-    else:
-        #Fill form with the users comment!
-        form = commentForm()
-        from django import forms
-        form.fields['parent'].widget = forms.HiddenInput()
-        form.fields['parent'].initial = editingComment.parent
-        form.fields['commenttext'].initial = editingComment.commenttext
-        c=dict(form=form, projectpk=pk, comment_id=editingComment.pk)
-        c.update(csrf(request))
-        return render_to_response('editcommentform.html',c)

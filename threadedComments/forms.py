@@ -15,7 +15,6 @@ class commentForm(ModelForm):
         self.helper = FormHelper(self)
 
     commenttext = forms.CharField(widget = forms.Textarea, required=True, label='Comment')
-
     class Meta:
         model = Comment
-        fields = ["commenttext", "parent"]
+        fields = ["commenttext",]

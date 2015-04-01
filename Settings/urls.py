@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     (r'^editUser/', 'userProfile.views.edit'),
 
     #We should try to move url definitions into each app
+    url(r'', include('threadedComments.urls')),
     url(r'', include('bootstrapTheme.urls')),
     url(r'', include('multiuploader.urls')),
     url(r'', include('filemanager.urls')),

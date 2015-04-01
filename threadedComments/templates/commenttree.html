@@ -1,15 +1,13 @@
 {% load mptt_tags %}
 
 {% if user.is_authenticated %}
-    <a href="/project/{{ project.pk }}/comment/{{ commentRootId }}/?next={{ request.path }}" class="btn btn-default">New Comment</a><br>
+    <a href="/project/{{ project.pk }}/comment/{{ commentRootId }}/new/?next={{ request.path }}" class="btn btn-default">New Comment</a><br>
+{% else %}
+    <a class="btn btn-default" href="/legister/?next={{ request.path }}">Sign up or log in</a> to comment
 {% endif %}
 <br>
 <div class="comments">
     {% recursetree nodes %}
-        <!-- This is supposed to be css'd nice with list stuff, but instead I'm div-ing it and giving it text indent. Someone will fix it!
-        <li class="comment={{ node.id }}" style="text-indent:{{ node.level }}em;">
-        {{ node.level }}
-        -->
         <div id="comment={{ node.id }}" >
             <div>
             <b><a href="/userProfile/{{node.commenter.pk}}">{{ node.commenter }}</a></b> <font size="1" title="{{node.created}}">{{ node.created|timesince }} ago</font>
@@ -18,11 +16,11 @@
             <br>
             {% if user.is_authenticated %}
 				{% if user == node.commenter %}
-					<a class="editComment" href="/project/{{ projectpk }}/editComment/{{ node.id }}/?next={{ request.path }}">
+					<a class="editComment" href="/project/{{ projectpk }}/comment/{{ node.parent.id }}/{{ node.id }}/?next={{ request.path }}">
 					<font size="1">edit</font>
-					</a><a>  </a>
+					</a>&nbsp;
 				{% endif %}
-            <a class="commentReply" href="/project/{{ projectpk }}/comment/{{ node.id }}/?next={{ request.path }}">
+            <a class="commentReply" href="/project/{{ projectpk }}/comment/{{ node.id }}/new/?next={{ request.path }}">
             <font size="1">reply</font>
             </a>
             {% endif %}

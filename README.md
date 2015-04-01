@@ -51,7 +51,7 @@ To set up a development enviroment simply
 
 Unfortunately django-pipeline requires the nodejs coffee command, which means we can't just rely on pip for all of our dependencies. Install nodejs and run.
 
-    sudo npm install coffee-script less -g
+    sudo npm install coffee-script less rapydscript -g
 
 Note that npm can have errors installing coffee on some distributions. If you notice javascript breaking you can try reinstalling coffee script using your distro's package manager.
 
