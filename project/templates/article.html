@@ -36,11 +36,10 @@
 <div class="col-md-3">
 
 	<h3>Project Info</h3>
-	<hr>
 	<div class="bodyContainer thumbnail panel">
 		<div class="containerContent">
 			{% if user == project.author %}
-			<a href="/edit/{{ project.pk }}" class="btn btn-default fullwidth">Edit</a>
+			<a href="/edit/{{ project.pk }}" class="btn btn-primary btn-block">Edit</a>
 			<hr>
 			{% endif %}
 			{% include "usertagcard.html" with user=author profile=authorprofile userpic=authorpic %}
@@ -104,19 +103,17 @@
 	<!-- :/ I am not a clever man. -->
 	<h3></h3>
 
-	<a href="download/" class="btn btn-default fullwidth">Download Files</a>
+	<a href="download/" class="btn btn-primary btn-block">Download Files</a>
 	{% if downloadurl %}
-	<a href="{{downloadurl}}" class="btn btn-default fullwidth downloadAll">Download All</a>
-
+	<a href="{{downloadurl}}" class="btn btn-info btn-block downloadAll">Download All</a>
 	{% endif %}
 
 
 	<h3>Tags</h3>
-	<hr>
 	<div class="thumbnail panel">
-		<div class="containerContent taglist">
+		<div class="containerContent taglist text-center">
 			{% for tag in project.tags.all %}
-			<span class="tagrank-{{tag.num_times}} tag"> <a class="btn btn-default" href="/search/?q=&tags={{tag}}">{{tag}}</a></span>
+			<a class="btn btn-primary btn-sm tagrank-{{tag.num_times}} tag" href="/search/?q=&tags={{tag}}">{{tag}}</a>
 			{% endfor %}
 		</div>
 	</div>

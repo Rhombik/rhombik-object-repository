@@ -8,7 +8,7 @@ from filemanager.models import fileobject, fileuploadpath
 from djangoratings.fields import RatingField
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-import project.tasks
+from filemanager.tasks import zippedTask
 
 class Project(models.Model):
 
@@ -78,6 +78,7 @@ class Project(models.Model):
 
         if enf_valid:
             self.enf_validity()
+        zippedTask.delay()
 
     def delete(self):
         project.tasks.fileEnforcer.delay(self)

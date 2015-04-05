@@ -4,6 +4,7 @@
 {% block content %}
 
 <form action="/project/{{ projectpk }}/comment/?next={{ request.GET.next }}" method="post">
+    {% csrf_token %}
     {{ form|crispy }}
 
     <input type="submit" class="btn btn-info" value="Submit" name="action">

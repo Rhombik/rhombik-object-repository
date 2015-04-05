@@ -10,8 +10,6 @@ from django.core.files.uploadedfile import UploadedFile
 from io import BytesIO
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
-from project.models import Project
-
 from Settings.celery import app
 
 @app.task()

@@ -8,6 +8,8 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from taggit_autocomplete.widgets import TagAutocomplete
 from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Button, HTML, Div, Field
+
 
 ###This function validates the form for submitting projects. Excluding the title, thats only done in the createForm.
 def cleanify(self, formName):
@@ -67,7 +69,7 @@ class ProjectForm(ModelForm):
 
     body = forms.CharField(widget = forms.Textarea, required=False, label='Project Description')
     thumbnail = forms.CharField(required=False)
-    tags = forms.CharField(widget=TagAutocomplete(attrs={'id': 'uploadTag'}),required=False)
+    tags = forms.CharField(required=False)
 
     def clean(self):
         return cleanify(self, ProjectForm)

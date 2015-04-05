@@ -14,7 +14,7 @@ class Comment(MPTTModel):
     updated = models.DateTimeField(auto_now = True)
 
     commenttext = models.CharField(max_length=4096)
-    commenter = models.ForeignKey(User, related_name='commenter',default=User)
+    commenter = models.ForeignKey(User, related_name='commenter',)
 
     def __str__(self):
         if(len(self.commenttext)>32):

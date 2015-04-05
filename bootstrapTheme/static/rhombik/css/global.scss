@@ -43,10 +43,6 @@ border: none;
   border-radius: 0px;
 }
 
-.btn {
-  border-radius: 0px;
-}
-
 //upvotes and downvotes
 .upvote.active{
     color: red;
@@ -58,6 +54,17 @@ border: none;
 
 .votebutton{
     color:black;
+}
+
+//Fragment identifiers
+
+.partial-ident {
+    visibility:hidden;
+}
+
+.panel-heading:hover .partial-ident{
+    visibility:visible; 
+    color: #fff;
 }
 
 //From chrises css
@@ -88,10 +95,6 @@ hr {
 #jsc3d_main_frame{
 padding:0;
 border:none;
-}
-
-.comments{
-padding-left:10px;
 }
 
 .nav .active{

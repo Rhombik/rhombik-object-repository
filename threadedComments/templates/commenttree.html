@@ -1,12 +1,7 @@
 {% load mptt_tags %}
 
-{% if user.is_authenticated %}
-    <a href="/project/{{ project.pk }}/comment/{{ commentRootId }}/new/?next={{ request.path }}" class="btn btn-default">New Comment</a><br>
-{% else %}
-    <a class="btn btn-default" href="/legister/?next={{ request.path }}">Sign up or log in</a> to comment
-{% endif %}
-<br>
-<div class="comments">
+<div class="comments panel">
+  <div class="panel-body">
     {% recursetree nodes %}
         <div id="comment={{ node.id }}" >
             <div>
@@ -32,6 +27,13 @@
             {% endif %}
         </div>
     {% endrecursetree %}
+    <br>
+	{% if user.is_authenticated %}
+		<a href="/project/{{ project.pk }}/comment/{{ commentRootId }}/new/?next={{ request.path }}" class="btn btn-info">New Comment</a><br>
+	{% else %}
+		<a class="btn btn-info" href="/legister/?next={{ request.path }}">Sign up or log in</a> to comment
+	{% endif %}
+  </div>
 </div>
 
 
