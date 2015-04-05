@@ -169,6 +169,8 @@ class ThingiProjectTask(JobtasticTask):
         #Grab only raw images.        
         imagelist = dom.xpath('//*[contains(@class,\'thing-gallery-thumbs\')]/div[@data-track-action="viewThumb"][@data-thingiview-url=""]/@data-large-url')
         fileurls=[urlparse.urljoin('http://www.thingiverse.com/', fl) for fl in imagelist+filelist]
+        print("fileurls:")
+        print(fileurls)
         bundle_o_tasks=[ThingiFileTask().si(url=i,projectPK=project.pk) for i in fileurls]
         filetask = chord(bundle_o_tasks)(ResaveProjectTask().si(projectPK=project.pk))
         return(project.title)
@@ -185,13 +187,18 @@ class ThingiFileTask(JobtasticTask):
     def calculate_result(self, url, projectPK, **kwargs):
         print("downloading {}".format(url))
         response=get_response(url)
-        flob=fileobject()
-        flob.parent=Project.objects.get(pk=projectPK)
+
         name=urlparse.urlparse(response.url)[2].split("/")[-1]
         name=name.replace("_display_large","")
-        fl=response.read()
-        flob.fromText(fl,name)
-        flob.save()
+
+        fileobjectInstance=fileobject()
+        fileobjectInstance.parent=Project.objects.get(pk=projectPK)
+
+        from django.core.files.base import ContentFile
+        newFile = ContentFile(response)
+        fileobjectInstance.filename.save(name,newFile)
+
+        fileobjectInstance.save()
         return(url,projectPK)
 
 class ResaveProjectTask(JobtasticTask):
