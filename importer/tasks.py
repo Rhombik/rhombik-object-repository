@@ -91,7 +91,6 @@ class ThingiProjectTask(JobtasticTask):
                 ('userPK', str),
            ]
     herd_avoidance_timeout = 180
-    ignore_result=True
     def calculate_result(self, url, userPK, **kwargs):
         print("importing project : {}".format(url))
         response=get_response(url)
@@ -190,15 +189,25 @@ class ThingiFileTask(JobtasticTask):
 
         name=urlparse.urlparse(response.url)[2].split("/")[-1]
         name=name.replace("_display_large","")
+        print(name)
 
         fileobjectInstance=fileobject()
         fileobjectInstance.parent=Project.objects.get(pk=projectPK)
 
         from django.core.files.base import ContentFile
-        newFile = ContentFile(response)
-        fileobjectInstance.filename.save(name,newFile)
+        fileobjectInstance.filename = ContentFile('')
+        fileobjectInstance.filename.name = name
+        while True:
+            chunk = response.read(2048)
+            if not chunk:
+                break
+            fileobjectInstance.filename.write(chunk)
+        print('done')
+        
+        #fileobjectInstance.filename = newFile#.save(name,newFile)
+        fileobjectInstance.filename.close()
 
-        fileobjectInstance.save()
+        super(fileobject,fileobjectInstance).save()
         return(url,projectPK)
 
 class ResaveProjectTask(JobtasticTask):
