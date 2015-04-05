@@ -17,13 +17,13 @@
 
 <form action="/edit/{{ project.pk}}/" method="post" onsubmit="window.onbeforeunload = null;">{% csrf_token %}
 {{ form|crispy }}
-{% if project.published %}
-    <input class="btn btn-primary" type="submit" name="action" value="Save" />
-    <input class="btn btn-info" type="submit" name="action" value="Publish" />
-{% else %}
-    <input class="btn btn-info" type="submit" name="action" value="Update" />
-{% endif %}
-<input class="pull-right btn btn-danger" type="submit" name="action" value="Delete" />
+	{% if project.draft %}
+		<input class="btn btn-primary" type="submit" name="action" value="Save" />
+		<input class="btn btn-info" type="submit" name="action" value="Publish" />
+	{% else %}
+		<input class="btn btn-info" type="submit" name="action" value="Update" />
+	{% endif %}
+		<input class="pull-right btn btn-danger" type="submit" name="action" value="Delete" />
 </form>
 <hr>
 {% if json_files %}
