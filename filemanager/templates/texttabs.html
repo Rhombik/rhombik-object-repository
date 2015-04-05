@@ -4,12 +4,13 @@
 {% load pipeline %}
 {% javascript 'globalJS' %}
 
+<h2>Texts</h2>
 
 <div id="tabs">
 	{% for html, name in texts %}
-	<article class="texts bodyContainer" id="{{name}}-textContent">
-		<div class="panel panel-default">
-		  <div class="panel-heading"><h3>{{ name }}</h3></div>
+	<article class="texts bodyContainer" id="text-{{name}}">
+		<div class="panel panel-primary">
+		  <div class="panel-heading"><h3>{{ name }}  <a class="partial-ident" href="#text-{{name}}">¶</a></h3></div>
 		  <div class="panel-body">
             <p>{{html.body_rendered | safe}}</p>
 		  </div>

@@ -17,12 +17,15 @@
 
 <form action="/edit/{{ project.pk}}/" method="post" onsubmit="window.onbeforeunload = null;">{% csrf_token %}
 {{ form|crispy }}
-<br>
-<input type="submit" name="action" value="Save" />
-<input type="submit" name="action" value="Publish" />
-<input style="float:right;" type="submit" name="action" value="Delete" />
+	{% if project.draft %}
+		<input class="btn btn-primary" type="submit" name="action" value="Save" />
+		<input class="btn btn-info" type="submit" name="action" value="Publish" />
+	{% else %}
+		<input class="btn btn-info" type="submit" name="action" value="Update" />
+	{% endif %}
+		<input class="pull-right btn btn-danger" type="submit" name="action" value="Delete" />
 </form>
-<hr><br>
+<hr>
 {% if json_files %}
 <script>
 { var JSONObject= {{ json_files }} }
@@ -33,5 +36,16 @@
 {% multiupform  %}
 </div>
 </div>
+
+<script>
+$('#id_tags').tokenfield({
+  typeahead: {
+    prefetch: '/tags.json',
+    remote: '/tags.json?q=%QUERY',
+    delay: 100,
+  },
+  showAutocompleteOnFocus: true
+});
+</script>
 
 {% endblock content %}

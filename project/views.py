@@ -255,7 +255,7 @@ def editOrCreateStuff(project, request):
                 project.draft=False
                 project.save()
                 return HttpResponseRedirect('/project/'+str(project.pk))
-            elif(request.POST['action']=="Save"):
+            elif(request.POST['action'] in ["Save", "Update"]):
                 project.save()
                 return HttpResponseRedirect('/mydrafts/')
         else:
