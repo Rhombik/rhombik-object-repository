@@ -2,10 +2,6 @@
 from threadedComments.models import Comment
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.contenttypes.models import ContentType
-
-"""~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
-##obviously ignoring csrf is a bad thing. Get this fixedo.
-"""~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
 from threadedComments.forms import commentForm
 from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf_token
 from django.core.context_processors import csrf
@@ -13,7 +9,6 @@ from django.shortcuts import redirect, get_object_or_404, render
 from django.http import HttpResponseForbidden
 from threadedComments.models import Comment
 
-@csrf_exempt
 def comment(request, content_type, content_pk, parent_id=None, comment_id=None):
 
     #make sure the user is logged in.
@@ -31,6 +26,7 @@ def comment(request, content_type, content_pk, parent_id=None, comment_id=None):
         commentInstance = Comment()
         commentInstance.parent=get_object_or_404(Comment, pk=parent_id)
 
+    #make sure we own the comment.
     if commentInstance.pk and commentInstance.commenter != request.user:
         return HttpResponseForbidden
 
@@ -39,7 +35,8 @@ def comment(request, content_type, content_pk, parent_id=None, comment_id=None):
         if request.POST['action'] == "Submit":
             if not form.is_valid():
                 return render(request, 'commentform.html', dict(form=form, content_pk=pk))
-            commentInstance.commenttext=form.commenttext
+            commentInstance.commenttext=form.cleaned_data['commenttext']
+            commentInstance.commenter=request.user
             commentInstance.save()
         if request.POST['action'] == "Delete":
             commentInstance.delete()
@@ -53,5 +50,5 @@ def comment(request, content_type, content_pk, parent_id=None, comment_id=None):
 
     else:
         form = commentForm(initial={"commenttext":commentInstance.commenttext})
-        return render(request, 'commentform.html', dict(form=form, pk=content_pk))
+        return render(request, 'commentform.html', dict(form=form, pk=content_pk, parent_id=parent_id))
 

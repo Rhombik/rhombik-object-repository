@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<form action="/project/{{ projectpk }}/comment/?next={{ request.GET.next }}" method="post">
+<form action="" method="post">
     {% csrf_token %}
     {{ form|crispy }}
 
