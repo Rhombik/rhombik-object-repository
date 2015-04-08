@@ -30,7 +30,7 @@ def zippedTask(project):
    s.seek(0)
    filedata = ContentFile(s.getvalue())
    filedata.name = project.title+".zip"
-   zippedobject.create(filename = filedata)
+   zippedobject.objects.create(project=project, filename = filedata)
 
 #def thumbsave(thumbnail):
 #   import time
