@@ -126,8 +126,8 @@ class zippedobject(models.Model):
     def __unicode__(self):
         return str(self.project.title)
 
-    project = models.ForeignKey('project.Project', unique=True)
-    filename = models.FileField(upload_to="projects/", blank=True, null=True)
+    project = models.ForeignKey('project.Project')
+    filename = models.FileField(upload_to="projects/")
     def save(self, generate=True, *args, **kwargs):
         super(zippedobject, self).save()
     #### this is disabled because alex said so. if you find this still disabled it's not my fault, it is his.

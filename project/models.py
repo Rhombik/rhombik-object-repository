@@ -78,7 +78,7 @@ class Project(models.Model):
 
         if enf_valid:
             self.enf_validity()
-        zippedTask.delay()
+        zippedTask.delay(self)
 
     def delete(self):
         project.tasks.fileEnforcer.delay(self)
