@@ -170,8 +170,11 @@ class ThingiProjectTask(JobtasticTask):
         fileurls=[urlparse.urljoin('http://www.thingiverse.com/', fl) for fl in imagelist+filelist]
         print("fileurls:")
         print(fileurls)
-        bundle_o_tasks=[ThingiFileTask().si(url=i,projectPK=project.pk) for i in fileurls]
-        filetask = chord(bundle_o_tasks)(ResaveProjectTask().si(projectPK=project.pk))
+        bundle_o_tasks=[]
+        for fileurl in fileurls:
+            bundle_o_tasks+=[ThingiFileTask().si(url=fileurl,projectPK=project.pk)]
+        filetask = chord(bundle_o_tasks)
+        filetask(ResaveProjectTask().si(projectPK=project.pk))
         return(project.title)
 
 
