@@ -81,7 +81,7 @@ class Project(models.Model):
         zippedTask.delay(self)
 
     def delete(self):
-        project.tasks.fileEnforcer.delay(self)
+#        tasks.fileEnforcer.delay(self)
         super(Project, self).delete()
 
     def get_form(self):

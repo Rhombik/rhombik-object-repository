@@ -34,7 +34,7 @@ def get_response(url):
     return(response)
 
 from Settings.celery import app
-from celery import Celery, shared_task, chord,signature
+from celery import Celery,shared_task,chord,signature
 
 class ThingiUserTask(JobtasticTask):
     """
@@ -115,19 +115,19 @@ class ThingiProjectTask(JobtasticTask):
         for tag in tags:
            project.tags.add(tag)
 
-	## get special text files. (readme, instructions, license)
+        ## get special text files. (readme, instructions, license)
         import html2text
         h2t = html2text.HTML2Text()
         #Get the reame file, do stuff to it.
         readme = etree.tostring(dom.xpath("//*[@id = 'description']")[0])
         readme = readme.encode("utf-8")
         readme = h2t.handle(readme)
-	import unicodedata
-	readmeItem=fileobject()
-	readmeItem.parent=project#projectObject['SID']
+        import unicodedata
+        readmeItem=fileobject()
+        readmeItem.parent=project#projectObject['SID']
         readmeItem.isReadme = True
-	readmename="README.md"
-	readmefile=u""+unicodedata.normalize('NFKD',readme).encode('ascii','ignore')
+        readmename="README.md"
+        readmefile=u""+unicodedata.normalize('NFKD',readme).encode('ascii','ignore')
         print(readmename)
         print(readmefile)
         readmeItem.fromText(readmefile,readmename)
@@ -162,7 +162,7 @@ class ThingiProjectTask(JobtasticTask):
         licenceItem.fromText(lfile,lname)
         licenceItem.save()
 
-	## get all the projects image and file objects
+        ## get all the projects image and file objects
         #grab files
         filelist = dom.xpath('//*[contains(@class,\'thing-file\')]/a/@href')
         #Grab only raw images.        
@@ -223,6 +223,3 @@ class ResaveProjectTask(JobtasticTask):
         project=Project.objects.get(pk=projectPK)
         project.save(enf_valid=True)
         return("{} resaved".format(project))
-
-
-
