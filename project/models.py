@@ -61,7 +61,6 @@ class Project(models.Model):
         self.ratingCount = upvotes-downvotes
         votes = self.rating.votes
 
-
         #http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
         if(votes == 0):
             self.ratingSortBest = 1 
@@ -73,15 +72,13 @@ class Project(models.Model):
         super(Project, self).save()
 
     def save(self, enf_valid=False):
-        super(Project, self).save()
-        self.enf_consistancy()
+        if self.draft == True:
+            self.draft = self.enf_consistancy(save=False)
 
-        if enf_valid:
-            self.enf_validity()
+        super(Project, self).save()
         zippedTask.delay(self)
 
     def delete(self):
-#        tasks.fileEnforcer.delay(self)
         super(Project, self).delete()
 
     def get_form(self):
@@ -120,22 +117,27 @@ class Project(models.Model):
         print("enf_validity is depricated, asshole.")
         pass
 
-    def enf_consistancy(self):
+    def enf_consistancy(self save=True):
+        isValid=True
+
         #checks if there's a thumbnail.
         if not self.thumbnail:
             object_type = ContentType.objects.get_for_model(self)
             files = fileobject.objects.filter(content_type=object_type,object_id=self.id).exclude(filetype='norender').exclude(filetype='text')
             if files:
                 self.thumbnail = files[0]
-                super(Project, self).save()
-                return True
             else:
-                if not self.draft:
-                    self.draft = True
-                    super(Project, self).save()
-                return False
-        elif self.thumbnail:
-            return True
+                isValid=False
+
+        if not self.title:
+            isValid=False
+
+        if save == True:
+            self.draft = isValid
+            super(Project, self).save()
+
+        return isValid
+
 
     def __unicode__(self):
         if self.title:
