@@ -117,7 +117,7 @@ class Project(models.Model):
         print("enf_validity is depricated, asshole.")
         pass
 
-    def enf_consistancy(self save=True):
+    def enf_consistancy(self, save=True):
         isValid=True
 
         #checks if there's a thumbnail.
